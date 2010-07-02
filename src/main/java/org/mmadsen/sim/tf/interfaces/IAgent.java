@@ -10,7 +10,16 @@ package org.mmadsen.sim.tf.interfaces;
 public interface IAgent {
 
     public String getAgentID();
-    
 
+    public void adoptTrait(ITrait trait);
+
+    public void adoptTrait(ITraitDimension dimension, ITrait trait);
+
+    /**
+     * Adds a trait dimension to an agent
+     * @param dimension
+     */
+
+    public void addTraitDimension(ITraitDimension dimension);
 
 }

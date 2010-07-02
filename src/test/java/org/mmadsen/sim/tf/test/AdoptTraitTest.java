@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
+import org.mmadsen.sim.tf.exceptions.UnimplementedMethodException;
 import org.mmadsen.sim.tf.interfaces.IAgent;
 import org.mmadsen.sim.tf.interfaces.IModelGlobals;
 import org.mmadsen.sim.tf.interfaces.ITrait;
@@ -62,6 +63,13 @@ public class AdoptTraitTest {
 
     }
 
-
-
+    @Test
+    public void testClearAdoptionData() {
+        this.testTrait.adopt(new AgentFixture(1));
+        this.testTrait.adopt(new AgentFixture(2));
+        this.testTrait.clearAdoptionData();
+        Integer adoptCount = this.testTrait.getCurrentAdoptionCount();
+        //this.model.getModelLogger().info("adoption count: " + adoptCount);
+        Assert.assertTrue(adoptCount == 0);
+    }
 }

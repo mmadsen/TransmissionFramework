@@ -1,5 +1,6 @@
 package org.mmadsen.sim.tf.interfaces;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,11 +13,13 @@ import java.util.Set;
  */
 public interface ITraitDimension {
 
+    public String getDimensionName();
+
     public void addTrait(ITrait newTrait);
 
     public ITrait getTrait(String traitID);
 
-    public Set<ITrait> getTraitsInDimension();
+    public Collection<ITrait> getTraitsInDimension();
 
     public Map<String,Integer> getCurrentTraitCountMap();
 

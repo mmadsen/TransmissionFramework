@@ -61,6 +61,28 @@ public interface ITrait {
     public List<IAgent> getCurrentAdopterList();
 
     /**
+     * Returns the ITraitDimension, if any, to which this trait belongs.  Can return null
+     * if this trait doesn't belong to a dimension (there may be models which do not use
+     * ITraitDimensions at all.
+     *
+     * @return dimension  ITraitDimension to which this trait belongs (may be null)
+     */
+
+    
+    public ITraitDimension getOwningDimension();
+
+    /**
+     * Sets the ITraitDimension which "owns" this trait.  Many simple models may not employ
+     * trait dimensions at all, since they are primarily useful in organizing "alternative"
+     * traits in models with multidimensional state spaces.
+     * 
+     * @param owningDimension
+     */
+
+    public void setOwningDimension(ITraitDimension owningDimension);
+
+
+    /**
      * Clears adoption data and resets adoption count to zero
      *
      */

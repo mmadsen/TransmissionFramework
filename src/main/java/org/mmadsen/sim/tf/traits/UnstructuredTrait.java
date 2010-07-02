@@ -5,6 +5,7 @@ import org.mmadsen.sim.tf.exceptions.UnimplementedMethodException;
 import org.mmadsen.sim.tf.interfaces.IAgent;
 import org.mmadsen.sim.tf.interfaces.IModelGlobals;
 import org.mmadsen.sim.tf.interfaces.ITrait;
+import org.mmadsen.sim.tf.interfaces.ITraitDimension;
 
 import java.util.*;
 
@@ -23,14 +24,27 @@ public class UnstructuredTrait implements ITrait {
     Map<Integer,Integer> histAdoptionCountMap;
     IModelGlobals model;
     Logger log;
+    ITraitDimension owningDimension = null;
+
+    public ITraitDimension getOwningDimension() {
+        return owningDimension;
+    }
+
+    public void setOwningDimension(ITraitDimension owningDimension) {
+        this.owningDimension = owningDimension;
+    }
 
     public UnstructuredTrait(String id, IModelGlobals model) {
-        this.curAdoptionCount = new Integer(0);
-        this.curAdopteeList = Collections.synchronizedList(new ArrayList<IAgent>());
-        this.histAdoptionCountMap = Collections.synchronizedMap(new HashMap<Integer,Integer>());
+        this.initAdoptionData();
         this.id = id;
         this.model = model;
         this.log = this.model.getModelLogger();
+    }
+
+    private void initAdoptionData() {
+        this.curAdoptionCount = new Integer(0);
+        this.curAdopteeList = Collections.synchronizedList(new ArrayList<IAgent>());
+        this.histAdoptionCountMap = Collections.synchronizedMap(new HashMap<Integer,Integer>());
     }
 
     public String getTraitID() {
@@ -66,7 +80,10 @@ public class UnstructuredTrait implements ITrait {
     }
 
     public void clearAdoptionData() {
-        throw new UnimplementedMethodException(UnstructuredTrait.class,"clearAdoptionData");
+        this.curAdoptionCount = 0;
+        this.curAdopteeList = null;
+        this.histAdoptionCountMap = null;
+        this.initAdoptionData();
     }
 
     private synchronized void incrementAdoptionCount() {
