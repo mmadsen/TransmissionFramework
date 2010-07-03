@@ -1,0 +1,10 @@
+Currently, as of July 2010, the atunit-1.0.1 library isn't in a central Maven
+repository.  So before building, you need to install it in a local repository.
+
+From this directory, here is the command to do so.
+
+mvn install:install-file -Dfile=atunit-1.0.1.jar -DgroupId=com.google.code
+-DartifactId=atunit -Dversion=1.0.1 -Dpackaging=jar
+
+
+

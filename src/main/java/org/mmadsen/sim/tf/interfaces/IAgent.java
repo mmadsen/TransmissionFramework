@@ -11,6 +11,8 @@ public interface IAgent {
 
     public String getAgentID();
 
+    public void setAgentID(String id);
+
     public void adoptTrait(ITrait trait);
 
     public void adoptTrait(ITraitDimension dimension, ITrait trait);

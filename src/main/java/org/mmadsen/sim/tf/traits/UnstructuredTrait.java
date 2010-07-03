@@ -1,11 +1,12 @@
 package org.mmadsen.sim.tf.traits;
 
+import com.google.inject.Inject;
 import org.apache.log4j.Logger;
-import org.mmadsen.sim.tf.exceptions.UnimplementedMethodException;
 import org.mmadsen.sim.tf.interfaces.IAgent;
-import org.mmadsen.sim.tf.interfaces.IModelGlobals;
+import org.mmadsen.sim.tf.interfaces.ISimulationModel;
 import org.mmadsen.sim.tf.interfaces.ITrait;
 import org.mmadsen.sim.tf.interfaces.ITraitDimension;
+
 
 import java.util.*;
 
@@ -16,13 +17,17 @@ import java.util.*;
  * Time: 9:18:36 AM
  * To change this template use File | Settings | File Templates.
  */
+
+
 public class UnstructuredTrait implements ITrait {
+
+
 
     String id;
     Integer curAdoptionCount;
     List<IAgent> curAdopteeList;
     Map<Integer,Integer> histAdoptionCountMap;
-    IModelGlobals model;
+    ISimulationModel simulationModel;
     Logger log;
     ITraitDimension owningDimension = null;
 
@@ -34,11 +39,10 @@ public class UnstructuredTrait implements ITrait {
         this.owningDimension = owningDimension;
     }
 
-    public UnstructuredTrait(String id, IModelGlobals model) {
+    @Inject
+    public UnstructuredTrait(ISimulationModel simulationModel) {
         this.initAdoptionData();
-        this.id = id;
-        this.model = model;
-        this.log = this.model.getModelLogger();
+        this.simulationModel = simulationModel;
     }
 
     private void initAdoptionData() {
@@ -51,6 +55,10 @@ public class UnstructuredTrait implements ITrait {
         return this.id;  
     }
 
+    public void setTraitID(String id) {
+        this.id = id;
+    }
+
     public Integer getCurrentAdoptionCount() {
         return this.curAdoptionCount;
     }
@@ -61,7 +69,7 @@ public class UnstructuredTrait implements ITrait {
 
     public void adopt(IAgent agentAdopting) {
         this.incrementAdoptionCount();
-        log.debug("Agent " + agentAdopting.getAgentID() + " adopting trait " + this.getTraitID() + " count: " + this.curAdoptionCount);
+        //log.debug("Agent " + agentAdopting.getAgentID() + " adopting trait " + this.getTraitID() + " count: " + this.curAdoptionCount);
         synchronized(this.curAdopteeList) {
             this.curAdopteeList.add(agentAdopting);
         }
@@ -69,7 +77,7 @@ public class UnstructuredTrait implements ITrait {
 
     public void unadopt(IAgent agentUnadopting) {
         this.decrementAdoptionCount();
-        log.debug("Agent " + agentUnadopting.getAgentID() + " unadopting trait " + this.getTraitID() + " count: " + this.curAdoptionCount);
+        //log.debug("Agent " + agentUnadopting.getAgentID() + " unadopting trait " + this.getTraitID() + " count: " + this.curAdoptionCount);
         synchronized(this.curAdopteeList) {
             this.curAdopteeList.remove(agentUnadopting);
         }
@@ -88,11 +96,11 @@ public class UnstructuredTrait implements ITrait {
 
     private synchronized void incrementAdoptionCount() {
         this.curAdoptionCount++;
-        this.histAdoptionCountMap.put(this.model.getCurrentModelTime(),this.curAdoptionCount);
+        this.histAdoptionCountMap.put(this.simulationModel.getCurrentModelTime(),this.curAdoptionCount);
     }
 
     private synchronized void decrementAdoptionCount() {
         this.curAdoptionCount--;
-        this.histAdoptionCountMap.put(this.model.getCurrentModelTime(),this.curAdoptionCount);
+        this.histAdoptionCountMap.put(this.simulationModel.getCurrentModelTime(),this.curAdoptionCount);
     }
 }
