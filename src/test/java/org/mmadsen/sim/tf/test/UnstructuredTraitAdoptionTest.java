@@ -2,14 +2,15 @@ package org.mmadsen.sim.tf.test;
 
 import static org.junit.Assert.*;
 
-import org.junit.Assert;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.junit.Test;
 
 import atunit.*;
-import atunit.example.subjects.*;
 
 import com.google.inject.Binder;
-import com.google.inject.Inject;
 import com.google.inject.Module;
 import org.junit.runner.RunWith;
 import org.mmadsen.sim.tf.interfaces.IAgent;
@@ -28,41 +29,50 @@ import org.mmadsen.sim.tf.traits.UnstructuredTrait;
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
 public class UnstructuredTraitAdoptionTest implements Module  {
-    @Inject @Unit ITrait trait;
+    @Inject
+    @Unit ITrait trait;
     @Inject IAgent agent;
     @Inject ISimulationModel model;
+    Logger log;
 
+    @Before
+    public void setup() {
+        log = model.getModelLogger(this.getClass());
+    }
 
     @Test
     public void simpleAdoption() {
+        log.info("Entering simpleAdoption test");
         trait.setTraitID("TestTrait1");
         agent.setAgentID("TestAgent1");
         trait.adopt(agent);
         Integer adoptCount = trait.getCurrentAdoptionCount();
-        //model.getModelLogger().info("adoption count: " + adoptCount);
+        log.info("expecting count:  1 observed count: " + adoptCount);
         assertTrue(adoptCount == 1);
+        log.info("Exiting simpleAdoption test");
     }
 
     @Test
     public void multipleAdoption() {
+        log.info("Entering multipleAdoption test, adoption by 15 agents");
         trait.adopt(agent);
         for(Integer i = 2; i < 15; i++) {
             IAgent newAgent = new AgentFixture();
             newAgent.setAgentID(i.toString());
-            //model.getModelLogger().info("i: " + i);
             trait.adopt(newAgent);
         }
         IAgent lastAgent = new AgentFixture();
         lastAgent.setAgentID("15");
         trait.adopt(lastAgent);
-
+        log.info("expecting: 15 observed: " + trait.getCurrentAdoptionCount());
         assertTrue(trait.getCurrentAdoptionCount() == 15);
 
+        log.info("now 2 agents unadopt the trait");
         trait.unadopt(this.agent);
         trait.unadopt(lastAgent);
-        //model.getModelLogger().info("final count: " + trait.getCurrentAdoptionCount());
+        log.info("expecting: 13 observed: " + trait.getCurrentAdoptionCount());
         assertTrue(trait.getCurrentAdoptionCount() == 13);
-
+        log.info("Exiting multipleAdoption test");
     }
 
 
@@ -70,5 +80,6 @@ public class UnstructuredTraitAdoptionTest implements Module  {
         binder.bind(ITrait.class).to(UnstructuredTrait.class);
         binder.bind(IAgent.class).to(AgentFixture.class);
         binder.bind(ISimulationModel.class).to(SimulationModelFixture.class);
+        
     }
 }

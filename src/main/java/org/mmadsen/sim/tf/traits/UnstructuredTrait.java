@@ -6,6 +6,7 @@ import org.mmadsen.sim.tf.interfaces.IAgent;
 import org.mmadsen.sim.tf.interfaces.ISimulationModel;
 import org.mmadsen.sim.tf.interfaces.ITrait;
 import org.mmadsen.sim.tf.interfaces.ITraitDimension;
+import com.google.common.base.Preconditions;
 
 
 import java.util.*;
@@ -23,13 +24,19 @@ public class UnstructuredTrait implements ITrait {
 
 
 
-    String id;
-    Integer curAdoptionCount;
-    List<IAgent> curAdopteeList;
-    Map<Integer,Integer> histAdoptionCountMap;
-    ISimulationModel simulationModel;
-    Logger log;
-    ITraitDimension owningDimension = null;
+    private String id;
+    private Integer curAdoptionCount;
+    private List<IAgent> curAdopteeList;
+    private Map<Integer,Integer> histAdoptionCountMap;
+    private ISimulationModel simulationModel;
+    private Logger log;
+    private ITraitDimension owningDimension = null;
+
+    @Inject
+    public void setSimulationModel(ISimulationModel model) {
+        simulationModel = model;
+        log = simulationModel.getModelLogger(this.getClass());
+    }
 
     public ITraitDimension getOwningDimension() {
         return owningDimension;
@@ -39,10 +46,9 @@ public class UnstructuredTrait implements ITrait {
         this.owningDimension = owningDimension;
     }
 
-    @Inject
-    public UnstructuredTrait(ISimulationModel simulationModel) {
+    public UnstructuredTrait() {
         this.initAdoptionData();
-        this.simulationModel = simulationModel;
+
     }
 
     private void initAdoptionData() {
@@ -55,6 +61,7 @@ public class UnstructuredTrait implements ITrait {
         return this.id;  
     }
 
+    @Inject
     public void setTraitID(String id) {
         this.id = id;
     }
@@ -68,16 +75,18 @@ public class UnstructuredTrait implements ITrait {
     }
 
     public void adopt(IAgent agentAdopting) {
+        Preconditions.checkNotNull(agentAdopting);
         this.incrementAdoptionCount();
-        //log.debug("Agent " + agentAdopting.getAgentID() + " adopting trait " + this.getTraitID() + " count: " + this.curAdoptionCount);
+        log.trace("Agent " + agentAdopting.getAgentID() + " adopting trait " + this.getTraitID() + " count: " + this.curAdoptionCount);
         synchronized(this.curAdopteeList) {
             this.curAdopteeList.add(agentAdopting);
         }
     }
 
     public void unadopt(IAgent agentUnadopting) {
+        Preconditions.checkNotNull(agentUnadopting);
         this.decrementAdoptionCount();
-        //log.debug("Agent " + agentUnadopting.getAgentID() + " unadopting trait " + this.getTraitID() + " count: " + this.curAdoptionCount);
+        log.trace("Agent " + agentUnadopting.getAgentID() + " unadopting trait " + this.getTraitID() + " count: " + this.curAdoptionCount);
         synchronized(this.curAdopteeList) {
             this.curAdopteeList.remove(agentUnadopting);
         }

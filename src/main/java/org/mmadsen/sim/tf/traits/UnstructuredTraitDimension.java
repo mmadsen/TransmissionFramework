@@ -1,5 +1,9 @@
 package org.mmadsen.sim.tf.traits;
 
+import com.google.inject.Inject;
+import com.google.inject.internal.Preconditions;
+import org.apache.log4j.Logger;
+import org.mmadsen.sim.tf.interfaces.ISimulationModel;
 import org.mmadsen.sim.tf.interfaces.ITrait;
 import org.mmadsen.sim.tf.interfaces.ITraitDimension;
 
@@ -15,9 +19,16 @@ import java.util.*;
 public class UnstructuredTraitDimension implements ITraitDimension {
     String dimensionName = null;
     Map<String,ITrait> traitMap = null;
+    Logger log;
+    ISimulationModel model;
 
-    public UnstructuredTraitDimension(String dimensionName) {
-        this.dimensionName = dimensionName;
+    @Inject
+    public void setSimulationModel(ISimulationModel model) {
+        this.model = model;
+        log = model.getModelLogger(this.getClass());
+    }
+
+    public UnstructuredTraitDimension() {
         this.initialize();
     }
 
@@ -45,7 +56,7 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         return this.traitMap.values();
     }
 
-    public Map<String, Integer> getCurrentTraitCountMap() {
+    public Map<String, Integer> getCurGlobalTraitCounts() {
         Map<String,Integer> countMap = new HashMap<String,Integer>();
 
         for(ITrait trait: this.traitMap.values()) {
@@ -54,22 +65,21 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         return countMap;
     }
 
-    public Map<String, Double> getCurrentTraitFreqMap() {
+    public Map<String, Double> getCurGlobalTraitFrequencies() {
+        Preconditions.checkNotNull(model);
+        log.info("getting current trait frequency map");
         Map<String,Double> freqMap = new HashMap<String,Double>();
         Integer total = 0;
 
-        /* I hate the inefficiency here...maybe I ought to just keep population size around???  */
+        Integer popsize = this.model.getCurrentPopulationSize();
         for(ITrait trait: this.traitMap.values()) {
-            total += trait.getCurrentAdoptionCount();
-        }
-        for(ITrait trait: this.traitMap.values()) {
-            double freq = (double) trait.getCurrentAdoptionCount() / (double) total;
+            double freq = (double) trait.getCurrentAdoptionCount() / (double) popsize;
             freqMap.put(trait.getTraitID(), freq);
         }
         return freqMap;  
     }
 
-    public void removeTrait(ITrait traitToRemove) {
-        this.traitMap.remove(traitToRemove);
-    }
+//    public void removeTrait(ITrait traitToRemove) {
+//        this.traitMap.remove(traitToRemove);
+//    }
 }

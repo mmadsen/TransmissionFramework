@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
  * Time: 4:36:11 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface ISimulationModel {
+public interface ISimulationModel extends Runnable {
 
     /**
      *
@@ -17,7 +17,12 @@ public interface ISimulationModel {
      */
     public Integer getCurrentModelTime();
 
-    public Logger getModelLogger();
+    /**
+     * Returns a Logger configured with the centralized log4j config, for the calling class.
+     * @param classToLog  Class to use for the returned Logger
+     * @return logger  Logger for the calling class, properly configured given log4j config.
+     */
+    public Logger getModelLogger(Class classToLog);
 
     /**
      * Returns the current size of the agent population for a given simulation instance.
@@ -29,4 +34,6 @@ public interface ISimulationModel {
      * @return popSize The number of individual agents in the simulated population at the current time
      */
     public Integer getCurrentPopulationSize();
+
+
 }

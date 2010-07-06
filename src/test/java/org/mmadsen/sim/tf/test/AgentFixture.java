@@ -18,6 +18,11 @@ public class AgentFixture implements IAgent {
     private String agentID;
     @Inject private ISimulationModel model;
 
+    // used only when you can't do DI
+    public void setSimulationModel(ISimulationModel model) {
+        model = model;
+    }
+
     public void setAgentID(String agentID) {
         this.agentID = new String("TestAgent" + agentID);
     }
