@@ -19,6 +19,8 @@ public interface ITrait {
      */
     public String getTraitID();
 
+    public void setTraitID(String id);
+
     /**
      * 
      * @return count An integer representing the current number of IAgent objects which have adopted this trait

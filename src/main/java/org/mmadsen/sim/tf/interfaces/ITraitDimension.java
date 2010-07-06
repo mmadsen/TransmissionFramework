@@ -21,9 +21,9 @@ public interface ITraitDimension {
 
     public Collection<ITrait> getTraitsInDimension();
 
-    public Map<String,Integer> getCurrentTraitCountMap();
+    public Map<String,Integer> getCurGlobalTraitCounts();
 
-    public Map<String,Double> getCurrentTraitFreqMap();
+    public Map<String,Double> getCurGlobalTraitFrequencies();
 
-    public void removeTrait(ITrait traitToRemove);
+    //public void removeTrait(ITrait traitToRemove);
 }
