@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2010.  Mark E. Madsen <mark@mmadsen.org>
+ *
+ * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
+ *
+ * For detailed license terms, see:
+ * http://creativecommons.org/licenses/GPL/2.0/
+ */
+
 package org.mmadsen.sim.tf.traits;
 
 import com.google.inject.Inject;
@@ -28,14 +37,14 @@ public class UnstructuredTrait implements ITrait {
     private Integer curAdoptionCount;
     private List<IAgent> curAdopteeList;
     private Map<Integer,Integer> histAdoptionCountMap;
-    private ISimulationModel simulationModel;
     private Logger log;
     private ITraitDimension owningDimension = null;
+    private ISimulationModel model;
 
     @Inject
-    public void setSimulationModel(ISimulationModel model) {
-        simulationModel = model;
-        log = simulationModel.getModelLogger(this.getClass());
+    public void setSimulationModel(ISimulationModel m) {
+        model = m;
+        log = model.getModelLogger(this.getClass());
     }
 
     public ITraitDimension getOwningDimension() {
@@ -47,11 +56,12 @@ public class UnstructuredTrait implements ITrait {
     }
 
     public UnstructuredTrait() {
-        this.initAdoptionData();
+        this.initialize();
+
 
     }
 
-    private void initAdoptionData() {
+    private void initialize() {
         this.curAdoptionCount = new Integer(0);
         this.curAdopteeList = Collections.synchronizedList(new ArrayList<IAgent>());
         this.histAdoptionCountMap = Collections.synchronizedMap(new HashMap<Integer,Integer>());
@@ -61,7 +71,6 @@ public class UnstructuredTrait implements ITrait {
         return this.id;  
     }
 
-    @Inject
     public void setTraitID(String id) {
         this.id = id;
     }
@@ -71,11 +80,12 @@ public class UnstructuredTrait implements ITrait {
     }
 
     public Map<Integer,Integer> getAdoptionCountHistory() {
-        return this.histAdoptionCountMap;
+        return new HashMap<Integer,Integer>(this.histAdoptionCountMap);
     }
 
     public void adopt(IAgent agentAdopting) {
         Preconditions.checkNotNull(agentAdopting);
+        Preconditions.checkNotNull(model);
         this.incrementAdoptionCount();
         log.trace("Agent " + agentAdopting.getAgentID() + " adopting trait " + this.getTraitID() + " count: " + this.curAdoptionCount);
         synchronized(this.curAdopteeList) {
@@ -85,6 +95,7 @@ public class UnstructuredTrait implements ITrait {
 
     public void unadopt(IAgent agentUnadopting) {
         Preconditions.checkNotNull(agentUnadopting);
+        Preconditions.checkNotNull(model);
         this.decrementAdoptionCount();
         log.trace("Agent " + agentUnadopting.getAgentID() + " unadopting trait " + this.getTraitID() + " count: " + this.curAdoptionCount);
         synchronized(this.curAdopteeList) {
@@ -93,23 +104,23 @@ public class UnstructuredTrait implements ITrait {
     }
 
     public List<IAgent> getCurrentAdopterList() {
-        return this.curAdopteeList;
+        return new ArrayList<IAgent>(this.curAdopteeList);
     }
 
     public void clearAdoptionData() {
         this.curAdoptionCount = 0;
         this.curAdopteeList = null;
         this.histAdoptionCountMap = null;
-        this.initAdoptionData();
+        this.initialize();
     }
 
     private synchronized void incrementAdoptionCount() {
         this.curAdoptionCount++;
-        this.histAdoptionCountMap.put(this.simulationModel.getCurrentModelTime(),this.curAdoptionCount);
+        this.histAdoptionCountMap.put(model.getCurrentModelTime(),this.curAdoptionCount);
     }
 
     private synchronized void decrementAdoptionCount() {
         this.curAdoptionCount--;
-        this.histAdoptionCountMap.put(this.simulationModel.getCurrentModelTime(),this.curAdoptionCount);
+        this.histAdoptionCountMap.put(model.getCurrentModelTime(),this.curAdoptionCount);
     }
 }

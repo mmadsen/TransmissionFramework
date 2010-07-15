@@ -1,8 +1,19 @@
+/*
+ * Copyright (c) 2010.  Mark E. Madsen <mark@mmadsen.org>
+ *
+ * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
+ *
+ * For detailed license terms, see:
+ * http://creativecommons.org/licenses/GPL/2.0/
+ */
+
 package org.mmadsen.sim.tf.test;
 
 import atunit.AtUnit;
 import atunit.Container;
 import atunit.Unit;
+import com.google.common.base.Preconditions;
+import com.google.inject.Provider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,12 +25,15 @@ import org.apache.log4j.Logger;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import org.mmadsen.sim.tf.agent.SimpleAgentProvider;
 import org.mmadsen.sim.tf.interfaces.IAgent;
 import org.mmadsen.sim.tf.interfaces.ISimulationModel;
 import org.mmadsen.sim.tf.interfaces.ITrait;
 import org.mmadsen.sim.tf.interfaces.ITraitDimension;
 import org.mmadsen.sim.tf.traits.UnstructuredTrait;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitDimension;
+import org.mmadsen.sim.tf.traits.UnstructuredTraitDimensionProvider;
+import org.mmadsen.sim.tf.traits.UnstructuredTraitProvider;
 
 import java.util.Collection;
 import java.util.Map;
@@ -35,14 +49,12 @@ import java.util.Map;
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
 public class UnstructuredTraitDimensionTest implements Module {
-    @Inject
-    ITrait trait;
-    @Inject
-    IAgent agent;
-    @Inject
+    @Inject public Provider<IAgent> agentProvider;
+    @Inject public Provider<ITrait> traitProvider;
+    @Inject public Provider<ITraitDimension> dimensionProvider;
+    @Inject public
     ISimulationModel model;
-    @Inject @Unit
-    ITraitDimension dimension;
+    @Unit ITraitDimension unusedDim;  // this makes Junit4 happy
     Logger log;
 
     @Before
@@ -50,17 +62,12 @@ public class UnstructuredTraitDimensionTest implements Module {
         log = model.getModelLogger(this.getClass());
     }
 
-    @After
-    public void tearDown() throws Exception {
-        // probably unnecessary, but clean up between tests
-        dimension = null;
-        agent = null;
-        trait = null;
-    }
-
     @Test
     public void testAddTraitAndGetTraitsInDimension() throws Exception {
+
         log.info("Entering testAddTraitAndGetTraitsInDimension");
+        ITraitDimension dimension = dimensionProvider.get();
+        ITrait trait = traitProvider.get();
         dimension.addTrait(trait);
         Collection<ITrait> traitList = dimension.getTraitsInDimension();
         log.info("expected size: 1 observed: " + traitList.size());
@@ -72,7 +79,8 @@ public class UnstructuredTraitDimensionTest implements Module {
     @Test
     public void testGetCurrentTraitCountMap() throws Exception {
         log.info("Entering testGetCurrentTraitCountMap");
-        this._createTestData(dimension, model);
+        ITraitDimension dimension = dimensionProvider.get();
+        this._createTestData(dimension);
 
         Map<String,Integer> countMap = dimension.getCurGlobalTraitCounts();
         // do we have 5 tuples in the map?
@@ -90,7 +98,8 @@ public class UnstructuredTraitDimensionTest implements Module {
     @Test
     public void testGetCurrentTraitFreqMap() throws Exception {
         log.info("Entering testGetCurrentTraitFreqMap");
-        this._createTestData(dimension, model);
+        ITraitDimension dimension = dimensionProvider.get();
+        this._createTestData(dimension);
 
         Map<String,Double> freqMap = dimension.getCurGlobalTraitFrequencies();
         // do we have 5 tuples in the map?
@@ -117,21 +126,19 @@ public class UnstructuredTraitDimensionTest implements Module {
 //    }
 
 
-    private void _createTestData(ITraitDimension dimension, ISimulationModel model) {
+    private void _createTestData(ITraitDimension dimension) {
         log.info("entering _createTestData");
         // We're going to add five traits to a dimension
         for(Integer i = 1; i < 6; i++) {
             // we can't rely on injection here, so just construct them directly.
-            UnstructuredTrait newTrait = new UnstructuredTrait();
+            ITrait newTrait = traitProvider.get();
             newTrait.setOwningDimension(dimension);
-            newTrait.setSimulationModel(model);
             newTrait.setTraitID(i.toString());
             // Now let 3i agents adopt each trait
             // This means first trait is adopted three times, second trait is adopted 6 times,
             // This will give us an easy way to check accuracy of frequencies, etc.
             for(Integer j = 1; j <= 3 * i; j++) {
-                AgentFixture newAgent = new AgentFixture();
-                newAgent.setSimulationModel(model);
+                IAgent newAgent = agentProvider.get();
                 newTrait.adopt(newAgent);
             }
 
@@ -148,9 +155,9 @@ public class UnstructuredTraitDimensionTest implements Module {
 
 
     public void configure(Binder binder) {
-        binder.bind(ITrait.class).to(UnstructuredTrait.class);
-        binder.bind(IAgent.class).to(AgentFixture.class);
+        binder.bind(ITrait.class).toProvider(UnstructuredTraitProvider.class);
+        binder.bind(ITraitDimension.class).toProvider(UnstructuredTraitDimensionProvider.class);
+        binder.bind(IAgent.class).toProvider(AgentFixtureProvider.class);
         binder.bind(ISimulationModel.class).to(SimulationModelFixture.class);
-        binder.bind(ITraitDimension.class).to(UnstructuredTraitDimension.class);
     }
 }

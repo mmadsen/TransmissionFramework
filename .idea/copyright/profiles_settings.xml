@@ -1,5 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="">
-    <module2copyright />
+  <settings default="Madsen Research GPL-CC">
+    <module2copyright>
+      <element module="All" copyright="Madsen Research GPL-CC" />
+    </module2copyright>
   </settings>
 </component>

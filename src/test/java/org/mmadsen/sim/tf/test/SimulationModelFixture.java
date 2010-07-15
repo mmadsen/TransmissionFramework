@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2010.  Mark E. Madsen <mark@mmadsen.org>
+ *
+ * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
+ *
+ * For detailed license terms, see:
+ * http://creativecommons.org/licenses/GPL/2.0/
+ */
+
 package org.mmadsen.sim.tf.test;
 
 import com.google.inject.Singleton;
@@ -6,6 +15,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.mmadsen.sim.tf.interfaces.ISimulationModel;
+import org.mmadsen.sim.tf.interfaces.ITraitDimension;
 import org.mmadsen.sim.tf.models.AbstractSimModel;
 import com.google.common.base.Preconditions;
 
@@ -20,8 +30,7 @@ import com.google.common.base.Preconditions;
 @Singleton
 public class SimulationModelFixture extends AbstractSimModel {
 
-    static Integer currentTime = 0;
-    static Integer curPopSize = 0;
+    private Integer currentTime = 0;
 
     public SimulationModelFixture() {
         super();
@@ -38,15 +47,14 @@ public class SimulationModelFixture extends AbstractSimModel {
         return currentTime;
     }
 
-    public Logger getModelLogger() {
-        return log;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
-    public Integer getCurrentPopulationSize() {
-        return curPopSize;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
     public void testSetCurrentPopulationSize(Integer popsize) {
-        curPopSize = popsize;
+        this.populationSize = popsize;
+    }
+
+    public void run() {
+        log.info("Starting simulation model: " + this.getClass().getSimpleName());
+
     }
 }

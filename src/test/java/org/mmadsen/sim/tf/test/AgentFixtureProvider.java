@@ -7,32 +7,27 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.mmadsen.sim.tf.interfaces;
+package org.mmadsen.sim.tf.test;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import org.mmadsen.sim.tf.interfaces.IAgent;
+import org.mmadsen.sim.tf.interfaces.ISimulationModel;
 
 /**
  * Created by IntelliJ IDEA.
  * User: mark
- * Date: Jun 27, 2010
- * Time: 11:26:05 AM
+ * Date: Jul 10, 2010
+ * Time: 3:40:49 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface IAgent {
+public class AgentFixtureProvider implements Provider<IAgent> {
+    @Inject
+    private ISimulationModel model;
 
-    public void setSimulationModel(ISimulationModel m);
-
-    public String getAgentID();
-
-    public void setAgentID(String id);
-
-    public void adoptTrait(ITrait trait);
-
-    public void adoptTrait(ITraitDimension dimension, ITrait trait);
-
-    /**
-     * Adds a trait dimension to an agent
-     * @param dimension
-     */
-
-    public void addTraitDimension(ITraitDimension dimension);
-
+    public IAgent get() {
+        IAgent agent = new AgentFixture();
+        agent.setSimulationModel(model);
+        return agent;
+    }
 }

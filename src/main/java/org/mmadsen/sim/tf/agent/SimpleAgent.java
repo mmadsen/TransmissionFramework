@@ -7,9 +7,10 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.mmadsen.sim.tf.test;
+package org.mmadsen.sim.tf.agent;
 
 import com.google.inject.Inject;
+import org.apache.log4j.Logger;
 import org.mmadsen.sim.tf.interfaces.IAgent;
 import org.mmadsen.sim.tf.interfaces.ISimulationModel;
 import org.mmadsen.sim.tf.interfaces.ITrait;
@@ -18,26 +19,28 @@ import org.mmadsen.sim.tf.interfaces.ITraitDimension;
 /**
  * Created by IntelliJ IDEA.
  * User: mark
- * Date: Jun 30, 2010
- * Time: 4:08:08 PM
+ * Date: Jul 11, 2010
+ * Time: 12:33:15 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AgentFixture implements IAgent {
-
+public class SimpleAgent implements IAgent {
     private String agentID;
-    @Inject private ISimulationModel model;
+    private ISimulationModel model;
+    private Logger log;
 
-    // used only when you can't do DI
-    public void setSimulationModel(ISimulationModel model) {
-        model = model;
-    }
-
-    public void setAgentID(String agentID) {
-        this.agentID = new String("TestAgent" + agentID);
+    @Inject
+    public void setSimulationModel(ISimulationModel m) {
+        model = m;
+        log = model.getModelLogger(this.getClass());
+        log.debug("setSimulationModel called and agent object initialized");
     }
 
     public String getAgentID() {
         return this.agentID;
+    }
+
+    public void setAgentID(String id) {
+        this.agentID = id;
     }
 
     public void adoptTrait(ITrait trait) {

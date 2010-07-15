@@ -9,30 +9,32 @@
 
 package org.mmadsen.sim.tf.interfaces;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by IntelliJ IDEA.
  * User: mark
- * Date: Jun 27, 2010
- * Time: 11:26:05 AM
+ * Date: Jul 9, 2010
+ * Time: 5:19:11 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface IAgent {
+public interface IAgentTag {
 
     public void setSimulationModel(ISimulationModel m);
 
-    public String getAgentID();
+    public String getTagName();
 
-    public void setAgentID(String id);
+    public void setTagName(String tagname);
 
-    public void adoptTrait(ITrait trait);
+    public List<IAgent> getCurAgentsTagged();
 
-    public void adoptTrait(ITraitDimension dimension, ITrait trait);
+    public void registerAgent(IAgent agent);
 
-    /**
-     * Adds a trait dimension to an agent
-     * @param dimension
-     */
+    public void unregisterAgent(IAgent agent);
 
-    public void addTraitDimension(ITraitDimension dimension);
+    public Integer curAgentCount();
+
+    public Map<Integer,Integer> getAgentCountHistory();
 
 }

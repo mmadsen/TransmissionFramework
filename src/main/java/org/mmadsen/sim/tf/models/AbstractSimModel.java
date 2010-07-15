@@ -1,8 +1,27 @@
+/*
+ * Copyright (c) 2010.  Mark E. Madsen <mark@mmadsen.org>
+ *
+ * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
+ *
+ * For detailed license terms, see:
+ * http://creativecommons.org/licenses/GPL/2.0/
+ */
+
 package org.mmadsen.sim.tf.models;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.mmadsen.sim.tf.agent.SimpleAgent;
+import org.mmadsen.sim.tf.interfaces.IAgent;
 import org.mmadsen.sim.tf.interfaces.ISimulationModel;
+import org.mmadsen.sim.tf.interfaces.ITrait;
+import org.mmadsen.sim.tf.interfaces.ITraitDimension;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,12 +33,23 @@ import org.mmadsen.sim.tf.interfaces.ISimulationModel;
 public abstract class AbstractSimModel implements ISimulationModel
 {
     protected Logger log;
-    static Integer currentTime = 0;
+    protected Integer currentTime = 0;
+    protected Integer populationSize = 0;
+    private static List<IAgent> agentList;
+    @Inject public
+    Provider<IAgent> agentProvider;
+    @Inject public
+    Provider<ITrait> traitProvider;
+    @Inject public Provider<ITraitDimension> dimensionProvider;
 
     public AbstractSimModel() {
         PropertyConfigurator.configure("/Users/mark/Documents/src/TransmissionFramework/src/main/resources/log4j.config");
         log = Logger.getLogger(this.getClass());
         log.info("log4j configured and ready");
+        if(agentList == null) {
+            log.info("AgentList being initialized");
+            agentList = Collections.synchronizedList(new ArrayList<IAgent>());
+        }
     }
 
     public Integer getCurrentModelTime() {
@@ -31,10 +61,48 @@ public abstract class AbstractSimModel implements ISimulationModel
     }
 
     public Integer getCurrentPopulationSize() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return populationSize;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void run() {
-        log.info("Starting simulation model: " + this.getClass().getSimpleName());
+
+    public IAgent createAgent() {
+        IAgent newAgent = agentProvider.get();
+        // do stuff to new agent
+
+        // now register the agent in the manager's list, and with the
+        // simulation model
+        synchronized(agentList) {
+            agentList.add(newAgent);
+            this.alterPopulationSize(1);
+            log.debug("New agent created and registered: " + newAgent);
+            log.debug("Population size now: " + this.getCurrentPopulationSize());
+        }
+
+        return newAgent;
     }
+
+    public void removeAgent(IAgent agent) {
+        synchronized(agentList) {
+            agentList.remove(agent);
+            this.alterPopulationSize(-1);
+            log.debug("Agent " + agent + " removed and unregistered");
+            log.debug("Population size now: " + this.getCurrentPopulationSize());
+        }
+
+        agent = null;
+    }
+
+    public Provider<ITrait> getTraitProvider() {
+        return traitProvider;
+    }
+
+    public Provider<ITraitDimension> getTraitDimensionProvider() {
+        return dimensionProvider;
+    }
+
+    protected synchronized void alterPopulationSize(Integer incr) {
+        populationSize += incr;
+    }
+
+
 }

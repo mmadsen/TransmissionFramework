@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2010.  Mark E. Madsen <mark@mmadsen.org>
+ *
+ * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
+ *
+ * For detailed license terms, see:
+ * http://creativecommons.org/licenses/GPL/2.0/
+ */
+
 package org.mmadsen.sim.tf.traits;
 
 import com.google.inject.Inject;
@@ -20,11 +29,11 @@ public class UnstructuredTraitDimension implements ITraitDimension {
     String dimensionName = null;
     Map<String,ITrait> traitMap = null;
     Logger log;
-    ISimulationModel model;
+    private ISimulationModel model;
 
     @Inject
-    public void setSimulationModel(ISimulationModel model) {
-        this.model = model;
+    public void setSimulationModel(ISimulationModel m) {
+        model = m;
         log = model.getModelLogger(this.getClass());
     }
 
@@ -34,6 +43,7 @@ public class UnstructuredTraitDimension implements ITraitDimension {
 
     private void initialize() {
         this.traitMap = new HashMap<String,ITrait>();
+
     }
 
     public String getDimensionName() {

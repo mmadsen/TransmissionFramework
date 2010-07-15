@@ -1,14 +1,26 @@
+/*
+ * Copyright (c) 2010.  Mark E. Madsen <mark@mmadsen.org>
+ *
+ * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
+ *
+ * For detailed license terms, see:
+ * http://creativecommons.org/licenses/GPL/2.0/
+ */
+
 package org.mmadsen.sim.tf.config;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
+import org.mmadsen.sim.tf.agent.SimpleAgentProvider;
 import org.mmadsen.sim.tf.interfaces.IAgent;
 import org.mmadsen.sim.tf.interfaces.ISimulationModel;
 import org.mmadsen.sim.tf.interfaces.ITrait;
-import org.mmadsen.sim.tf.models.AbstractSimModel;
+import org.mmadsen.sim.tf.interfaces.ITraitDimension;
 import org.mmadsen.sim.tf.models.BasicSimulationModel;
 import org.mmadsen.sim.tf.traits.UnstructuredTrait;
+import org.mmadsen.sim.tf.traits.UnstructuredTraitDimensionProvider;
+import org.mmadsen.sim.tf.traits.UnstructuredTraitProvider;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,9 +34,11 @@ public class BasicModelModule implements Module {
         binder.bind(ISimulationModel.class)
                 .to(BasicSimulationModel.class)
                 .in(Singleton.class);
+        binder.bind(IAgent.class)
+                .toProvider(SimpleAgentProvider.class);
+        binder.bind(ITraitDimension.class)
+                .toProvider(UnstructuredTraitDimensionProvider.class);
         binder.bind(ITrait.class)
-                .to(UnstructuredTrait.class);
-        //binder.bind(IAgent.class)
-                //.to();
+                .toProvider(UnstructuredTraitProvider.class);
     }
 }

@@ -7,25 +7,27 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.mmadsen.sim.tf.models;
+package org.mmadsen.sim.tf.agent;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.mmadsen.sim.tf.interfaces.ITraitDimension;
+import org.mmadsen.sim.tf.interfaces.IAgent;
+import org.mmadsen.sim.tf.interfaces.ISimulationModel;
 
 /**
- * Created by IntelliJ IDEA.
+ * CLASS DESCRIPTION
+ * <p/>
  * User: mark
- * Date: Jul 4, 2010
- * Time: 3:25:05 PM
- * To change this template use File | Settings | File Templates.
+ * Date: Jul 14, 2010
+ * Time: 9:12:38 AM
  */
-public class BasicSimulationModel extends AbstractSimModel {
 
-    public void run() {
-        log.info("Starting simulation model: " + this.getClass().getSimpleName());
-        ITraitDimension dim = dimensionProvider.get();
-        log.info("Dimension object: " + dim);
+public class SimpleAgentProvider implements Provider<IAgent> {
+    @Inject private ISimulationModel model;
+
+    public IAgent get() {
+        IAgent agent = new SimpleAgent();
+        agent.setSimulationModel(model);
+        return agent;
     }
-
 }

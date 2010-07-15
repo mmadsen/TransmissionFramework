@@ -15,7 +15,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ISimulationModel.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ISimulationModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITrait.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITrait.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/BasicSimulationModel.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/BasicSimulationModel.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/structure/SimpleAgentTag.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/structure/SimpleAgentTagProvider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimension.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimension.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/AbstractSimModel.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/AbstractSimModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AgentFixture.java" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AgentFixture.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgent.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitProvider.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimpleAgentTagTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/config/BasicModelModule.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/config/BasicModelModule.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimensionProvider.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/PopulationDynamicsManagementTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitDimensionTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitDimensionTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimulationModelFixture.java" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimulationModelFixture.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/Madsen_Research_GPL_CC.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitAdoptionTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitAdoptionTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITraitDimension.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITraitDimension.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTrait.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTrait.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AgentFixtureProvider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgentProvider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/exceptions/UnimplementedMethodException.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/exceptions/UnimplementedMethodException.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgent.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgent.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgentTag.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/log4j.config" afterPath="$PROJECT_DIR$/src/main/resources/log4j.config" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/app/SimRunner.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/app/SimRunner.java" />
     </list>
     <ignored path="$USER_HOME_GRIFFON$/" />
     <ignored path="$USER_HOME_GRAILS$/" />
@@ -75,43 +104,31 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="UnstructuredTraitDimension.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimension.java">
+      <file leaf-file-name="PopulationDynamicsManagementTest.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/PopulationDynamicsManagementTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="49" column="49" selection-start="1293" selection-end="1293" vertical-scroll-proportion="1.1559633">
+            <state line="102" column="68" selection-start="3664" selection-end="3664" vertical-scroll-proportion="0.61185986">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="log4j.config" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/log4j.config">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="5" column="46" selection-start="216" selection-end="218" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ITraitDimension.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITraitDimension.java">
+      <file leaf-file-name="AbstractSimModel.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/AbstractSimModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="6" selection-start="620" selection-end="620" vertical-scroll-proportion="0.0">
+            <state line="32" column="22" selection-start="1120" selection-end="1120" vertical-scroll-proportion="0.0">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UnstructuredTraitDimensionTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitDimensionTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="116" column="7" selection-start="3412" selection-end="3610" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#tearDown#0;class#UnstructuredTraitDimensionTest#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UnstructuredTrait.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTrait.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="107" column="30" selection-start="3138" selection-end="3138" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -126,22 +143,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AdoptTraitTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/TraitAdoptionTest.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/log4j.config" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/BasicModel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ISimulationModel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/BasicSimulationModel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/config/BasicModelModule.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/AbstractSimModel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/app/SimRunner.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTrait.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimulationModelFixture.java" />
         <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitAdoptionTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AgentFixture.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitDimensionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimpleAgentTagTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgent.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgent.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgentTag.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITrait.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITraitDimension.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimension.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgentProvider.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/structure/SimpleAgentTagProvider.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimensionProvider.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitProvider.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTrait.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AgentFixtureProvider.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitDimensionTest.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/log4j.config" />
+        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/PopulationDynamicsManagementTest.java" />
       </list>
     </option>
   </component>
@@ -159,20 +176,6 @@
   </component>
   <component name="MavenProjectNavigator">
     <treeState>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="TransmissionFramework" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Dependencies" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependenciesNode" />
-        </PATH_ELEMENT>
-      </PATH>
       <PATH>
         <PATH_ELEMENT>
           <option name="myItemId" value="" />
@@ -239,8 +242,8 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Favorites" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -320,6 +323,10 @@
               <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -348,6 +355,36 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="traits" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="structure" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -467,6 +504,84 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="agent" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane">
@@ -508,7 +623,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="options.lastSelected" value="MavenSettings" />
+    <property name="options.lastSelected" value="fileTemplates" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
@@ -755,13 +870,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="7" y="22" width="1440" height="829" extended-state="0" />
+    <frame x="0" y="22" width="1440" height="829" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32786885" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329235" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Tasks" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295129" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Tasks" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329235" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3294025" sideWeight="0.660485" order="4" side_tool="false" content_ui="tabs" />
@@ -770,14 +885,14 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329235" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26959023" sideWeight="0.33333334" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13012221" sideWeight="0.66256833" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16462976" sideWeight="0.5669399" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26959023" sideWeight="0.66256833" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3251366" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="0" y="22" width="1440" height="829" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27246585" sideWeight="0.5669399" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.42349726" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="0" y="22" width="1440" height="829" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952926" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329235" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="AWS Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3294025" sideWeight="0.660485" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -857,97 +972,94 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources-to-install/README">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITrait.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="0" selection-end="340" vertical-scroll-proportion="0.30612245" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="38" selection-start="297" selection-end="297" vertical-scroll-proportion="0.3949367" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="23" selection-start="1344" selection-end="1344" vertical-scroll-proportion="1.0571429">
+        <state line="23" column="4" selection-start="708" selection-end="708" vertical-scroll-proportion="0.2616279">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/log4j.config">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITraitDimension.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="44" selection-start="215" selection-end="215" vertical-scroll-proportion="0.13100436">
+        <state line="24" column="4" selection-start="745" selection-end="745" vertical-scroll-proportion="0.25604552">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/config/BasicModelModule.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="82" selection-start="488" selection-end="488" vertical-scroll-proportion="0.36681223">
+        <state line="27" column="0" selection-start="964" selection-end="1023" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="26" selection-start="1048" selection-end="1048" vertical-scroll-proportion="0.47437775">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/BasicSimulationModel.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimensionProvider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="0" selection-start="257" selection-end="257" vertical-scroll-proportion="0.31441048">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/app/SimRunner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="21" selection-start="820" selection-end="822" vertical-scroll-proportion="0.75982535">
+        <state line="31" column="19" selection-start="1034" selection-end="1034" vertical-scroll-proportion="0.4216691">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ISimulationModel.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/structure/SimpleAgentTagProvider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="70" selection-start="402" selection-end="402" vertical-scroll-proportion="0.48803827">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/AbstractSimModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="19" selection-start="1040" selection-end="1040" vertical-scroll-proportion="0.8794326">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AgentFixture.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="37" selection-start="582" selection-end="582" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimulationModelFixture.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="42" selection-start="1476" selection-end="1476" vertical-scroll-proportion="0.0">
+        <state line="37" column="0" selection-start="1126" selection-end="1126" vertical-scroll-proportion="0.51209104">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitAdoptionTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgentProvider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="5" selection-start="2367" selection-end="2620" vertical-scroll-proportion="2.043379">
+        <state line="25" column="0" selection-start="793" selection-end="836" vertical-scroll-proportion="0.3072546">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimension.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="13" selection-start="928" selection-end="928" vertical-scroll-proportion="-0.25604552">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTrait.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="107" column="30" selection-start="3138" selection-end="3138" vertical-scroll-proportion="0.0">
+        <state line="46" column="52" selection-start="1424" selection-end="1424" vertical-scroll-proportion="0.5232558">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AgentFixtureProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="55" selection-start="638" selection-end="638" vertical-scroll-proportion="0.10241821">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimpleAgentTagTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="13" selection-start="1127" selection-end="1127" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitAdoptionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="13" selection-start="1325" selection-end="1325" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -956,25 +1068,33 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitDimensionTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="116" column="7" selection-start="3412" selection-end="3610" vertical-scroll-proportion="0.0">
+        <state line="80" column="93" selection-start="2801" selection-end="2801" vertical-scroll-proportion="0.44665718">
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#tearDown#0;class#UnstructuredTraitDimensionTest#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITraitDimension.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/AbstractSimModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="6" selection-start="620" selection-end="620" vertical-scroll-proportion="0.0">
+        <state line="32" column="22" selection-start="1120" selection-end="1120" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimension.java">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/log4j.config">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="49" selection-start="1293" selection-end="1293" vertical-scroll-proportion="1.1559633">
+        <state line="5" column="46" selection-start="216" selection-end="218" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/PopulationDynamicsManagementTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="102" column="68" selection-start="3664" selection-end="3664" vertical-scroll-proportion="0.61185986">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1000,6 +1120,7 @@
           <splitter-proportions>
             <SplitterProportionsDataImpl />
           </splitter-proportions>
+          <last-edited>Madsen Research GPL-CC</last-edited>
         </UIState>
       </state>
       <state key="ProjectJDKs.UI">
