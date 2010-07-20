@@ -12,6 +12,7 @@ package org.mmadsen.sim.tf.traits;
 import com.google.inject.Inject;
 import com.google.inject.internal.Preconditions;
 import org.apache.log4j.Logger;
+import org.mmadsen.sim.tf.interfaces.IAgentTag;
 import org.mmadsen.sim.tf.interfaces.ISimulationModel;
 import org.mmadsen.sim.tf.interfaces.ITrait;
 import org.mmadsen.sim.tf.interfaces.ITraitDimension;
@@ -66,30 +67,39 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         return this.traitMap.values();
     }
 
-    public Map<String, Integer> getCurGlobalTraitCounts() {
-        Map<String,Integer> countMap = new HashMap<String,Integer>();
+    public Map<ITrait, Integer> getCurGlobalTraitCounts() {
+        Map<ITrait,Integer> countMap = new HashMap<ITrait,Integer>();
 
         for(ITrait trait: this.traitMap.values()) {
-            countMap.put(trait.getTraitID(), trait.getCurrentAdoptionCount());
+            countMap.put(trait, trait.getCurrentAdoptionCount());
         }
         return countMap;
     }
 
-    public Map<String, Double> getCurGlobalTraitFrequencies() {
+    public Map<ITrait, Double> getCurGlobalTraitFrequencies() {
         Preconditions.checkNotNull(model);
         log.info("getting current trait frequency map");
-        Map<String,Double> freqMap = new HashMap<String,Double>();
+        Map<ITrait,Double> freqMap = new HashMap<ITrait,Double>();
         Integer total = 0;
 
         Integer popsize = this.model.getCurrentPopulationSize();
         for(ITrait trait: this.traitMap.values()) {
             double freq = (double) trait.getCurrentAdoptionCount() / (double) popsize;
-            freqMap.put(trait.getTraitID(), freq);
+            freqMap.put(trait, freq);
         }
         return freqMap;  
     }
 
-//    public void removeTrait(ITrait traitToRemove) {
-//        this.traitMap.remove(traitToRemove);
-//    }
+    public Map<ITrait, Integer> getCurTraitCountByTag(IAgentTag tag) {
+        return null;
+    }
+
+    public Map<ITrait, Double> getCurTraitFreqByTag(IAgentTag tag) {
+        return null;
+    }
+
+
+    public void removeTrait(ITrait traitToRemove) {
+        this.traitMap.remove(traitToRemove);
+    }
 }

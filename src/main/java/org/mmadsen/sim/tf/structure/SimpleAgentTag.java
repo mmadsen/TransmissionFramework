@@ -28,7 +28,7 @@ public class SimpleAgentTag implements IAgentTag {
     private Logger log;
 
     public SimpleAgentTag() {
-        this.initAdoptionData();
+        this.initialize();
     }
 
     @Inject
@@ -37,8 +37,8 @@ public class SimpleAgentTag implements IAgentTag {
         log = this.model.getModelLogger(this.getClass());
     }
 
-    private void initAdoptionData() {
-        this.curAgentCount = new Integer(0);
+    private void initialize() {
+        this.curAgentCount = 0;
         this.agentList = Collections.synchronizedList(new ArrayList<IAgent>());
         this.histAgentCountMap = Collections.synchronizedMap(new HashMap<Integer,Integer>());
     }
@@ -59,7 +59,10 @@ public class SimpleAgentTag implements IAgentTag {
         this.incrementAdoptionCount();
         log.trace("Agent registering:" + agent.getAgentID());
         synchronized(this.agentList) {
-            this.agentList.add(agent);
+            if(this.agentList.contains(agent) == false) {
+                this.agentList.add(agent);
+                agent.addTag(this);
+            }
         }
     }
 
@@ -69,6 +72,7 @@ public class SimpleAgentTag implements IAgentTag {
         log.trace("Agent unregistering: " + agent.getAgentID());
         synchronized(this.agentList) {
             this.agentList.remove(agent);
+            agent.removeTag(this);
         }
     }
 

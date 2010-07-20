@@ -9,6 +9,9 @@
 
 package org.mmadsen.sim.tf.interfaces;
 
+
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: mark
@@ -24,15 +27,52 @@ public interface IAgent {
 
     public void setAgentID(String id);
 
-    public void adoptTrait(ITrait trait);
+    /* Trait Handling methods */
 
-    public void adoptTrait(ITraitDimension dimension, ITrait trait);
-
-    /**
+   /**
      * Adds a trait dimension to an agent
+     *
+     *
+     *
      * @param dimension
      */
 
     public void addTraitDimension(ITraitDimension dimension);
+
+
+    /* Trait adoption methods */
+
+    public void adoptTrait(ITrait trait);
+
+    public void adoptTrait(ITraitDimension dimension, ITrait trait);
+
+    public void unadoptTrait(ITrait trait);
+
+    public void unadoptTrait(ITraitDimension dimension, ITrait trait);
+
+
+    /* Tag handling methods */
+
+    public void addTag(IAgentTag tag);
+
+    public void removeTag(IAgentTag tag);
+
+    public List<IAgentTag> getAgentTags();
+
+
+    /* Structure and Rule related methods */
+
+    /**
+     * Use this to get the list of current ITraits an agent has adopted.
+     * Since ITraits count their own frequency, in toto and by tag, this
+     * can be useful for certain kinds of frequency-dependent adoption.
+     * @return traitList
+     */
+
+    public List<ITrait> getCurrentlyAdoptedTraits();
+
+    public List<IAgent> getNeighboringAgents();
+
+
 
 }

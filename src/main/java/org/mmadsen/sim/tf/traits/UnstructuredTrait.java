@@ -11,10 +11,7 @@ package org.mmadsen.sim.tf.traits;
 
 import com.google.inject.Inject;
 import org.apache.log4j.Logger;
-import org.mmadsen.sim.tf.interfaces.IAgent;
-import org.mmadsen.sim.tf.interfaces.ISimulationModel;
-import org.mmadsen.sim.tf.interfaces.ITrait;
-import org.mmadsen.sim.tf.interfaces.ITraitDimension;
+import org.mmadsen.sim.tf.interfaces.*;
 import com.google.common.base.Preconditions;
 
 
@@ -40,6 +37,7 @@ public class UnstructuredTrait implements ITrait {
     private Logger log;
     private ITraitDimension owningDimension = null;
     private ISimulationModel model;
+    private Map<IAgentTag,Integer> curAdoptionByTag;
 
     @Inject
     public void setSimulationModel(ISimulationModel m) {
@@ -65,6 +63,7 @@ public class UnstructuredTrait implements ITrait {
         this.curAdoptionCount = new Integer(0);
         this.curAdopteeList = Collections.synchronizedList(new ArrayList<IAgent>());
         this.histAdoptionCountMap = Collections.synchronizedMap(new HashMap<Integer,Integer>());
+        this.curAdoptionByTag = Collections.synchronizedMap(new HashMap<IAgentTag,Integer>());
     }
 
     public String getTraitID() {
@@ -79,28 +78,77 @@ public class UnstructuredTrait implements ITrait {
         return this.curAdoptionCount;
     }
 
+    public Map<IAgentTag, Integer> getCurrentAdoptionCountsByTag() {
+        return new HashMap<IAgentTag,Integer>(this.curAdoptionByTag);
+    }
+
+    public Integer getCurrentAdoptionCountForTag(IAgentTag tag) {
+        return this.curAdoptionByTag.get(tag);
+    }
+
     public Map<Integer,Integer> getAdoptionCountHistory() {
         return new HashMap<Integer,Integer>(this.histAdoptionCountMap);
     }
 
     public void adopt(IAgent agentAdopting) {
         Preconditions.checkNotNull(agentAdopting);
-        Preconditions.checkNotNull(model);
-        this.incrementAdoptionCount();
+
+        // add the agent to the list for this trait
+        // then register this trait with the agent adopting
+        // then update this trait's counts per tag from the adopting agent
         log.trace("Agent " + agentAdopting.getAgentID() + " adopting trait " + this.getTraitID() + " count: " + this.curAdoptionCount);
         synchronized(this.curAdopteeList) {
             this.curAdopteeList.add(agentAdopting);
+            agentAdopting.adoptTrait(this);
+            this.incrementAdoptionCount();
+        }
+        synchronized(this.curAdoptionByTag) {
+            List<IAgentTag> tags = agentAdopting.getAgentTags();
+            for(IAgentTag tag: tags) {
+                if(this.curAdoptionByTag.containsKey(tag)) {
+                    Integer count = this.curAdoptionByTag.get(tag);
+                    count++;
+                    this.curAdoptionByTag.put(tag,count);
+                }
+                else {
+                    this.curAdoptionByTag.put(tag,1);
+                }
+            }
         }
     }
 
     public void unadopt(IAgent agentUnadopting) {
         Preconditions.checkNotNull(agentUnadopting);
         Preconditions.checkNotNull(model);
-        this.decrementAdoptionCount();
+
+        // remove the agent from the list for this trait
+        // then unregister this trait with the agent adopting
+        // then update this trait's counts per tag from the unadopting agent
+        // if a tag count gets to zero, we remove the tag from the list
         log.trace("Agent " + agentUnadopting.getAgentID() + " unadopting trait " + this.getTraitID() + " count: " + this.curAdoptionCount);
         synchronized(this.curAdopteeList) {
             this.curAdopteeList.remove(agentUnadopting);
+            agentUnadopting.unadoptTrait(this);
+            this.decrementAdoptionCount();
         }
+        synchronized(this.curAdoptionByTag) {
+            List<IAgentTag> tags = agentUnadopting.getAgentTags();
+            for(IAgentTag tag: tags) {
+                if(this.curAdoptionByTag.containsKey(tag)) {
+                    Integer count = this.curAdoptionByTag.get(tag);
+                    count--;
+                    if(count == 0) {
+                        this.curAdoptionByTag.remove(tag);
+                    } else {
+                        this.curAdoptionByTag.put(tag,count);
+                    }
+                }
+                else {
+                    log.error("unadopting trait " + this.getTraitID() + " by agent " + agentUnadopting.getAgentID() + " with unknown tag - BUG");
+                }
+            }
+        }
+
     }
 
     public List<IAgent> getCurrentAdopterList() {

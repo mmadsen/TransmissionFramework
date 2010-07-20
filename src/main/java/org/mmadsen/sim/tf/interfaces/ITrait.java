@@ -9,6 +9,7 @@
 
 package org.mmadsen.sim.tf.interfaces;
 
+
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,17 @@ public interface ITrait {
 
     public Integer getCurrentAdoptionCount();
 
+    /**
+     * Since adoption is counted globally and per IAgentTag, this method returns the
+     * current adoption count for each IAgentTag belonging to an agent who currently holds
+     * the trait.
+     * @return tagCountMap  A map of counts, with IAgentTag keys
+     */
+
+    public Map<IAgentTag,Integer> getCurrentAdoptionCountsByTag();
+
+
+    public Integer getCurrentAdoptionCountForTag(IAgentTag tag);
 
     /**
      * Returns a List of adoption counts for the lifetime of the simulation run thus far.
@@ -50,25 +62,26 @@ public interface ITrait {
      * Registers an {@link IAgent} object as adopting this ITrait and any child traits.  Increments the trait's adoption count,
      * in a thread-safe way, along with the adoption count of any child traits.
      *
-     * @param agentAdopting  an IAgent object, representing the agent adopting this trait
+     * @param agent  an IAgent object, representing the agent adopting this trait
      *
      */
-    public void adopt(IAgent agentAdopting);
+    public void adopt(IAgent agent);
 
     /**
      * Unregisters an {@link IAgent} object from this trait and its child traits.  Decrements the trait's adoption count,
      * in a thread-safe way, along with the adoption count of any child traits.
      *
-     * @param agentUnadopting  an IAgent object, representing the agent unregistering this trait
+     * @param agent  an IAgent object, representing the agent unregistering this trait
      *
      */
 
-    public void unadopt(IAgent agentUnadopting);
+    public void unadopt(IAgent agent);
 
     /**
      *
      * @return agentList A List of IAgent objects representing agents that current have adopted this trait.
      */
+
 
     public List<IAgent> getCurrentAdopterList();
 

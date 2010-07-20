@@ -24,8 +24,7 @@ public class BasicSimulationModel extends AbstractSimModel {
 
     public void run() {
         log.info("Starting simulation model: " + this.getClass().getSimpleName());
-        ITraitDimension dim = dimensionProvider.get();
-        log.info("Dimension object: " + dim);
+        
     }
 
 }

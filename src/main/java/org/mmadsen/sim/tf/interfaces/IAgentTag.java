@@ -9,6 +9,7 @@
 
 package org.mmadsen.sim.tf.interfaces;
 
+
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +28,14 @@ public interface IAgentTag {
 
     public void setTagName(String tagname);
 
+
     public List<IAgent> getCurAgentsTagged();
 
     public void registerAgent(IAgent agent);
 
     public void unregisterAgent(IAgent agent);
 
+    
     public Integer curAgentCount();
 
     public Map<Integer,Integer> getAgentCountHistory();

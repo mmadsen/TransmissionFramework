@@ -13,11 +13,9 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
 import org.mmadsen.sim.tf.agent.SimpleAgentProvider;
-import org.mmadsen.sim.tf.interfaces.IAgent;
-import org.mmadsen.sim.tf.interfaces.ISimulationModel;
-import org.mmadsen.sim.tf.interfaces.ITrait;
-import org.mmadsen.sim.tf.interfaces.ITraitDimension;
+import org.mmadsen.sim.tf.interfaces.*;
 import org.mmadsen.sim.tf.models.BasicSimulationModel;
+import org.mmadsen.sim.tf.structure.SimpleAgentTagProvider;
 import org.mmadsen.sim.tf.traits.UnstructuredTrait;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitDimensionProvider;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitProvider;
@@ -40,5 +38,7 @@ public class BasicModelModule implements Module {
                 .toProvider(UnstructuredTraitDimensionProvider.class);
         binder.bind(ITrait.class)
                 .toProvider(UnstructuredTraitProvider.class);
+        binder.bind(IAgentTag.class)
+                .toProvider(SimpleAgentTagProvider.class);
     }
 }

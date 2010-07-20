@@ -43,6 +43,7 @@ public interface ISimulationModel extends Runnable {
      *
      * @return popSize The number of individual agents in the simulated population at the current time
      */
+
     public Integer getCurrentPopulationSize();
 
     public IAgent createAgent();

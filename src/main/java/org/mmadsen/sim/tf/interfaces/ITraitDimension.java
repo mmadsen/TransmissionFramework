@@ -32,9 +32,13 @@ public interface ITraitDimension {
 
     public Collection<ITrait> getTraitsInDimension();
 
-    public Map<String,Integer> getCurGlobalTraitCounts();
+    public Map<ITrait,Integer> getCurGlobalTraitCounts();
 
-    public Map<String,Double> getCurGlobalTraitFrequencies();
+    public Map<ITrait,Double> getCurGlobalTraitFrequencies();
 
-    //public void removeTrait(ITrait traitToRemove);
+    public Map<ITrait,Integer> getCurTraitCountByTag(IAgentTag tag);
+
+    public Map<ITrait,Double> getCurTraitFreqByTag(IAgentTag tag);
+
+    public void removeTrait(ITrait traitToRemove);
 }

@@ -15,36 +15,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ISimulationModel.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ISimulationModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITrait.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITrait.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/BasicSimulationModel.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/BasicSimulationModel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/structure/SimpleAgentTag.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/structure/SimpleAgentTagProvider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimension.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimension.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/AbstractSimModel.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/AbstractSimModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AgentFixture.java" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AgentFixture.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgent.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitProvider.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimpleAgentTagTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/config/BasicModelModule.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/config/BasicModelModule.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimensionProvider.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/PopulationDynamicsManagementTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitDimensionTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitDimensionTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimulationModelFixture.java" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimulationModelFixture.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/BasicSimulationModel.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/BasicSimulationModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITrait.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITrait.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ISimulationModel.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ISimulationModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/PopulationDynamicsManagementTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/PopulationDynamicsManagementTest.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AgentFixtureProvider.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgent.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgent.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/Madsen_Research_GPL_CC.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitAdoptionTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitAdoptionTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/TagCountingTest.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AgentFixture.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimension.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimension.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/structure/SimpleAgentTag.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/structure/SimpleAgentTag.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITraitDimension.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITraitDimension.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTrait.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTrait.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AgentFixtureProvider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgentProvider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/exceptions/UnimplementedMethodException.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/exceptions/UnimplementedMethodException.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgentTag.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgentTag.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgent.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgent.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgentTag.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/log4j.config" afterPath="$PROJECT_DIR$/src/main/resources/log4j.config" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/app/SimRunner.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/app/SimRunner.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/config/BasicModelModule.java" afterPath="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/config/BasicModelModule.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TransmissionFramework.iml" afterPath="$PROJECT_DIR$/TransmissionFramework.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimpleAgentTagTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimpleAgentTagTest.java" />
     </list>
     <ignored path="$USER_HOME_GRIFFON$/" />
     <ignored path="$USER_HOME_GRAILS$/" />
@@ -104,31 +95,49 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PopulationDynamicsManagementTest.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/PopulationDynamicsManagementTest.java">
+      <file leaf-file-name="SimpleAgentTag.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/structure/SimpleAgentTag.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="102" column="68" selection-start="3664" selection-end="3664" vertical-scroll-proportion="0.61185986">
+            <state line="40" column="31" selection-start="1308" selection-end="1308" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IAgent.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgent.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="21" column="17" selection-start="673" selection-end="673" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ITraitDimension.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITraitDimension.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="44" column="0" selection-start="1294" selection-end="1294" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UnstructuredTraitDimension.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimension.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="79" column="70" selection-start="2363" selection-end="2363" vertical-scroll-proportion="0.49048316">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ITrait.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITrait.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="22" column="17" selection-start="695" selection-end="695" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="log4j.config" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/log4j.config">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="46" selection-start="216" selection-end="218" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AbstractSimModel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/AbstractSimModel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="22" selection-start="1120" selection-end="1120" vertical-scroll-proportion="0.0">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -143,22 +152,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitAdoptionTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimpleAgentTagTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgent.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgent.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgentTag.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITrait.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITraitDimension.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgentProvider.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/structure/SimpleAgentTagProvider.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimensionProvider.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitProvider.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTrait.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AgentFixtureProvider.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AgentFixture.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitAdoptionTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitDimensionTest.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/log4j.config" />
+        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimpleAgentTagTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/PopulationDynamicsManagementTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgent.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgentTag.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgent.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ISimulationModel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITrait.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/TagCountingTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/structure/SimpleAgentTag.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITraitDimension.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimension.java" />
       </list>
     </option>
   </component>
@@ -176,6 +185,20 @@
   </component>
   <component name="MavenProjectNavigator">
     <treeState>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="TransmissionFramework" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Dependencies" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependenciesNode" />
+        </PATH_ELEMENT>
+      </PATH>
       <PATH>
         <PATH_ELEMENT>
           <option name="myItemId" value="" />
@@ -623,7 +646,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="options.lastSelected" value="fileTemplates" />
+    <property name="options.lastSelected" value="project.propCompiler" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
@@ -869,6 +892,26 @@
     </task>
     <servers />
   </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="829" extended-state="0" />
     <editor active="false" />
@@ -883,13 +926,13 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329235" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Notes" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3294025" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329235" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26959023" sideWeight="0.33333334" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329235" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27246585" sideWeight="0.4986339" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16462976" sideWeight="0.5669399" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27246585" sideWeight="0.5669399" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.42349726" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="0" y="22" width="1440" height="829" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42349726" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="0" y="22" width="1440" height="829" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329235" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -911,7 +954,7 @@
     <option name="ENABLE_BACKGROUND_PROCESSES" value="false" />
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Guice integration with AtUnit working, finally understand what to do for DI, and how to circumvent it a bit in some of the unit tests.&#10;&#10;Unit tests for basic global frequency counting and trait adoption work.&#10;&#10;No infrastructure yet for auto-counting frequencies among a subset of the population, to do mesoscopic structure, but this is adequate for certain global frequency simulations like the Bentley et al. simulations.&#10;&#10;Definitely have not tested the synchronized() aspect of trait adoption/unadoption, and there's some warnings, so I expect I might not be doing things completely properly there." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fully converted to Guice providers, and all unit tests pass (except that I haven't written them to test historical statistics yet).  One simple test for multithreaded population dynamics passes, but would be good to engineer more complex tests with additions and subtractions in random order." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -929,6 +972,7 @@
     <MESSAGE value="Finally got Guice-AtUnit integration working, with tests passing, and with Guice injecting dependencies.  Can proceed to Guice-ify the main framework now...." />
     <MESSAGE value="Guice integration with AtUnit working, finally understand what to do for DI, and how to circumvent it a bit in some of the unit tests.&#10;&#10;Unit tests for basic global frequency counting and trait adoption work.&#10;&#10;No infrastructure yet for auto-counting frequencies among a subset of the population, to do mesoscopic structure, but this is adequate for certain global frequency simulations like the Bentley et al. simulations." />
     <MESSAGE value="Guice integration with AtUnit working, finally understand what to do for DI, and how to circumvent it a bit in some of the unit tests.&#10;&#10;Unit tests for basic global frequency counting and trait adoption work.&#10;&#10;No infrastructure yet for auto-counting frequencies among a subset of the population, to do mesoscopic structure, but this is adequate for certain global frequency simulations like the Bentley et al. simulations.&#10;&#10;Definitely have not tested the synchronized() aspect of trait adoption/unadoption, and there's some warnings, so I expect I might not be doing things completely properly there." />
+    <MESSAGE value="Fully converted to Guice providers, and all unit tests pass (except that I haven't written them to test historical statistics yet).  One simple test for multithreaded population dynamics passes, but would be good to engineer more complex tests with additions and subtractions in random order." />
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />
@@ -972,94 +1016,9 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITrait.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/BasicSimulationModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="4" selection-start="708" selection-end="708" vertical-scroll-proportion="0.2616279">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITraitDimension.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="4" selection-start="745" selection-end="745" vertical-scroll-proportion="0.25604552">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="0" selection-start="964" selection-end="1023" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="26" selection-start="1048" selection-end="1048" vertical-scroll-proportion="0.47437775">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimensionProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="19" selection-start="1034" selection-end="1034" vertical-scroll-proportion="0.4216691">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/structure/SimpleAgentTagProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="0" selection-start="1126" selection-end="1126" vertical-scroll-proportion="0.51209104">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgentProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="0" selection-start="793" selection-end="836" vertical-scroll-proportion="0.3072546">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimension.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="13" selection-start="928" selection-end="928" vertical-scroll-proportion="-0.25604552">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTrait.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="52" selection-start="1424" selection-end="1424" vertical-scroll-proportion="0.5232558">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/AgentFixtureProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="55" selection-start="638" selection-end="638" vertical-scroll-proportion="0.10241821">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimpleAgentTagTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="13" selection-start="1127" selection-end="1127" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitAdoptionTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="13" selection-start="1325" selection-end="1325" vertical-scroll-proportion="0.0">
+        <state line="26" column="8" selection-start="925" selection-end="925" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1068,33 +1027,120 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitDimensionTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="93" selection-start="2801" selection-end="2801" vertical-scroll-proportion="0.44665718">
+        <state line="159" column="64" selection-start="5888" selection-end="5888" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/models/AbstractSimModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="22" selection-start="1120" selection-end="1120" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/log4j.config">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="46" selection-start="216" selection-end="218" vertical-scroll-proportion="0.0">
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/PopulationDynamicsManagementTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="68" selection-start="3664" selection-end="3664" vertical-scroll-proportion="0.61185986">
+        <state line="133" column="63" selection-start="4404" selection-end="4404" vertical-scroll-proportion="2.3197675">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTrait.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="104" column="46" selection-start="3264" selection-end="3264" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/agent/SimpleAgent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="98" column="4" selection-start="2707" selection-end="2707" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgentTag.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="0" selection-start="471" selection-end="471" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ISimulationModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="31" selection-start="538" selection-end="538" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/UnstructuredTraitAdoptionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="13" selection-start="1325" selection-end="1325" vertical-scroll-proportion="0.29018492">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/SimpleAgentTagTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="103" column="0" selection-start="3227" selection-end="3616" vertical-scroll-proportion="0.7610242">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/org/mmadsen/sim/tf/test/TagCountingTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="127" column="85" selection-start="4296" selection-end="4296" vertical-scroll-proportion="0.96511626">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/structure/SimpleAgentTag.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="31" selection-start="1308" selection-end="1308" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/IAgent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="17" selection-start="673" selection-end="673" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITrait.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="17" selection-start="695" selection-end="695" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="12" selection-start="1886" selection-end="1886" vertical-scroll-proportion="0.872093">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/interfaces/ITraitDimension.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="0" selection-start="1294" selection-end="1294" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/mmadsen/sim/tf/traits/UnstructuredTraitDimension.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="79" column="70" selection-start="2363" selection-end="2363" vertical-scroll-proportion="0.49048316">
+          <folding />
         </state>
       </provider>
     </entry>

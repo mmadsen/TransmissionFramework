@@ -157,7 +157,7 @@ public class UnstructuredTraitDimensionTest implements Module {
     public void configure(Binder binder) {
         binder.bind(ITrait.class).toProvider(UnstructuredTraitProvider.class);
         binder.bind(ITraitDimension.class).toProvider(UnstructuredTraitDimensionProvider.class);
-        binder.bind(IAgent.class).toProvider(AgentFixtureProvider.class);
+        binder.bind(IAgent.class).toProvider(SimpleAgentProvider.class);
         binder.bind(ISimulationModel.class).to(SimulationModelFixture.class);
     }
 }
