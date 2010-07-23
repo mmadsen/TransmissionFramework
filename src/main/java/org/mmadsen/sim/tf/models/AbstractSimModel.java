@@ -74,8 +74,8 @@ public abstract class AbstractSimModel implements ISimulationModel
         synchronized(agentList) {
             agentList.add(newAgent);
             this.alterPopulationSize(1);
-            log.debug("New agent created and registered: " + newAgent);
-            log.debug("Population size now: " + this.getCurrentPopulationSize());
+            log.trace("New agent created and registered: " + newAgent);
+            log.trace("Population size now: " + this.getCurrentPopulationSize());
         }
 
         return newAgent;
@@ -85,8 +85,8 @@ public abstract class AbstractSimModel implements ISimulationModel
         synchronized(agentList) {
             agentList.remove(agent);
             this.alterPopulationSize(-1);
-            log.debug("Agent " + agent + " removed and unregistered");
-            log.debug("Population size now: " + this.getCurrentPopulationSize());
+            log.trace("Agent " + agent + " removed and unregistered");
+            log.trace("Population size now: " + this.getCurrentPopulationSize());
         }
 
         agent = null;

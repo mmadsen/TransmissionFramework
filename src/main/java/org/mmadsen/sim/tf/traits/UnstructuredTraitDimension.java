@@ -12,10 +12,7 @@ package org.mmadsen.sim.tf.traits;
 import com.google.inject.Inject;
 import com.google.inject.internal.Preconditions;
 import org.apache.log4j.Logger;
-import org.mmadsen.sim.tf.interfaces.IAgentTag;
-import org.mmadsen.sim.tf.interfaces.ISimulationModel;
-import org.mmadsen.sim.tf.interfaces.ITrait;
-import org.mmadsen.sim.tf.interfaces.ITraitDimension;
+import org.mmadsen.sim.tf.interfaces.*;
 
 import java.util.*;
 
@@ -91,11 +88,58 @@ public class UnstructuredTraitDimension implements ITraitDimension {
     }
 
     public Map<ITrait, Integer> getCurTraitCountByTag(IAgentTag tag) {
-        return null;
+        log.debug("Entering getCurTraitCountByTag");
+        Preconditions.checkNotNull(tag);
+        // We use a Set to gather a unique list of the traits held by all
+        // agents tagged with the tag specified.    
+        Set<ITrait> traitsAdopted = new HashSet<ITrait>();
+        List<IAgent> agentList = tag.getCurAgentsTagged();
+
+        //log.debug("agents tagged: " + agentList.size())
+
+
+        for(IAgent agent: agentList) {
+            Set<ITrait> myTraits = agent.getCurrentlyAdoptedTraits();
+
+            for(ITrait aTrait: myTraits) {
+                //log.debug("trait added to traitsAdopted: " + aTrait);
+                traitsAdopted.add(aTrait);
+            }
+        }
+
+        //log.debug("traitsAdopted size: " + traitsAdopted.size());
+
+        // Now we go through and ask each trait its adoption count for
+        // this tag
+        Map<ITrait,Integer> adoptionCountMap = new HashMap<ITrait,Integer>();
+        for(ITrait trait: traitsAdopted) {
+
+            Integer count = trait.getCurrentAdoptionCountForTag(tag);
+            log.debug("trait: " + trait + " count: " + count);
+            adoptionCountMap.put(trait,count);
+        }
+        
+
+        log.debug("Exiting getCurTraitCountByTag");
+        return adoptionCountMap;
     }
 
+
+
     public Map<ITrait, Double> getCurTraitFreqByTag(IAgentTag tag) {
-        return null;
+        Integer agentCountForTag = tag.curAgentCount();
+        Map<ITrait,Integer> adoptionCountMap = this.getCurTraitCountByTag(tag);
+        Map<ITrait,Double> adoptionFreqMap = new HashMap<ITrait,Double>();
+
+        for(ITrait trait: adoptionCountMap.keySet()) {
+            double freq = (double) adoptionCountMap.get(trait) / (double) agentCountForTag;
+
+            log.debug("count: " + adoptionCountMap.get(trait) + " total: " + agentCountForTag + " freq: " + freq);
+
+            adoptionFreqMap.put(trait,freq);
+        }
+
+        return adoptionFreqMap;
     }
 
 

@@ -13,9 +13,7 @@ import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 import org.mmadsen.sim.tf.interfaces.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,8 +26,8 @@ public class SimpleAgent implements IAgent {
     private String agentID;
     private ISimulationModel model;
     private Logger log;
-    private List<ITrait> traitsAdopted;
-    private List<IAgentTag> tagList;
+    private Set<ITrait> traitsAdopted;
+    private Set<IAgentTag> tagSet;
 
     public SimpleAgent() {
         super();
@@ -40,12 +38,11 @@ public class SimpleAgent implements IAgent {
     public void setSimulationModel(ISimulationModel m) {
         model = m;
         log = model.getModelLogger(this.getClass());
-        log.debug("setSimulationModel called and agent object initialized");
     }
 
     private void initialize() {
-        this.traitsAdopted = Collections.synchronizedList(new ArrayList<ITrait>());
-        this.tagList = Collections.synchronizedList(new ArrayList<IAgentTag>());
+        this.traitsAdopted = Collections.synchronizedSet(new HashSet<ITrait>());
+        this.tagSet = Collections.synchronizedSet(new HashSet<IAgentTag>());
     }
 
     public String getAgentID() {
@@ -78,15 +75,17 @@ public class SimpleAgent implements IAgent {
     }
 
     public void addTag(IAgentTag tag) {
-        synchronized(this.tagList) {
-            this.tagList.add(tag);
+
+        synchronized(this.tagSet) {
+            this.tagSet.add(tag);
         }
 
     }
 
     public void removeTag(IAgentTag tag) {
-        synchronized(this.tagList) {
-            this.tagList.remove(tag);
+
+        synchronized(this.tagSet) {
+            this.tagSet.remove(tag);
         }
     }
 
@@ -97,12 +96,12 @@ public class SimpleAgent implements IAgent {
      * @return
      */
     
-    public List<IAgentTag> getAgentTags() {
-        return new ArrayList<IAgentTag>(this.tagList);
+    public Set<IAgentTag> getAgentTags() {
+        return new HashSet<IAgentTag>(this.tagSet);
     }
 
-    public List<ITrait> getCurrentlyAdoptedTraits() {
-        return new ArrayList<ITrait>(this.traitsAdopted);
+    public Set<ITrait> getCurrentlyAdoptedTraits() {
+        return new HashSet<ITrait>(this.traitsAdopted);
     }
 
     public List<IAgent> getNeighboringAgents() {

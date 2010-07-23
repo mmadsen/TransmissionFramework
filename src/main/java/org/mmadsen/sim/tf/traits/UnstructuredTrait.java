@@ -103,14 +103,19 @@ public class UnstructuredTrait implements ITrait {
             this.incrementAdoptionCount();
         }
         synchronized(this.curAdoptionByTag) {
-            List<IAgentTag> tags = agentAdopting.getAgentTags();
+            Set<IAgentTag> tags = agentAdopting.getAgentTags();
+
             for(IAgentTag tag: tags) {
+
                 if(this.curAdoptionByTag.containsKey(tag)) {
                     Integer count = this.curAdoptionByTag.get(tag);
+                    
                     count++;
+                    log.debug("trait: " + this.hashCode() + " current count: " + count);
                     this.curAdoptionByTag.put(tag,count);
                 }
                 else {
+                    log.debug("trait: " + this.hashCode() + " initializing tag: " + tag.getTagName() + " with 1 count");
                     this.curAdoptionByTag.put(tag,1);
                 }
             }
@@ -132,7 +137,7 @@ public class UnstructuredTrait implements ITrait {
             this.decrementAdoptionCount();
         }
         synchronized(this.curAdoptionByTag) {
-            List<IAgentTag> tags = agentUnadopting.getAgentTags();
+            Set<IAgentTag> tags = agentUnadopting.getAgentTags();
             for(IAgentTag tag: tags) {
                 if(this.curAdoptionByTag.containsKey(tag)) {
                     Integer count = this.curAdoptionByTag.get(tag);

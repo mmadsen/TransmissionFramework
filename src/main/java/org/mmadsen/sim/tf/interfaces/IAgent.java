@@ -11,6 +11,7 @@ package org.mmadsen.sim.tf.interfaces;
 
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -57,7 +58,7 @@ public interface IAgent {
 
     public void removeTag(IAgentTag tag);
 
-    public List<IAgentTag> getAgentTags();
+    public Set<IAgentTag> getAgentTags();
 
 
     /* Structure and Rule related methods */
@@ -69,7 +70,7 @@ public interface IAgent {
      * @return traitList
      */
 
-    public List<ITrait> getCurrentlyAdoptedTraits();
+    public Set<ITrait> getCurrentlyAdoptedTraits();
 
     public List<IAgent> getNeighboringAgents();
 

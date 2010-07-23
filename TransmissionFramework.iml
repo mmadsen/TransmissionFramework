@@ -25,12 +25,6 @@
         <jarDirectory url="file://$MODULE_DIR$/src/main/resources" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="library" exported="" name="Maven: log4j:log4j:1.2.12" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.1" level="project" />
-    <orderEntry type="library" exported="" name="Maven: com.google.inject:guice:2.0" level="project" />
-    <orderEntry type="library" exported="" name="Maven: aopalliance:aopalliance:1.0" level="project" />
-    <orderEntry type="library" exported="" name="Maven: com.google.guava:guava:r05" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: com.google.code:atunit:1.0.1" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -40,6 +34,17 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="Maven: log4j:log4j:1.2.12" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: com.google.inject:guice:2.0" level="project" />
+    <orderEntry type="library" exported="" name="Maven: aopalliance:aopalliance:1.0" level="project" />
+    <orderEntry type="library" exported="" name="Maven: com.google.guava:guava:r05" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.google.code:atunit:1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: colt:colt:1.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Maven: concurrent:concurrent:1.3.4" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.contract4j5:contract4j5:0.8.0" level="project" />
+    <orderEntry type="library" exported="" name="Maven: com.thoughtworks.xstream:xstream:1.2.2" level="project" />
+    <orderEntry type="library" exported="" name="Maven: xpp3:xpp3_min:1.1.3.4.O" level="project" />
   </component>
 </module>
 
