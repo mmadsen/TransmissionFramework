@@ -9,24 +9,28 @@
 
 package org.mmadsen.sim.tf.test;
 
-import static org.junit.Assert.*;
 import atunit.AtUnit;
 import atunit.Container;
 import atunit.Unit;
-import com.google.inject.*;
+import com.google.inject.Binder;
+import com.google.inject.Inject;
+import com.google.inject.Module;
+import com.google.inject.Provider;
 import org.apache.log4j.Logger;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mmadsen.sim.tf.agent.SimpleAgentProvider;
+import org.mmadsen.sim.tf.agent.UnstructuredTraitAgentProvider;
 import org.mmadsen.sim.tf.interfaces.*;
 import org.mmadsen.sim.tf.structure.SimpleAgentTag;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitDimensionProvider;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitProvider;
 
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
@@ -103,7 +107,7 @@ public class SimpleAgentTagTest implements Module {
     public void configure(Binder binder) {
         binder.bind(ITrait.class).toProvider(UnstructuredTraitProvider.class);
         binder.bind(ITraitDimension.class).toProvider(UnstructuredTraitDimensionProvider.class);
-        binder.bind(IAgent.class).toProvider(SimpleAgentProvider.class);
+        binder.bind(IAgent.class).toProvider(UnstructuredTraitAgentProvider.class);
         binder.bind(ISimulationModel.class).to(SimulationModelFixture.class);
         binder.bind(IAgentTag.class).to(SimpleAgentTag.class);
     }

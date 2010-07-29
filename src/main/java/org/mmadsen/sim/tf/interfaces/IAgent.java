@@ -60,8 +60,13 @@ public interface IAgent {
 
     public Set<IAgentTag> getAgentTags();
 
+    /* Interaction and Rule related methods */
 
-    /* Structure and Rule related methods */
+    public void addInteractionRule(InteractionRule rule);
+
+    public void fireRules();
+
+    /* Structure related methods */
 
     /**
      * Use this to get the list of current ITraits an agent has adopted.
@@ -71,6 +76,8 @@ public interface IAgent {
      */
 
     public Set<ITrait> getCurrentlyAdoptedTraits();
+
+    public Set<ITrait> getCurrentlyAdoptedTraitsForDimension(ITraitDimension dim);
 
     public List<IAgent> getNeighboringAgents();
 

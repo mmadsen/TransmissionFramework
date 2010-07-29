@@ -26,6 +26,8 @@ public interface ITraitDimension {
 
     public String getDimensionName();
 
+    public void setDimensionName(String name);
+
     public void addTrait(ITrait newTrait);
 
     public ITrait getTrait(String traitID);

@@ -9,15 +9,9 @@
 
 package org.mmadsen.sim.tf.test;
 
-import com.google.inject.Singleton;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-import org.mmadsen.sim.tf.interfaces.ISimulationModel;
-import org.mmadsen.sim.tf.interfaces.ITraitDimension;
-import org.mmadsen.sim.tf.models.AbstractSimModel;
 import com.google.common.base.Preconditions;
+import com.google.inject.Singleton;
+import org.mmadsen.sim.tf.models.AbstractSimModel;
 
 /**
  * Created by IntelliJ IDEA.

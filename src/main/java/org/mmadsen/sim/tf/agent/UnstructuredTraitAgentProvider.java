@@ -22,11 +22,11 @@ import org.mmadsen.sim.tf.interfaces.ISimulationModel;
  * Time: 9:12:38 AM
  */
 
-public class SimpleAgentProvider implements Provider<IAgent> {
+public class UnstructuredTraitAgentProvider implements Provider<IAgent> {
     @Inject private ISimulationModel model;
 
     public IAgent get() {
-        IAgent agent = new SimpleAgent();
+        IAgent agent = new UnstructuredTraitAgent();
         agent.setSimulationModel(model);
         return agent;
     }

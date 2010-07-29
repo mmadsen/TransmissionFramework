@@ -11,11 +11,8 @@ package org.mmadsen.sim.tf.structure;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.mmadsen.sim.tf.agent.SimpleAgent;
-import org.mmadsen.sim.tf.interfaces.IAgent;
 import org.mmadsen.sim.tf.interfaces.IAgentTag;
 import org.mmadsen.sim.tf.interfaces.ISimulationModel;
-import sun.management.resources.agent;
 
 /**
  * CLASS DESCRIPTION

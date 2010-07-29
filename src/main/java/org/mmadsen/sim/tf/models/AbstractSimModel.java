@@ -13,7 +13,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.mmadsen.sim.tf.agent.SimpleAgent;
 import org.mmadsen.sim.tf.interfaces.IAgent;
 import org.mmadsen.sim.tf.interfaces.ISimulationModel;
 import org.mmadsen.sim.tf.interfaces.ITrait;

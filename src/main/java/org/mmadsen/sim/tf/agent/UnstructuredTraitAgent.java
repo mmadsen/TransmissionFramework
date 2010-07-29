@@ -16,20 +16,20 @@ import org.mmadsen.sim.tf.interfaces.*;
 import java.util.*;
 
 /**
- * Created by IntelliJ IDEA.
- * User: mark
- * Date: Jul 11, 2010
- * Time: 12:33:15 PM
- * To change this template use File | Settings | File Templates.
+ * UnstructuredTraitDimensions represent a set of alternative traits
+ * which are normally mutually exclusive
+ *
+ * @author Mark E. Madsen
+ * 
  */
-public class SimpleAgent implements IAgent {
+public class UnstructuredTraitAgent implements IAgent {
     private String agentID;
     private ISimulationModel model;
     private Logger log;
     private Set<ITrait> traitsAdopted;
     private Set<IAgentTag> tagSet;
 
-    public SimpleAgent() {
+    public UnstructuredTraitAgent() {
         super();
         initialize();
     }
@@ -100,8 +100,20 @@ public class SimpleAgent implements IAgent {
         return new HashSet<IAgentTag>(this.tagSet);
     }
 
+    public void addInteractionRule(InteractionRule rule) {
+
+    }
+
+    public void fireRules() {
+
+    }
+
     public Set<ITrait> getCurrentlyAdoptedTraits() {
         return new HashSet<ITrait>(this.traitsAdopted);
+    }
+
+    public Set<ITrait> getCurrentlyAdoptedTraitsForDimension(ITraitDimension dim) {
+        return null;
     }
 
     public List<IAgent> getNeighboringAgents() {
