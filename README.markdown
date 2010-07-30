@@ -1,0 +1,19 @@
+# Introduction #
+
+TransmissionFramework (TF) is a Java framework and library for constructing numerical simulation models of cultural transmission and social learning phenomena.  
+
+TF is the next generation of my TransmissionLab system, which had some design limitations which prevented the easy construction of models with individual-level heterogeneity in transmission rules.  TransmissionLab also relied upon RepastJ, an agent-based simulation framework.  TF does not, and is intended to be used in a variety of simulation contexts.  TF is also intended to be thread-safe, so it can be used to write concurrent simulations (although this is not a primary goal).
+
+# Major Design Goals #
+
+* Minimize the amount of "tracking" and "accounting" work a simulation author needs to do.  Make the "traits" (defined quite broadly) that agents adopt and which flow through the population self-counting under all circumstances.  
+
+* Allow simulation authors to easily set up multiple mesoscopic or macroscopic "observables" in their simulations, without having to understand the internals of the framework.  Simulation authors should simply be able to register one of their objects as an Observer for a given observable, and the framework should provide a steady stream of frequency or occurrence counts.  
+
+* Avoid pre-defining the notion of "mesoscopic" structure, and allow this to be defined as much as possible by simulation authors.  Clearly, spatial and network structure requires specific support in the framework code, and this is provided.  But in addition, the framework should support arbitrary structure through the use of "tagging," both for agents and for traits.  Tags serve as arbitrary partitions of the agent and trait universes, and are self-tracking as well (i.e., traits maintain both global and tag-based adoption counts).
+
+* The "rules" by which agent state (and potentially, structure) evolves during the course of a simulation must allow individual-based heterogeneity.  TransmissionLab, as with many simple CT and copying simulations, defined a single rule or rules for each simulation model.  TF must allow both a globally defined rule (say, implement a classic Wright-Fisher model), and the opposite extreme, where each agent has a slightly different rule (or parameterization of a rule).  
+
+* Rule heterogeneity should be easy to relate to population structure through the tagging system, in order to allow easy statistical analysis of observables aggregated by agents sharing the same rule.  An example would be a simulation where agents either use a conformist or an anti-conformist social learning rule, and are divided into multiple communities.  TF should make it easy to tag agents by rule, and by community, and get a steady stream of adoption counts per trait, per trait by rule tag, per trait by community tag, and per trait by rule and community tag.  
+
+
