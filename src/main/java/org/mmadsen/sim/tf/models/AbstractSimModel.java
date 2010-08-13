@@ -33,7 +33,6 @@ public abstract class AbstractSimModel implements ISimulationModel
 {
     protected Logger log;
     protected Integer currentTime = 0;
-    protected Integer populationSize = 0;
     private static List<IAgent> agentList;
     @Inject public
     Provider<IAgent> agentProvider;
@@ -42,11 +41,10 @@ public abstract class AbstractSimModel implements ISimulationModel
     @Inject public Provider<ITraitDimension> dimensionProvider;
 
     public AbstractSimModel() {
-        PropertyConfigurator.configure("/Users/mark/Documents/src/TransmissionFramework/src/main/resources/log4j.config");
         log = Logger.getLogger(this.getClass());
-        log.info("log4j configured and ready");
+        log.trace("log4j configured and ready");
         if(agentList == null) {
-            log.info("AgentList being initialized");
+            log.trace("AgentList being initialized");
             agentList = Collections.synchronizedList(new ArrayList<IAgent>());
         }
     }
@@ -60,7 +58,7 @@ public abstract class AbstractSimModel implements ISimulationModel
     }
 
     public Integer getCurrentPopulationSize() {
-        return populationSize;  //To change body of implemented methods use File | Settings | File Templates.
+        return agentList.size();  //To change body of implemented methods use File | Settings | File Templates.
     }
 
 
@@ -72,9 +70,8 @@ public abstract class AbstractSimModel implements ISimulationModel
         // simulation model
         synchronized(agentList) {
             agentList.add(newAgent);
-            this.alterPopulationSize(1);
             log.trace("New agent created and registered: " + newAgent);
-            log.trace("Population size now: " + this.getCurrentPopulationSize());
+            log.trace("Population size now: " + agentList.size());
         }
 
         return newAgent;
@@ -83,9 +80,8 @@ public abstract class AbstractSimModel implements ISimulationModel
     public void removeAgent(IAgent agent) {
         synchronized(agentList) {
             agentList.remove(agent);
-            this.alterPopulationSize(-1);
             log.trace("Agent " + agent + " removed and unregistered");
-            log.trace("Population size now: " + this.getCurrentPopulationSize());
+            log.trace("Population size now: " + agentList.size());
         }
 
         agent = null;
@@ -99,9 +95,8 @@ public abstract class AbstractSimModel implements ISimulationModel
         return dimensionProvider;
     }
 
-    protected synchronized void alterPopulationSize(Integer incr) {
-        populationSize += incr;
+
+    public void clearAgentPopulation() {
+        agentList.clear();
     }
-
-
 }

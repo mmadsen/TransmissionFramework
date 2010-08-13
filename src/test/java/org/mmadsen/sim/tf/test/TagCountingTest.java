@@ -17,12 +17,14 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.google.inject.Provider;
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mmadsen.sim.tf.agent.UnstructuredTraitAgentProvider;
 import org.mmadsen.sim.tf.interfaces.*;
 import org.mmadsen.sim.tf.structure.SimpleAgentTagProvider;
+import org.mmadsen.sim.tf.test.util.SimulationModelFixture;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitDimension;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitProvider;
 
@@ -55,6 +57,13 @@ public class TagCountingTest implements Module {
     @Before
     public void setUp() throws Exception {
         log = model.getModelLogger(this.getClass());
+        model.clearAgentPopulation();
+
+    }
+
+    @After
+    public void cleanUp() throws Exception {
+        model.clearAgentPopulation();
     }
 
 

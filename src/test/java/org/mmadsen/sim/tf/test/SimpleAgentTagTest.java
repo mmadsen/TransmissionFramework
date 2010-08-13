@@ -19,11 +19,13 @@ import com.google.inject.Provider;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mmadsen.sim.tf.agent.UnstructuredTraitAgentProvider;
 import org.mmadsen.sim.tf.interfaces.*;
 import org.mmadsen.sim.tf.structure.SimpleAgentTag;
+import org.mmadsen.sim.tf.test.util.SimulationModelFixture;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitDimensionProvider;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitProvider;
 
@@ -45,10 +47,13 @@ public class SimpleAgentTagTest implements Module {
     @Before
     public void setUp() throws Exception {
         log = model.getModelLogger(this.getClass());
+        model.clearAgentPopulation();
+
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void cleanUp() throws Exception {
+        model.clearAgentPopulation();
     }
 
     @Test
@@ -94,7 +99,7 @@ public class SimpleAgentTagTest implements Module {
         log.info("Exiting testUnregisterAgent");
     }
 
-
+    @Ignore
     @Test
     public void testGetAgentCountHistory() throws Exception {
         log.info("Entering testGetAgentCountHistory");

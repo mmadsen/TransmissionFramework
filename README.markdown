@@ -17,3 +17,5 @@ TF is the next generation of my TransmissionLab system, which had some design li
 * Rule heterogeneity should be easy to relate to population structure through the tagging system, in order to allow easy statistical analysis of observables aggregated by agents sharing the same rule.  An example would be a simulation where agents either use a conformist or an anti-conformist social learning rule, and are divided into multiple communities.  TF should make it easy to tag agents by rule, and by community, and get a steady stream of adoption counts per trait, per trait by rule tag, per trait by community tag, and per trait by rule and community tag.  
 
 
+
+

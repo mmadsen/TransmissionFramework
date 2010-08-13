@@ -50,6 +50,8 @@ public interface ISimulationModel extends Runnable {
 
     public void removeAgent(IAgent agent);
 
+    public void clearAgentPopulation();
+
     public Provider<ITrait> getTraitProvider();
 
     public Provider<ITraitDimension> getTraitDimensionProvider();

@@ -16,6 +16,7 @@ import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +25,7 @@ import org.mmadsen.sim.tf.interfaces.IAgent;
 import org.mmadsen.sim.tf.interfaces.ISimulationModel;
 import org.mmadsen.sim.tf.interfaces.ITrait;
 import org.mmadsen.sim.tf.interfaces.ITraitDimension;
+import org.mmadsen.sim.tf.test.util.SimulationModelFixture;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitDimensionProvider;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitProvider;
 
@@ -50,9 +52,15 @@ public class PopulationDynamicsManagementTest implements Module {
     Logger log;
 
     @Before
-    public void setUp(){
+    public void setUp() throws Exception {
         log = model.getModelLogger(this.getClass());
+        model.clearAgentPopulation();
 
+    }
+
+    @After
+    public void cleanUp() throws Exception {
+        model.clearAgentPopulation();
     }
 
     @Test

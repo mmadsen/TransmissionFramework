@@ -9,19 +9,22 @@
 
 package org.mmadsen.sim.tf.interfaces;
 
-import com.google.common.base.Predicate;
-import org.apache.commons.collections.Closure;
-
 /**
  * CLASS DESCRIPTION
  * <p/>
  * User: mark
- * Date: Jul 24, 2010
- * Time: 3:26:37 PM
+ * Date: Aug 8, 2010
+ * Time: 12:53:50 PM
  */
 
-public interface InteractionRule extends Closure {
+public interface IStatisticsSubject {
 
-    public void ruleBody(Object o);
+    public void attach(ITraitStatisticsObserver obs);
+
+    public void detach(ITraitStatisticsObserver obs);
+
+    public Integer getNumObservers();
+
+    public void notifyObservers();
 
 }

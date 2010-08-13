@@ -7,10 +7,11 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.mmadsen.sim.tf.test;
+package org.mmadsen.sim.tf.test.util;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Singleton;
+import org.junit.Ignore;
 import org.mmadsen.sim.tf.models.AbstractSimModel;
 
 /**
@@ -21,10 +22,8 @@ import org.mmadsen.sim.tf.models.AbstractSimModel;
  * To change this template use File | Settings | File Templates.
  */
 
-@Singleton
+@Ignore
 public class SimulationModelFixture extends AbstractSimModel {
-
-    private Integer currentTime = 0;
 
     public SimulationModelFixture() {
         super();
@@ -41,11 +40,6 @@ public class SimulationModelFixture extends AbstractSimModel {
         return currentTime;
     }
 
-
-
-    public void testSetCurrentPopulationSize(Integer popsize) {
-        this.populationSize = popsize;
-    }
 
     public void run() {
         log.info("Starting simulation model: " + this.getClass().getSimpleName());

@@ -17,12 +17,14 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.google.inject.Provider;
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mmadsen.sim.tf.agent.UnstructuredTraitAgentProvider;
 import org.mmadsen.sim.tf.interfaces.*;
 import org.mmadsen.sim.tf.structure.SimpleAgentTagProvider;
+import org.mmadsen.sim.tf.test.util.SimulationModelFixture;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitDimensionProvider;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitProvider;
 
@@ -59,7 +61,13 @@ public class UnstructuredTraitDimensionTest implements Module {
     @Before
     public void setUp() throws Exception {
         log = model.getModelLogger(this.getClass());
+        model.clearAgentPopulation();
 
+    }
+
+    @After
+    public void cleanUp() throws Exception {
+        model.clearAgentPopulation();
     }
 
     @Test
@@ -76,8 +84,7 @@ public class UnstructuredTraitDimensionTest implements Module {
         log.info("Exiting testAddTraitAndGetTraitsInDimension");
     }
 
-    // TODO:  In the next two tests, we can't look up traits by string, need to think about looking up traits this way....
-
+   
 
     @Test
     public void testGetCurrentTraitCountMap() throws Exception {
@@ -106,13 +113,18 @@ public class UnstructuredTraitDimensionTest implements Module {
         // do we have 5 tuples in the map?
         assertTrue(freqMap.size() == 5);
 
+        for(ITrait aTrait: freqMap.keySet()) {
+            log.info("trait: " + aTrait.getTraitID() + " freq: " + freqMap.get(aTrait));
+        }
+
         // check a couple of entries
         double target1 = (double) 15 / (double) 45;
         double target2 = (double) 9 / (double) 45;
-        assertTrue(freqMap.get(five) == target1);
         log.info("expected: " + target1 + " observed: " + freqMap.get(five));
-        assertTrue(freqMap.get(three) == target2);
+        assertTrue(freqMap.get(five) == target1);
         log.info("expected: " + target2 + " observed: " + freqMap.get(three));
+        assertTrue(freqMap.get(three) == target2);
+
 
         log.info("Exiting testGetCurrentTraitFreqMap");
     }
@@ -195,7 +207,7 @@ public class UnstructuredTraitDimensionTest implements Module {
                     expectedThreeRed = i * 2;
                 }
 
-                IAgent newAgent = agentProvider.get();
+                IAgent newAgent = this.model.createAgent();
                 redTag.registerAgent(newAgent);
                 newTrait.adopt(newAgent);
             }
@@ -206,7 +218,7 @@ public class UnstructuredTraitDimensionTest implements Module {
                     expectedFiveBlue = i;
                 }
 
-                IAgent newAgent = agentProvider.get();
+                IAgent newAgent = this.model.createAgent();
                 blueTag.registerAgent(newAgent);
                 newTrait.adopt(newAgent);
             }
@@ -215,13 +227,7 @@ public class UnstructuredTraitDimensionTest implements Module {
 
         }
 
-
-
-
-
-        // tell the model we currently have 45 agents in the population
-        // NOT a production use of the ISimulationModel interface!
-        ((SimulationModelFixture)model).testSetCurrentPopulationSize(45);
+        log.info("_createTestData: initialized " + this.model.getCurrentPopulationSize() + " agents");
 
         log.info("exiting _createTestData");
         return dimension;

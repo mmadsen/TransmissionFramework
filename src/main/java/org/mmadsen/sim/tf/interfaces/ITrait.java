@@ -20,7 +20,7 @@ import java.util.Map;
  * Time: 11:26:38 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface ITrait {
+public interface ITrait extends IStatisticsSubject  {
 
     public void setSimulationModel(ISimulationModel m);
 
