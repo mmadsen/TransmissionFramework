@@ -25,14 +25,14 @@ import java.util.*;
  * Time: 3:19:51 PM
  */
 
-// This is a fixture
+//@Ignore needed to prevent JUnit from trying to execute test helper classes
 
 @Ignore
-public class TestObserver implements ITraitStatisticsObserver<ITraitDimension> {
+public class TraitCountPrinterObserver implements ITraitStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
 
-    public TestObserver(ISimulationModel m) {
+    public TraitCountPrinterObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
     }

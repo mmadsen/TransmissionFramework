@@ -20,7 +20,7 @@ import org.mmadsen.sim.tf.interfaces.ITraitDimension;
  * Time: 3:25:05 PM
  * To change this template use File | Settings | File Templates.
  */
-public class BasicSimulationModel extends AbstractSimModel {
+public class TestingSimulationModel extends AbstractSimModel {
 
     public void run() {
         log.info("Starting simulation model: " + this.getClass().getSimpleName());
