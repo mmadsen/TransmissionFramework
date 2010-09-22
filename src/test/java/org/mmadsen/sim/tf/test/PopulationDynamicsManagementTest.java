@@ -15,16 +15,15 @@ import atunit.Unit;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import com.google.inject.Singleton;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mmadsen.sim.tf.agent.UnstructuredTraitAgentProvider;
-import org.mmadsen.sim.tf.interfaces.IAgent;
-import org.mmadsen.sim.tf.interfaces.ISimulationModel;
-import org.mmadsen.sim.tf.interfaces.ITrait;
-import org.mmadsen.sim.tf.interfaces.ITraitDimension;
+import org.mmadsen.sim.tf.interfaces.*;
+import org.mmadsen.sim.tf.population.SimpleAgentPopulationProvider;
 import org.mmadsen.sim.tf.test.util.SimulationModelFixture;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitDimensionProvider;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitProvider;
@@ -54,13 +53,12 @@ public class PopulationDynamicsManagementTest implements Module {
     @Before
     public void setUp() throws Exception {
         log = model.getModelLogger(this.getClass());
-        model.clearAgentPopulation();
-
+        model.initializePopulation();
     }
 
     @After
     public void cleanUp() throws Exception {
-        model.clearAgentPopulation();
+        model.getPopulation().clearAgentPopulation();
     }
 
     @Test
@@ -70,17 +68,17 @@ public class PopulationDynamicsManagementTest implements Module {
         List<IAgent> agentList = new ArrayList<IAgent>();
 
         for(Integer i = 0; i < desiredAgentCount; i++) {
-            IAgent newAgent = model.createAgent();
+            IAgent newAgent = model.getPopulation().createAgent();
             agentList.add(newAgent);
         }
-        log.info("expected population size: " + desiredAgentCount + " observed: " + model.getCurrentPopulationSize());
-        assertTrue(model.getCurrentPopulationSize() == desiredAgentCount);
+        log.info("expected population size: " + desiredAgentCount + " observed: " + model.getPopulation().getCurrentPopulationSize());
+        assertTrue(model.getPopulation().getCurrentPopulationSize() == desiredAgentCount);
 
         IAgent agentToDelete = agentList.get(0);
-        model.removeAgent(agentToDelete);
+        model.getPopulation().removeAgent(agentToDelete);
 
-        log.info("expected population size: " + (desiredAgentCount - 1) + " observed: " + model.getCurrentPopulationSize());
-        assertTrue(model.getCurrentPopulationSize() == (desiredAgentCount - 1));
+        log.info("expected population size: " + (desiredAgentCount - 1) + " observed: " + model.getPopulation().getCurrentPopulationSize());
+        assertTrue(model.getPopulation().getCurrentPopulationSize() == (desiredAgentCount - 1));
 
         log.info("Exiting testAgentCreationAndTracking");
     }
@@ -107,8 +105,8 @@ public class PopulationDynamicsManagementTest implements Module {
         }
 
         Integer expected = threadCount * agentsPerThread;
-        log.info("expected agents: " + expected + " observed: " + model.getCurrentPopulationSize());
-        assertTrue(model.getCurrentPopulationSize().equals(expected));
+        log.info("expected agents: " + expected + " observed: " + model.getPopulation().getCurrentPopulationSize());
+        assertTrue(model.getPopulation().getCurrentPopulationSize().equals(expected));
 
         log.info("Entering testMultithreadedAgentManagement");
     }
@@ -132,7 +130,7 @@ public class PopulationDynamicsManagementTest implements Module {
                 } catch(InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                IAgent agent = model.createAgent();
+                IAgent agent = model.getPopulation().createAgent();
                 agentsToCreate--;
             }
             return;
@@ -146,6 +144,7 @@ public class PopulationDynamicsManagementTest implements Module {
         binder.bind(ITrait.class).toProvider(UnstructuredTraitProvider.class);
         binder.bind(ITraitDimension.class).toProvider(UnstructuredTraitDimensionProvider.class);
         binder.bind(IAgent.class).toProvider(UnstructuredTraitAgentProvider.class);
-        binder.bind(ISimulationModel.class).to(SimulationModelFixture.class);
+        binder.bind(ISimulationModel.class).to(SimulationModelFixture.class).in(Singleton.class);
+        binder.bind(IPopulation.class).toProvider(SimpleAgentPopulationProvider.class);
     }
 }

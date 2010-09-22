@@ -79,7 +79,9 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         Map<ITrait,Double> freqMap = new HashMap<ITrait,Double>();
         Integer total = 0;
 
-        Integer popsize = this.model.getCurrentPopulationSize();
+        log.info("model: " + model + " population: " + model.getPopulation());
+
+        Integer popsize = this.model.getPopulation().getCurrentPopulationSize();
         for(ITrait trait: this.traitMap.values()) {
             double freq = (double) trait.getCurrentAdoptionCount() / (double) popsize;
             freqMap.put(trait, freq);

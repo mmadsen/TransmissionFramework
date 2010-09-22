@@ -12,20 +12,15 @@ package org.mmadsen.sim.tf.test;
 import atunit.AtUnit;
 import atunit.Container;
 import atunit.Unit;
-import com.google.inject.Binder;
-import com.google.inject.Inject;
-import com.google.inject.Module;
-import com.google.inject.Provider;
+import com.google.inject.*;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mmadsen.sim.tf.agent.UnstructuredTraitAgentProvider;
-import org.mmadsen.sim.tf.interfaces.IAgent;
-import org.mmadsen.sim.tf.interfaces.ISimulationModel;
-import org.mmadsen.sim.tf.interfaces.ITrait;
-import org.mmadsen.sim.tf.interfaces.ITraitDimension;
+import org.mmadsen.sim.tf.interfaces.*;
+import org.mmadsen.sim.tf.population.SimpleAgentPopulationProvider;
 import org.mmadsen.sim.tf.test.util.SimulationModelFixture;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitDimensionProvider;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitProvider;
@@ -53,19 +48,19 @@ public class UnstructuredTraitAdoptionTest implements Module  {
     @Before
     public void setUp() throws Exception {
         log = model.getModelLogger(this.getClass());
-        model.clearAgentPopulation();
+        model.initializePopulation();
 
     }
 
     @After
     public void cleanUp() throws Exception {
-        model.clearAgentPopulation();
+        model.initializePopulation();
     }
 
     @Test
     public void simpleAdoption() {
         log.info("Entering simpleAdoption test");
-        IAgent agent = agentProvider.get();
+        IAgent agent = model.getPopulation().createAgent();
         trait.setTraitID("TestTrait1");
         agent.setAgentID("TestAgent1");
         trait.adopt(agent);
@@ -78,14 +73,14 @@ public class UnstructuredTraitAdoptionTest implements Module  {
     @Test
     public void multipleAdoption() {
         log.info("Entering multipleAdoption test, adoption by 15 agents");
-        IAgent agent = agentProvider.get();
+        IAgent agent = model.getPopulation().createAgent();
         trait.adopt(agent);
         for(Integer i = 2; i < 15; i++) {
-            IAgent newAgent = agentProvider.get();
+            IAgent newAgent = model.getPopulation().createAgent();
             newAgent.setAgentID(i.toString());
             trait.adopt(newAgent);
         }
-        IAgent lastAgent = agentProvider.get();
+        IAgent lastAgent = model.getPopulation().createAgent();
         lastAgent.setAgentID("15");
         trait.adopt(lastAgent);
         log.info("expecting: 15 observed: " + trait.getCurrentAdoptionCount());
@@ -104,8 +99,8 @@ public class UnstructuredTraitAdoptionTest implements Module  {
         binder.bind(ITrait.class).toProvider(UnstructuredTraitProvider.class);
         binder.bind(ITraitDimension.class).toProvider(UnstructuredTraitDimensionProvider.class);
         binder.bind(IAgent.class).toProvider(UnstructuredTraitAgentProvider.class);
-        binder.bind(ISimulationModel.class).to(SimulationModelFixture.class);
-
+        binder.bind(ISimulationModel.class).to(SimulationModelFixture.class).in(Singleton.class);
+        binder.bind(IPopulation.class).toProvider(SimpleAgentPopulationProvider.class);
     }
 }
 

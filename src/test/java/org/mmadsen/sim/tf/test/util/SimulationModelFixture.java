@@ -22,6 +22,8 @@ import org.mmadsen.sim.tf.models.AbstractSimModel;
  * To change this template use File | Settings | File Templates.
  */
 
+//@Ignore needed to prevent JUnit from trying to execute test helper classes
+
 @Ignore
 public class SimulationModelFixture extends AbstractSimModel {
 

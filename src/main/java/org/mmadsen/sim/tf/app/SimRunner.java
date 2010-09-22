@@ -27,6 +27,8 @@ public class SimRunner {
         Injector injector = Guice.createInjector(new BasicModelModule());
         ISimulationModel model = injector.getInstance(ISimulationModel.class);
 
+        model.initializePopulation();
+
         /* This would be the place to parse command line parameters, etc */
 
 

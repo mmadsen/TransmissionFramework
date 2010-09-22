@@ -12,10 +12,7 @@ package org.mmadsen.sim.tf.test;
 import atunit.AtUnit;
 import atunit.Container;
 import atunit.Unit;
-import com.google.inject.Binder;
-import com.google.inject.Inject;
-import com.google.inject.Module;
-import com.google.inject.Provider;
+import com.google.inject.*;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -23,9 +20,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mmadsen.sim.tf.agent.UnstructuredTraitAgentProvider;
 import org.mmadsen.sim.tf.interfaces.*;
+import org.mmadsen.sim.tf.population.SimpleAgentPopulationProvider;
 import org.mmadsen.sim.tf.structure.SimpleAgentTagProvider;
 import org.mmadsen.sim.tf.test.util.SimulationModelFixture;
-import org.mmadsen.sim.tf.test.util.TestObserver;
+import org.mmadsen.sim.tf.test.util.TraitCountAccumulatorObserver;
+import org.mmadsen.sim.tf.test.util.TraitCountPrinterObserver;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitDimensionProvider;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitProvider;
 
@@ -59,13 +58,13 @@ public class TraitDimensionObserverTest implements Module {
     @Before
     public void setUp() throws Exception {
         log = model.getModelLogger(this.getClass());
-        model.clearAgentPopulation();
+        model.initializePopulation();
 
     }
 
     @After
     public void cleanUp() throws Exception {
-        model.clearAgentPopulation();
+        model.initializePopulation();
     }
 
 
@@ -74,7 +73,8 @@ public class TraitDimensionObserverTest implements Module {
     @Test
     public void testObserverBasedTraitCounting() throws Exception {
         log.info("entering testObserverBasedTraitCounting");
-        TestObserver obs = new TestObserver(model);
+        TraitCountPrinterObserver obs = new TraitCountPrinterObserver(model);
+        TraitCountAccumulatorObserver accum = new TraitCountAccumulatorObserver(model);
 
         ITraitDimension dimension = dimensionProvider.get();
         this.redTag = tagProvider.get();
@@ -92,11 +92,13 @@ public class TraitDimensionObserverTest implements Module {
             newTrait.setTraitID(i.toString());
             dimension.addTrait(newTrait);
             newTrait.attach(obs);
+            newTrait.attach(accum);
+            
             //log.info("creating trait " + i );
 
 
             for(Integer j = 0; j < (i*2); j++) {
-                IAgent newAgent = model.createAgent();
+                IAgent newAgent = model.getPopulation().createAgent();
                 StringBuffer sb = new StringBuffer();
                 sb.append("<"+i+"."+j+">");
                 newAgent.setAgentID(sb.toString());
@@ -108,8 +110,9 @@ public class TraitDimensionObserverTest implements Module {
 
         }
 
+        Integer adoptionEvents = accum.getAdoptionEventCount();
         
-        assertTrue(true);
+        assertTrue(adoptionEvents.equals(88));
 
     }
 
@@ -118,7 +121,8 @@ public class TraitDimensionObserverTest implements Module {
         binder.bind(ITrait.class).toProvider(UnstructuredTraitProvider.class);
         binder.bind(ITraitDimension.class).toProvider(UnstructuredTraitDimensionProvider.class);
         binder.bind(IAgent.class).toProvider(UnstructuredTraitAgentProvider.class);
-        binder.bind(ISimulationModel.class).to(SimulationModelFixture.class);
+        binder.bind(ISimulationModel.class).to(SimulationModelFixture.class).in(Singleton.class);
         binder.bind(IAgentTag.class).toProvider(SimpleAgentTagProvider.class);
+        binder.bind(IPopulation.class).toProvider(SimpleAgentPopulationProvider.class);
     }
 }

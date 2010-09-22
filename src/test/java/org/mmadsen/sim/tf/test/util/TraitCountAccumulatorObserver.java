@@ -17,7 +17,10 @@ import org.mmadsen.sim.tf.utils.TraitIDComparator;
 import java.util.*;
 
 /**
- * CLASS DESCRIPTION
+ * The only job of this observer is to receive notifications of trait
+ * adoption events, and count these adoption events, so this total can be
+ * queried later.
+ *
  * <p/>
  * User: mark
  * Date: Aug 8, 2010
@@ -30,31 +33,25 @@ import java.util.*;
 public class TraitCountAccumulatorObserver implements ITraitStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
+    private Integer adoptionEvents;
 
     public TraitCountAccumulatorObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
+        this.adoptionEvents = 0;
+
     }
 
-    
+    public Integer getAdoptionEventCount() {
+        return this.adoptionEvents;
+    }
 
     public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
+
         Integer timeIndex = stat.getTimeIndex();
-        ITraitDimension dim = stat.getTarget();
-        Map<ITrait,Integer> traitCountMap = dim.getCurGlobalTraitCounts();
-        
+        this.adoptionEvents++;
 
-        StringBuffer sb = new StringBuffer();
-        Set<ITrait> keys = traitCountMap.keySet();
-        List<ITrait> sortedKeys = new ArrayList<ITrait>(keys);
-        Collections.sort(sortedKeys, new TraitIDComparator());
-        for(ITrait aTrait: sortedKeys) {
-            sb.append("["+ aTrait.getTraitID() + "] ");
-            sb.append(traitCountMap.get(aTrait));
-            sb.append(" ");
-        }
-
-        log.info("Time: " + timeIndex + " Counts: " + sb.toString());
+        log.trace("Time: " + timeIndex + " Events: " + this.adoptionEvents);
 
     }
 }

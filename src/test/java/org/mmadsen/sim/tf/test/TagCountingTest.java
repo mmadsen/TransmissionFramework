@@ -12,10 +12,7 @@ package org.mmadsen.sim.tf.test;
 import atunit.AtUnit;
 import atunit.Container;
 import atunit.Unit;
-import com.google.inject.Binder;
-import com.google.inject.Inject;
-import com.google.inject.Module;
-import com.google.inject.Provider;
+import com.google.inject.*;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -23,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mmadsen.sim.tf.agent.UnstructuredTraitAgentProvider;
 import org.mmadsen.sim.tf.interfaces.*;
+import org.mmadsen.sim.tf.population.SimpleAgentPopulationProvider;
 import org.mmadsen.sim.tf.structure.SimpleAgentTagProvider;
 import org.mmadsen.sim.tf.test.util.SimulationModelFixture;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitDimension;
@@ -57,13 +55,13 @@ public class TagCountingTest implements Module {
     @Before
     public void setUp() throws Exception {
         log = model.getModelLogger(this.getClass());
-        model.clearAgentPopulation();
+        model.initializePopulation();
 
     }
 
     @After
     public void cleanUp() throws Exception {
-        model.clearAgentPopulation();
+        model.getPopulation().clearAgentPopulation();
     }
 
 
@@ -86,20 +84,20 @@ public class TagCountingTest implements Module {
         // and 40 green tags, out of 50 total agents.
 
         for(Integer i = 0; i < numBlue; i++) {
-            IAgent agent = agentProvider.get();
+            IAgent agent = model.getPopulation().createAgent();
             agent.addTag(blueTag);
             trait.adopt(agent);
             agentListBlueTag.add(agent);
         }
 
         for(Integer i = 0; i < numGreen; i++) {
-            IAgent agent = agentProvider.get();
+            IAgent agent = model.getPopulation().createAgent();
             agent.addTag(greenTag);
             trait.adopt(agent);
             agentListGreenTag.add(agent);
         }
 
-        IAgent agentBothForTest = agentProvider.get();
+        IAgent agentBothForTest = model.getPopulation().createAgent();
         agentBothForTest.addTag(greenTag);
         agentBothForTest.addTag(blueTag);
         trait.adopt(agentBothForTest);
@@ -107,7 +105,7 @@ public class TagCountingTest implements Module {
         agentListBlueTag.add(agentBothForTest);
 
         for(Integer i = 0; i < (numBoth - 1); i++) {
-            IAgent agent = agentProvider.get();
+            IAgent agent = model.getPopulation().createAgent();
             agent.addTag(greenTag);
             agent.addTag(blueTag);
             trait.adopt(agent);
@@ -156,8 +154,9 @@ public class TagCountingTest implements Module {
     public void configure(Binder binder) {
         binder.bind(ITrait.class).toProvider(UnstructuredTraitProvider.class);
         binder.bind(IAgent.class).toProvider(UnstructuredTraitAgentProvider.class);
-        binder.bind(ISimulationModel.class).to(SimulationModelFixture.class);
+        binder.bind(ISimulationModel.class).to(SimulationModelFixture.class).in(Singleton.class);
         binder.bind(IAgentTag.class).toProvider(SimpleAgentTagProvider.class);
         binder.bind(ITraitDimension.class).to(UnstructuredTraitDimension.class);
+        binder.bind(IPopulation.class).toProvider(SimpleAgentPopulationProvider.class);
     }
 }

@@ -12,10 +12,7 @@ package org.mmadsen.sim.tf.test;
 import atunit.AtUnit;
 import atunit.Container;
 import atunit.Unit;
-import com.google.inject.Binder;
-import com.google.inject.Inject;
-import com.google.inject.Module;
-import com.google.inject.Provider;
+import com.google.inject.*;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -23,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mmadsen.sim.tf.agent.UnstructuredTraitAgentProvider;
 import org.mmadsen.sim.tf.interfaces.*;
+import org.mmadsen.sim.tf.population.SimpleAgentPopulationProvider;
 import org.mmadsen.sim.tf.structure.SimpleAgentTagProvider;
 import org.mmadsen.sim.tf.test.util.SimulationModelFixture;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitDimensionProvider;
@@ -61,13 +59,15 @@ public class UnstructuredTraitDimensionTest implements Module {
     @Before
     public void setUp() throws Exception {
         log = model.getModelLogger(this.getClass());
-        model.clearAgentPopulation();
+        model.initializePopulation();
+
+        log.info("initializing model: " + model + " population: " + model.getPopulation());
 
     }
 
     @After
     public void cleanUp() throws Exception {
-        model.clearAgentPopulation();
+        model.getPopulation().clearAgentPopulation();
     }
 
     @Test
@@ -132,8 +132,8 @@ public class UnstructuredTraitDimensionTest implements Module {
 
 
     @Test
-    public void testTagBasedCounts() throws Exception {
-        log.info("entering testTagBasedCounts");
+    public void testTagBasedStatistics() throws Exception {
+        log.info("entering testTagBasedStatistics");
 
         
         ITraitDimension dim = this._createTestData();
@@ -173,7 +173,7 @@ public class UnstructuredTraitDimensionTest implements Module {
         assertEquals(expectedThreeRedFreq,obsThreeRedFreq);
         assertEquals(expectedFiveBlueFreq,obsFiveBlueFreq);
 
-        log.info("exiting testTagBasedCounts");
+        log.info("exiting testTagBasedStatistics");
     }
 
 
@@ -207,7 +207,10 @@ public class UnstructuredTraitDimensionTest implements Module {
                     expectedThreeRed = i * 2;
                 }
 
-                IAgent newAgent = this.model.createAgent();
+
+
+                IAgent newAgent = this.model.getPopulation().createAgent();
+                
                 redTag.registerAgent(newAgent);
                 newTrait.adopt(newAgent);
             }
@@ -218,7 +221,7 @@ public class UnstructuredTraitDimensionTest implements Module {
                     expectedFiveBlue = i;
                 }
 
-                IAgent newAgent = this.model.createAgent();
+                IAgent newAgent = this.model.getPopulation().createAgent();
                 blueTag.registerAgent(newAgent);
                 newTrait.adopt(newAgent);
             }
@@ -227,7 +230,7 @@ public class UnstructuredTraitDimensionTest implements Module {
 
         }
 
-        log.info("_createTestData: initialized " + this.model.getCurrentPopulationSize() + " agents");
+        log.info("_createTestData: initialized " + this.model.getPopulation().getCurrentPopulationSize() + " agents");
 
         log.info("exiting _createTestData");
         return dimension;
@@ -238,7 +241,8 @@ public class UnstructuredTraitDimensionTest implements Module {
         binder.bind(ITrait.class).toProvider(UnstructuredTraitProvider.class);
         binder.bind(ITraitDimension.class).toProvider(UnstructuredTraitDimensionProvider.class);
         binder.bind(IAgent.class).toProvider(UnstructuredTraitAgentProvider.class);
-        binder.bind(ISimulationModel.class).to(SimulationModelFixture.class);
+        binder.bind(ISimulationModel.class).to(SimulationModelFixture.class).in(Singleton.class);
         binder.bind(IAgentTag.class).toProvider(SimpleAgentTagProvider.class);
+        binder.bind(IPopulation.class).toProvider(SimpleAgentPopulationProvider.class);
     }
 }

@@ -12,10 +12,7 @@ package org.mmadsen.sim.tf.test;
 import atunit.AtUnit;
 import atunit.Container;
 import atunit.Unit;
-import com.google.inject.Binder;
-import com.google.inject.Inject;
-import com.google.inject.Module;
-import com.google.inject.Provider;
+import com.google.inject.*;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -24,6 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mmadsen.sim.tf.agent.UnstructuredTraitAgentProvider;
 import org.mmadsen.sim.tf.interfaces.*;
+import org.mmadsen.sim.tf.population.SimpleAgentPopulationProvider;
 import org.mmadsen.sim.tf.structure.SimpleAgentTag;
 import org.mmadsen.sim.tf.test.util.SimulationModelFixture;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitDimensionProvider;
@@ -41,19 +39,18 @@ public class SimpleAgentTagTest implements Module {
     private IAgentTag tag;
     @Inject private IAgent agent;
     @Inject private ISimulationModel model;
-    @Inject private Provider<IAgent> agentProvider;
     private Logger log;
 
     @Before
     public void setUp() throws Exception {
         log = model.getModelLogger(this.getClass());
-        model.clearAgentPopulation();
+        model.initializePopulation();
 
     }
 
     @After
     public void cleanUp() throws Exception {
-        model.clearAgentPopulation();
+        model.getPopulation().clearAgentPopulation();
     }
 
     @Test
@@ -76,7 +73,7 @@ public class SimpleAgentTagTest implements Module {
     }
 
     public void addNewAgentToTag(IAgentTag tag) {
-        IAgent agent = agentProvider.get();
+        IAgent agent = model.getPopulation().createAgent();
         //log.info("new agent: " + agent);
         tag.registerAgent(agent);
     }
@@ -113,8 +110,9 @@ public class SimpleAgentTagTest implements Module {
         binder.bind(ITrait.class).toProvider(UnstructuredTraitProvider.class);
         binder.bind(ITraitDimension.class).toProvider(UnstructuredTraitDimensionProvider.class);
         binder.bind(IAgent.class).toProvider(UnstructuredTraitAgentProvider.class);
-        binder.bind(ISimulationModel.class).to(SimulationModelFixture.class);
+        binder.bind(ISimulationModel.class).to(SimulationModelFixture.class).in(Singleton.class);
         binder.bind(IAgentTag.class).to(SimpleAgentTag.class);
+        binder.bind(IPopulation.class).toProvider(SimpleAgentPopulationProvider.class);
     }
 
 }

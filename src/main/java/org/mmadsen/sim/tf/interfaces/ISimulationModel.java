@@ -34,6 +34,11 @@ public interface ISimulationModel extends Runnable {
      */
     public Logger getModelLogger(Class classToLog);
 
+    public void initializePopulation();
+    
+
+    public IPopulation getPopulation();
+
     /**
      * Returns the current size of the agent population for a given simulation instance.
      * This value is not assumed to be constant over the lifetime of a simulation run,
@@ -44,13 +49,7 @@ public interface ISimulationModel extends Runnable {
      * @return popSize The number of individual agents in the simulated population at the current time
      */
 
-    public Integer getCurrentPopulationSize();
 
-    public IAgent createAgent();
-
-    public void removeAgent(IAgent agent);
-
-    public void clearAgentPopulation();
 
     public Provider<ITrait> getTraitProvider();
 
