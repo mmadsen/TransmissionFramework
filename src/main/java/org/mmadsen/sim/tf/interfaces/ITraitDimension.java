@@ -36,9 +36,15 @@ public interface ITraitDimension {
 
     public Map<ITrait,Integer> getCurGlobalTraitCounts();
 
-    public Map<ITrait,Double> getCurGlobalTraitFrequencies();
-
     public Map<ITrait,Integer> getCurTraitCountByTag(IAgentTag tag);
+
+    /*
+        Methods for calculating frequencies will throw an IllegalStateException if the size of the
+        population against which the calculation depends is zero.  This alerts calling code to the
+        fact that something is being done out of order, not initialized, etc.
+     */
+
+    public Map<ITrait,Double> getCurGlobalTraitFrequencies();
 
     public Map<ITrait,Double> getCurTraitFreqByTag(IAgentTag tag);
 

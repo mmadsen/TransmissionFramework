@@ -13,10 +13,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.apache.commons.collections.Predicate;
 import org.apache.log4j.Logger;
-import org.mmadsen.sim.tf.interfaces.IAgent;
-import org.mmadsen.sim.tf.interfaces.IAgentTag;
-import org.mmadsen.sim.tf.interfaces.IPopulation;
-import org.mmadsen.sim.tf.interfaces.ISimulationModel;
+import org.mmadsen.sim.tf.interfaces.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,46 +27,24 @@ import java.util.List;
  * Time: 1:27:08 PM
  */
 
-public class SimpleAgentPopulation implements IPopulation {
+public class SimpleAgentPopulation extends AbstractDeme implements IPopulation, IDeme {
     
     private Provider<IAgent> agentProvider;
-    private ISimulationModel model;
-    private Logger log;
-    private static List<IAgent> agentList;
-
 
     @Inject
-    public void initialize(ISimulationModel m, Provider<IAgent> p) {
+    public void initialize(ISimulationModel m, Provider<IAgent> p, Provider<IDeme> d) {
         model = m;
         agentProvider = p;
+        demeProvider = d;
         log = model.getModelLogger(this.getClass());
         if(agentList == null) {
             agentList = Collections.synchronizedList(new ArrayList<IAgent>());
         }
 
-        log.trace("model: " + model + " agentProvider: " + agentProvider);
+        log.trace("model: " + model + " agentProvider: " + agentProvider + " demeProvider: " + demeProvider);
 
     }
 
-    public List<IAgent> getAgents() {
-        return new ArrayList<IAgent>(agentList);
-    }
-
-    public IPopulation getSubpopulationForTag(IAgentTag tag) {
-        return null;
-    }
-
-    public IAgent getAgentAtRandom() {
-        return null;
-    }
-
-    public IPopulation getSubpopulationMatchingPredicate(Predicate pred) {
-        return null;
-    }
-
-    public Integer getCurrentPopulationSize() {
-        return agentList.size();  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
 
     public IAgent createAgent() {

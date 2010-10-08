@@ -60,6 +60,8 @@ public interface IAgent {
 
     public Set<IAgentTag> getAgentTags();
 
+    public boolean hasTag(IAgentTag tag);
+
     /* Interaction and Rule related methods */
 
     public void addInteractionRule(InteractionRule rule);

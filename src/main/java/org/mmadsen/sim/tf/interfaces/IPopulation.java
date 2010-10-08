@@ -9,38 +9,48 @@
 
 package org.mmadsen.sim.tf.interfaces;
 
-import org.apache.commons.collections.Predicate;
-
-import java.util.Collection;
-import java.util.List;
-
 /**
- * CLASS DESCRIPTION
- * <p/>
+ * IPopulation is the full collection of agents in a simulation model.  Classes implementing
+ * IPopulation are the locus of agent creation, tracking, and destruction in a model.
+ *
+ * Subpopulations in TransmissionFramework are called "demes," and are not represented by persistent
+ * objects but rather are "projections" of the population (by tag, by geography, by trait group, etc).
+ * Most operations one would routinely perform on a group of agents (e.g., selecting a random agent,
+ * selecting a subset of agents which have a particular trait or tag) are done through the IDeme
+ * abstraction.  IPopulation extends IDeme and adds agent creation and destruction.
+ *
+ * 
  * User: mark
  * Date: Aug 21, 2010
  * Time: 3:06:05 PM
  */
 
-public interface IPopulation {
+public interface IPopulation extends IDeme {
 
-    List<IAgent> getAgents();
 
-    // Could do this with predicates, but tags are self-tracking so they actually
-    // know their agent population already
-    IPopulation getSubpopulationForTag(IAgentTag tag);
-
-    // returns one IAgent at random given Uniform distribution
-    IAgent getAgentAtRandom();
-
-    // Finder interface - returns agents for which a Predicate (simple or compound) returns TRUE
-    // Useful for finding arbitrary subsets of agents besides tag sets or graph neighbor sets
-    IPopulation getSubpopulationMatchingPredicate(Predicate pred);
-
-    public Integer getCurrentPopulationSize();
-
+    /**
+     * Creates a newly initialized agent, using the underlying agentProvider (thus automatically
+     * creating whatever agent implementation is being used in this simulation model).  The new agent
+     * object is added to the population list, the population size is incremented, and any population
+     * structure (e.g., network, lattice) object is notified and passed the object for insertion into
+     * the population structure.  Following this, the new agent is returned to the caller.
+     * @return  agent
+     */
     public IAgent createAgent();
 
+    /**
+     * Removes a specified agent from the population (allowing simulation of death or outmigration,
+     * for example).  Any population structure object registered with this population is notified, so
+     * that the agent can be removed (e.g., vertex and links in a network removed), the population size
+     * is decremented, and the agent object is removed from the population list.
+     *
+     * Simulation code should not hold persistent references to individual agent objects for a duration
+     * longer than a simulation step, because those references might end up invalid, or pointing to
+     * and agent object which no longer belongs to a population and thus is not "part" of the model anymore.
+     *
+     *
+     * @param agent
+     */
     public void removeAgent(IAgent agent);
 
     public void clearAgentPopulation();

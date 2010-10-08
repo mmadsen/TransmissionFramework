@@ -100,6 +100,12 @@ public class UnstructuredTraitAgent implements IAgent {
         return new HashSet<IAgentTag>(this.tagSet);
     }
 
+    public boolean hasTag(IAgentTag tag) {
+        boolean containsTag = this.tagSet.contains(tag);
+        //log.info("hasTag returned: " + containsTag);
+        return containsTag;
+    }
+
     public void addInteractionRule(InteractionRule rule) {
 
     }

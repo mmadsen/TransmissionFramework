@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mmadsen.sim.tf.agent.UnstructuredTraitAgentProvider;
 import org.mmadsen.sim.tf.interfaces.*;
+import org.mmadsen.sim.tf.population.SimpleAgentDemeProvider;
 import org.mmadsen.sim.tf.population.SimpleAgentPopulationProvider;
 import org.mmadsen.sim.tf.structure.SimpleAgentTag;
 import org.mmadsen.sim.tf.test.util.SimulationModelFixture;
@@ -113,6 +114,7 @@ public class SimpleAgentTagTest implements Module {
         binder.bind(ISimulationModel.class).to(SimulationModelFixture.class).in(Singleton.class);
         binder.bind(IAgentTag.class).to(SimpleAgentTag.class);
         binder.bind(IPopulation.class).toProvider(SimpleAgentPopulationProvider.class);
+        binder.bind(IDeme.class).toProvider(SimpleAgentDemeProvider.class);
     }
 
 }

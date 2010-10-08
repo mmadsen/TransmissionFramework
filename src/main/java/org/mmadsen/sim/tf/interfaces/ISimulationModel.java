@@ -34,21 +34,42 @@ public interface ISimulationModel extends Runnable {
      */
     public Logger getModelLogger(Class classToLog);
 
+    /**
+     * Initializes the main random number generator for this simulation model run.  All
+     * random numbers generated, from whatever distribution, are derived from an underlying
+     * Mersenne Twister object.
+     *
+     * For debugging, validation, and unit testing, it can be useful to get a reproducible
+     * stream of pseudorandom numbers.  Setting the boolean parameter to TRUE will initialize
+     * the Mersenne Twister with a hardcoded constant seed, thus ensuring that the underlying
+     * generator creates the same stream every time.  Note that this does NOT necessarily
+     * guarantee the same outcome in a simulation run, unless everything else (such as external
+     * input) is also held constant.
+     *
+     * @param reproducibleStream
+     */
+    public void initializeRNG(Boolean reproducibleStream);
+
+    /**
+     * Creates and initializes an empty IPopulation, in preparation for starting a simulation
+     * run.  Called at any other time, it reinitializes the population and causes any references
+     * to previously available agents etc to be lost.
+     *
+     */
     public void initializePopulation();
-    
+
 
     public IPopulation getPopulation();
 
     /**
-     * Returns the current size of the agent population for a given simulation instance.
-     * This value is not assumed to be constant over the lifetime of a simulation run,
-     * to allow models with population dynamics.  The value is guaranteed, however, to be
-     * constant for a model "tick", following the usual stochastic model convention that
-     * the probability of two events in the same infinitesimal interval is O(dt^2).
-     *
-     * @return popSize The number of individual agents in the simulated population at the current time
+     * Returns a random integer between 0 and ceiling, from a Uniform distribution
+     * using the underlying Mersenne Twister generator.  Heavily used, for example,
+     * in selecting a random agent in the population.
+     * 
+     * @param ceiling
+     * @return  randomInt
      */
-
+    public Integer getUniformRandomInteger(Integer ceiling);
 
 
     public Provider<ITrait> getTraitProvider();

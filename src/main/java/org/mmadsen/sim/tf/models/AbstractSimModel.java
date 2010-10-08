@@ -9,6 +9,9 @@
 
 package org.mmadsen.sim.tf.models;
 
+import cern.jet.random.Uniform;
+import cern.jet.random.engine.MersenneTwister;
+import cern.jet.random.engine.RandomEngine;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.apache.log4j.Logger;
@@ -36,7 +39,11 @@ public abstract class AbstractSimModel implements ISimulationModel
     Provider<ITrait> traitProvider;
     @Inject public Provider<ITraitDimension> dimensionProvider;
     @Inject public Provider<IPopulation> populationProvider;
+    @Inject public Provider<IDeme> demeProvider;
     protected IPopulation population;
+
+    protected RandomEngine rngGenerator;
+    protected Uniform uniformDist;
 
     IPopulation agentPopulation;
 
@@ -52,6 +59,10 @@ public abstract class AbstractSimModel implements ISimulationModel
         return this.population;
     }
 
+    public Integer getUniformRandomInteger(Integer ceiling) {
+        return this.uniformDist.nextIntFromTo(0,ceiling);
+    }
+
     public Integer getCurrentModelTime() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -60,8 +71,18 @@ public abstract class AbstractSimModel implements ISimulationModel
         return Logger.getLogger(classToLog);
     }
 
+    public void initializeRNG(Boolean reproducibleStream) {
+        if(reproducibleStream) {
+            this.rngGenerator = new MersenneTwister();
+        } else {
+            this.rngGenerator = new MersenneTwister(new java.util.Date());
+        }
+        this.uniformDist = new Uniform(this.rngGenerator);
+    }
+
     public void initializePopulation() {
         this.population = populationProvider.get();
+        
     }
 
 

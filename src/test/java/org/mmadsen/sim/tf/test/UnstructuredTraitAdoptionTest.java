@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mmadsen.sim.tf.agent.UnstructuredTraitAgentProvider;
 import org.mmadsen.sim.tf.interfaces.*;
+import org.mmadsen.sim.tf.population.SimpleAgentDemeProvider;
 import org.mmadsen.sim.tf.population.SimpleAgentPopulationProvider;
 import org.mmadsen.sim.tf.test.util.SimulationModelFixture;
 import org.mmadsen.sim.tf.traits.UnstructuredTraitDimensionProvider;
@@ -42,7 +43,6 @@ public class UnstructuredTraitAdoptionTest implements Module  {
     @Inject
     @Unit public ITrait trait;
     @Inject public ISimulationModel model;
-    @Inject public Provider<IAgent> agentProvider;
     Logger log;
 
     @Before
@@ -101,6 +101,7 @@ public class UnstructuredTraitAdoptionTest implements Module  {
         binder.bind(IAgent.class).toProvider(UnstructuredTraitAgentProvider.class);
         binder.bind(ISimulationModel.class).to(SimulationModelFixture.class).in(Singleton.class);
         binder.bind(IPopulation.class).toProvider(SimpleAgentPopulationProvider.class);
+        binder.bind(IDeme.class).toProvider(SimpleAgentDemeProvider.class);
     }
 }
 

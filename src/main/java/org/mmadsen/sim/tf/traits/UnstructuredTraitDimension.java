@@ -74,14 +74,13 @@ public class UnstructuredTraitDimension implements ITraitDimension {
     }
 
     public Map<ITrait, Double> getCurGlobalTraitFrequencies() {
-        Preconditions.checkNotNull(model);
         log.info("getting current trait frequency map");
         Map<ITrait,Double> freqMap = new HashMap<ITrait,Double>();
         Integer total = 0;
 
-        log.info("model: " + model + " population: " + model.getPopulation());
-
         Integer popsize = this.model.getPopulation().getCurrentPopulationSize();
+        if(popsize == 0) { throw new IllegalStateException("getCurGlobalTraitFrequencies called with empty population"); }
+        
         for(ITrait trait: this.traitMap.values()) {
             double freq = (double) trait.getCurrentAdoptionCount() / (double) popsize;
             freqMap.put(trait, freq);
@@ -90,14 +89,16 @@ public class UnstructuredTraitDimension implements ITraitDimension {
     }
 
     public Map<ITrait, Integer> getCurTraitCountByTag(IAgentTag tag) {
+        Preconditions.checkNotNull(tag, "Getting trait counts by tag requires a non-null reference to an IAgentTag object");
         log.debug("Entering getCurTraitCountByTag");
-        Preconditions.checkNotNull(tag);
+
         // We use a Set to gather a unique list of the traits held by all
         // agents tagged with the tag specified.    
         Set<ITrait> traitsAdopted = new HashSet<ITrait>();
         List<IAgent> agentList = tag.getCurAgentsTagged();
 
         //log.debug("agents tagged: " + agentList.size())
+
 
 
         for(IAgent agent: agentList) {
@@ -129,7 +130,11 @@ public class UnstructuredTraitDimension implements ITraitDimension {
 
 
     public Map<ITrait, Double> getCurTraitFreqByTag(IAgentTag tag) {
+        Preconditions.checkNotNull(tag, "Getting trait frequencies by tag requires a non-null reference to an IAgentTag object");
         Integer agentCountForTag = tag.curAgentCount();
+
+        if(agentCountForTag == 0) { throw new IllegalStateException("Cannot calculate frequency with no adoptees for tag"); }
+
         Map<ITrait,Integer> adoptionCountMap = this.getCurTraitCountByTag(tag);
         Map<ITrait,Double> adoptionFreqMap = new HashMap<ITrait,Double>();
 

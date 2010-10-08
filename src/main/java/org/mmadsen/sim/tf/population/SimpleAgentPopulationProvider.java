@@ -12,6 +12,7 @@ package org.mmadsen.sim.tf.population;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.mmadsen.sim.tf.interfaces.IAgent;
+import org.mmadsen.sim.tf.interfaces.IDeme;
 import org.mmadsen.sim.tf.interfaces.IPopulation;
 import org.mmadsen.sim.tf.interfaces.ISimulationModel;
 
@@ -28,10 +29,13 @@ public class SimpleAgentPopulationProvider implements Provider<IPopulation> {
     public ISimulationModel model;
     @Inject
     public Provider<IAgent> agentProvider;
+    @Inject
+    public Provider<IDeme> demeProvider;
 
     public IPopulation get() {
+        //model.getModelLogger(this.getClass()).info("demeProvider: " + demeProvider);
         SimpleAgentPopulation pop = new SimpleAgentPopulation();
-        pop.initialize(model, agentProvider);
+        pop.initialize(model, agentProvider, demeProvider);
         return pop;
     }
 }

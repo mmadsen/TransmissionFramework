@@ -86,6 +86,7 @@ public class UnstructuredTrait extends AbstractObservableTrait implements ITrait
     }
 
     public Integer getCurrentAdoptionCountForTag(IAgentTag tag) {
+        Preconditions.checkNotNull(tag, "Retrieving an adoption count by tag requires a non-null reference to an IAgentTag object");
         return this.curAdoptionByTag.get(tag);
     }
 

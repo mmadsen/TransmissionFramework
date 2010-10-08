@@ -138,6 +138,10 @@ public class DimensionalTraitAgent implements IAgent {
         return new HashSet<IAgentTag>(this.tagSet);
     }
 
+    public boolean hasTag(IAgentTag tag) {
+        return this.tagSet.contains(tag);
+    }
+
     public void addInteractionRule(InteractionRule rule) {
 
     }
