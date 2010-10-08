@@ -22,7 +22,7 @@ import org.mmadsen.sim.tf.interfaces.IAgent;
  * Time: 11:15:10 AM
  */
 
-public abstract class AbstractAgentPredicate implements Predicate {
+public abstract class AgentPredicate implements Predicate {
     public boolean evaluate(Object o) {
         return this.doEvaluate((IAgent)o);
     }
