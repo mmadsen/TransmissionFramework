@@ -112,8 +112,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <argLine>
-                        -Dlog4j.debug
-                        -Dlog4j.configuration=file:///Users/mark/Documents/src/TransmissionFramework/src/test/config/log4j.config
+                        -Dlog4j.debug -Dlog4j.configuration=file:///Users/mark/Documents/src/TransmissionFramework/src/test/config/log4j.config
                     </argLine>
                 </configuration>
             </plugin>
