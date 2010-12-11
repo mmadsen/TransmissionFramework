@@ -11,10 +11,8 @@ package org.mmadsen.sim.tf.rules;
 
 import com.google.inject.Inject;
 import org.apache.log4j.Logger;
+import org.mmadsen.sim.tf.interfaces.IInteractionRule;
 import org.mmadsen.sim.tf.interfaces.ISimulationModel;
-import org.mmadsen.sim.tf.interfaces.InteractionRule;
-
-import java.util.List;
 
 /**
  * CLASS DESCRIPTION
@@ -24,7 +22,7 @@ import java.util.List;
  * Time: 4:20:49 PM
  */
 
-public abstract class AbstractInteractionRule implements InteractionRule {
+public abstract class AbstractInteractionRule implements IInteractionRule {
     protected ISimulationModel model;
     protected Logger log;
 

@@ -142,7 +142,7 @@ public class DimensionalTraitAgent implements IAgent {
         return this.tagSet.contains(tag);
     }
 
-    public void addInteractionRule(InteractionRule rule) {
+    public void addInteractionRule(IInteractionRule rule) {
 
     }
 

@@ -72,37 +72,29 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-              <groupId>perfectjpattern</groupId>
-              <artifactId>perfectjpattern-api</artifactId>
-              <version>1.0.2</version>
+            <groupId>net.sf.jung</groupId>
+            <artifactId>jung-api</artifactId>
+            <version>2.0.1</version>
         </dependency>
         <dependency>
-          <groupId>perfectjpattern</groupId>
-          <artifactId>perfectjpattern-core</artifactId>
-          <version>1.0.2</version>
+            <groupId>net.sf.jung</groupId>
+            <artifactId>jung-io</artifactId>
+            <version>2.0.1</version>
         </dependency>
         <dependency>
-          <groupId>perfectjpattern</groupId>
-          <artifactId>perfectjpattern-jee</artifactId>
-          <version>1.0.2</version>
+            <groupId>net.sf.jung</groupId>
+            <artifactId>jung-graph-impl</artifactId>
+            <version>2.0.1</version>
         </dependency>
         <dependency>
-          <groupId>perfectjpattern</groupId>
-          <artifactId>perfectjpattern-hibernate</artifactId>
-          <version>1.0.2</version>
+            <groupId>net.sf.jung</groupId>
+            <artifactId>jung-algorithms</artifactId>
+            <version>2.0.1</version>
         </dependency>
-        <dependency>
-          <groupId>perfectjpattern</groupId>
-          <artifactId>perfectjpattern-spring</artifactId>
-          <version>1.0.2</version>
-        </dependency>
+        
     </dependencies>
     <repositories>
-    <repository>
-      <id>perfectjpattern</id>
-      <name>PerfectJPattern Releases</name>
-      <url>http://perfectjpattern.sourceforge.net/m2repo</url>
-    </repository>
+
     </repositories>
     <build>
     <plugins>

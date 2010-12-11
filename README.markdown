@@ -35,7 +35,7 @@ Major goals:
 
 * Simple way to construct, enumerate, and use hierarchical subsets.  It's really the tagging mechanism that should be used to arbitrary partitions, so the notion of a subpopulation is really a fairly limited one here.  And perhaps it should be more of a "dynamic" things -- from the overall population, perhaps you can ask for a subpopulation composed of agents having a specific tag.  That way, if you had a metapopulation model, agents belonging to the Ith deme would all share a specific tag for "deme-i" or something similar.  
 
-* Populations should facilitate common simulation operations; e.g., the selection of an agent at random. (*OPEN QUESTION - should this simply be a structure issue, or do we simply delegate this in certain cases from population to structure?* )
+* Populations should facilitate common simulation operations; e.g., the selection of an agent at random from the subpopulation, determine its size, and so on.  
 
 * The presence of structured relations between agents are always represented by mathematical graph abstractions.  The framework places no restrictions on the type of network or graph, or even the number of graphs that can represent relationships, except that any libraries must follow (or be adaptable to) the JUNG2 basic Graph interface conventions.  Basic implementations coded within the framework use JUNG2 directly.  This means that simple graphs, directed graphs, or even weighted directed hypergraphs are possible as abstractions for various types of structured agents relationships.  
 

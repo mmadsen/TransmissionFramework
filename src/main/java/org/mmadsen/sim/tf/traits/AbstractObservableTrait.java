@@ -11,8 +11,7 @@ package org.mmadsen.sim.tf.traits;
 
 import org.apache.log4j.Logger;
 import org.mmadsen.sim.tf.interfaces.*;
-import org.perfectjpattern.core.api.behavioral.observer.IObserver;
-import org.perfectjpattern.core.api.behavioral.observer.ISubject;
+
 
 import java.util.List;
 
@@ -59,25 +58,5 @@ public abstract class AbstractObservableTrait implements ITrait
 
     public abstract ITraitStatistic getChangeStatistic();
 
-/*
-    public void notifyTraitFrequencyObservers(TraitFrequencyData tfd) {
-        for(IObserver<TraitFrequencyData> obs: this.traitObservers) {
-            obs.update(tfd);
-        }
-    }
 
-    public void notifyTraitObservers()
-
-    public void notifyTraitTagObservers()
-
-    protected void notifyTraitObservers() {
-        TraitFrequencyData tfd = new TraitFrequencyData(this, this.getCurrentAdoptionCount(), this.model.getCurrentModelTime());
-        this.notifyTraitObservers(tfd);
-    }
-
-    protected void notifyTraitTagObservers(IAgentTag tag) {
-        TraitTagFrequencyData ttp = new TraitTagFrequencyData<ITrait, IAgentTag>(this, tag);
-        TraitFrequencyData tfd = new TraitFrequencyData(ttp, this.getCurrentAdoptionCountForTag(tag), model.getCurrentModelTime());
-        this.notifyObservers(tfd);
-    }*/
 }

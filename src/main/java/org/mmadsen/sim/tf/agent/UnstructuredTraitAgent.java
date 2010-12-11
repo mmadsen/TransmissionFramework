@@ -106,7 +106,7 @@ public class UnstructuredTraitAgent implements IAgent {
         return containsTag;
     }
 
-    public void addInteractionRule(InteractionRule rule) {
+    public void addInteractionRule(IInteractionRule rule) {
 
     }
 

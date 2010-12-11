@@ -26,7 +26,7 @@ import java.util.List;
  * Time: 8:57:34 AM
  */
 
-public interface IDeme {
+public interface IDeme  {
     /**
      * Takes a passed List<IAgent> and makes it the agentList for this deme.  This shouldn't be
      * called by user code much, if at all, but it's an essential method for query methods which

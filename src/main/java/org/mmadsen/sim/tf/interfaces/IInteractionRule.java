@@ -20,7 +20,7 @@ import org.apache.commons.collections.Closure;
  * Time: 3:26:37 PM
  */
 
-public interface InteractionRule extends Closure {
+public interface IInteractionRule extends Closure {
 
     public void ruleBody(Object o);
 
