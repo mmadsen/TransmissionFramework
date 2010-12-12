@@ -42,20 +42,20 @@ public interface IInteractionTopology {
      ***********************************/
 
     // Degree distribution statistics
-    Double getMeanNeighborDegree();
+    //Double getMeanNeighborDegree();
 
-    Double getVarianceNeighborDegree();
+    //Double getVarianceNeighborDegree();
 
     // The following allows arbitrary moment calculations
     // if arg = 1, returns getMeanNeighborDegree,
     // if arg = 3, returns third central moment
-    Double getMomentNeighborDegree(int moment);
+    //Double getMomentNeighborDegree(int moment);
 
     // Distance metrics
     // Does not assume that the underlying topology is a graph but
     // reduces to min/max path length if it is a graph
-    Double getMinGeodesicDistance();
+    //Double getMinGeodesicDistance();
 
-    Double getMaxGeodesicDistance();
+    //Double getMaxGeodesicDistance();
 
 }

@@ -7,21 +7,25 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.models;
+package org.madsenlab.sim.tf.utils;
+
+import com.google.common.base.Preconditions;
+import org.madsenlab.sim.tf.interfaces.IAgent;
+import org.madsenlab.sim.tf.interfaces.IAgentTag;
 
 /**
- * Created by IntelliJ IDEA.
+ * CLASS DESCRIPTION
+ * <p/>
  * User: mark
- * Date: Jul 4, 2010
- * Time: 3:25:05 PM
- * To change this template use File | Settings | File Templates.
+ * Date: 12/11/10
+ * Time: 3:49 PM
  */
-public class TestingSimulationModel extends AbstractSimModel {
 
-    public void run() {
-        log.info("Starting simulation model: " + this.getClass().getSimpleName());
+public class AllAgentsPredicate extends AgentPredicate {
 
-
+    boolean doEvaluate(IAgent agent) {
+        return true;
     }
-
 }
+
+

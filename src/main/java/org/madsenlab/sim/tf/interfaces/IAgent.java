@@ -66,7 +66,7 @@ public interface IAgent {
 
     public void fireRules();
 
-    /* Structure related methods */
+    /* Adoption related methods */
 
     /**
      * Use this to get the list of current ITraits an agent has adopted.
@@ -79,8 +79,5 @@ public interface IAgent {
     public Set<ITrait> getCurrentlyAdoptedTraits();
 
     public Set<ITrait> getCurrentlyAdoptedTraitsForDimension(ITraitDimension dim);
-
-    public List<IAgent> getNeighboringAgents();
-
 
 }

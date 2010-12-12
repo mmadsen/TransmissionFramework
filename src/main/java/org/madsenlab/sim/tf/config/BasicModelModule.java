@@ -18,6 +18,7 @@ import org.madsenlab.sim.tf.models.TestingSimulationModel;
 import org.madsenlab.sim.tf.population.SimpleAgentDemeProvider;
 import org.madsenlab.sim.tf.population.SimpleAgentPopulationProvider;
 import org.madsenlab.sim.tf.structure.SimpleAgentTagProvider;
+import org.madsenlab.sim.tf.structure.WellMixedInteractionTopologyProvider;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitDimensionProvider;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitProvider;
 
@@ -42,6 +43,7 @@ public class BasicModelModule implements Module {
         binder.bind(IAgentTag.class)
                 .toProvider(SimpleAgentTagProvider.class);
         binder.bind(IPopulation.class).toProvider(SimpleAgentPopulationProvider.class);
+        binder.bind(IInteractionTopology.class).toProvider(WellMixedInteractionTopologyProvider.class);
         binder.bind(IDeme.class).toProvider(SimpleAgentDemeProvider.class);
     }
 }

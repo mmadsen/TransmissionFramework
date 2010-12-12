@@ -60,6 +60,8 @@ public interface ISimulationModel extends Runnable {
 
     public IPopulation getPopulation();
 
+    public IInteractionTopology getInteractionTopology();
+
     /**
      * Returns a random integer between 0 and ceiling, from a Uniform distribution
      * using the underlying Mersenne Twister generator.  Heavily used, for example,

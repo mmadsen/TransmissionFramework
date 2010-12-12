@@ -39,7 +39,10 @@ public abstract class AbstractSimModel implements ISimulationModel {
     public Provider<IPopulation> populationProvider;
     @Inject
     public Provider<IDeme> demeProvider;
+    @Inject
+    public Provider<IInteractionTopology> topologyProvider;
     protected IPopulation population;
+    protected IInteractionTopology topology;
 
     protected RandomEngine rngGenerator;
     protected Uniform uniformDist;
@@ -55,6 +58,10 @@ public abstract class AbstractSimModel implements ISimulationModel {
 
     public IPopulation getPopulation() {
         return this.population;
+    }
+
+    public IInteractionTopology getInteractionTopology() {
+        return this.topology;
     }
 
     public Integer getUniformRandomInteger(Integer ceiling) {
@@ -80,7 +87,7 @@ public abstract class AbstractSimModel implements ISimulationModel {
 
     public void initializePopulation() {
         this.population = populationProvider.get();
-
+        this.topology = topologyProvider.get();
     }
 
 

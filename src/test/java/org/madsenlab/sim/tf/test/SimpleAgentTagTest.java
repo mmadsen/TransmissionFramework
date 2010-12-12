@@ -27,6 +27,7 @@ import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.population.SimpleAgentDemeProvider;
 import org.madsenlab.sim.tf.population.SimpleAgentPopulationProvider;
 import org.madsenlab.sim.tf.structure.SimpleAgentTag;
+import org.madsenlab.sim.tf.structure.WellMixedInteractionTopologyProvider;
 import org.madsenlab.sim.tf.test.util.SimulationModelFixture;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitDimensionProvider;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitProvider;
@@ -121,6 +122,7 @@ public class SimpleAgentTagTest implements Module {
         binder.bind(IAgentTag.class).to(SimpleAgentTag.class);
         binder.bind(IPopulation.class).toProvider(SimpleAgentPopulationProvider.class);
         binder.bind(IDeme.class).toProvider(SimpleAgentDemeProvider.class);
+        binder.bind(IInteractionTopology.class).toProvider(WellMixedInteractionTopologyProvider.class);
     }
 
 }

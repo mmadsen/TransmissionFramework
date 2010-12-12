@@ -13,10 +13,7 @@ import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.*;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * UnstructuredTraitDimensions represent a set of alternative traits
@@ -30,6 +27,7 @@ public class UnstructuredTraitAgent implements IAgent {
     private Logger log;
     private Set<ITrait> traitsAdopted;
     private Set<IAgentTag> tagSet;
+    private List<IInteractionRule> ruleList;
 
     public UnstructuredTraitAgent() {
         super();
@@ -45,6 +43,7 @@ public class UnstructuredTraitAgent implements IAgent {
     private void initialize() {
         this.traitsAdopted = Collections.synchronizedSet(new HashSet<ITrait>());
         this.tagSet = Collections.synchronizedSet(new HashSet<IAgentTag>());
+        this.ruleList = new ArrayList<IInteractionRule>();
     }
 
     public String getAgentID() {
@@ -110,11 +109,23 @@ public class UnstructuredTraitAgent implements IAgent {
     }
 
     public void addInteractionRule(IInteractionRule rule) {
-
+        this.addInteractionRule(rule);
     }
 
+
+    /*
+        Because the Apache Commons functor library doesn't support generic types, IInteractionRules
+        take Objects, but really what needs to be passed in are IAgent objects.  Rules already
+        have access to the Model object by virtue of their construction and initialization
+        which means they have access to the IPopulation and so on.  What they need when executed
+        is the context of a single agent, in order that the rule can change agent state.
+
+     */
     public void fireRules() {
 
+        for(IInteractionRule rule: ruleList) {
+            rule.execute(this);
+        }
     }
 
     public Set<ITrait> getCurrentlyAdoptedTraits() {
