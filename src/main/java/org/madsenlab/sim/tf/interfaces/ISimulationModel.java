@@ -51,11 +51,17 @@ public interface ISimulationModel extends Runnable {
     public void initializeRNG(Boolean reproducibleStream);
 
     /**
-     * Creates and initializes an empty IPopulation, in preparation for starting a simulation
-     * run.  Called at any other time, it reinitializes the population and causes any references
-     * to previously available agents etc to be lost.
+     * Creates and initializes the population for a simulation, in preparation for starting a simulation
+     * run.
      */
+
     public void initializePopulation();
+
+    /**
+     * Creates and initializes any Guice Provider objects needed by the simulation model
+     */
+
+    public void initializeProviders();
 
 
     public IPopulation getPopulation();
@@ -72,9 +78,12 @@ public interface ISimulationModel extends Runnable {
      */
     public Integer getUniformRandomInteger(Integer ceiling);
 
+    public Provider<IDeme> getDemeProvider();
 
     public Provider<ITrait> getTraitProvider();
 
     public Provider<ITraitDimension> getTraitDimensionProvider();
+
+    public void parseCommandLineOptions(String[] args);
 
 }

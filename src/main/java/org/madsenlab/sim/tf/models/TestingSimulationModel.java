@@ -24,4 +24,11 @@ public class TestingSimulationModel extends AbstractSimModel {
 
     }
 
+    public void initializePopulation() {
+
+    }
+
+    public void parseCommandLineOptions(String[] args) {
+
+    }
 }

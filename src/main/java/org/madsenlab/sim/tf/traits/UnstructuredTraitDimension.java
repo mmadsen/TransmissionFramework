@@ -26,6 +26,7 @@ import java.util.*;
 public class UnstructuredTraitDimension implements ITraitDimension {
     String dimensionName = null;
     Map<String, ITrait> traitMap = null;
+    List<ITrait> traitList = null;
     Logger log;
     private ISimulationModel model;
 
@@ -40,7 +41,12 @@ public class UnstructuredTraitDimension implements ITraitDimension {
     }
 
     private void initialize() {
+        // We keep both a hash and a list; normally we get things via mapping, but
+        // when we want a random trait it's more efficient to have a list than to make a new
+        // temporary list every time we want to get a random trait.  We don't add and remove traits
+        // very often, so the performance hit is very low
         this.traitMap = new HashMap<String, ITrait>();
+        this.traitList = new ArrayList<ITrait>();
 
     }
 
@@ -52,16 +58,25 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         this.dimensionName = dimensionName;
     }
 
-    public void addTrait(ITrait newTrait) {
+    public synchronized void addTrait(ITrait newTrait) {
         this.traitMap.put(newTrait.getTraitID(), newTrait);
+        this.traitList.add(newTrait);
     }
 
     public ITrait getTrait(String traitID) {
+        // only needs to use the map
         return this.traitMap.get(traitID);
     }
 
     public Collection<ITrait> getTraitsInDimension() {
+        // only needs to use the map
         return this.traitMap.values();
+    }
+
+    public ITrait getRandomTraitFromDimension() {
+        // needs to use the list only
+        Integer randomTraitNumber = this.model.getUniformRandomInteger(this.traitList.size());
+        return this.traitList.get(randomTraitNumber);
     }
 
     public Map<ITrait, Integer> getCurGlobalTraitCounts() {
@@ -152,7 +167,8 @@ public class UnstructuredTraitDimension implements ITraitDimension {
     }
 
 
-    public void removeTrait(ITrait traitToRemove) {
+    public synchronized void removeTrait(ITrait traitToRemove) {
         this.traitMap.remove(traitToRemove);
+        this.traitList.remove(traitToRemove);
     }
 }

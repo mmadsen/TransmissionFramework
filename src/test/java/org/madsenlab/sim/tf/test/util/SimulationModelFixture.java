@@ -26,6 +26,10 @@ import org.madsenlab.sim.tf.models.AbstractSimModel;
 @Ignore
 public class SimulationModelFixture extends AbstractSimModel {
 
+    public void initializePopulation() {
+
+    }
+
     public SimulationModelFixture() {
         super();
         Preconditions.checkNotNull(log);
@@ -40,6 +44,10 @@ public class SimulationModelFixture extends AbstractSimModel {
     public Integer getCurrentModelTime() {
         currentTime++;
         return currentTime;
+    }
+
+    public void parseCommandLineOptions(String[] args) {
+
     }
 
 

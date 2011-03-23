@@ -56,6 +56,7 @@ public abstract class AbstractSimModel implements ISimulationModel {
     }
 
 
+
     public IPopulation getPopulation() {
         return this.population;
     }
@@ -85,7 +86,7 @@ public abstract class AbstractSimModel implements ISimulationModel {
         this.uniformDist = new Uniform(this.rngGenerator);
     }
 
-    public void initializePopulation() {
+    public void initializeProviders() {
         this.population = populationProvider.get();
         this.topology = topologyProvider.get();
     }
@@ -98,5 +99,10 @@ public abstract class AbstractSimModel implements ISimulationModel {
     public Provider<ITraitDimension> getTraitDimensionProvider() {
         return dimensionProvider;
     }
+
+    public Provider<IDeme> getDemeProvider() {
+        return demeProvider;
+    }
+
 
 }

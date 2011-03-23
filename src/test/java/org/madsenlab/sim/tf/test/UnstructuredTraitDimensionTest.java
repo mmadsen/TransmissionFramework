@@ -67,7 +67,7 @@ public class UnstructuredTraitDimensionTest implements Module {
     @Before
     public void setUp() throws Exception {
         log = model.getModelLogger(this.getClass());
-        model.initializePopulation();
+        model.initializeProviders();
 
         log.info("initializing model: " + model + " population: " + model.getPopulation());
 

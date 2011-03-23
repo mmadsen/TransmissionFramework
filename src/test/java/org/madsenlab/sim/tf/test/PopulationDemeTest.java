@@ -27,6 +27,7 @@ import org.madsenlab.sim.tf.test.util.SimulationModelFixture;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitDimensionProvider;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitProvider;
 import org.madsenlab.sim.tf.utils.AgentTagPredicate;
+import org.madsenlab.sim.tf.utils.AllAgentsPredicate;
 
 import static org.junit.Assert.assertTrue;
 
@@ -53,7 +54,7 @@ public class PopulationDemeTest implements Module {
     @Before
     public void setUp() throws Exception {
         log = model.getModelLogger(this.getClass());
-        model.initializePopulation();
+        model.initializeProviders();
 
     }
 
@@ -100,6 +101,32 @@ public class PopulationDemeTest implements Module {
         log.info("Exiting testTagQueryCustomPredicate");
 
     }
+
+    @Test
+    public void testAllAgentPredicate() throws Exception {
+        log.info("Entering testAllAgentPredicate");
+        // Not needed here, but keeps me from having to redo the test data creation, we just care
+        // about a count here
+        IAgentTag redTag = tagProvider.get();
+        redTag.setTagName("redTag");
+        IAgentTag blueTag = tagProvider.get();
+        blueTag.setTagName("blueTag");
+
+        this._createTestData(redTag, blueTag);
+        IPopulation pop = this.model.getPopulation();
+
+        int popsize = pop.getCurrentPopulationSize();
+
+        IDeme deme = pop.getDemeMatchingPredicate(new AllAgentsPredicate());
+
+        int predicatedSize = deme.getCurrentPopulationSize();
+
+        assertTrue(popsize == predicatedSize);
+
+        log.info("PASS:  AllAgentsPredicate returns full set of agents");
+
+    }
+
 
     private void _createTestData(IAgentTag redTag, IAgentTag blueTag) {
         log.info("Entering _createTestData");

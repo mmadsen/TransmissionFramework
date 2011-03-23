@@ -10,13 +10,9 @@
 package org.madsenlab.sim.tf.test.examples.SimpleMoran;
 
 import com.google.inject.Guice;
-import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.Provider;
-import org.madsenlab.sim.tf.interfaces.IAgentTag;
+import org.madsenlab.sim.tf.app.SimRunner;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
-import org.madsenlab.sim.tf.interfaces.ITrait;
-import org.madsenlab.sim.tf.interfaces.ITraitDimension;
 
 /**
  * CLASS DESCRIPTION
@@ -26,27 +22,31 @@ import org.madsenlab.sim.tf.interfaces.ITraitDimension;
  * Time: 9:55:24 AM
  */
 
-public class SimpleMoranDriftSim {
+
+
+public class SimpleMoranDriftSim extends SimRunner {
 
     int numAgents = 200;
-    @Inject
-    public Provider<ITrait> traitProvider;
-    @Inject
-    public Provider<ITraitDimension> dimensionProvider;
-    @Inject
-    public Provider<IAgentTag> tagProvider;
-    @Inject
-    public ISimulationModel model;
+
 
     public static void main(String[] args) {
         Injector injector = Guice.createInjector(new SimpleMoranDriftModule());
         ISimulationModel model = injector.getInstance(ISimulationModel.class);
 
+        // Parse the command line options, in case they select population options
+        model.parseCommandLineOptions(args);
+
+        model.initializeProviders();
+
+        /* Given the choices made on the command line, initialize the starting population */
         model.initializePopulation();
 
         /* Start the simulation model */
         model.run();
+
+
     }
+
 
 
 }

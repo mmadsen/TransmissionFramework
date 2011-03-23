@@ -12,6 +12,8 @@ package org.madsenlab.sim.tf.structure;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.AllAgentsPredicate;
 
+import java.util.List;
+
 /**
  * CLASS DESCRIPTION
  * <p/>
@@ -33,17 +35,20 @@ public class WellMixedInteractionTopology implements IInteractionTopology {
     // ensure that we're returning a random agent *other than* the focal agent.
 
     public IAgent getRandomNeighborForAgent(IAgent focalAgent) {
-        IDeme deme = this.population.getDemeMatchingPredicate(new AllAgentsPredicate());
-        IAgent chosenAgent = null;
-        do {
-            chosenAgent = deme.getAgentAtRandom();
-
-        } while(!chosenAgent.equals(focalAgent));
-
-        return chosenAgent;
+        IDeme deme = this.getNeighborsForAgent(focalAgent);
+        return deme.getAgentAtRandom();
     }
 
+    // Return a new IDeme object with all agents except the focal agent, since this
+    // is a well-mixed model.
+
     public IDeme getNeighborsForAgent(IAgent focalAgent) {
-        return null;
+        IDeme deme = this.population.getDemeMatchingPredicate(new AllAgentsPredicate());
+        IDeme allButFocalDeme = this.model.getDemeProvider().get();
+
+        List<IAgent> agentList = deme.getAgents();
+        agentList.remove(focalAgent);
+        allButFocalDeme.setAgentList(agentList);
+        return allButFocalDeme;
     }
 }

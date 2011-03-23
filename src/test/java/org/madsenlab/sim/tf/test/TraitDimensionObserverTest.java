@@ -65,13 +65,13 @@ public class TraitDimensionObserverTest implements Module {
     @Before
     public void setUp() throws Exception {
         log = model.getModelLogger(this.getClass());
-        model.initializePopulation();
+        model.initializeProviders();
 
     }
 
     @After
     public void cleanUp() throws Exception {
-        model.initializePopulation();
+        model.initializeProviders();
     }
 
 

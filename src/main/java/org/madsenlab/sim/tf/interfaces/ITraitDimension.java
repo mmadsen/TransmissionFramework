@@ -33,6 +33,8 @@ public interface ITraitDimension {
 
     public Collection<ITrait> getTraitsInDimension();
 
+    public ITrait getRandomTraitFromDimension();
+
     public Map<ITrait, Integer> getCurGlobalTraitCounts();
 
     public Map<ITrait, Integer> getCurTraitCountByTag(IAgentTag tag);
