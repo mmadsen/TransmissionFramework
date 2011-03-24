@@ -55,7 +55,7 @@ public interface ISimulationModel extends Runnable {
      * run.
      */
 
-    public void initializePopulation();
+    public void initializeModel();
 
     /**
      * Creates and initializes any Guice Provider objects needed by the simulation model
@@ -86,4 +86,9 @@ public interface ISimulationModel extends Runnable {
 
     public void parseCommandLineOptions(String[] args);
 
+    public void incrementModelTime();
+
+    public void modelStep();
+
+    public void modelObservations();
 }

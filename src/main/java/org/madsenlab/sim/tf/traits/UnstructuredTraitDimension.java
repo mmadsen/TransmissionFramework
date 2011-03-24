@@ -75,7 +75,7 @@ public class UnstructuredTraitDimension implements ITraitDimension {
 
     public ITrait getRandomTraitFromDimension() {
         // needs to use the list only
-        Integer randomTraitNumber = this.model.getUniformRandomInteger(this.traitList.size());
+        Integer randomTraitNumber = this.model.getUniformRandomInteger(this.traitList.size()-1);
         return this.traitList.get(randomTraitNumber);
     }
 
@@ -89,7 +89,7 @@ public class UnstructuredTraitDimension implements ITraitDimension {
     }
 
     public Map<ITrait, Double> getCurGlobalTraitFrequencies() {
-        log.info("getting current trait frequency map");
+        log.trace("getting current trait frequency map");
         Map<ITrait, Double> freqMap = new HashMap<ITrait, Double>();
         Integer total = 0;
 

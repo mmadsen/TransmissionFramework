@@ -23,4 +23,11 @@ public interface IInteractionRule extends Closure {
 
     public void ruleBody(Object o);
 
+    String getRuleName();
+
+    void setRuleName(String ruleName);
+
+    void setRuleDescription(String ruleDescription);
+
+    String getRuleDescription();
 }

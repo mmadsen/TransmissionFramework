@@ -35,11 +35,12 @@ public class SimpleMoranDriftSim extends SimRunner {
 
         // Parse the command line options, in case they select population options
         model.parseCommandLineOptions(args);
-
+        // Initialize RNG -- true makes the stream replicable, false uses timestamp as seed
+        model.initializeRNG(false);
         model.initializeProviders();
 
         /* Given the choices made on the command line, initialize the starting population */
-        model.initializePopulation();
+        model.initializeModel();
 
         /* Start the simulation model */
         model.run();

@@ -9,7 +9,6 @@
 
 package org.madsenlab.sim.tf.rules;
 
-import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.IInteractionRule;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
@@ -34,13 +33,16 @@ public abstract class AbstractInteractionRule implements IInteractionRule {
         this.ruleName = ruleName;
     }
 
-    protected String ruleName;
-
-    @Inject
-    public void setSimulationModel(ISimulationModel m) {
-        model = m;
-        log = model.getModelLogger(this.getClass());
+    public void setRuleDescription(String ruleDescription) {
+        this.ruleDescription = ruleDescription;
     }
+
+    public String getRuleDescription() {
+        return this.ruleDescription;
+    }
+
+    protected String ruleName;
+    protected String ruleDescription;
 
 
     public void execute(Object o) {
@@ -50,11 +52,11 @@ public abstract class AbstractInteractionRule implements IInteractionRule {
     }
 
     protected void _preExecution() {
-        log.info("Entering _preExecution on rule " + this.getRuleName());
+        log.trace("Entering _preExecution on rule " + this.getRuleName());
     }
 
     protected void _postExecution() {
-        log.info("Entering _postExecution on rule " + this.getRuleName());
+        log.trace("Entering _postExecution on rule " + this.getRuleName());
     }
 
     public abstract void ruleBody(Object o);

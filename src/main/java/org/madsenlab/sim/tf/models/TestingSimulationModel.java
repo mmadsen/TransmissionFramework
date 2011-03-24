@@ -24,7 +24,15 @@ public class TestingSimulationModel extends AbstractSimModel {
 
     }
 
-    public void initializePopulation() {
+    public void modelObservations() {
+
+    }
+
+    public void modelStep() {
+
+    }
+
+    public void initializeModel() {
 
     }
 

@@ -79,7 +79,7 @@ public class AbstractDeme implements IDeme {
             }
         }
 
-        log.info("size of match list: " + matches.size());
+        log.debug("size of match list: " + matches.size());
 
         IDeme subDeme = demeProvider.get();
         subDeme.setAgentList(matches);
@@ -88,7 +88,7 @@ public class AbstractDeme implements IDeme {
     }
 
     public Integer getCurrentPopulationSize() {
-        log.info("agentList size: " + this.agentList.size());
+        log.trace("agentList size: " + this.agentList.size());
         return this.agentList.size();  //To change body of implemented methods use File | Settings | File Templates.
     }
 

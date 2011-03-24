@@ -27,11 +27,11 @@ import java.util.*;
 //@Ignore needed to prevent JUnit from trying to execute test helper classes
 
 @Ignore
-public class TraitCountObserver implements ITraitStatisticsObserver<ITraitDimension> {
+public class TraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
 
-    public TraitCountObserver(ISimulationModel m) {
+    public TraitFrequencyObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
     }
@@ -40,20 +40,21 @@ public class TraitCountObserver implements ITraitStatisticsObserver<ITraitDimens
     public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
         Integer timeIndex = stat.getTimeIndex();
         ITraitDimension dim = stat.getTarget();
-        Map<ITrait, Integer> traitCountMap = dim.getCurGlobalTraitCounts();
+        Map<ITrait, Double> traitFreqMap = dim.getCurGlobalTraitFrequencies();
+
 
 
         StringBuffer sb = new StringBuffer();
-        Set<ITrait> keys = traitCountMap.keySet();
+        Set<ITrait> keys = traitFreqMap.keySet();
         List<ITrait> sortedKeys = new ArrayList<ITrait>(keys);
         Collections.sort(sortedKeys, new TraitIDComparator());
         for (ITrait aTrait : sortedKeys) {
             sb.append("[" + aTrait.getTraitID() + "] ");
-            sb.append(traitCountMap.get(aTrait));
+            sb.append(traitFreqMap.get(aTrait));
             sb.append(" ");
         }
 
-        log.trace("Time: " + timeIndex + " Counts: " + sb.toString());
+        log.trace("Time: " + timeIndex + " Freq: " + sb.toString());
 
     }
 }

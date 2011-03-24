@@ -55,7 +55,7 @@ public class PopulationDemeTest implements Module {
     public void setUp() throws Exception {
         log = model.getModelLogger(this.getClass());
         model.initializeProviders();
-
+        model.initializeRNG(true);
     }
 
     @Test

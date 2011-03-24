@@ -26,7 +26,7 @@ import org.madsenlab.sim.tf.models.AbstractSimModel;
 @Ignore
 public class SimulationModelFixture extends AbstractSimModel {
 
-    public void initializePopulation() {
+    public void initializeModel() {
 
     }
 
@@ -53,6 +53,14 @@ public class SimulationModelFixture extends AbstractSimModel {
 
     public void run() {
         log.info("Starting simulation model: " + this.getClass().getSimpleName());
+
+    }
+
+    public void modelObservations() {
+
+    }
+
+    public void modelStep() {
 
     }
 }

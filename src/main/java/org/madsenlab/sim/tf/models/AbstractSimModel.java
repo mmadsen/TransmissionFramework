@@ -47,7 +47,8 @@ public abstract class AbstractSimModel implements ISimulationModel {
     protected RandomEngine rngGenerator;
     protected Uniform uniformDist;
 
-    IPopulation agentPopulation;
+    protected IPopulation agentPopulation;
+    protected Integer lengthSimulation;
 
     public AbstractSimModel() {
         log = Logger.getLogger(this.getClass());
@@ -70,7 +71,7 @@ public abstract class AbstractSimModel implements ISimulationModel {
     }
 
     public Integer getCurrentModelTime() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this.currentTime;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public Logger getModelLogger(Class classToLog) {
@@ -89,6 +90,7 @@ public abstract class AbstractSimModel implements ISimulationModel {
     public void initializeProviders() {
         this.population = populationProvider.get();
         this.topology = topologyProvider.get();
+
     }
 
 
@@ -104,5 +106,26 @@ public abstract class AbstractSimModel implements ISimulationModel {
         return demeProvider;
     }
 
+    public void incrementModelTime() {
+        synchronized(this.currentTime) {
+            this.currentTime++;
+        }
+    }
+
+    public void run() {
+        log.info("Beginning simulation run");
+        while(this.currentTime < this.lengthSimulation) {
+            // first perform a model step, then allow observations to be recorded as desired
+            this.modelStep();
+            this.modelObservations();
+            this.incrementModelTime();
+        }
+
+        log.info("Simulation run completed at time step: " + this.currentTime);
+    }
+
+    public abstract void modelObservations();
+
+    public abstract void modelStep();
 
 }
