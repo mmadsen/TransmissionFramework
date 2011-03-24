@@ -146,6 +146,10 @@ public class DimensionalTraitAgent implements IAgent {
 
     }
 
+    public void addInteractionRuleList(List<IInteractionRule> ruleList) {
+
+    }
+
     public void fireRules() {
 
     }

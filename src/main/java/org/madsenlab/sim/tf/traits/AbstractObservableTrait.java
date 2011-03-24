@@ -48,12 +48,12 @@ public abstract class AbstractObservableTrait implements ITrait {
     }
 
     public void notifyObservers() {
-        log.debug("entering notifyObservers");
+        //log.debug("entering notifyObservers");
 
         ITraitStatistic stat = this.getChangeStatistic();
-        log.debug("change statistic: " + stat);
+        //log.debug("change statistic: " + stat);
         for (ITraitStatisticsObserver obs : this.observers) {
-            log.debug("obs: " + obs);
+            //log.debug("obs: " + obs);
             obs.updateTraitStatistics(stat);
         }
 

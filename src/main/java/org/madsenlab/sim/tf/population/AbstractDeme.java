@@ -59,7 +59,7 @@ public class AbstractDeme implements IDeme {
     }
 
     public IAgent getAgentAtRandom() {
-        Integer randomAgentNumber = this.model.getUniformRandomInteger(this.getCurrentPopulationSize());
+        Integer randomAgentNumber = this.model.getUniformRandomInteger(this.getCurrentPopulationSize() - 1);
         return this.agentList.get(randomAgentNumber);
     }
 
@@ -79,7 +79,7 @@ public class AbstractDeme implements IDeme {
             }
         }
 
-        log.debug("size of match list: " + matches.size());
+        log.trace("size of match list: " + matches.size());
 
         IDeme subDeme = demeProvider.get();
         subDeme.setAgentList(matches);

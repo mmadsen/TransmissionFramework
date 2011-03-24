@@ -30,22 +30,29 @@ import java.util.*;
 public class TraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
+    private Map<ITrait, Double> traitFreqMap;
+    private Integer lastTimeIndexUpdated;
 
     public TraitFrequencyObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
+        // initialize the map only to keep a NPE from happening if accessed before an publisher updates us.
+        this.traitFreqMap = new HashMap<ITrait,Double>();
     }
 
 
     public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
-        Integer timeIndex = stat.getTimeIndex();
+        this.lastTimeIndexUpdated = stat.getTimeIndex();
         ITraitDimension dim = stat.getTarget();
-        Map<ITrait, Double> traitFreqMap = dim.getCurGlobalTraitFrequencies();
+        this.traitFreqMap = dim.getCurGlobalTraitFrequencies();
 
+    }
+
+    public void printFrequencies() {
 
 
         StringBuffer sb = new StringBuffer();
-        Set<ITrait> keys = traitFreqMap.keySet();
+        Set<ITrait> keys = this.traitFreqMap.keySet();
         List<ITrait> sortedKeys = new ArrayList<ITrait>(keys);
         Collections.sort(sortedKeys, new TraitIDComparator());
         for (ITrait aTrait : sortedKeys) {
@@ -54,7 +61,7 @@ public class TraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDi
             sb.append(" ");
         }
 
-        log.trace("Time: " + timeIndex + " Freq: " + sb.toString());
+        log.trace("Time: " + this.lastTimeIndexUpdated + " Freq: " + sb.toString());
 
     }
 }

@@ -64,6 +64,8 @@ public interface IAgent {
 
     public void addInteractionRule(IInteractionRule rule);
 
+    public void addInteractionRuleList(List<IInteractionRule> ruleList);
+
     public void fireRules();
 
     /* Adoption related methods */

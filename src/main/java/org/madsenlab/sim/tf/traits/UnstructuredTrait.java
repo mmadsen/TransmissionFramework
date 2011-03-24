@@ -101,7 +101,7 @@ public class UnstructuredTrait extends AbstractObservableTrait implements ITrait
             this.curAdopteeList.add(agentAdopting);
             agentAdopting.adoptTrait(this);
             this.incrementAdoptionCount();
-            log.debug("Agent " + agentAdopting.getAgentID() + " adopting [" + this.getTraitID() + "] count: " + this.curAdoptionCount);
+            log.trace("Agent " + agentAdopting.getAgentID() + " adopting [" + this.getTraitID() + "] count: " + this.curAdoptionCount);
         }
         synchronized (this.curAdoptionByTag) {
             Set<IAgentTag> tags = agentAdopting.getAgentTags();

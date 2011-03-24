@@ -52,11 +52,11 @@ public abstract class AbstractInteractionRule implements IInteractionRule {
     }
 
     protected void _preExecution() {
-        log.trace("Entering _preExecution on rule " + this.getRuleName());
+        //log.trace("Entering _preExecution on rule " + this.getRuleName());
     }
 
     protected void _postExecution() {
-        log.trace("Entering _postExecution on rule " + this.getRuleName());
+        //log.trace("Entering _postExecution on rule " + this.getRuleName());
     }
 
     public abstract void ruleBody(Object o);

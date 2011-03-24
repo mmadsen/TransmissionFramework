@@ -109,7 +109,12 @@ public class UnstructuredTraitAgent implements IAgent {
     }
 
     public void addInteractionRule(IInteractionRule rule) {
-        this.addInteractionRule(rule);
+        this.ruleList.add(rule);
+    }
+
+    public void addInteractionRuleList(List<IInteractionRule> fullRuleList) {
+        this.ruleList = null;
+        this.ruleList = fullRuleList;
     }
 
 

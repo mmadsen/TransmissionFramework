@@ -9,7 +9,12 @@
 
 package org.madsenlab.sim.tf.rules;
 
+import org.madsenlab.sim.tf.interfaces.IAgent;
+import org.madsenlab.sim.tf.interfaces.IInteractionTopology;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
+import org.madsenlab.sim.tf.interfaces.ITrait;
+
+import java.util.Set;
 
 /**
  * CLASS DESCRIPTION
@@ -29,7 +34,23 @@ public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRu
     }
 
     public void ruleBody(Object o) {
-        log.debug("entering rule body for: " + this.getRuleName());
+        //log.trace("entering rule body for: " + this.getRuleName());
+        IAgent thisAgent = (IAgent) o;
 
+        // Get a random neighbor.  First, we need the interaction topology
+        IInteractionTopology topology = model.getInteractionTopology();
+        IAgent neighborAgent = topology.getRandomNeighborForAgent(thisAgent);
+
+        log.trace("focal agent: " + thisAgent.getAgentID() + " <=> neighbor: " + neighborAgent.getAgentID());
+        Set<ITrait> neighborTraitSet = neighborAgent.getCurrentlyAdoptedTraits();
+        // The following is NOT good code generically....
+        ITrait neighborTrait = neighborTraitSet.iterator().next();
+        log.trace("neighbor has trait: " + neighborTrait.getTraitID());
+
+        // focal agent unadopts its current trait, and adopts the neighbor's trait
+        Set<ITrait> focalTraits = thisAgent.getCurrentlyAdoptedTraits();
+        ITrait myOldTrait = focalTraits.iterator().next();
+        myOldTrait.unadopt(thisAgent);
+        neighborTrait.adopt(thisAgent);
     }
 }

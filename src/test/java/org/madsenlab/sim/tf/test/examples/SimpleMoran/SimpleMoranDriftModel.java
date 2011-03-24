@@ -16,6 +16,7 @@ import org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * CLASS DESCRIPTION
@@ -26,7 +27,8 @@ import java.util.List;
  */
 
 public class SimpleMoranDriftModel extends AbstractSimModel {
-    ITraitStatisticsObserver<ITraitDimension> obs, obs2;
+    TraitCountObserver countObserver;
+    TraitFrequencyObserver freqObserver;
     ITraitDimension dimension;
     Integer numAgents;
     Double mutationRate;
@@ -51,10 +53,12 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         // first, set up the traits in a dimension
         // second, set up agents, assigning an initial trait to each agent at random
         this.dimension = this.dimensionProvider.get();
-        this.obs = new TraitCountObserver(this);
-        this.obs2 = new TraitFrequencyObserver(this);
+        this.countObserver = new TraitCountObserver(this);
+        this.freqObserver = new TraitFrequencyObserver(this);
 
         // set up the stack of rules, to be fired in the order given in the list
+        // in this first simulation, all agents get the same rule, but this need not be the
+        // case - plan for heterogeneity!!
         this.ruleList = new ArrayList<IInteractionRule>();
         IInteractionRule rcmRule = new RandomCopyNeighborSingleDimensionRule(this);
         this.ruleList.add(rcmRule);
@@ -65,15 +69,23 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
             newTrait.setTraitID(i.toString());
             newTrait.setOwningDimension(this.dimension);
             this.dimension.addTrait(newTrait);
-            newTrait.attach(this.obs);
-            newTrait.attach(this.obs2);
+            newTrait.attach(this.countObserver);
+            newTrait.attach(this.freqObserver);
         }
 
         this.log.debug("Creating " + this.numAgents + " agents with random starting traits");
-        for (int i = 0; i < this.numAgents; i++) {
+        for (Integer i = 0; i < this.numAgents; i++) {
             IAgent agent = this.getPopulation().createAgent();
+            agent.setAgentID(i.toString());
+            agent.addInteractionRuleList(this.ruleList);
             ITrait randomTrait = this.dimension.getRandomTraitFromDimension();
             randomTrait.adopt(agent);
+        }
+
+        // Verify proper initialization
+        Map<ITrait, Double> freqMap = this.dimension.getCurGlobalTraitFrequencies();
+        for(Map.Entry<ITrait,Double> entry: freqMap.entrySet()) {
+            log.debug("Trait " + entry.getKey().getTraitID() + " Freq: " + entry.getValue().toString());
         }
 
     }
@@ -137,17 +149,16 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
     public void modelStep() {
         log.trace("entering modelStep at time: " + this.currentTime);
 
-        // Testing out what kind of API might be nice for firing off rules in sequence
-        // not sure what object needs to be passed to each rule, though....
-        for(IInteractionRule rule: this.ruleList) {
-            log.trace("executing rule: " + rule.getRuleName());
-            rule.execute(null);
-        }
+        // pick a random agent, and fire its rules stack....
+        IAgent focalAgent = this.getPopulation().getAgentAtRandom();
+        log.trace("agent " + focalAgent.getAgentID() + " - firing rules");
+        focalAgent.fireRules();
 
     }
 
     public void modelObservations() {
         log.trace("entering modelObservations at time: " + this.currentTime);
+        this.freqObserver.printFrequencies();
     }
 
 
