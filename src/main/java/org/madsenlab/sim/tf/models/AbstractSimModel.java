@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010.  Mark E. Madsen <mark@mmadsen.org>
+ * Copyright (c) 2011.  Mark E. Madsen <mark@mmadsen.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -70,6 +70,10 @@ public abstract class AbstractSimModel implements ISimulationModel {
         return this.uniformDist.nextIntFromTo(0, ceiling);
     }
 
+    public Double getUniformDouble() {
+        return this.uniformDist.nextDoubleFromTo(0,1);
+    }
+
     public Integer getCurrentModelTime() {
         return this.currentTime;  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -122,7 +126,10 @@ public abstract class AbstractSimModel implements ISimulationModel {
         }
 
         log.info("Simulation run completed at time step: " + this.currentTime);
+        this.modelFinalize();
     }
+
+    public abstract void modelFinalize();
 
     public abstract void modelObservations();
 

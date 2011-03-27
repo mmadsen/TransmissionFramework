@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010.  Mark E. Madsen <mark@mmadsen.org>
+ * Copyright (c) 2011.  Mark E. Madsen <mark@mmadsen.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -10,8 +10,11 @@
 package org.madsenlab.sim.tf.test.examples.SimpleMoran;
 
 import org.apache.commons.cli.*;
+import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.models.AbstractSimModel;
+import org.madsenlab.sim.tf.rules.FiniteKAllelesMutationRule;
+import org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule;
 
 import java.util.ArrayList;
@@ -35,36 +38,56 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
     Boolean isInfiniteAlleles = false;
     Integer maxTraits;
     Integer startingTraits;
+    GlobalModelConfiguration params;
+    List<ITraitStatisticsObserver<ITraitDimension>> observerList;
 
     // Undecided yet how to structure interaction rules generically so keeping them here for the moment
     List<IInteractionRule> ruleList;
 
 
-    // TODO:  What to fill out in the simulation model
-    // DONE - Set up a trait dimension
-    // Set up an initial set of traits
-    // DONE - Set up an initial set of agents
-    // Randomly assign initial set of traits to initial agents
-    // Set up an IPopulation for the agents, assume well-mixed
-    //
+    // TODO:  Implement a finite mutation model for K alleles with symmetric fw/back mutation rates
+    // TODO:  Implement a finite mutation model with independent fw/back mutation rates
+    // TODO:  Implement a model where extinct traits have some probability of being remembered, perhaps depending on how long they've been extinct.
+    // TODO:  Implement an infinite alleles model with no back-mutation, and with back-mutation rate
+    // TODO:  Make the filename for all output configurable.  Do we need a config file that we pass on the command line?
+    // TODO:  Implement a conformist rule among "neighbors"
+    // TODO:  Implement a mixture of RCM and conformism with a given ratio
+    // TODO:  Make each rule add a tag to the agents that hold it, so that we can query a deme of agents with that rule, so we can do stats on heterogenous pops
+
 
 
     public void initializeModel() {
         // first, set up the traits in a dimension
         // second, set up agents, assigning an initial trait to each agent at random
         this.dimension = this.dimensionProvider.get();
+        this.observerList = new ArrayList<ITraitStatisticsObserver<ITraitDimension>>();
         this.countObserver = new TraitCountObserver(this);
         this.freqObserver = new TraitFrequencyObserver(this);
+        this.observerList.add(this.countObserver);
+        this.observerList.add(this.freqObserver);
+
+
+        // TODO:  serious problem with CLI params and rule configuration - need xml or parameter files?
+
 
         // set up the stack of rules, to be fired in the order given in the list
         // in this first simulation, all agents get the same rule, but this need not be the
         // case - plan for heterogeneity!!
         this.ruleList = new ArrayList<IInteractionRule>();
-        IInteractionRule rcmRule = new RandomCopyNeighborSingleDimensionRule(this);
-        this.ruleList.add(rcmRule);
+        IInteractionRule rcmRule = new RandomCopyNeighborSingleDimensionRule(this, this.params);
 
-        this.log.debug("Creating one dimension and " + this.startingTraits + " traits to begin");
-        for (Integer i = 0; i < this.startingTraits; i++) {
+        this.ruleList.add(rcmRule);
+        if(this.isInfiniteAlleles) {
+            IInteractionRule iiMutation = new InfiniteAllelesMutationRule(this, this.params);
+            this.ruleList.add(iiMutation);
+        }
+        else {
+            IInteractionRule fkMutation = new FiniteKAllelesMutationRule(this, this.params);
+            this.ruleList.add(fkMutation);
+        }
+
+        this.log.debug("Creating one dimension and " + this.params.getStartingTraits() + " traits to begin");
+        for (Integer i = 0; i < this.params.getStartingTraits(); i++) {
             ITrait newTrait = this.traitProvider.get();
             newTrait.setTraitID(i.toString());
             newTrait.setOwningDimension(this.dimension);
@@ -73,8 +96,8 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
             newTrait.attach(this.freqObserver);
         }
 
-        this.log.debug("Creating " + this.numAgents + " agents with random starting traits");
-        for (Integer i = 0; i < this.numAgents; i++) {
+        this.log.debug("Creating " + this.params.getNumAgents() + " agents with random starting traits");
+        for (Integer i = 0; i < this.params.getNumAgents(); i++) {
             IAgent agent = this.getPopulation().createAgent();
             agent.setAgentID(i.toString());
             agent.addInteractionRuleList(this.ruleList);
@@ -92,6 +115,8 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
 
     public void parseCommandLineOptions(String[] args) {
         this.log.debug("entering parseCommandLineOptions");
+
+        this.params = new GlobalModelConfiguration(this);
 
         Options cliOptions = new Options();
         cliOptions.addOption("n", true, "number of agents in simulation");
@@ -120,28 +145,31 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         }
 
         if(cmd.hasOption("i")) {
+            this.params.setInfiniteAlleles(true);
             this.isInfiniteAlleles = true;
             this.log.info("infinite alleles model selected - no maximum trait number");
         }
         else {
+            this.params.setInfiniteAlleles(false);
             this.isInfiniteAlleles = false;
             this.log.info("finite alleles model selected");
-            this.maxTraits = Integer.parseInt(cmd.getOptionValue("f", "2"));
-
+            this.params.setMaxTraits(Integer.parseInt(cmd.getOptionValue("f", "2")));
         }
 
 
-        this.lengthSimulation = Integer.parseInt(cmd.getOptionValue("l", "10000"));
-        this.numAgents = Integer.parseInt(cmd.getOptionValue("n", "1000"));
-        this.mutationRate = Double.parseDouble(cmd.getOptionValue("m", "0.000001"));
-        this.startingTraits = Integer.parseInt(cmd.getOptionValue("s", "2"));
+        this.params.setLengthSimulation(Integer.parseInt(cmd.getOptionValue("l", "10000")));
+        // this is the only parameter that's directly needed in a superclass implementation
+        this.lengthSimulation = this.params.getLengthSimulation();
+        this.params.setNumAgents(Integer.parseInt(cmd.getOptionValue("n", "1000")));
+        this.params.setMutationRate(Double.parseDouble(cmd.getOptionValue("m", "0.000001")));
+        this.params.setStartingTraits(Integer.parseInt(cmd.getOptionValue("s", "2")));
 
         // Report starting parameters
-        this.log.info("starting number of traits: " + this.startingTraits);
-        this.log.info("maximum number of traits: " + this.maxTraits);
-        this.log.info("number of agents: " + this.numAgents);
-        this.log.info("mutation rate: " + this.mutationRate);
-        this.log.info("simulation length: " + this.lengthSimulation);
+        this.log.info("starting number of traits: " + this.params.getStartingTraits());
+        this.log.info("maximum number of traits: " + this.params.getMaxTraits());
+        this.log.info("number of agents: " + this.params.getNumAgents());
+        this.log.info("mutation rate: " + this.params.getMutationRate());
+        this.log.info("simulation length: " + this.params.getLengthSimulation());
 
         this.log.debug("exiting parseCommandLineOptions");
     }
@@ -158,8 +186,19 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
 
     public void modelObservations() {
         log.trace("entering modelObservations at time: " + this.currentTime);
-        this.freqObserver.printFrequencies();
+        for(ITraitStatisticsObserver<ITraitDimension> obs: this.observerList) {
+           obs.perStepAction();
+        }
     }
+
+    public void modelFinalize() {
+       for(ITraitStatisticsObserver<ITraitDimension> obs: this.observerList) {
+           obs.endSimulationAction();
+           obs.finalizeObservation();
+       }
+       log.info("Finalizing model run, writing historical data, and closing any files or connections");
+   }
+
 
 
 }

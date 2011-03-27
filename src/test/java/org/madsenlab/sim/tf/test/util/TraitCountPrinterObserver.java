@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010.  Mark E. Madsen <mark@mmadsen.org>
+ * Copyright (c) 2011.  Mark E. Madsen <mark@mmadsen.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -30,6 +30,7 @@ import java.util.*;
 public class TraitCountPrinterObserver implements ITraitStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
+    private Map<ITrait,Integer> traitCountMap;
 
     public TraitCountPrinterObserver(ISimulationModel m) {
         this.model = m;
@@ -40,20 +41,33 @@ public class TraitCountPrinterObserver implements ITraitStatisticsObserver<ITrai
     public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
         Integer timeIndex = stat.getTimeIndex();
         ITraitDimension dim = stat.getTarget();
-        Map<ITrait, Integer> traitCountMap = dim.getCurGlobalTraitCounts();
+        this.traitCountMap = dim.getCurGlobalTraitCounts();
 
 
+
+
+    }
+
+    public void perStepAction() {
         StringBuffer sb = new StringBuffer();
-        Set<ITrait> keys = traitCountMap.keySet();
+        Set<ITrait> keys = this.traitCountMap.keySet();
         List<ITrait> sortedKeys = new ArrayList<ITrait>(keys);
         Collections.sort(sortedKeys, new TraitIDComparator());
         for (ITrait aTrait : sortedKeys) {
             sb.append("[" + aTrait.getTraitID() + "] ");
-            sb.append(traitCountMap.get(aTrait));
+            sb.append(this.traitCountMap.get(aTrait));
             sb.append(" ");
         }
-
+        Integer timeIndex = this.model.getCurrentModelTime();
         log.info("Time: " + timeIndex + " Counts: " + sb.toString());
+
+    }
+
+    public void endSimulationAction() {
+
+    }
+
+    public void finalizeObservation() {
 
     }
 }

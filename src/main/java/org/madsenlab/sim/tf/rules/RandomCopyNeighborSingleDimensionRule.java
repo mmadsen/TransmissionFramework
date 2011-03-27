@@ -13,6 +13,7 @@ import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.IInteractionTopology;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITrait;
+import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 
 import java.util.Set;
 
@@ -26,7 +27,7 @@ import java.util.Set;
 
 public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRule {
 
-    public RandomCopyNeighborSingleDimensionRule(ISimulationModel m) {
+    public RandomCopyNeighborSingleDimensionRule(ISimulationModel m, GlobalModelConfiguration params) {
         model = m;
         log = model.getModelLogger(this.getClass());
         this.setRuleName("RCMNeighborSD");
@@ -42,15 +43,18 @@ public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRu
         IAgent neighborAgent = topology.getRandomNeighborForAgent(thisAgent);
 
         log.trace("focal agent: " + thisAgent.getAgentID() + " <=> neighbor: " + neighborAgent.getAgentID());
+
+
         Set<ITrait> neighborTraitSet = neighborAgent.getCurrentlyAdoptedTraits();
-        // The following is NOT good code generically....
-        ITrait neighborTrait = neighborTraitSet.iterator().next();
+        ITrait neighborTrait = this.getRandomTraitFromAgent(neighborAgent);
         log.trace("neighbor has trait: " + neighborTrait.getTraitID());
 
-        // focal agent unadopts its current trait, and adopts the neighbor's trait
-        Set<ITrait> focalTraits = thisAgent.getCurrentlyAdoptedTraits();
-        ITrait myOldTrait = focalTraits.iterator().next();
-        myOldTrait.unadopt(thisAgent);
+        ITrait focalTrait = this.getRandomTraitFromAgent(thisAgent);
+        log.trace("focal agent has trait: " + focalTrait.getTraitID());
+
+        // Now unadopt the existing trait from thisAgent, and adopt the neighbor's random trait
+        focalTrait.unadopt(thisAgent);
         neighborTrait.adopt(thisAgent);
+
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010.  Mark E. Madsen <mark@mmadsen.org>
+ * Copyright (c) 2011.  Mark E. Madsen <mark@mmadsen.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -47,11 +47,20 @@ public class TraitCountAccumulatorObserver implements ITraitStatisticsObserver<I
     }
 
     public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
-
-        Integer timeIndex = stat.getTimeIndex();
         this.adoptionEvents++;
 
-        log.trace("Time: " + timeIndex + " Events: " + this.adoptionEvents);
+    }
+
+    public void perStepAction() {
+        Integer timeIndex = this.model.getCurrentModelTime();
+        log.trace("Time: " + timeIndex + " Cum. Events: " + this.adoptionEvents);
+    }
+
+    public void endSimulationAction() {
+
+    }
+
+    public void finalizeObservation() {
 
     }
 }
