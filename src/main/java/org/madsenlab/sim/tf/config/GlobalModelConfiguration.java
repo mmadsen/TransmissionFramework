@@ -12,6 +12,9 @@ package org.madsenlab.sim.tf.config;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITraitDimension;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * CLASS DESCRIPTION
  * <p/>
@@ -28,6 +31,7 @@ public class GlobalModelConfiguration {
     Boolean isInfiniteAlleles = false;
     Integer maxTraits;
     Integer startingTraits;
+    Map<String,String> otherProperties;
 
     public Integer getLengthSimulation() {
         return lengthSimulation;
@@ -42,6 +46,7 @@ public class GlobalModelConfiguration {
 
     public GlobalModelConfiguration(ISimulationModel m) {
         this.model = m;
+        this.otherProperties = new HashMap<String,String>();
     }
 
     public Double getMutationRate() {
@@ -82,5 +87,13 @@ public class GlobalModelConfiguration {
 
     public void setStartingTraits(Integer startingTraits) {
         this.startingTraits = startingTraits;
+    }
+
+    public void setProperty(String propName, String propValue) {
+        this.otherProperties.put(propName, propValue);
+    }
+
+    public String getProperty(String propName) {
+        return this.otherProperties.get(propName);
     }
 }

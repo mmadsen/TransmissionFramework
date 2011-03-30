@@ -15,7 +15,11 @@ import cern.jet.random.engine.RandomEngine;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
+
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,19 +32,22 @@ public abstract class AbstractSimModel implements ISimulationModel {
     protected Logger log;
     protected Integer currentTime = 0;
     @Inject
-    public
+    protected
     Provider<IAgent> agentProvider;
     @Inject
-    public
+    protected
     Provider<ITrait> traitProvider;
     @Inject
-    public Provider<ITraitDimension> dimensionProvider;
+    protected Provider<ITraitDimension> dimensionProvider;
     @Inject
-    public Provider<IPopulation> populationProvider;
+    protected Provider<IPopulation> populationProvider;
     @Inject
-    public Provider<IDeme> demeProvider;
+    protected Provider<IDeme> demeProvider;
     @Inject
-    public Provider<IInteractionTopology> topologyProvider;
+    protected Provider<IInteractionTopology> topologyProvider;
+    @Inject
+    protected ILogFiles logFileHandler;
+
     protected IPopulation population;
     protected IInteractionTopology topology;
 
@@ -49,6 +56,8 @@ public abstract class AbstractSimModel implements ISimulationModel {
 
     protected IPopulation agentPopulation;
     protected Integer lengthSimulation;
+    protected GlobalModelConfiguration params;
+    protected Properties modelProperties;
 
     public AbstractSimModel() {
         log = Logger.getLogger(this.getClass());
@@ -110,10 +119,19 @@ public abstract class AbstractSimModel implements ISimulationModel {
         return demeProvider;
     }
 
+    // TODO:  Deprecate this from all unit tests once a real simulation is fully complete - redo the test fixture model
     public void incrementModelTime() {
         synchronized(this.currentTime) {
             this.currentTime++;
         }
+    }
+
+    public ILogFiles getLogFileHandler() {
+        return this.logFileHandler;
+    }
+
+    public GlobalModelConfiguration getModelConfiguration() {
+        return this.params;
     }
 
     public void run() {
@@ -131,8 +149,18 @@ public abstract class AbstractSimModel implements ISimulationModel {
 
     public abstract void modelFinalize();
 
+
+
     public abstract void modelObservations();
 
     public abstract void modelStep();
 
+    protected void loadPropertiesToConfig() {
+        Set<String> propNames = this.modelProperties.stringPropertyNames();
+        for(String propName: propNames) {
+            this.params.setProperty(propName, this.modelProperties.getProperty(propName));
+        }
+
+        log.debug("params: " + this.params);
+    }
 }

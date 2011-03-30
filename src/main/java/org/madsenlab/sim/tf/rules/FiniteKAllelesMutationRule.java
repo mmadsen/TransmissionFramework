@@ -9,7 +9,6 @@
 
 package org.madsenlab.sim.tf.rules;
 
-import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 
@@ -24,7 +23,7 @@ import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 public class FiniteKAllelesMutationRule extends AbstractInteractionRule {
     Double mutationRate;
 
-    public FiniteKAllelesMutationRule(ISimulationModel m, GlobalModelConfiguration params) {
+    public FiniteKAllelesMutationRule(ISimulationModel m) {
         model = m;
         log = model.getModelLogger(this.getClass());
         this.setRuleName("FiniteKAllelesMutation");

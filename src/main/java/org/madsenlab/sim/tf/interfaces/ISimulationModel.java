@@ -11,6 +11,7 @@ package org.madsenlab.sim.tf.interfaces;
 
 import com.google.inject.Provider;
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 
 /**
  * Created by IntelliJ IDEA.
@@ -101,4 +102,8 @@ public interface ISimulationModel extends Runnable {
     public void modelObservations();
 
     public void modelFinalize();
+
+    public GlobalModelConfiguration getModelConfiguration();
+
+    public ILogFiles getLogFileHandler();
 }

@@ -17,9 +17,12 @@ import org.madsenlab.sim.tf.rules.FiniteKAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * CLASS DESCRIPTION
@@ -38,8 +41,9 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
     Boolean isInfiniteAlleles = false;
     Integer maxTraits;
     Integer startingTraits;
-    GlobalModelConfiguration params;
     List<ITraitStatisticsObserver<ITraitDimension>> observerList;
+    String propertiesFileName;
+
 
     // Undecided yet how to structure interaction rules generically so keeping them here for the moment
     List<IInteractionRule> ruleList;
@@ -49,40 +53,58 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
     // TODO:  Implement a finite mutation model with independent fw/back mutation rates
     // TODO:  Implement a model where extinct traits have some probability of being remembered, perhaps depending on how long they've been extinct.
     // TODO:  Implement an infinite alleles model with no back-mutation, and with back-mutation rate
-    // TODO:  Make the filename for all output configurable.  Do we need a config file that we pass on the command line?
     // TODO:  Implement a conformist rule among "neighbors"
     // TODO:  Implement a mixture of RCM and conformism with a given ratio
     // TODO:  Make each rule add a tag to the agents that hold it, so that we can query a deme of agents with that rule, so we can do stats on heterogenous pops
+    // TODO:  Need a batch execution model
+    // TODO:  Not happy with the per-run directory naming scheme etc...maybe we need opaque directory names and a database file indexing the run params and dirname?
 
 
+    private void initializeConfigurationFromProperties() {
+        // load parameter file
+        try {
+            this.modelProperties = new Properties();
+            this.modelProperties.load(new FileReader(this.propertiesFileName));
+            //log.debug(this.modelProperties);
+        }
+        catch(IOException ex) {
+            log.error("FATAL:  Could not load properties file: " + this.propertiesFileName);
+            System.exit(1);
+        }
+
+        this.loadPropertiesToConfig();
+        this.logFileHandler.initializeLogFileHandler();
+    }
 
     public void initializeModel() {
         // first, set up the traits in a dimension
         // second, set up agents, assigning an initial trait to each agent at random
         this.dimension = this.dimensionProvider.get();
         this.observerList = new ArrayList<ITraitStatisticsObserver<ITraitDimension>>();
+
+        this.initializeConfigurationFromProperties();
+
+
+
+        // Now can initialize Observers
         this.countObserver = new TraitCountObserver(this);
         this.freqObserver = new TraitFrequencyObserver(this);
         this.observerList.add(this.countObserver);
         this.observerList.add(this.freqObserver);
 
-
-        // TODO:  serious problem with CLI params and rule configuration - need xml or parameter files?
-
-
         // set up the stack of rules, to be fired in the order given in the list
         // in this first simulation, all agents get the same rule, but this need not be the
         // case - plan for heterogeneity!!
         this.ruleList = new ArrayList<IInteractionRule>();
-        IInteractionRule rcmRule = new RandomCopyNeighborSingleDimensionRule(this, this.params);
+        IInteractionRule rcmRule = new RandomCopyNeighborSingleDimensionRule(this);
 
         this.ruleList.add(rcmRule);
         if(this.isInfiniteAlleles) {
-            IInteractionRule iiMutation = new InfiniteAllelesMutationRule(this, this.params);
+            IInteractionRule iiMutation = new InfiniteAllelesMutationRule(this);
             this.ruleList.add(iiMutation);
         }
         else {
-            IInteractionRule fkMutation = new FiniteKAllelesMutationRule(this, this.params);
+            IInteractionRule fkMutation = new FiniteKAllelesMutationRule(this);
             this.ruleList.add(fkMutation);
         }
 
@@ -108,8 +130,9 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         // Verify proper initialization
         Map<ITrait, Double> freqMap = this.dimension.getCurGlobalTraitFrequencies();
         for(Map.Entry<ITrait,Double> entry: freqMap.entrySet()) {
-            log.debug("Trait " + entry.getKey().getTraitID() + " Freq: " + entry.getValue().toString());
+            log.trace("Trait " + entry.getKey().getTraitID() + " Freq: " + entry.getValue().toString());
         }
+
 
     }
 
@@ -123,6 +146,7 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         cliOptions.addOption("m", true, "mutation rate in decimal form (e.g., 0.001");
         cliOptions.addOption("s", true, "starting number of traits (must not be greater than max traits value");
         cliOptions.addOption("l", true, "length of simulation in steps");
+        cliOptions.addOption("p", true, "pathname of properties file giving general model configuration (e.g., log file locations)");
 
         // Option group for handling traits
         Option infiniteAllelesOption = new Option("i", false, "use infinite alleles model");
@@ -148,6 +172,7 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
             this.params.setInfiniteAlleles(true);
             this.isInfiniteAlleles = true;
             this.log.info("infinite alleles model selected - no maximum trait number");
+            this.params.setMaxTraits(Integer.MAX_VALUE);
         }
         else {
             this.params.setInfiniteAlleles(false);
@@ -163,6 +188,7 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         this.params.setNumAgents(Integer.parseInt(cmd.getOptionValue("n", "1000")));
         this.params.setMutationRate(Double.parseDouble(cmd.getOptionValue("m", "0.000001")));
         this.params.setStartingTraits(Integer.parseInt(cmd.getOptionValue("s", "2")));
+        this.propertiesFileName = cmd.getOptionValue("p", "tf-configuration.properties");
 
         // Report starting parameters
         this.log.info("starting number of traits: " + this.params.getStartingTraits());
@@ -170,8 +196,9 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         this.log.info("number of agents: " + this.params.getNumAgents());
         this.log.info("mutation rate: " + this.params.getMutationRate());
         this.log.info("simulation length: " + this.params.getLengthSimulation());
+        this.log.info("properties file: " + this.propertiesFileName);
 
-        this.log.debug("exiting parseCommandLineOptions");
+        this.log.trace("exiting parseCommandLineOptions");
     }
 
     public void modelStep() {
@@ -197,8 +224,6 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
            obs.finalizeObservation();
        }
        log.info("Finalizing model run, writing historical data, and closing any files or connections");
-   }
-
-
+    }
 
 }

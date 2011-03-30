@@ -14,9 +14,6 @@ import org.junit.Ignore;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.TraitIDComparator;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
@@ -44,12 +41,15 @@ public class TraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDi
         this.log = this.model.getModelLogger(this.getClass());
         this.histTraitFreq = new HashMap<Integer,Map<ITrait, Double>>();
 
-        try{
-            this.pw = new PrintWriter(new BufferedWriter(new FileWriter("trait-frequencies-by-time.txt")));
-        } catch(IOException ex) {
-            log.error("ERROR CREATING TRAIT FREQUENCIES BY TIME LOG FILE");
-            System.exit(1);
-        }
+        String traitFreqLogFile = this.model.getModelConfiguration().getProperty("trait-frequency-logfile");
+        log.debug("traitFreqLogFile: " + traitFreqLogFile);
+        this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(traitFreqLogFile);
+//        try{
+//            this.pw = new PrintWriter(new BufferedWriter(new FileWriter("trait-frequencies-by-time.txt")));
+//        } catch(IOException ex) {
+//            log.error("ERROR CREATING TRAIT FREQUENCIES BY TIME LOG FILE");
+//            System.exit(1);
+//        }
     }
 
 
@@ -74,8 +74,10 @@ public class TraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDi
 
     public void finalizeObservation() {
         log.trace("entering finalizeObservation");
-        this.pw.flush();
-        this.pw.close();
+
+            this.pw.flush();
+            this.pw.close();
+
 
     }
 
@@ -102,6 +104,7 @@ public class TraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDi
     }
 
     private void logFrequencies() {
+        log.trace("entering logFrequencies");
         Set<Integer> keys = this.histTraitFreq.keySet();
         List<Integer> sortedKeys = new ArrayList<Integer>(keys);
         Collections.sort(sortedKeys);

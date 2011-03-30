@@ -26,9 +26,6 @@ import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 
 public class SimpleMoranDriftSim extends SimRunner {
 
-    int numAgents = 200;
-
-
     public static void main(String[] args) {
         Injector injector = Guice.createInjector(new SimpleMoranDriftModule());
         ISimulationModel model = injector.getInstance(ISimulationModel.class);

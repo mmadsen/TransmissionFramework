@@ -9,7 +9,6 @@
 
 package org.madsenlab.sim.tf.rules;
 
-import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 
@@ -24,12 +23,12 @@ import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 public class InfiniteAllelesMutationRule extends AbstractInteractionRule {
     Double mutationRate;
 
-    public InfiniteAllelesMutationRule(ISimulationModel m, GlobalModelConfiguration params) {
+    public InfiniteAllelesMutationRule(ISimulationModel m) {
         model = m;
         log = model.getModelLogger(this.getClass());
         this.setRuleName("InfiniteAllelesMutationRule");
         this.setRuleDescription("Randomly mutate trait to ");
-        this.mutationRate = params.getMutationRate();
+        this.mutationRate = this.model.getModelConfiguration().getMutationRate();
     }
 
     public void ruleBody(Object o) {

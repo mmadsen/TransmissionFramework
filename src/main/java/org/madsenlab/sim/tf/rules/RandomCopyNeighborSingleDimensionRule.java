@@ -27,7 +27,7 @@ import java.util.Set;
 
 public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRule {
 
-    public RandomCopyNeighborSingleDimensionRule(ISimulationModel m, GlobalModelConfiguration params) {
+    public RandomCopyNeighborSingleDimensionRule(ISimulationModel m) {
         model = m;
         log = model.getModelLogger(this.getClass());
         this.setRuleName("RCMNeighborSD");

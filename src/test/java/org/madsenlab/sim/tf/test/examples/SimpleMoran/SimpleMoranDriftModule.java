@@ -20,6 +20,7 @@ import org.madsenlab.sim.tf.structure.SimpleAgentTagProvider;
 import org.madsenlab.sim.tf.structure.WellMixedInteractionTopologyProvider;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitDimensionProvider;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitProvider;
+import org.madsenlab.sim.tf.utils.LogFileHandler;
 
 /**
  * Created by IntelliJ IDEA.
@@ -44,5 +45,6 @@ public class SimpleMoranDriftModule implements Module {
         binder.bind(IPopulation.class).toProvider(SimpleAgentPopulationProvider.class);
         binder.bind(IInteractionTopology.class).toProvider(WellMixedInteractionTopologyProvider.class);
         binder.bind(IDeme.class).toProvider(SimpleAgentDemeProvider.class);
+        binder.bind(ILogFiles.class).to(LogFileHandler.class);
     }
 }
