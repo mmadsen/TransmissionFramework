@@ -18,6 +18,8 @@ import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -58,6 +60,9 @@ public abstract class AbstractSimModel implements ISimulationModel {
     protected Integer lengthSimulation;
     protected GlobalModelConfiguration params;
     protected Properties modelProperties;
+    protected List<ITraitDimension> dimensionList;
+    protected List<ITraitStatisticsObserver<ITraitDimension>> observerList;
+
 
     public AbstractSimModel() {
         log = Logger.getLogger(this.getClass());
@@ -103,9 +108,19 @@ public abstract class AbstractSimModel implements ISimulationModel {
     public void initializeProviders() {
         this.population = populationProvider.get();
         this.topology = topologyProvider.get();
+        this.dimensionList = new ArrayList<ITraitDimension>();
+        this.observerList = new ArrayList<ITraitStatisticsObserver<ITraitDimension>>();
 
     }
 
+    public ITrait getNewTrait(ITraitDimension owningDimension) {
+        ITrait newTrait = this.traitProvider.get();
+        for(ITraitStatisticsObserver<ITraitDimension> obs: this.observerList) {
+            newTrait.attach(obs);
+            newTrait.setOwningDimension(owningDimension);
+        }
+        return newTrait;
+    }
 
     public Provider<ITrait> getTraitProvider() {
         return traitProvider;
@@ -115,11 +130,14 @@ public abstract class AbstractSimModel implements ISimulationModel {
         return dimensionProvider;
     }
 
+    public List<ITraitDimension> getTraitDimensions() {
+        return this.dimensionList;
+    }
+
     public Provider<IDeme> getDemeProvider() {
         return demeProvider;
     }
 
-    // TODO:  Deprecate this from all unit tests once a real simulation is fully complete - redo the test fixture model
     public void incrementModelTime() {
         synchronized(this.currentTime) {
             this.currentTime++;
@@ -138,6 +156,10 @@ public abstract class AbstractSimModel implements ISimulationModel {
         log.info("Beginning simulation run");
         while(this.currentTime < this.lengthSimulation) {
             // first perform a model step, then allow observations to be recorded as desired
+            //log.debug("========= STARTING MODEL STEP: " + this.currentTime + " ===========");
+            if(this.currentTime % 1000 == 0) {
+                log.info("    Time: " + this.currentTime);
+            }
             this.modelStep();
             this.modelObservations();
             this.incrementModelTime();

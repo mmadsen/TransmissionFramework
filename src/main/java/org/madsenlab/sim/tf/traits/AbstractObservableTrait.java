@@ -32,6 +32,7 @@ public abstract class AbstractObservableTrait implements ITrait {
 
     public void attach(ITraitStatisticsObserver obs) {
         synchronized (this.observers) {
+            log.trace("attaching to obs: " + obs);
             this.observers.add(obs);
         }
     }
@@ -51,9 +52,9 @@ public abstract class AbstractObservableTrait implements ITrait {
         //log.debug("entering notifyObservers");
 
         ITraitStatistic stat = this.getChangeStatistic();
-        //log.debug("change statistic: " + stat);
+        log.debug("change statistic: " + stat);
         for (ITraitStatisticsObserver obs : this.observers) {
-            //log.debug("obs: " + obs);
+            log.debug("notify observer: " + obs);
             obs.updateTraitStatistics(stat);
         }
 

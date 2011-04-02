@@ -54,9 +54,10 @@ public class TraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDi
 
 
     public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
+        log.trace("entering updateTraitStatistics");
         this.lastTimeIndexUpdated = stat.getTimeIndex();
         ITraitDimension dim = stat.getTarget();
-        Map<ITrait,Double> freqMap = new HashMap<ITrait,Double>(dim.getCurGlobalTraitFrequencies());
+        Map<ITrait,Double> freqMap = dim.getCurGlobalTraitFrequencies();
         this.histTraitFreq.put(this.lastTimeIndexUpdated,freqMap);
     }
 
@@ -83,8 +84,13 @@ public class TraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDi
 
     private void printFrequencies() {
         Integer time = this.model.getCurrentModelTime();
-        StringBuffer sb = prepareFrequencyLogString(time, this.histTraitFreq.get(time));
+
+        Map<ITrait,Double> freqMap = this.histTraitFreq.get(time);
+        //log.debug("printFrequencies - getting freqs for time: " + time + " : " + freqMap);
+
+        StringBuffer sb = prepareFrequencyLogString(time, freqMap);
         log.debug(sb.toString());
+        sb = null;
 
     }
 
@@ -113,7 +119,7 @@ public class TraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDi
             StringBuffer sb = prepareFrequencyLogString(time, freqMap);
             sb.append('\n');
             this.pw.write(sb.toString());
-            this.pw.flush();
+            //this.pw.flush();
         }
 
     }

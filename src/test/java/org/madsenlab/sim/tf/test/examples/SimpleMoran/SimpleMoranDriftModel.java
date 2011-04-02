@@ -41,7 +41,6 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
     Boolean isInfiniteAlleles = false;
     Integer maxTraits;
     Integer startingTraits;
-    List<ITraitStatisticsObserver<ITraitDimension>> observerList;
     String propertiesFileName;
 
 
@@ -80,7 +79,7 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         // first, set up the traits in a dimension
         // second, set up agents, assigning an initial trait to each agent at random
         this.dimension = this.dimensionProvider.get();
-        this.observerList = new ArrayList<ITraitStatisticsObserver<ITraitDimension>>();
+        this.dimensionList.add(this.dimension);
 
         this.initializeConfigurationFromProperties();
 

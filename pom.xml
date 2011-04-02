@@ -91,7 +91,11 @@
             <artifactId>jung-algorithms</artifactId>
             <version>2.0.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.0.0</version>
+        </dependency>
     </dependencies>
     <repositories>
 

@@ -11,6 +11,10 @@ package org.madsenlab.sim.tf.rules;
 
 import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
+import org.madsenlab.sim.tf.interfaces.ITrait;
+import org.madsenlab.sim.tf.interfaces.ITraitDimension;
+
+import java.util.List;
 
 /**
  * CLASS DESCRIPTION
@@ -27,7 +31,7 @@ public class InfiniteAllelesMutationRule extends AbstractInteractionRule {
         model = m;
         log = model.getModelLogger(this.getClass());
         this.setRuleName("InfiniteAllelesMutationRule");
-        this.setRuleDescription("Randomly mutate trait to ");
+        this.setRuleDescription("Randomly mutate trait with a probability to a completely new trait");
         this.mutationRate = this.model.getModelConfiguration().getMutationRate();
     }
 
@@ -40,11 +44,41 @@ public class InfiniteAllelesMutationRule extends AbstractInteractionRule {
         // a mutation "event" has occurred.  If not, the rule body does nothing.
         Double chance = this.model.getUniformDouble();
         if( chance < this.mutationRate ) {
+            ITraitDimension dim = this.getRandomTraitDimension();
+            log.trace("Number of traits/dim prior to mutation: " + dim.getTraitsInDimension().size());
+
             log.trace("Mutation occurred - chance : " + chance + " < mutationRate: " + this.mutationRate);
+            log.debug("Selected dimension: " + dim + " for mutation");
             // Generate a new trait
+            ITrait newTrait = this.model.getNewTrait(dim);
+            Integer timeAdded = 100000 + this.model.getCurrentModelTime();
+            newTrait.setTraitID(timeAdded.toString());
+            dim.addTrait(newTrait);
+
+            ITrait oldTrait = this.getRandomTraitFromAgent(thisAgent);
+            oldTrait.unadopt(thisAgent);
+            newTrait.adopt(thisAgent);
 
 
         }
 
     }
+
+    private ITraitDimension getRandomTraitDimension() {
+        List<ITraitDimension> dimensionList = this.model.getTraitDimensions();
+        Integer numDimensions = dimensionList.size();
+        ITraitDimension dim;
+
+        if(numDimensions == 1) {
+            // shortcut the obvious case
+            dim = dimensionList.get(0);
+
+        }
+        else {
+            Integer selectedDimNum = this.model.getUniformRandomInteger(numDimensions - 1);
+            dim = dimensionList.get(selectedDimNum);
+        }
+        return dim;
+    }
+
 }

@@ -13,6 +13,8 @@ import com.google.inject.Provider;
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: mark
@@ -92,6 +94,17 @@ public interface ISimulationModel extends Runnable {
     public Provider<ITrait> getTraitProvider();
 
     public Provider<ITraitDimension> getTraitDimensionProvider();
+
+    public List<ITraitDimension> getTraitDimensions();
+
+    /**
+     * Creating a new trait involves some housekeeping - like attaching all currently registered Observers
+     * to the new trait - otherwise *bad things happen*.  This utility method creates a new, unconfigured and empty
+     * trait, attaches all current observers, and returns it to the caller.  This is similar to the way IPopulation is
+     * responsible for agent creation, so we can do the housekeeping.
+     * @return
+     */
+    public ITrait getNewTrait(ITraitDimension owningDimension);
 
     public void parseCommandLineOptions(String[] args);
 

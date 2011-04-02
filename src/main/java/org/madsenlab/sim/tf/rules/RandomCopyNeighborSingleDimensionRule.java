@@ -13,7 +13,6 @@ import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.IInteractionTopology;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITrait;
-import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 
 import java.util.Set;
 
@@ -35,7 +34,7 @@ public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRu
     }
 
     public void ruleBody(Object o) {
-        //log.trace("entering rule body for: " + this.getRuleName());
+        log.debug("entering rule body for: " + this.getRuleName());
         IAgent thisAgent = (IAgent) o;
 
         // Get a random neighbor.  First, we need the interaction topology
