@@ -8,7 +8,7 @@ TF is the next generation of my TransmissionLab system, which had some design li
 
 * Minimize the amount of "tracking" and "accounting" work a simulation author needs to do. Make the "traits" (defined quite broadly) that agents adopt and which flow through the population self-counting under all circumstances.
 
-* Allow simulation authors to easily set up multiple mesoscopic or macroscopic "observables" in their simulations, without having to understand the internals of the framework. Simulation authors should simply be able to register one of their objects as an Observer for a given observable, and the framework should provide a steady stream of frequency or occurrence counts.
+* Allow simulation authors to easily set up multiple mesoscopic or macroscopic "observables" in their simulations, without having to understand the internals of the framework. Simulation authors should simply be able to register one of their objects as an Observer for a given observable, and the framework should provide a steady stream of frequency or occurrence counts.  The Observer is then responsible for calculating whatever macroscopic quantity needed from the stream of data.
 
 * Avoid pre-defining the notion of "mesoscopic" structure, and allow this to be defined as much as possible by simulation authors. Clearly, spatial and network structure requires specific support in the framework code, and this is provided. But in addition, the framework should support arbitrary structure through the use of "tagging," both for agents and for traits. Tags serve as arbitrary partitions of the agent and trait universes, and are self-tracking as well (i.e., traits maintain both global and tag-based adoption counts).
 

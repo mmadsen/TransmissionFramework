@@ -1,0 +1,12 @@
+org.madsenlab.sim.tf.agent
+org.madsenlab.sim.tf.analysis
+org.madsenlab.sim.tf.app
+org.madsenlab.sim.tf.config
+org.madsenlab.sim.tf.exceptions
+org.madsenlab.sim.tf.interfaces
+org.madsenlab.sim.tf.models
+org.madsenlab.sim.tf.population
+org.madsenlab.sim.tf.rules
+org.madsenlab.sim.tf.structure
+org.madsenlab.sim.tf.traits
+org.madsenlab.sim.tf.utils
