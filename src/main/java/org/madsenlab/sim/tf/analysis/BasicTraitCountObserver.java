@@ -7,7 +7,7 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.test.examples.SimpleMoran;
+package org.madsenlab.sim.tf.analysis;
 
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
@@ -27,11 +27,11 @@ import java.util.*;
 //@Ignore needed to prevent JUnit from trying to execute test helper classes
 
 @Ignore
-public class TraitCountObserver implements ITraitStatisticsObserver<ITraitDimension> {
+public class BasicTraitCountObserver implements ITraitStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
 
-    public TraitCountObserver(ISimulationModel m) {
+    public BasicTraitCountObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
     }

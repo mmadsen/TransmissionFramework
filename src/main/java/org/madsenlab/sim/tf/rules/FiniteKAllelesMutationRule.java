@@ -10,6 +10,8 @@
 package org.madsenlab.sim.tf.rules;
 
 import org.madsenlab.sim.tf.interfaces.IAgent;
+import org.madsenlab.sim.tf.interfaces.IInteractionRule;
+import org.madsenlab.sim.tf.interfaces.IMutationRule;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 
 /**
@@ -20,7 +22,7 @@ import org.madsenlab.sim.tf.interfaces.ISimulationModel;
  * Time: 11:13 AM
  */
 
-public class FiniteKAllelesMutationRule extends AbstractInteractionRule {
+public class FiniteKAllelesMutationRule extends AbstractInteractionRule implements IMutationRule {
     Double mutationRate;
 
     public FiniteKAllelesMutationRule(ISimulationModel m) {
@@ -38,14 +40,16 @@ public class FiniteKAllelesMutationRule extends AbstractInteractionRule {
         log.trace("entering rule body for: " + this.getRuleName());
         IAgent thisAgent = (IAgent) o;
 
+        // DECISION TO MUTATE OR COPY IS MADE IN ANOTHER RULE - IF THIS RULE FIRES AT ALL, IT JUST NEEDS
+        // TO PERFORM THE RIGHT KIND OF MUTATION
 
-        // Generate a random double between 0 and 1, if this value is less than the mutation rate,
-        // a mutation "event" has occurred.  If not, the rule body does nothing.
-        Double chance = this.model.getUniformDouble();
-        if( chance < this.mutationRate ) {
+    }
 
+    public void registerSubRule(IInteractionRule rule) {
+        // null in this implementation
+    }
 
-        }
-
+    public void deregisterSubRule(IInteractionRule rule) {
+        // null in this implementation
     }
 }

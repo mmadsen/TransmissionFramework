@@ -10,6 +10,8 @@
 package org.madsenlab.sim.tf.interfaces;
 
 
+import org.madsenlab.sim.tf.utils.AgentTagType;
+
 import java.util.List;
 import java.util.Map;
 
@@ -39,5 +41,9 @@ public interface IAgentTag {
     public Integer curAgentCount();
 
     public Map<Integer, Integer> getAgentCountHistory();
+
+    public void setTagType(AgentTagType type);
+
+    public AgentTagType getTagType();
 
 }

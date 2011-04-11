@@ -10,10 +10,7 @@
 package org.madsenlab.sim.tf.traits;
 
 import org.apache.log4j.Logger;
-import org.madsenlab.sim.tf.interfaces.ISimulationModel;
-import org.madsenlab.sim.tf.interfaces.ITrait;
-import org.madsenlab.sim.tf.interfaces.ITraitStatistic;
-import org.madsenlab.sim.tf.interfaces.ITraitStatisticsObserver;
+import org.madsenlab.sim.tf.interfaces.*;
 
 import java.util.List;
 
@@ -37,11 +34,23 @@ public abstract class AbstractObservableTrait implements ITrait {
         }
     }
 
+    public void attach(List<ITraitStatisticsObserver<ITraitDimension>> obsList) {
+        for(ITraitStatisticsObserver obs: obsList) {
+            this.attach(obs);
+        }
+    }
+
     public void detach(ITraitStatisticsObserver obs) {
         synchronized (this.observers) {
             this.observers.remove(obs);
         }
 
+    }
+
+    public void detach(List<ITraitStatisticsObserver<ITraitDimension>> obsList) {
+        for(ITraitStatisticsObserver obs: obsList) {
+            this.detach(obs);
+        }
     }
 
     public Integer getNumObservers() {

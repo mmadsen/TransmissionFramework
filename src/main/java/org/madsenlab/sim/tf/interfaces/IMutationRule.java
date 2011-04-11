@@ -9,28 +9,14 @@
 
 package org.madsenlab.sim.tf.interfaces;
 
-import java.util.List;
-
 /**
  * CLASS DESCRIPTION
  * <p/>
  * User: mark
- * Date: Aug 8, 2010
- * Time: 12:53:50 PM
+ * Date: 4/11/11
+ * Time: 10:07 AM
  */
 
-public interface IStatisticsSubject {
-
-    public void attach(ITraitStatisticsObserver obs);
-
-    public void attach(List<ITraitStatisticsObserver<ITraitDimension>> obsList);
-
-    public void detach(ITraitStatisticsObserver obs);
-
-    public void detach(List<ITraitStatisticsObserver<ITraitDimension>> obsList);
-
-    public Integer getNumObservers();
-
-    public void notifyObservers();
-
+public interface IMutationRule {
+    // purely a marker interface
 }

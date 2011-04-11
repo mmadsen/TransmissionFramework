@@ -33,6 +33,16 @@ public class GlobalModelConfiguration {
     Integer startingTraits;
     Map<String,String> otherProperties;
 
+    public Integer getNumDemes() {
+        return numDemes;
+    }
+
+    public void setNumDemes(Integer numDemes) {
+        this.numDemes = numDemes;
+    }
+
+    Integer numDemes;
+
     public Integer getLengthSimulation() {
         return lengthSimulation;
     }

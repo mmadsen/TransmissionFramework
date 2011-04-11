@@ -10,6 +10,8 @@
 package org.madsenlab.sim.tf.interfaces;
 
 
+import org.madsenlab.sim.tf.utils.AgentTagType;
+
 import java.util.List;
 import java.util.Set;
 
@@ -57,6 +59,8 @@ public interface IAgent {
     public void removeTag(IAgentTag tag);
 
     public Set<IAgentTag> getAgentTags();
+
+    public Set<IAgentTag> getAgentTagsMatchingType(AgentTagType type);
 
     public boolean hasTag(IAgentTag tag);
 

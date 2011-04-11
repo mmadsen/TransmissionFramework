@@ -32,4 +32,8 @@ public interface IInteractionRule extends Closure {
     String getRuleDescription();
 
     ITrait getRandomTraitFromAgent(IAgent thisAgent);
+
+    public void registerSubRule(IInteractionRule rule);
+
+    public void deregisterSubRule(IInteractionRule rule);
 }

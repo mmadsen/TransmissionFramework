@@ -12,6 +12,7 @@ package org.madsenlab.sim.tf.agent;
 import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.*;
+import org.madsenlab.sim.tf.utils.AgentTagType;
 
 import java.util.*;
 
@@ -136,6 +137,10 @@ public class DimensionalTraitAgent implements IAgent {
 
     public Set<IAgentTag> getAgentTags() {
         return new HashSet<IAgentTag>(this.tagSet);
+    }
+
+    public Set<IAgentTag> getAgentTagsMatchingType(AgentTagType type) {
+        return null;
     }
 
     public boolean hasTag(IAgentTag tag) {

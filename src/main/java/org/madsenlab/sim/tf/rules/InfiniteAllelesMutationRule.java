@@ -9,10 +9,7 @@
 
 package org.madsenlab.sim.tf.rules;
 
-import org.madsenlab.sim.tf.interfaces.IAgent;
-import org.madsenlab.sim.tf.interfaces.ISimulationModel;
-import org.madsenlab.sim.tf.interfaces.ITrait;
-import org.madsenlab.sim.tf.interfaces.ITraitDimension;
+import org.madsenlab.sim.tf.interfaces.*;
 
 import java.util.List;
 
@@ -24,7 +21,7 @@ import java.util.List;
  * Time: 11:37 AM
  */
 
-public class InfiniteAllelesMutationRule extends AbstractInteractionRule {
+public class InfiniteAllelesMutationRule extends AbstractInteractionRule implements IMutationRule {
     Double mutationRate;
 
     public InfiniteAllelesMutationRule(ISimulationModel m) {
@@ -39,28 +36,32 @@ public class InfiniteAllelesMutationRule extends AbstractInteractionRule {
         log.trace("entering rule body for: " + this.getRuleName());
         IAgent thisAgent = (IAgent) o;
 
+        // DECISION TO MUTATE OR COPY IS MADE IN ANOTHER RULE - IF THIS RULE FIRES AT ALL, IT JUST NEEDS
+        // TO PERFORM THE RIGHT KIND OF MUTATION
 
-        // Generate a random double between 0 and 1, if this value is less than the mutation rate,
-        // a mutation "event" has occurred.  If not, the rule body does nothing.
-        Double chance = this.model.getUniformDouble();
-        if( chance < this.mutationRate ) {
-            ITraitDimension dim = this.getRandomTraitDimension();
-            log.trace("Number of traits/dim prior to mutation: " + dim.getTraitsInDimension().size());
+        ITraitDimension dim = this.getRandomTraitDimension();
+        log.trace("Number of traits/dim prior to mutation: " + dim.getTraitsInDimension().size());
 
-            log.trace("Mutation occurred - chance : " + chance + " < mutationRate: " + this.mutationRate);
-            log.debug("Selected dimension: " + dim + " for mutation");
-            // Generate a new trait
-            ITrait newTrait = this.model.getNewTrait(dim);
-            Integer timeAdded = 100000 + this.model.getCurrentModelTime();
-            newTrait.setTraitID(timeAdded.toString());
-            dim.addTrait(newTrait);
+        log.debug("Selected dimension: " + dim + " for mutation");
+        // Generate a new trait
+        ITrait newTrait = this.model.getNewTrait(dim);
+        Integer timeAdded = 100000 + this.model.getCurrentModelTime();
+        newTrait.setTraitID(timeAdded.toString());
+        dim.addTrait(newTrait);
 
-            ITrait oldTrait = this.getRandomTraitFromAgent(thisAgent);
-            oldTrait.unadopt(thisAgent);
-            newTrait.adopt(thisAgent);
+        ITrait oldTrait = this.getRandomTraitFromAgent(thisAgent);
+        oldTrait.unadopt(thisAgent);
+        newTrait.adopt(thisAgent);
 
+    }
 
-        }
+    public void registerSubRule(IInteractionRule rule) {
+        //null in this implemention
+
+    }
+
+    public void deregisterSubRule(IInteractionRule rule) {
+        // null in this implementation
 
     }
 

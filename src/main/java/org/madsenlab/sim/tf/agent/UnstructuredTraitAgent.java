@@ -12,6 +12,7 @@ package org.madsenlab.sim.tf.agent;
 import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.*;
+import org.madsenlab.sim.tf.utils.AgentTagType;
 
 import java.util.*;
 
@@ -100,6 +101,18 @@ public class UnstructuredTraitAgent implements IAgent {
 
     public Set<IAgentTag> getAgentTags() {
         return new HashSet<IAgentTag>(this.tagSet);
+    }
+
+    public Set<IAgentTag> getAgentTagsMatchingType(AgentTagType type) {
+        HashSet<IAgentTag> matchingTags = new HashSet<IAgentTag>();
+
+        for(IAgentTag tag: this.tagSet) {
+            if(tag.getTagType() == type) {
+                matchingTags.add(tag);
+            }
+        }
+
+        return matchingTags;
     }
 
     public boolean hasTag(IAgentTag tag) {

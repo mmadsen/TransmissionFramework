@@ -9,10 +9,7 @@
 
 package org.madsenlab.sim.tf.rules;
 
-import org.madsenlab.sim.tf.interfaces.IAgent;
-import org.madsenlab.sim.tf.interfaces.IInteractionTopology;
-import org.madsenlab.sim.tf.interfaces.ISimulationModel;
-import org.madsenlab.sim.tf.interfaces.ITrait;
+import org.madsenlab.sim.tf.interfaces.*;
 
 import java.util.Set;
 
@@ -24,7 +21,7 @@ import java.util.Set;
  * Time: 2:39 PM
  */
 
-public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRule {
+public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRule implements ICopyingRule {
 
     public RandomCopyNeighborSingleDimensionRule(ISimulationModel m) {
         model = m;
@@ -54,6 +51,16 @@ public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRu
         // Now unadopt the existing trait from thisAgent, and adopt the neighbor's random trait
         focalTrait.unadopt(thisAgent);
         neighborTrait.adopt(thisAgent);
+
+    }
+
+    public void registerSubRule(IInteractionRule rule) {
+        // null in this implementation
+
+    }
+
+    public void deregisterSubRule(IInteractionRule rule) {
+        // null in this implementation
 
     }
 }

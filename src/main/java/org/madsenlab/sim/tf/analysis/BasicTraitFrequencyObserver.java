@@ -7,7 +7,7 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.test.examples.SimpleMoran;
+package org.madsenlab.sim.tf.analysis;
 
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
@@ -28,7 +28,7 @@ import java.util.*;
 //@Ignore needed to prevent JUnit from trying to execute test helper classes
 
 @Ignore
-public class TraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDimension> {
+public class BasicTraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
     private Map<ITrait, Double> traitFreqMap;
@@ -36,7 +36,7 @@ public class TraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDi
     private PrintWriter pw;
     private Map<Integer,Map<ITrait,Double>> histTraitFreq;
 
-    public TraitFrequencyObserver(ISimulationModel m) {
+    public BasicTraitFrequencyObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
         this.histTraitFreq = new HashMap<Integer,Map<ITrait, Double>>();
@@ -96,6 +96,7 @@ public class TraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDi
 
     private StringBuffer prepareFrequencyLogString(Integer time, Map<ITrait,Double> freqMap) {
         //log.debug("prepare string: freqMap: " + freqMap);
+        Integer numNonZeroTraits = 0;
         StringBuffer sb = new StringBuffer();
         Set<ITrait> keys = freqMap.keySet();
         List<ITrait> sortedKeys = new ArrayList<ITrait>(keys);
@@ -104,8 +105,12 @@ public class TraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDi
         for (ITrait aTrait : sortedKeys) {
             sb.append(",");
             sb.append(freqMap.get(aTrait));
-
+            if(freqMap.get(aTrait) != 0) {
+                numNonZeroTraits++;
+            }
         }
+        sb.append(",");
+        sb.append(numNonZeroTraits);
         return sb;
     }
 

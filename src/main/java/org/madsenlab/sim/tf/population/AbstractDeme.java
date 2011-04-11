@@ -65,7 +65,7 @@ public class AbstractDeme implements IDeme {
 
     public IDeme getDemeForTag(IAgentTag tag) {
         AgentPredicate pred = new AgentTagPredicate(tag);
-        return getDemeMatchingPredicate(pred);
+        return this.getDemeMatchingPredicate(pred);
     }
 
     public IDeme getDemeMatchingPredicate(AgentPredicate pred) {

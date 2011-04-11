@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.IAgentTag;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
+import org.madsenlab.sim.tf.utils.AgentTagType;
 
 import java.util.*;
 
@@ -26,6 +27,7 @@ public class SimpleAgentTag implements IAgentTag {
     private Map<Integer, Integer> histAgentCountMap;
     private ISimulationModel model;
     private Logger log;
+    private AgentTagType type;
 
     public SimpleAgentTag() {
         this.initialize();
@@ -83,6 +85,14 @@ public class SimpleAgentTag implements IAgentTag {
 
     public Map<Integer, Integer> getAgentCountHistory() {
         return new HashMap<Integer, Integer>(this.histAgentCountMap);
+    }
+
+    public void setTagType(AgentTagType type) {
+        this.type = type;
+    }
+
+    public AgentTagType getTagType() {
+        return this.type;
     }
 
     private synchronized void incrementAdoptionCount() {

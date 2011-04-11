@@ -11,10 +11,7 @@ package org.madsenlab.sim.tf.population;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.madsenlab.sim.tf.interfaces.IAgent;
-import org.madsenlab.sim.tf.interfaces.IDeme;
-import org.madsenlab.sim.tf.interfaces.IPopulation;
-import org.madsenlab.sim.tf.interfaces.ISimulationModel;
+import org.madsenlab.sim.tf.interfaces.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,6 +56,12 @@ public class SimpleAgentPopulation extends AbstractDeme implements IPopulation, 
             log.trace("Population size now: " + agentList.size());
         }
 
+        return newAgent;
+    }
+
+    public IAgent createAgentWithTag(IAgentTag tag) {
+        IAgent newAgent = this.createAgent();
+        newAgent.addTag(tag);
         return newAgent;
     }
 

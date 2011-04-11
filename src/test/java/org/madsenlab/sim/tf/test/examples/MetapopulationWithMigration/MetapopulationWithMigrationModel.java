@@ -7,11 +7,14 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.test.examples.SimpleMoran;
+package org.madsenlab.sim.tf.test.examples.MetapopulationWithMigration;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.apache.commons.cli.*;
 import org.madsenlab.sim.tf.analysis.BasicTraitCountObserver;
 import org.madsenlab.sim.tf.analysis.BasicTraitFrequencyObserver;
+import org.madsenlab.sim.tf.analysis.PerDemeTraitFrequencyObserver;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.models.AbstractSimModel;
@@ -19,13 +22,11 @@ import org.madsenlab.sim.tf.rules.CopyOrMutateDecisionRule;
 import org.madsenlab.sim.tf.rules.FiniteKAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule;
+import org.madsenlab.sim.tf.utils.AgentTagType;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * CLASS DESCRIPTION
@@ -35,7 +36,7 @@ import java.util.Properties;
  * Time: 10:19:32 AM
  */
 
-public class SimpleMoranDriftModel extends AbstractSimModel {
+public class MetapopulationWithMigrationModel extends AbstractSimModel {
     BasicTraitCountObserver countObserver;
     BasicTraitFrequencyObserver freqObserver;
     ITraitDimension dimension;
@@ -45,21 +46,24 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
     Integer maxTraits;
     Integer startingTraits;
     String propertiesFileName;
+    List<IAgentTag> demeTagList;
+    @Inject
+    Provider<IAgentTag> tagProvider;
 
 
     // Undecided yet how to structure interaction rules generically so keeping them here for the moment
     List<IInteractionRule> ruleList;
 
 
-    // TODO:  Implement a finite mutation model for K alleles with symmetric fw/back mutation rates
-    // TODO:  Implement a finite mutation model with independent fw/back mutation rates
-    // TODO:  Implement a model where extinct traits have some probability of being remembered, perhaps depending on how long they've been extinct.
-    // TODO:  Implement an infinite alleles model with no back-mutation, and with back-mutation rate
-    // TODO:  Implement a conformist rule among "neighbors"
-    // TODO:  Implement a mixture of RCM and conformism with a given ratio
-    // TODO:  Make each rule add a tag to the agents that hold it, so that we can query a deme of agents with that rule, so we can do stats on heterogenous pops
-    // TODO:  Need a batch execution model
-    // TODO:  Not happy with the per-run directory naming scheme etc...maybe we need opaque directory names and a database file indexing the run params and dirname?
+    // TODO:  MWM: Implement a finite mutation model for K alleles with symmetric fw/back mutation rates
+    // TODO:  MWM: Implement a finite mutation model with independent fw/back mutation rates
+    // TODO:  MWM: Implement a model where extinct traits have some probability of being remembered, perhaps depending on how long they've been extinct.
+    // TODO:  MWM: Implement an infinite alleles model with no back-mutation, and with back-mutation rate
+    // TODO:  MWM: Implement a conformist rule among "neighbors"
+    // TODO:  MWM: Implement a mixture of RCM and conformism with a given ratio
+    // TODO:  MWM: Make each rule add a tag to the agents that hold it, so that we can query a deme of agents with that rule, so we can do stats on heterogenous pops
+    // TODO:  MWM: Need a batch execution model
+    // TODO:  MWM: Not happy with the per-run directory naming scheme etc...maybe we need opaque directory names and a database file indexing the run params and dirname?
 
 
     private void initializeConfigurationFromProperties() {
@@ -79,6 +83,10 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
     }
 
     public void initializeModel() {
+        this.demeTagList = new ArrayList<IAgentTag>();
+        // needed only temporarily to later initialize demes and agents
+        HashMap<Integer,IAgentTag> demeTagMap = new HashMap<Integer,IAgentTag>();
+
         // first, set up the traits in a dimension
         // second, set up agents, assigning an initial trait to each agent at random
         this.dimension = this.dimensionProvider.get();
@@ -88,11 +96,27 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
 
 
 
-        // Now can initialize Observers
+        // Now can initialize simulation-global Observers
+        // Deme-specific observers are initialized below during population construction
         this.countObserver = new BasicTraitCountObserver(this);
         this.freqObserver = new BasicTraitFrequencyObserver(this);
         this.observerList.add(this.countObserver);
         this.observerList.add(this.freqObserver);
+
+        // Construct trait frequency observers for each deme - need to do this now, so we can register
+        // each with the traits they observe
+        for(Integer i = 0; i < this.params.getNumDemes(); i++ ) {
+            // Construct a tag that marks all agents in this deme
+            IAgentTag demeTag = this.tagProvider.get();
+            demeTag.setTagType(AgentTagType.DEME);
+            demeTag.setTagName(i.toString());
+            this.demeTagList.add(demeTag);
+            demeTagMap.put(i,demeTag); // not used outside initializeModel()
+            PerDemeTraitFrequencyObserver demeObs = new PerDemeTraitFrequencyObserver(this, demeTag);
+            this.observerList.add(demeObs);
+        }
+
+        log.debug("demeTagMap: " + demeTagMap);
 
         // set up the stack of rules, to be fired in the order given in the list
         // in this first simulation, all agents get the same rule, but this need not be the
@@ -115,24 +139,36 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         // Just add the decision rule, since it has two subrules
         this.ruleList.add(decisionRule);
 
-
         this.log.debug("Creating one dimension and " + this.params.getStartingTraits() + " traits to begin");
         for (Integer i = 0; i < this.params.getStartingTraits(); i++) {
             ITrait newTrait = this.traitProvider.get();
             newTrait.setTraitID(i.toString());
             newTrait.setOwningDimension(this.dimension);
             this.dimension.addTrait(newTrait);
-            newTrait.attach(this.countObserver);
-            newTrait.attach(this.freqObserver);
+            newTrait.attach(this.observerList);
         }
 
         this.log.debug("Creating " + this.params.getNumAgents() + " agents with random starting traits");
-        for (Integer i = 0; i < this.params.getNumAgents(); i++) {
-            IAgent agent = this.getPopulation().createAgent();
-            agent.setAgentID(i.toString());
-            agent.addInteractionRuleList(this.ruleList);
-            ITrait randomTrait = this.dimension.getRandomTraitFromDimension();
-            randomTrait.adopt(agent);
+        Integer numDemes = this.params.getNumDemes();
+        Integer numAgents = this.params.getNumAgents();
+        Integer numAgentsPerDeme = numAgents / numDemes;
+
+        if(numAgents % numDemes != 0) {
+            log.info("numAgents is not an integer multiple of numDemes, using only " + numAgentsPerDeme + " agents");
+        }
+
+        for(Integer i = 0; i < numDemes; i++) {
+            IAgentTag demeTag = demeTagMap.get(i);
+
+            log.debug("Creating " + numAgentsPerDeme + " agents with deme tag: " + i);
+
+            for(Integer j = 0; j < numAgentsPerDeme; j++) {
+                IAgent agent = this.getPopulation().createAgentWithTag(demeTag);
+                agent.setAgentID(i.toString());
+                agent.addInteractionRuleList(this.ruleList);
+                ITrait randomTrait = this.dimension.getRandomTraitFromDimension();
+                randomTrait.adopt(agent);
+            }
         }
 
         // Verify proper initialization
@@ -155,6 +191,7 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         cliOptions.addOption("s", true, "starting number of traits (must not be greater than max traits value");
         cliOptions.addOption("l", true, "length of simulation in steps");
         cliOptions.addOption("p", true, "pathname of properties file giving general model configuration (e.g., log file locations)");
+        cliOptions.addOption("d", true, "number of demes in the metapopulation (make this an integer multiple of -n");
 
         // Option group for handling traits
         Option infiniteAllelesOption = new Option("i", false, "use infinite alleles model");
@@ -197,6 +234,7 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         this.params.setMutationRate(Double.parseDouble(cmd.getOptionValue("m", "0.000001")));
         this.params.setStartingTraits(Integer.parseInt(cmd.getOptionValue("s", "2")));
         this.propertiesFileName = cmd.getOptionValue("p", "tf-configuration.properties");
+        this.params.setNumDemes(Integer.parseInt(cmd.getOptionValue("d", "2")));
 
         // Report starting parameters
         this.log.info("starting number of traits: " + this.params.getStartingTraits());
@@ -204,6 +242,7 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         this.log.info("number of agents: " + this.params.getNumAgents());
         this.log.info("mutation rate: " + this.params.getMutationRate());
         this.log.info("simulation length: " + this.params.getLengthSimulation());
+        this.log.info("number of demes: " + this.params.getNumDemes());
         this.log.info("properties file: " + this.propertiesFileName);
 
         this.log.trace("exiting parseCommandLineOptions");

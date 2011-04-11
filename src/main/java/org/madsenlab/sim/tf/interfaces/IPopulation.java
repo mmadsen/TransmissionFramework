@@ -40,6 +40,12 @@ public interface IPopulation extends IDeme {
     public IAgent createAgent();
 
     /**
+     * Creates a newly initialized agent, using {@link createAgent}, and tags the agent with the provided
+     * tag.  Following this, the new agent is returned to the caller.
+     */
+    public IAgent createAgentWithTag(IAgentTag tag);
+
+    /**
      * Removes a specified agent from the population (allowing simulation of death or outmigration,
      * for example).  Any population structure object registered with this population is notified, so
      * that the agent can be removed (e.g., vertex and links in a network removed), the population size
