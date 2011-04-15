@@ -61,7 +61,9 @@ public class SimpleAgentPopulation extends AbstractDeme implements IPopulation, 
 
     public IAgent createAgentWithTag(IAgentTag tag) {
         IAgent newAgent = this.createAgent();
+        log.trace("adding tag [" + tag + "] to new agent");
         newAgent.addTag(tag);
+        tag.registerAgent(newAgent);
         return newAgent;
     }
 

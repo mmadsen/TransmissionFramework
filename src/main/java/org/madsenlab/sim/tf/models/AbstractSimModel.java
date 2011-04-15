@@ -30,7 +30,7 @@ import java.util.Set;
  * Time: 2:51:57 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class AbstractSimModel implements ISimulationModel {
+public abstract class  AbstractSimModel implements ISimulationModel {
     protected Logger log;
     protected Integer currentTime = 0;
     @Inject

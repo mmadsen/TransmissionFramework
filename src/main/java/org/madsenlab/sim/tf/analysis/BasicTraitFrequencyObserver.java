@@ -10,7 +10,6 @@
 package org.madsenlab.sim.tf.analysis;
 
 import org.apache.log4j.Logger;
-import org.junit.Ignore;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.TraitIDComparator;
 
@@ -25,9 +24,7 @@ import java.util.*;
  * Time: 3:19:51 PM
  */
 
-//@Ignore needed to prevent JUnit from trying to execute test helper classes
 
-@Ignore
 public class BasicTraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;

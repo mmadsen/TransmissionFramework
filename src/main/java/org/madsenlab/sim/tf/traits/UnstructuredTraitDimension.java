@@ -107,14 +107,14 @@ public class UnstructuredTraitDimension implements ITraitDimension {
 
     public Map<ITrait, Integer> getCurTraitCountByTag(IAgentTag tag) {
         Preconditions.checkNotNull(tag, "Getting trait counts by tag requires a non-null reference to an IAgentTag object");
-        log.debug("Entering getCurTraitCountByTag");
+        log.debug("Entering getCurTraitCountByTag for tag: " + tag);
 
         // We use a Set to gather a unique list of the traits held by all
         // agents tagged with the tag specified.    
         Set<ITrait> traitsAdopted = new HashSet<ITrait>();
         List<IAgent> agentList = tag.getCurAgentsTagged();
 
-        //log.debug("agents tagged: " + agentList.size())
+        log.debug("agents tagged: " + agentList.size());
 
 
         for (IAgent agent : agentList) {
@@ -126,7 +126,7 @@ public class UnstructuredTraitDimension implements ITraitDimension {
             }
         }
 
-        //log.debug("traitsAdopted size: " + traitsAdopted.size());
+        log.debug("traitsAdopted size: " + traitsAdopted.size());
 
         // Now we go through and ask each trait its adoption count for
         // this tag
@@ -148,19 +148,19 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         Preconditions.checkNotNull(tag, "Getting trait frequencies by tag requires a non-null reference to an IAgentTag object");
         Integer agentCountForTag = tag.curAgentCount();
 
-        if (agentCountForTag == 0) {
-            throw new IllegalStateException("Cannot calculate frequency with no adoptees for tag");
-        }
-
         Map<ITrait, Integer> adoptionCountMap = this.getCurTraitCountByTag(tag);
+        log.trace("adoptionCountMap: " + adoptionCountMap);
         Map<ITrait, Double> adoptionFreqMap = new HashMap<ITrait, Double>();
 
         for (ITrait trait : adoptionCountMap.keySet()) {
-            double freq = (double) adoptionCountMap.get(trait) / (double) agentCountForTag;
-
-            log.debug("count: " + adoptionCountMap.get(trait) + " total: " + agentCountForTag + " freq: " + freq);
-
-            adoptionFreqMap.put(trait, freq);
+            if(agentCountForTag == 0) {
+                adoptionFreqMap.put(trait,0.0);
+            }
+            else {
+                double freq = (double) adoptionCountMap.get(trait) / (double) agentCountForTag;
+                log.debug("count: " + adoptionCountMap.get(trait) + " total: " + agentCountForTag + " freq: " + freq);
+                adoptionFreqMap.put(trait, freq);
+            }
         }
 
         return adoptionFreqMap;

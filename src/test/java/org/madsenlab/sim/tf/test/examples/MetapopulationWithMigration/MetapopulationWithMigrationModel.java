@@ -157,16 +157,23 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
             log.info("numAgents is not an integer multiple of numDemes, using only " + numAgentsPerDeme + " agents");
         }
 
+        // Debug only
+        //XStream xs = new XStream();
+
         for(Integer i = 0; i < numDemes; i++) {
             IAgentTag demeTag = demeTagMap.get(i);
 
-            log.debug("Creating " + numAgentsPerDeme + " agents with deme tag: " + i);
+            log.debug("Creating " + numAgentsPerDeme + " agents with deme : " + demeTag);
 
             for(Integer j = 0; j < numAgentsPerDeme; j++) {
+                log.trace("creating agent " + j + " for deme " + i);
                 IAgent agent = this.getPopulation().createAgentWithTag(demeTag);
                 agent.setAgentID(i.toString());
                 agent.addInteractionRuleList(this.ruleList);
                 ITrait randomTrait = this.dimension.getRandomTraitFromDimension();
+
+                if(!agent.hasTag(demeTag)) { throw new IllegalStateException("agent doesn't have the deme tag"); }
+
                 randomTrait.adopt(agent);
             }
         }

@@ -12,23 +12,16 @@ package org.madsenlab.sim.tf.test;
 import atunit.AtUnit;
 import atunit.Container;
 import atunit.Unit;
-import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import com.google.inject.Singleton;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.madsenlab.sim.tf.agent.UnstructuredTraitAgentProvider;
-import org.madsenlab.sim.tf.interfaces.*;
-import org.madsenlab.sim.tf.population.SimpleAgentDemeProvider;
-import org.madsenlab.sim.tf.population.SimpleAgentPopulationProvider;
-import org.madsenlab.sim.tf.structure.WellMixedInteractionTopologyProvider;
-import org.madsenlab.sim.tf.test.util.SimulationModelFixture;
-import org.madsenlab.sim.tf.traits.UnstructuredTraitDimensionProvider;
-import org.madsenlab.sim.tf.traits.UnstructuredTraitProvider;
+import org.madsenlab.sim.tf.interfaces.IAgent;
+import org.madsenlab.sim.tf.interfaces.ISimulationModel;
+import org.madsenlab.sim.tf.test.util.AbstractGuiceTestClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +41,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
-public class PopulationDynamicsManagementTest implements Module {
+public class PopulationDynamicsManagementTest extends AbstractGuiceTestClass implements Module {
     @Inject
     @Unit
     public ISimulationModel model;
@@ -140,13 +133,5 @@ public class PopulationDynamicsManagementTest implements Module {
     }
 
 
-    public void configure(Binder binder) {
-        binder.bind(ITrait.class).toProvider(UnstructuredTraitProvider.class);
-        binder.bind(ITraitDimension.class).toProvider(UnstructuredTraitDimensionProvider.class);
-        binder.bind(IAgent.class).toProvider(UnstructuredTraitAgentProvider.class);
-        binder.bind(ISimulationModel.class).to(SimulationModelFixture.class).in(Singleton.class);
-        binder.bind(IPopulation.class).toProvider(SimpleAgentPopulationProvider.class);
-        binder.bind(IDeme.class).toProvider(SimpleAgentDemeProvider.class);
-        binder.bind(IInteractionTopology.class).toProvider(WellMixedInteractionTopologyProvider.class);
-    }
+
 }
