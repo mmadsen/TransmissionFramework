@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@mmadsen.org>
+ * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -64,13 +64,17 @@ public interface IAgent {
 
     public boolean hasTag(IAgentTag tag);
 
-    /* Interaction and Rule related methods */
+    /* Interaction and Observation Rule related methods */
 
-    public void addInteractionRule(IInteractionRule rule);
+    public void addActionRule(IActionRule rule);
 
-    public void addInteractionRuleList(List<IInteractionRule> ruleList);
+    public void addActionRuleList(List<IActionRule> ruleList);
 
     public void fireRules();
+
+
+    // Not sure this interaction-versus-observation rule distinction should stand....?
+
 
     /* Adoption related methods */
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@mmadsen.org>
+ * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -28,7 +28,7 @@ public class UnstructuredTraitAgent implements IAgent {
     private Logger log;
     private Set<ITrait> traitsAdopted;
     private Set<IAgentTag> tagSet;
-    private List<IInteractionRule> ruleList;
+    private List<IActionRule> ruleList;
 
     public UnstructuredTraitAgent() {
         super();
@@ -44,7 +44,7 @@ public class UnstructuredTraitAgent implements IAgent {
     private void initialize() {
         this.traitsAdopted = Collections.synchronizedSet(new HashSet<ITrait>());
         this.tagSet = Collections.synchronizedSet(new HashSet<IAgentTag>());
-        this.ruleList = new ArrayList<IInteractionRule>();
+        this.ruleList = new ArrayList<IActionRule>();
     }
 
     public String getAgentID() {
@@ -121,18 +121,18 @@ public class UnstructuredTraitAgent implements IAgent {
         return containsTag;
     }
 
-    public void addInteractionRule(IInteractionRule rule) {
+    public void addActionRule(IActionRule rule) {
         this.ruleList.add(rule);
     }
 
-    public void addInteractionRuleList(List<IInteractionRule> fullRuleList) {
+    public void addActionRuleList(List<IActionRule> fullRuleList) {
         this.ruleList = null;
         this.ruleList = fullRuleList;
     }
 
 
     /*
-        Because the Apache Commons functor library doesn't support generic types, IInteractionRules
+        Because the Apache Commons functor library doesn't support generic types, IActionRules
         take Objects, but really what needs to be passed in are IAgent objects.  Rules already
         have access to the Model object by virtue of their construction and initialization
         which means they have access to the IPopulation and so on.  What they need when executed
@@ -141,7 +141,7 @@ public class UnstructuredTraitAgent implements IAgent {
      */
     public void fireRules() {
 
-        for(IInteractionRule rule: ruleList) {
+        for(IActionRule rule: ruleList) {
             rule.execute(this);
         }
     }

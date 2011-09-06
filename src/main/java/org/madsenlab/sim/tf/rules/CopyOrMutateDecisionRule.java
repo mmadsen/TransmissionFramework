@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@mmadsen.org>
+ * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -23,16 +23,16 @@ import java.util.List;
  */
 
 public class CopyOrMutateDecisionRule extends AbstractInteractionRule {
-    private List<IInteractionRule> copyingRuleList;
-    private List<IInteractionRule> mutationRuleList;
+    private List<IActionRule> copyingRuleList;
+    private List<IActionRule> mutationRuleList;
     private Double mutationRate;
 
     public CopyOrMutateDecisionRule(ISimulationModel m) {
         this.model = m;
         this.log = model.getModelLogger(this.getClass());
 
-        this.copyingRuleList = new ArrayList<IInteractionRule>();
-        this.mutationRuleList = new ArrayList<IInteractionRule>();
+        this.copyingRuleList = new ArrayList<IActionRule>();
+        this.mutationRuleList = new ArrayList<IActionRule>();
 
         this.setRuleName("CopyOrMutateDecisionRule");
         this.setRuleDescription("Ensure that either copying or mutation happens in a single time step in a continuous-time simulation");
@@ -48,20 +48,20 @@ public class CopyOrMutateDecisionRule extends AbstractInteractionRule {
         if( draw < this.mutationRate ) {
             // fire the mutation rule stack
             log.debug("mutation occurred with random draw: " + draw + " < rate: " + this.mutationRate);
-            for(IInteractionRule rule: this.mutationRuleList) {
+            for(IActionRule rule: this.mutationRuleList) {
                 rule.execute(o);
             }
         }
         else {
             // fire the copying rule stack
             log.debug("no mutation - firing copying rule stack");
-            for(IInteractionRule rule: this.copyingRuleList) {
+            for(IActionRule rule: this.copyingRuleList) {
                 rule.execute(o);
             }
         }
     }
 
-    public void registerSubRule(IInteractionRule rule) {
+    public void registerSubRule(IActionRule rule) {
         if(rule instanceof ICopyingRule) {
             this.copyingRuleList.add(rule);
         }
@@ -75,7 +75,7 @@ public class CopyOrMutateDecisionRule extends AbstractInteractionRule {
 
     }
 
-    public void deregisterSubRule(IInteractionRule rule) {
+    public void deregisterSubRule(IActionRule rule) {
         if(rule instanceof ICopyingRule) {
             this.copyingRuleList.remove(rule);
         }

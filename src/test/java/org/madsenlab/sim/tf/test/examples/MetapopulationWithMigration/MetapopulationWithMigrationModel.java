@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@mmadsen.org>
+ * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -52,7 +52,7 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
 
 
     // Undecided yet how to structure interaction rules generically so keeping them here for the moment
-    List<IInteractionRule> ruleList;
+    List<IActionRule> ruleList;
 
 
     // TODO:  MWM: Implement a finite mutation model for K alleles with symmetric fw/back mutation rates
@@ -121,7 +121,7 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
         // set up the stack of rules, to be fired in the order given in the list
         // in this first simulation, all agents get the same rule, but this need not be the
         // case - plan for heterogeneity!!
-        this.ruleList = new ArrayList<IInteractionRule>();
+        this.ruleList = new ArrayList<IActionRule>();
         IInteractionRule decisionRule = new CopyOrMutateDecisionRule(this);
         IInteractionRule rcmRule = new RandomCopyNeighborSingleDimensionRule(this);
         decisionRule.registerSubRule(rcmRule);
@@ -169,7 +169,7 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
                 log.trace("creating agent " + j + " for deme " + i);
                 IAgent agent = this.getPopulation().createAgentWithTag(demeTag);
                 agent.setAgentID(i.toString());
-                agent.addInteractionRuleList(this.ruleList);
+                agent.addActionRuleList(this.ruleList);
                 ITrait randomTrait = this.dimension.getRandomTraitFromDimension();
 
                 if(!agent.hasTag(demeTag)) { throw new IllegalStateException("agent doesn't have the deme tag"); }
