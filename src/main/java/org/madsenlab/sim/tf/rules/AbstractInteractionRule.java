@@ -9,10 +9,8 @@
 
 package org.madsenlab.sim.tf.rules;
 
-import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.IInteractionRule;
-import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITrait;
 
 import java.util.ArrayList;
@@ -26,43 +24,7 @@ import java.util.Set;
  * Time: 4:20:49 PM
  */
 
-public abstract class AbstractInteractionRule implements IInteractionRule {
-    protected ISimulationModel model;
-    protected Logger log;
-
-    public String getRuleName() {
-        return ruleName;
-    }
-
-    public void setRuleName(String ruleName) {
-        this.ruleName = ruleName;
-    }
-
-    public void setRuleDescription(String ruleDescription) {
-        this.ruleDescription = ruleDescription;
-    }
-
-    public String getRuleDescription() {
-        return this.ruleDescription;
-    }
-
-    protected String ruleName;
-    protected String ruleDescription;
-
-
-    public void execute(Object o) {
-        this._preExecution();
-        ruleBody(o);
-        this._postExecution();
-    }
-
-    protected void _preExecution() {
-        //log.trace("Entering _preExecution on rule " + this.getRuleName());
-    }
-
-    protected void _postExecution() {
-        //log.trace("Entering _postExecution on rule " + this.getRuleName());
-    }
+public abstract class AbstractInteractionRule extends AbstractActionRule implements IInteractionRule {
 
     // if anything except a rule uses this code, might want to refactor it into IAgent and impl. classes
     public ITrait getRandomTraitFromAgent(IAgent thisAgent) {
@@ -82,6 +44,5 @@ public abstract class AbstractInteractionRule implements IInteractionRule {
         return focalTrait;
     }
 
-    public abstract void ruleBody(Object o);
 
 }

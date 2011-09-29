@@ -33,9 +33,9 @@ public interface IArtifactTag {
 
     public List<IArtifact> getCurArtifactsTagged();
 
-    public void registerArtifact(IAgent agent);
+    public void registerArtifact(IArtifact artifact);
 
-    public void unregisterArtifact(IAgent agent);
+    public void unregisterArtifact(IArtifact artifact);
 
 
     public Integer curArtifactCount();

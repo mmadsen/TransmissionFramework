@@ -22,20 +22,22 @@ import java.util.List;
  * Time: 10:15 AM
  */
 
-public class CopyFromAgentOrArtifactDecisionRule extends AbstractInteractionRule {
-    private List<IActionRule> copyingRuleList;
-    private List<IActionRule> mutationRuleList;
+public class CopyFromAgentOrArtifactDecisionRule extends AbstractActionRule {
+    private List<IActionRule> agentRuleList;
+    private List<IActionRule> artifactRuleList;
     private Double mutationRate;
 
     public CopyFromAgentOrArtifactDecisionRule(ISimulationModel m) {
         this.model = m;
         this.log = model.getModelLogger(this.getClass());
 
-        this.copyingRuleList = new ArrayList<IActionRule>();
-        this.mutationRuleList = new ArrayList<IActionRule>();
+        this.agentRuleList = new ArrayList<IActionRule>();
+        this.artifactRuleList = new ArrayList<IActionRule>();
 
         this.setRuleName("CopyFromAgentOrArtifactDecisionRule");
         this.setRuleDescription("Ensure that copying from an agent or an artifact tuple happens in a single time step in a continuous-time simulation");
+
+        // TODO:  Need a model parameter for how often we do agent interaction versus artifact observation...
         this.mutationRate = this.model.getModelConfiguration().getMutationRate();
     }
 
@@ -62,11 +64,11 @@ public class CopyFromAgentOrArtifactDecisionRule extends AbstractInteractionRule
     }
 
     public void registerSubRule(IActionRule rule) {
-        if(rule instanceof ICopyingRule) {
-            this.copyingRuleList.add(rule);
+        if(rule instanceof IInteractionRule) {
+            this.agentRuleList.add(rule);
         }
-        else if( rule instanceof IMutationRule) {
-            this.mutationRuleList.add(rule);
+        else if( rule instanceof IObservationRule) {
+            this.artifactRuleList.add(rule);
         }
         else {
             log.error("FATAL: Rule object being registered in CopyFromAgentOrArtifactDecisionRule of unknown rule type");
@@ -77,10 +79,10 @@ public class CopyFromAgentOrArtifactDecisionRule extends AbstractInteractionRule
 
     public void deregisterSubRule(IActionRule rule) {
         if(rule instanceof ICopyingRule) {
-            this.copyingRuleList.remove(rule);
+            this.agentRuleList.remove(rule);
         }
         else if( rule instanceof IMutationRule) {
-            this.mutationRuleList.remove(rule);
+            this.artifactRuleList.remove(rule);
         }
     }
 }

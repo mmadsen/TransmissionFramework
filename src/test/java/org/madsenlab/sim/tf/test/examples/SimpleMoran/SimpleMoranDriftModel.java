@@ -120,8 +120,7 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
             newTrait.setTraitID(i.toString());
             newTrait.setOwningDimension(this.dimension);
             this.dimension.addTrait(newTrait);
-            newTrait.attach(this.countObserver);
-            newTrait.attach(this.freqObserver);
+            newTrait.attach(this.observerList);
         }
 
         this.log.debug("Creating " + this.params.getNumAgents() + " agents with random starting traits");
