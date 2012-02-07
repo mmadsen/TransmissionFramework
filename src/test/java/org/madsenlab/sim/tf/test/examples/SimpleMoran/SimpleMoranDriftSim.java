@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -30,8 +30,10 @@ public class SimpleMoranDriftSim extends SimRunner {
         Injector injector = Guice.createInjector(new SimpleMoranDriftModule());
         ISimulationModel model = injector.getInstance(ISimulationModel.class);
 
-        // Parse the command line options, in case they select population options
+        // Parse the command line options and initialize logging
         model.parseCommandLineOptions(args);
+        model.initializeConfigurationAndLoggingFromProperties();
+
         // Initialize RNG -- true makes the stream replicable, false uses timestamp as seed
         model.initializeRNG(false);
         model.initializeProviders();

@@ -7,7 +7,7 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.test.examples.MetapopulationWithMigration;
+package org.madsenlab.sim.tf.test.examples.WrightFisherDriftModel;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -24,15 +24,16 @@ import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 
 
 
-public class MetapopulationWithMigrationSim extends SimRunner {
+public class WrightFisherDriftSim extends SimRunner {
 
     public static void main(String[] args) {
-        Injector injector = Guice.createInjector(new MetapopulationWithMigrationModule());
+        Injector injector = Guice.createInjector(new WrightFisherDriftModule());
         ISimulationModel model = injector.getInstance(ISimulationModel.class);
 
         // Parse the command line options and initialize logging
         model.parseCommandLineOptions(args);
         model.initializeConfigurationAndLoggingFromProperties();
+
 
         // Initialize RNG -- true makes the stream replicable, false uses timestamp as seed
         model.initializeRNG(false);

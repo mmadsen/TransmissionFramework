@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -13,7 +13,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.apache.commons.cli.*;
 import org.madsenlab.sim.tf.analysis.BasicTraitCountObserver;
-import org.madsenlab.sim.tf.analysis.BasicTraitFrequencyObserver;
+import org.madsenlab.sim.tf.analysis.GlobalTraitFrequencyObserver;
 import org.madsenlab.sim.tf.analysis.PerDemeTraitFrequencyObserver;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
@@ -24,9 +24,10 @@ import org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule;
 import org.madsenlab.sim.tf.utils.AgentTagType;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * CLASS DESCRIPTION
@@ -38,14 +39,13 @@ import java.util.*;
 
 public class MetapopulationWithMigrationModel extends AbstractSimModel {
     BasicTraitCountObserver countObserver;
-    BasicTraitFrequencyObserver freqObserver;
+    GlobalTraitFrequencyObserver freqObserver;
     ITraitDimension dimension;
     Integer numAgents;
     Double mutationRate;
     Boolean isInfiniteAlleles = false;
     Integer maxTraits;
     Integer startingTraits;
-    String propertiesFileName;
     List<IAgentTag> demeTagList;
     @Inject
     Provider<IAgentTag> tagProvider;
@@ -54,33 +54,8 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
     // Undecided yet how to structure interaction rules generically so keeping them here for the moment
     List<IActionRule> ruleList;
 
+    // TODO:  see lab notebook wiki for feature backlog
 
-    // TODO:  MWM: Implement a finite mutation model for K alleles with symmetric fw/back mutation rates
-    // TODO:  MWM: Implement a finite mutation model with independent fw/back mutation rates
-    // TODO:  MWM: Implement a model where extinct traits have some probability of being remembered, perhaps depending on how long they've been extinct.
-    // TODO:  MWM: Implement an infinite alleles model with no back-mutation, and with back-mutation rate
-    // TODO:  MWM: Implement a conformist rule among "neighbors"
-    // TODO:  MWM: Implement a mixture of RCM and conformism with a given ratio
-    // TODO:  MWM: Make each rule add a tag to the agents that hold it, so that we can query a deme of agents with that rule, so we can do stats on heterogenous pops
-    // TODO:  MWM: Need a batch execution model
-    // TODO:  MWM: Not happy with the per-run directory naming scheme etc...maybe we need opaque directory names and a database file indexing the run params and dirname?
-
-
-    private void initializeConfigurationFromProperties() {
-        // load parameter file
-        try {
-            this.modelProperties = new Properties();
-            this.modelProperties.load(new FileReader(this.propertiesFileName));
-            //log.debug(this.modelProperties);
-        }
-        catch(IOException ex) {
-            log.error("FATAL:  Could not load properties file: " + this.propertiesFileName);
-            System.exit(1);
-        }
-
-        this.loadPropertiesToConfig();
-        this.logFileHandler.initializeLogFileHandler();
-    }
 
     public void initializeModel() {
         this.demeTagList = new ArrayList<IAgentTag>();
@@ -92,14 +67,13 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
         this.dimension = this.dimensionProvider.get();
         this.dimensionList.add(this.dimension);
 
-        this.initializeConfigurationFromProperties();
 
 
 
         // Now can initialize simulation-global Observers
         // Deme-specific observers are initialized below during population construction
         this.countObserver = new BasicTraitCountObserver(this);
-        this.freqObserver = new BasicTraitFrequencyObserver(this);
+        this.freqObserver = new GlobalTraitFrequencyObserver(this);
         this.observerList.add(this.countObserver);
         this.observerList.add(this.freqObserver);
 
@@ -188,7 +162,7 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
     }
 
     public void parseCommandLineOptions(String[] args) {
-        this.log.debug("entering parseCommandLineOptions");
+        //this.log.debug("entering parseCommandLineOptions");
 
         this.params = new GlobalModelConfiguration(this);
 
@@ -223,13 +197,13 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
         if(cmd.hasOption("i")) {
             this.params.setInfiniteAlleles(true);
             this.isInfiniteAlleles = true;
-            this.log.info("infinite alleles model selected - no maximum trait number");
+            //this.log.info("infinite alleles model selected - no maximum trait number");
             this.params.setMaxTraits(Integer.MAX_VALUE);
         }
         else {
             this.params.setInfiniteAlleles(false);
             this.isInfiniteAlleles = false;
-            this.log.info("finite alleles model selected");
+            //this.log.info("finite alleles model selected");
             this.params.setMaxTraits(Integer.parseInt(cmd.getOptionValue("f", "2")));
         }
 
@@ -244,15 +218,15 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
         this.params.setNumDemes(Integer.parseInt(cmd.getOptionValue("d", "2")));
 
         // Report starting parameters
-        this.log.info("starting number of traits: " + this.params.getStartingTraits());
-        this.log.info("maximum number of traits: " + this.params.getMaxTraits());
-        this.log.info("number of agents: " + this.params.getNumAgents());
-        this.log.info("mutation rate: " + this.params.getMutationRate());
-        this.log.info("simulation length: " + this.params.getLengthSimulation());
-        this.log.info("number of demes: " + this.params.getNumDemes());
-        this.log.info("properties file: " + this.propertiesFileName);
+        //this.log.info("starting number of traits: " + this.params.getStartingTraits());
+        //this.log.info("maximum number of traits: " + this.params.getMaxTraits());
+        //this.log.info("number of agents: " + this.params.getNumAgents());
+        //this.log.info("mutation rate: " + this.params.getMutationRate());
+        //this.log.info("simulation length: " + this.params.getLengthSimulation());
+        //this.log.info("number of demes: " + this.params.getNumDemes());
+        //this.log.info("properties file: " + this.propertiesFileName);
 
-        this.log.trace("exiting parseCommandLineOptions");
+        //this.log.trace("exiting parseCommandLineOptions");
     }
 
     public void modelStep() {

@@ -7,7 +7,7 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.test.examples.SimpleMoran;
+package org.madsenlab.sim.tf.test.examples.WrightFisherDriftModel;
 
 import org.apache.commons.cli.*;
 import org.madsenlab.sim.tf.analysis.GlobalTraitCountObserver;
@@ -32,7 +32,7 @@ import java.util.Map;
  * Time: 10:19:32 AM
  */
 
-public class SimpleMoranDriftModel extends AbstractSimModel {
+public class WrightFisherDriftModel extends AbstractSimModel {
     GlobalTraitCountObserver countObserver;
     GlobalTraitFrequencyObserver freqObserver;
     ITraitDimension dimension;
@@ -44,19 +44,19 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
 
     List<IActionRule> ruleList;
 
+    public WrightFisherDriftModel() {
+        this.modelNamePrefix = "WrightFisherDrift";
+    }
+
     // TODO:  see lab notebook wiki for feature backlog
 
 
-    public SimpleMoranDriftModel() {
-        this.modelNamePrefix = "SimpleMoranDrift";
-    }
 
     public void initializeModel() {
         // first, set up the traits in a dimension
         // second, set up agents, assigning an initial trait to each agent at random
         this.dimension = this.dimensionProvider.get();
         this.dimensionList.add(this.dimension);
-
 
         // Now can initialize Observers
         this.countObserver = new GlobalTraitCountObserver(this);
@@ -113,6 +113,12 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
 
     }
 
+    /**
+     * parseCommandLineOptions will be called at the very beginning of the simulation run,
+     * before logging is configured, to determine options.  Thus, we cannot use log4j to
+     * document its operation.
+     * @param args
+     */
     public void parseCommandLineOptions(String[] args) {
         //this.log.debug("entering parseCommandLineOptions");
 
@@ -166,7 +172,6 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         this.params.setMutationRate(Double.parseDouble(cmd.getOptionValue("m", "0.000001")));
         this.params.setStartingTraits(Integer.parseInt(cmd.getOptionValue("s", "2")));
         this.propertiesFileName = cmd.getOptionValue("p", "tf-configuration.properties");
-        System.out.println("properties File: " + this.propertiesFileName);
 
         // Report starting parameters
         //this.log.info("starting number of traits: " + this.params.getStartingTraits());
@@ -180,13 +185,16 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
     }
 
     public void modelStep() {
-        log.trace("entering modelStep at time: " + this.currentTime);
+        log.trace("========================== STEP: " + this.currentTime + "============================");
 
-        // pick a random agent, and fire its rules stack....
-        IAgent focalAgent = this.getPopulation().getAgentAtRandom();
-        log.trace("agent " + focalAgent.getAgentID() + " - firing rules");
-        focalAgent.fireRules();
-
+        List<IAgent> shuffledAgentList = this.getPopulation().getAgentsShuffledOrder();
+        
+        for(IAgent agent: shuffledAgentList) {
+            log.trace("agent " + agent.getAgentID() + " - firing rules");
+            agent.fireRules();
+        }
+        
+        log.trace("exiting modelStep at time: " + this.currentTime);
     }
 
     public void modelObservations() {

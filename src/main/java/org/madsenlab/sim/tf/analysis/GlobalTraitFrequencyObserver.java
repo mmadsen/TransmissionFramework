@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -25,7 +25,7 @@ import java.util.*;
  */
 
 
-public class BasicTraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDimension> {
+public class GlobalTraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
     private Map<ITrait, Double> traitFreqMap;
@@ -33,12 +33,12 @@ public class BasicTraitFrequencyObserver implements ITraitStatisticsObserver<ITr
     private PrintWriter pw;
     private Map<Integer,Map<ITrait,Double>> histTraitFreq;
 
-    public BasicTraitFrequencyObserver(ISimulationModel m) {
+    public GlobalTraitFrequencyObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
         this.histTraitFreq = new HashMap<Integer,Map<ITrait, Double>>();
 
-        String traitFreqLogFile = this.model.getModelConfiguration().getProperty("trait-frequency-logfile");
+        String traitFreqLogFile = this.model.getModelConfiguration().getProperty("global-trait-frequency-logfile");
         log.debug("traitFreqLogFile: " + traitFreqLogFile);
         this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(traitFreqLogFile);
 //        try{

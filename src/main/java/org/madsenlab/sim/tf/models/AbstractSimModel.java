@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -18,6 +18,8 @@ import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -62,15 +64,36 @@ public abstract class  AbstractSimModel implements ISimulationModel {
     protected Properties modelProperties;
     protected List<ITraitDimension> dimensionList;
     protected List<ITraitStatisticsObserver<ITraitDimension>> observerList;
+    protected String propertiesFileName;
+    protected String modelNamePrefix;
 
 
     public AbstractSimModel() {
-        log = Logger.getLogger(this.getClass());
-        log.trace("log4j configured and ready");
 
     }
 
+    public void initializeConfigurationAndLoggingFromProperties() {
+        // load parameter file
+        try {
+            this.modelProperties = new Properties();
+            this.modelProperties.load(new FileReader(this.propertiesFileName));
+            //log.debug(this.modelProperties);
+        }
+        catch(IOException ex) {
+            System.exit(1);
+        }
 
+        this.loadPropertiesToConfig();
+        this.params.setProperty("model-name-prefix", modelNamePrefix);
+        this.logFileHandler.initializeLogFileHandler();
+        String loggingDirectory = this.logFileHandler.getLoggingDirectory();
+        //log.info("configuring log4 to write simulation log to directory: " + loggingDirectory);
+        System.setProperty("log4j.logpath", loggingDirectory);
+
+        log = Logger.getLogger(this.getClass());
+        log.info("log4j configured and ready in directory: " + loggingDirectory);
+        //log.info("log file handler object used in initialization: " + this.logFileHandler);
+    }
 
     public IPopulation getPopulation() {
         return this.population;
@@ -145,6 +168,7 @@ public abstract class  AbstractSimModel implements ISimulationModel {
     }
 
     public ILogFiles getLogFileHandler() {
+        //log.info("caller requesting log file handler: " + this.logFileHandler);
         return this.logFileHandler;
     }
 
@@ -154,10 +178,11 @@ public abstract class  AbstractSimModel implements ISimulationModel {
 
     public void run() {
         log.info("Beginning simulation run");
+        int tenpercent = this.lengthSimulation / 10;
         while(this.currentTime < this.lengthSimulation) {
             // first perform a model step, then allow observations to be recorded as desired
             //log.debug("========= STARTING MODEL STEP: " + this.currentTime + " ===========");
-            if(this.currentTime % 1000 == 0) {
+            if(this.currentTime % tenpercent == 0) {
                 log.info("    Time: " + this.currentTime);
             }
             this.modelStep();
@@ -183,6 +208,6 @@ public abstract class  AbstractSimModel implements ISimulationModel {
             this.params.setProperty(propName, this.modelProperties.getProperty(propName));
         }
 
-        log.debug("params: " + this.params);
+        //log.debug("params: " + this.params);
     }
 }

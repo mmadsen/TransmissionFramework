@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -62,6 +62,18 @@ public interface IDeme {
      */
     IAgent getAgentAtRandom();
 
+    /**
+     * Returns a typed list of agents currently in the population, in a randomized order each time
+     * it is called.  This allows one to then perform actions on all agents, but ensure that results are 
+     * not dependent upon the single fixed order that the underlying Collections framework will return
+     * the agents in.  This is meant for models like Wright-Fisher, where we do something to all agents
+     * at a step.  
+     * 
+     * @return agentListShuffled
+     * 
+     */
+    
+     List<IAgent> getAgentsShuffledOrder();
 
     /**
      * Query interface, returning an IPopulation instance which is populated by the agents for which

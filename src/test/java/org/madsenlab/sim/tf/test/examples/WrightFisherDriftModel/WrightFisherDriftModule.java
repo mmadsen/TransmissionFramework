@@ -7,7 +7,7 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.test.examples.SimpleMoran;
+package org.madsenlab.sim.tf.test.examples.WrightFisherDriftModel;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -29,10 +29,10 @@ import org.madsenlab.sim.tf.utils.LogFileHandler;
  * Time: 1:21:54 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SimpleMoranDriftModule implements Module {
+public class WrightFisherDriftModule implements Module {
     public void configure(Binder binder) {
         binder.bind(ISimulationModel.class)
-                .to(SimpleMoranDriftModel.class)
+                .to(WrightFisherDriftModel.class)
                 .in(Singleton.class);
         binder.bind(IAgent.class)
                 .toProvider(UnstructuredTraitAgentProvider.class);
