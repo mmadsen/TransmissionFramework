@@ -77,7 +77,6 @@ public abstract class  AbstractSimModel implements ISimulationModel {
         try {
             this.modelProperties = new Properties();
             this.modelProperties.load(new FileReader(this.propertiesFileName));
-            //log.debug(this.modelProperties);
         }
         catch(IOException ex) {
             System.exit(1);
@@ -87,12 +86,10 @@ public abstract class  AbstractSimModel implements ISimulationModel {
         this.params.setProperty("model-name-prefix", modelNamePrefix);
         this.logFileHandler.initializeLogFileHandler();
         String loggingDirectory = this.logFileHandler.getLoggingDirectory();
-        //log.info("configuring log4 to write simulation log to directory: " + loggingDirectory);
         System.setProperty("log4j.logpath", loggingDirectory);
 
         log = Logger.getLogger(this.getClass());
         log.info("log4j configured and ready in directory: " + loggingDirectory);
-        //log.info("log file handler object used in initialization: " + this.logFileHandler);
     }
 
     public IPopulation getPopulation() {
@@ -180,10 +177,9 @@ public abstract class  AbstractSimModel implements ISimulationModel {
         log.info("Beginning simulation run");
         int tenpercent = this.lengthSimulation / 10;
         while(this.currentTime < this.lengthSimulation) {
-            // first perform a model step, then allow observations to be recorded as desired
-            //log.debug("========= STARTING MODEL STEP: " + this.currentTime + " ===========");
             if(this.currentTime % tenpercent == 0) {
                 log.info("    Time: " + this.currentTime);
+                System.gc();
             }
             this.modelStep();
             this.modelObservations();
@@ -196,8 +192,6 @@ public abstract class  AbstractSimModel implements ISimulationModel {
 
     public abstract void modelFinalize();
 
-
-
     public abstract void modelObservations();
 
     public abstract void modelStep();
@@ -207,7 +201,5 @@ public abstract class  AbstractSimModel implements ISimulationModel {
         for(String propName: propNames) {
             this.params.setProperty(propName, this.modelProperties.getProperty(propName));
         }
-
-        //log.debug("params: " + this.params);
     }
 }

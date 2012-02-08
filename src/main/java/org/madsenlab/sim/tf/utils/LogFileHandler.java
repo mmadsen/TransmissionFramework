@@ -76,7 +76,7 @@ public class LogFileHandler implements ILogFiles {
         File outputFile = new File(this.mainOutputDirectory, filename);
         PrintWriter outFileWriter = null;
         try {
-            outFileWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
+            outFileWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputFile),32768));
         }
         catch (IOException ioe) {
 			log.error("IOException on filepath: " + outputFile.toString() + ": " + ioe.getMessage());
@@ -109,6 +109,8 @@ public class LogFileHandler implements ILogFiles {
         ident.append(this.params.getMutationRate());
         ident.append("-");
         ident.append(this.params.getStartingTraits());
+        ident.append("-");
+        ident.append(this.params.getLengthSimulation());
         ident.append("-");
         ident.append(maxTraitsString);
         ident.append("-");

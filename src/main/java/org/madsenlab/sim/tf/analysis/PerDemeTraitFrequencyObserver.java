@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -42,7 +42,7 @@ public class PerDemeTraitFrequencyObserver implements ITraitStatisticsObserver<I
         log.debug("demeTag for this observer: " + this.demeTag);
 
         StringBuffer traitFreqLogFile = new StringBuffer();
-        traitFreqLogFile.append(this.model.getModelConfiguration().getProperty("trait-frequency-logfile"));
+        traitFreqLogFile.append(this.model.getModelConfiguration().getProperty("global-trait-frequency-logfile"));
         traitFreqLogFile.append("-deme-");
         traitFreqLogFile.append(demeTag.getTagName());
         log.debug("traitFreqLogFile: " + traitFreqLogFile.toString());
@@ -56,7 +56,7 @@ public class PerDemeTraitFrequencyObserver implements ITraitStatisticsObserver<I
         ITraitDimension dim = stat.getTarget();
         Map<ITrait,Double> freqMap = dim.getCurTraitFreqByTag(this.demeTag);
 
-        log.trace("freqMap after updateTraitStatistics: " + freqMap);
+        //log.trace("freqMap after updateTraitStatistics: " + freqMap);
 
         this.histTraitFreq.put(this.lastTimeIndexUpdated,freqMap);
     }
@@ -65,6 +65,13 @@ public class PerDemeTraitFrequencyObserver implements ITraitStatisticsObserver<I
         log.trace("entering perStepAction");
         //log.trace("histTraitFreq: " + this.histTraitFreq);
         this.printFrequencies();
+
+        Integer tick = this.model.getCurrentModelTime();
+        // every 100 ticks, write historical data to disk and flush it
+        if(tick % 100 == 0){
+            this.logFrequencies();
+            this.histTraitFreq.clear();
+        }
 
     }
 
@@ -102,14 +109,17 @@ public class PerDemeTraitFrequencyObserver implements ITraitStatisticsObserver<I
         List<ITrait> sortedKeys = new ArrayList<ITrait>(keys);
         Collections.sort(sortedKeys, new TraitIDComparator());
         sb.append(time);
+        sb.append(",");
         for (ITrait aTrait : sortedKeys) {
+            double freq = freqMap.get(aTrait);
+            sb.append(aTrait.getTraitID());
+            sb.append(":");
+            sb.append(freq);
             sb.append(",");
-            sb.append(freqMap.get(aTrait));
-            if(freqMap.get(aTrait) != 0) {
+            if(freq != 0) {
                 numNonZeroTraits++;
             }
         }
-        sb.append(",");
         sb.append(numNonZeroTraits);
         return sb;
     }
@@ -124,7 +134,6 @@ public class PerDemeTraitFrequencyObserver implements ITraitStatisticsObserver<I
             StringBuffer sb = prepareFrequencyLogString(time, freqMap);
             sb.append('\n');
             this.pw.write(sb.toString());
-            //this.pw.flush();
         }
 
     }

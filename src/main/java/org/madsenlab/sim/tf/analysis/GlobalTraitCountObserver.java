@@ -49,6 +49,10 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
 //        }
     }
 
+    // TODO - here's the WF counting problem, and a performance issue...the observer system triggers every event, but we only count once per tick..
+    // Attempted fix is to move the locus of Observation to the dimension, away from the trait itself.  This may not fix the entire WF problem
+    // but it will create a consistent end-of-tick picture (which is why Moran was fine, since it was single-event, and WF screwed up).  Then just
+    // have to examine the issue of in-place population modification for WF, and then can start testing for correctness....
 
     public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
         log.trace("entering updateTraitStatistics");
@@ -60,9 +64,16 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
 
     public void perStepAction() {
         log.trace("entering perStepAction");
-        log.trace("histTraitCount: " + this.histTraitCount);
+
+        //log.trace("histTraitFreq: " + this.histTraitFreq);
         this.printFrequencies();
 
+        Integer tick = this.model.getCurrentModelTime();
+        // Every 100 ticks, write historical data to disk and flush it to keep memory usage and performance reasonable.
+        if(tick % 100 == 0) {
+            this.logFrequencies();
+            this.histTraitCount.clear();
+        }
     }
 
     public void endSimulationAction() {
@@ -72,11 +83,8 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
 
     public void finalizeObservation() {
         log.trace("entering finalizeObservation");
-
             this.pw.flush();
             this.pw.close();
-
-
     }
 
     private void printFrequencies() {
@@ -91,22 +99,30 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
 
     }
 
-   private StringBuffer prepareCountLogString(Integer time, Map<ITrait,Integer> freqMap) {
+    private StringBuffer prepareCountLogString(Integer time, Map<ITrait,Integer> countMap) {
         //log.debug("prepare string: freqMap: " + freqMap);
         Integer numNonZeroTraits = 0;
+        Integer totalOfTraitCounts = 0;
         StringBuffer sb = new StringBuffer();
-        Set<ITrait> keys = freqMap.keySet();
+        Set<ITrait> keys = countMap.keySet();
         List<ITrait> sortedKeys = new ArrayList<ITrait>(keys);
         Collections.sort(sortedKeys, new TraitIDComparator());
         sb.append(time);
+        sb.append(",");
         for (ITrait aTrait : sortedKeys) {
+            Integer count = countMap.get(aTrait);
+            sb.append(aTrait.getTraitID());
+            sb.append(":");
+            sb.append(count);
             sb.append(",");
-            sb.append(freqMap.get(aTrait));
-            if(freqMap.get(aTrait) != 0) {
+            if(count != 0) {
                 numNonZeroTraits++;
             }
+            totalOfTraitCounts += count;
         }
-        sb.append(",");
+        sb.append(",tot:");
+        sb.append(totalOfTraitCounts);
+        sb.append(",numtrait:");
         sb.append(numNonZeroTraits);
         return sb;
     }

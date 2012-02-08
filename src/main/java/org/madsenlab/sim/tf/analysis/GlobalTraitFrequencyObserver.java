@@ -41,12 +41,6 @@ public class GlobalTraitFrequencyObserver implements ITraitStatisticsObserver<IT
         String traitFreqLogFile = this.model.getModelConfiguration().getProperty("global-trait-frequency-logfile");
         log.debug("traitFreqLogFile: " + traitFreqLogFile);
         this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(traitFreqLogFile);
-//        try{
-//            this.pw = new PrintWriter(new BufferedWriter(new FileWriter("trait-frequencies-by-time.txt")));
-//        } catch(IOException ex) {
-//            log.error("ERROR CREATING TRAIT FREQUENCIES BY TIME LOG FILE");
-//            System.exit(1);
-//        }
     }
 
 
@@ -60,8 +54,18 @@ public class GlobalTraitFrequencyObserver implements ITraitStatisticsObserver<IT
 
     public void perStepAction() {
         log.trace("entering perStepAction");
+
         //log.trace("histTraitFreq: " + this.histTraitFreq);
         this.printFrequencies();
+
+        Integer tick = this.model.getCurrentModelTime();
+        // Every 100 ticks, write historical data to disk and flush it to keep memory usage and performance reasonable.
+        if(tick % 100 == 0) {
+            this.logFrequencies();
+            this.histTraitFreq.clear();
+        }
+
+
 
     }
 
@@ -99,14 +103,17 @@ public class GlobalTraitFrequencyObserver implements ITraitStatisticsObserver<IT
         List<ITrait> sortedKeys = new ArrayList<ITrait>(keys);
         Collections.sort(sortedKeys, new TraitIDComparator());
         sb.append(time);
+        sb.append(",");
         for (ITrait aTrait : sortedKeys) {
+            double freq = freqMap.get(aTrait);
+            sb.append(aTrait.getTraitID());
+            sb.append(":");
+            sb.append(freq);
             sb.append(",");
-            sb.append(freqMap.get(aTrait));
-            if(freqMap.get(aTrait) != 0) {
+            if(freq != 0) {
                 numNonZeroTraits++;
             }
         }
-        sb.append(",");
         sb.append(numNonZeroTraits);
         return sb;
     }
@@ -121,7 +128,6 @@ public class GlobalTraitFrequencyObserver implements ITraitStatisticsObserver<IT
             StringBuffer sb = prepareFrequencyLogString(time, freqMap);
             sb.append('\n');
             this.pw.write(sb.toString());
-            //this.pw.flush();
         }
 
     }

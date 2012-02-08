@@ -1,0 +1,1 @@
+TODO: Wright Fisher is leaking trait counts somehow.  Moran isn't leaking trait counts.

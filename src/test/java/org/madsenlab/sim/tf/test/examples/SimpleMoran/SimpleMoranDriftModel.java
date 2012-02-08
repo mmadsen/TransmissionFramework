@@ -63,6 +63,7 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         this.freqObserver = new GlobalTraitFrequencyObserver(this);
         this.observerList.add(this.countObserver);
         this.observerList.add(this.freqObserver);
+        this.dimension.attach(this.observerList);
 
         // set up the stack of rules, to be fired in the order given in the list
         // in this first simulation, all agents get the same rule, but this need not be the
@@ -92,7 +93,6 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
             newTrait.setTraitID(i.toString());
             newTrait.setOwningDimension(this.dimension);
             this.dimension.addTrait(newTrait);
-            newTrait.attach(this.observerList);
         }
 
         this.log.debug("Creating " + this.params.getNumAgents() + " agents with random starting traits");
@@ -186,7 +186,7 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         IAgent focalAgent = this.getPopulation().getAgentAtRandom();
         log.trace("agent " + focalAgent.getAgentID() + " - firing rules");
         focalAgent.fireRules();
-
+        this.dimension.notifyObservers();
     }
 
     public void modelObservations() {

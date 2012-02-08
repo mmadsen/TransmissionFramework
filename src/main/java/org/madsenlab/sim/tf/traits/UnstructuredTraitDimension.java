@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -12,6 +12,7 @@ package org.madsenlab.sim.tf.traits;
 import com.google.inject.Inject;
 import com.google.inject.internal.Preconditions;
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.analysis.TraitStatistic;
 import org.madsenlab.sim.tf.interfaces.*;
 
 import java.util.*;
@@ -24,6 +25,7 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class UnstructuredTraitDimension implements ITraitDimension {
+    private List<ITraitStatisticsObserver> observers;
     String dimensionName = null;
     Map<String, ITrait> traitMap = null;
     List<ITrait> traitList = null;
@@ -47,6 +49,7 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         // very often, so the performance hit is very low
         this.traitMap = new HashMap<String, ITrait>();
         this.traitList = new ArrayList<ITrait>();
+        this.observers = Collections.synchronizedList(new ArrayList<ITraitStatisticsObserver>());
 
     }
 
@@ -83,7 +86,9 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         Map<ITrait, Integer> countMap = new HashMap<ITrait, Integer>();
 
         for (ITrait trait : this.traitMap.values()) {
-            countMap.put(trait, trait.getCurrentAdoptionCount());
+            //if(trait.getCurrentAdoptionCount() > 0) {
+                countMap.put(trait, trait.getCurrentAdoptionCount());
+            //}
         }
         return countMap;
     }
@@ -99,8 +104,10 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         }
 
         for (ITrait trait : this.traitMap.values()) {
-            double freq = (double) trait.getCurrentAdoptionCount() / (double) popsize;
-            freqMap.put(trait, freq);
+            //if (trait.getCurrentAdoptionCount() > 0) {
+                double freq = (double) trait.getCurrentAdoptionCount() / (double) popsize;
+                freqMap.put(trait, freq);
+            //}
         }
         return freqMap;
     }
@@ -171,4 +178,47 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         this.traitMap.remove(traitToRemove);
         this.traitList.remove(traitToRemove);
     }
+
+    public void attach(ITraitStatisticsObserver obs) {
+        synchronized (this.observers) {
+            log.trace("attaching to obs: " + obs);
+            this.observers.add(obs);
+        }
+    }
+
+    public void attach(List<ITraitStatisticsObserver<ITraitDimension>> obsList) {
+        for(ITraitStatisticsObserver obs: obsList) {
+            this.attach(obs);
+        }
+    }
+
+    public void detach(ITraitStatisticsObserver obs) {
+        synchronized (this.observers) {
+            this.observers.remove(obs);
+        }
+
+    }
+
+    public void detach(List<ITraitStatisticsObserver<ITraitDimension>> obsList) {
+        for(ITraitStatisticsObserver obs: obsList) {
+            this.detach(obs);
+        }
+    }
+
+    public Integer getNumObservers() {
+        return this.observers.size();
+    }
+
+    public void notifyObservers() {
+        ITraitStatistic stat = this.getChangeStatistic();
+        log.debug("change statistic: " + stat);
+        for (ITraitStatisticsObserver obs : this.observers) {
+            log.debug("notify observer: " + obs);
+            obs.updateTraitStatistics(stat);
+        }
+    }
+    public ITraitStatistic getChangeStatistic() {
+        return new TraitStatistic(this, model.getCurrentModelTime());
+    }
+
 }

@@ -64,6 +64,10 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         this.observerList.add(this.countObserver);
         this.observerList.add(this.freqObserver);
 
+        // We observe the dimension, not individual traits, in WF, so we get a single consistent picture
+        // of the population at the end of a model step.
+        this.dimension.attach(this.observerList);
+
         // set up the stack of rules, to be fired in the order given in the list
         // in this first simulation, all agents get the same rule, but this need not be the
         // case - plan for heterogeneity!!
@@ -92,7 +96,6 @@ public class WrightFisherDriftModel extends AbstractSimModel {
             newTrait.setTraitID(i.toString());
             newTrait.setOwningDimension(this.dimension);
             this.dimension.addTrait(newTrait);
-            newTrait.attach(this.observerList);
         }
 
         this.log.debug("Creating " + this.params.getNumAgents() + " agents with random starting traits");
@@ -107,7 +110,7 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         // Verify proper initialization
         Map<ITrait, Double> freqMap = this.dimension.getCurGlobalTraitFrequencies();
         for(Map.Entry<ITrait,Double> entry: freqMap.entrySet()) {
-            log.trace("Trait " + entry.getKey().getTraitID() + " Freq: " + entry.getValue().toString());
+            log.info("Trait " + entry.getKey().getTraitID() + " Freq: " + entry.getValue().toString());
         }
 
 
@@ -188,12 +191,11 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         log.trace("========================== STEP: " + this.currentTime + "============================");
 
         List<IAgent> shuffledAgentList = this.getPopulation().getAgentsShuffledOrder();
-        
+
         for(IAgent agent: shuffledAgentList) {
-            log.trace("agent " + agent.getAgentID() + " - firing rules");
             agent.fireRules();
         }
-        
+        this.dimension.notifyObservers();
         log.trace("exiting modelStep at time: " + this.currentTime);
     }
 

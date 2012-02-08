@@ -12,7 +12,7 @@ package org.madsenlab.sim.tf.test.examples.MetapopulationWithMigration;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.apache.commons.cli.*;
-import org.madsenlab.sim.tf.analysis.BasicTraitCountObserver;
+import org.madsenlab.sim.tf.analysis.GlobalTraitCountObserver;
 import org.madsenlab.sim.tf.analysis.GlobalTraitFrequencyObserver;
 import org.madsenlab.sim.tf.analysis.PerDemeTraitFrequencyObserver;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
@@ -38,7 +38,7 @@ import java.util.Map;
  */
 
 public class MetapopulationWithMigrationModel extends AbstractSimModel {
-    BasicTraitCountObserver countObserver;
+    GlobalTraitCountObserver countObserver;
     GlobalTraitFrequencyObserver freqObserver;
     ITraitDimension dimension;
     Integer numAgents;
@@ -49,13 +49,14 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
     List<IAgentTag> demeTagList;
     @Inject
     Provider<IAgentTag> tagProvider;
-
-
     // Undecided yet how to structure interaction rules generically so keeping them here for the moment
     List<IActionRule> ruleList;
 
     // TODO:  see lab notebook wiki for feature backlog
 
+    public MetapopulationWithMigrationModel() {
+        this.modelNamePrefix = "MetapopulationWithMigrationMoranModel";
+    }
 
     public void initializeModel() {
         this.demeTagList = new ArrayList<IAgentTag>();
@@ -72,7 +73,7 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
 
         // Now can initialize simulation-global Observers
         // Deme-specific observers are initialized below during population construction
-        this.countObserver = new BasicTraitCountObserver(this);
+        this.countObserver = new GlobalTraitCountObserver(this);
         this.freqObserver = new GlobalTraitFrequencyObserver(this);
         this.observerList.add(this.countObserver);
         this.observerList.add(this.freqObserver);
@@ -89,6 +90,10 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
             PerDemeTraitFrequencyObserver demeObs = new PerDemeTraitFrequencyObserver(this, demeTag);
             this.observerList.add(demeObs);
         }
+        // this must be done AFTER all observers have been constructed and added to the Observer list, otherwise we get
+        // NPEs from dangling references when we notify() later...
+        this.dimension.attach(this.observerList);
+
 
         log.debug("demeTagMap: " + demeTagMap);
 
@@ -119,7 +124,6 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
             newTrait.setTraitID(i.toString());
             newTrait.setOwningDimension(this.dimension);
             this.dimension.addTrait(newTrait);
-            newTrait.attach(this.observerList);
         }
 
         this.log.debug("Creating " + this.params.getNumAgents() + " agents with random starting traits");
@@ -236,7 +240,7 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
         IAgent focalAgent = this.getPopulation().getAgentAtRandom();
         log.trace("agent " + focalAgent.getAgentID() + " - firing rules");
         focalAgent.fireRules();
-
+        this.dimension.notifyObservers();
     }
 
     public void modelObservations() {
