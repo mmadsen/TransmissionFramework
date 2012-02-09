@@ -26,8 +26,6 @@ import java.util.Date;
  * Time: 1:55 PM
  */
 
-// TODO:  Switch the observer classes to use the ILogFiles handler to actually construct their log files
-
 
 public class LogFileHandler implements ILogFiles {
     @Inject

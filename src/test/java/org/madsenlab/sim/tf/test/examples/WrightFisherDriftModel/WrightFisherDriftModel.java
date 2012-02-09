@@ -19,6 +19,7 @@ import org.madsenlab.sim.tf.rules.CopyOrMutateDecisionRule;
 import org.madsenlab.sim.tf.rules.FiniteKAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule;
+import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,6 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         this.modelNamePrefix = "WrightFisherDrift";
     }
 
-    // TODO:  see lab notebook wiki for feature backlog
 
 
 
@@ -74,6 +74,7 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         this.ruleList = new ArrayList<IActionRule>();
         IInteractionRule decisionRule = new CopyOrMutateDecisionRule(this);
         IInteractionRule rcmRule = new RandomCopyNeighborSingleDimensionRule(this);
+        rcmRule.setTraitCopyingMode(TraitCopyingMode.PREVIOUS); // we need to do this only for Wright-Fisher style models
         decisionRule.registerSubRule(rcmRule);
 
 
@@ -190,14 +191,27 @@ public class WrightFisherDriftModel extends AbstractSimModel {
     public void modelStep() {
         log.trace("========================== STEP: " + this.currentTime + "============================");
 
+        // In order to ensure that we do not create numerical artifacts by using a fixed order of enumeration
+        // we shuffle the population before we step through it.
         List<IAgent> shuffledAgentList = this.getPopulation().getAgentsShuffledOrder();
 
+        // In WF model, each of the N copying events in an elemental step must be done with replacement
+        // which means that *trait selection* must be done on a copy of the population made at the beginning
+        // of each step, and trait adoption/unadoption will then form the new state of the population, which
+        // is Observed.
+        this.getPopulation().savePreviousStepTraits();
+
+        // Now iterate over all agents in the population and fire their rules, forming a new sample of the
+        // previous step's trait distribution
         for(IAgent agent: shuffledAgentList) {
             agent.fireRules();
         }
+
+        // Now do any analysis or observation on the results of this transmission step
         this.dimension.notifyObservers();
-        log.trace("exiting modelStep at time: " + this.currentTime);
+        //log.trace("exiting modelStep at time: " + this.currentTime);
     }
+
 
     public void modelObservations() {
         log.trace("entering modelObservations at time: " + this.currentTime);

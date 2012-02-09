@@ -7,21 +7,16 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.interfaces;
-
-import org.apache.commons.collections.Closure;
-import org.madsenlab.sim.tf.utils.TraitCopyingMode;
+package org.madsenlab.sim.tf.utils;
 
 /**
  * CLASS DESCRIPTION
  * <p/>
  * User: mark
- * Date: Jul 24, 2010
- * Time: 3:26:37 PM
+ * Date: 2/8/12
+ * Time: 3:01 PM
  */
-
-public interface IInteractionRule extends Closure, IActionRule {
-
-    ITrait getRandomTraitFromAgent(IAgent thisAgent, TraitCopyingMode mode);
-    void setTraitCopyingMode(TraitCopyingMode mode);
+public enum TraitCopyingMode {
+    CURRENT,
+    PREVIOUS
 }

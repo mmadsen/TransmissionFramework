@@ -52,7 +52,6 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
     // Undecided yet how to structure interaction rules generically so keeping them here for the moment
     List<IActionRule> ruleList;
 
-    // TODO:  see lab notebook wiki for feature backlog
 
     public MetapopulationWithMigrationModel() {
         this.modelNamePrefix = "MetapopulationWithMigrationMoranModel";

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -35,6 +35,7 @@ public class DimensionalTraitAgent implements IAgent {
     private Set<IAgentTag> tagSet;
     private Map<ITrait, ITraitDimension> traitToDimensionMap;
     private Map<ITraitDimension, Set<ITrait>> dimensionToTraitMap;
+    private Set<ITrait> traitsLastStep;
 
     public DimensionalTraitAgent() {
         super();
@@ -165,6 +166,16 @@ public class DimensionalTraitAgent implements IAgent {
 
     public Set<ITrait> getCurrentlyAdoptedTraitsForDimension(ITraitDimension dim) {
         return new HashSet<ITrait>(this.dimensionToTraitMap.get(dim));
+    }
+
+    @Override
+    public void savePreviousStepTraits() {
+
+    }
+
+    @Override
+    public Set<ITrait> getPreviousStepAdoptedTraits() {
+        return null;
     }
 
     public List<IAgent> getNeighboringAgents() {

@@ -10,6 +10,7 @@
 package org.madsenlab.sim.tf.rules;
 
 import org.madsenlab.sim.tf.interfaces.*;
+import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
 /**
  * CLASS DESCRIPTION
@@ -20,7 +21,8 @@ import org.madsenlab.sim.tf.interfaces.*;
  */
 
 public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRule implements ICopyingRule {
-
+    TraitCopyingMode mode = TraitCopyingMode.CURRENT;    // default to Moran model style copying
+    
     public RandomCopyNeighborSingleDimensionRule(ISimulationModel m) {
         model = m;
         log = model.getModelLogger(this.getClass());
@@ -28,6 +30,10 @@ public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRu
         this.setRuleDescription("Randomly Copy a Neighbor's Trait from a Single Dimension");
     }
 
+    public void setTraitCopyingMode(TraitCopyingMode m) {
+        this.mode = m;
+    }
+    
     public synchronized void ruleBody(Object o) {
         log.debug("entering rule body for: " + this.getRuleName());
         IAgent thisAgent = (IAgent) o;
@@ -36,11 +42,11 @@ public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRu
         IInteractionTopology topology = model.getInteractionTopology();
         IAgent neighborAgent = topology.getRandomNeighborForAgent(thisAgent);
 
-        ITrait neighborTrait = this.getRandomTraitFromAgent(neighborAgent);
+        ITrait neighborTrait = this.getRandomTraitFromAgent(neighborAgent, this.mode);
         log.trace("focal agent: " + thisAgent.getAgentID() + " <=> neighbor: " + neighborAgent.getAgentID());
         log.trace("choosing neighbor trait: " + neighborTrait.getTraitID() + " to adopt");
 
-        ITrait focalTrait = this.getRandomTraitFromAgent(thisAgent);
+        ITrait focalTrait = this.getRandomTraitFromAgent(thisAgent, this.mode);
         log.trace("focal agent unadopting trait: " + focalTrait.getTraitID());
 
         // Now unadopt the existing trait from thisAgent, and adopt the neighbor's random trait

@@ -44,7 +44,6 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
 
     List<IActionRule> ruleList;
 
-    // TODO:  see lab notebook wiki for feature backlog
 
 
     public SimpleMoranDriftModel() {

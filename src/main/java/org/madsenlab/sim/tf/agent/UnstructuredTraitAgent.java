@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -29,6 +29,7 @@ public class UnstructuredTraitAgent implements IAgent {
     private Set<ITrait> traitsAdopted;
     private Set<IAgentTag> tagSet;
     private List<IActionRule> ruleList;
+    private Set<ITrait> traitsLastStep;
 
     public UnstructuredTraitAgent() {
         super();
@@ -43,6 +44,7 @@ public class UnstructuredTraitAgent implements IAgent {
 
     private void initialize() {
         this.traitsAdopted = Collections.synchronizedSet(new HashSet<ITrait>());
+        this.traitsLastStep = Collections.synchronizedSet(new HashSet<ITrait>());
         this.tagSet = Collections.synchronizedSet(new HashSet<IAgentTag>());
         this.ruleList = new ArrayList<IActionRule>();
     }
@@ -152,6 +154,17 @@ public class UnstructuredTraitAgent implements IAgent {
 
     public Set<ITrait> getCurrentlyAdoptedTraitsForDimension(ITraitDimension dim) {
         return null;
+    }
+
+    @Override
+    public void savePreviousStepTraits() {
+        this.traitsLastStep = null;
+        this.traitsLastStep = Collections.synchronizedSet(new HashSet<ITrait>(this.traitsAdopted));
+    }
+
+    @Override
+    public Set<ITrait> getPreviousStepAdoptedTraits() {
+        return traitsLastStep;
     }
 
     public List<IAgent> getNeighboringAgents() {

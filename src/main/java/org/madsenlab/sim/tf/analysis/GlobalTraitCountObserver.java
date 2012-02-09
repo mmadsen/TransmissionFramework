@@ -49,11 +49,6 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
 //        }
     }
 
-    // TODO - here's the WF counting problem, and a performance issue...the observer system triggers every event, but we only count once per tick..
-    // Attempted fix is to move the locus of Observation to the dimension, away from the trait itself.  This may not fix the entire WF problem
-    // but it will create a consistent end-of-tick picture (which is why Moran was fine, since it was single-event, and WF screwed up).  Then just
-    // have to examine the issue of in-place population modification for WF, and then can start testing for correctness....
-
     public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
         log.trace("entering updateTraitStatistics");
         this.lastTimeIndexUpdated = stat.getTimeIndex();

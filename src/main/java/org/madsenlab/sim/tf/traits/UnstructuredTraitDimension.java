@@ -86,9 +86,9 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         Map<ITrait, Integer> countMap = new HashMap<ITrait, Integer>();
 
         for (ITrait trait : this.traitMap.values()) {
-            //if(trait.getCurrentAdoptionCount() > 0) {
+            if(trait.getCurrentAdoptionCount() > 0) {
                 countMap.put(trait, trait.getCurrentAdoptionCount());
-            //}
+            }
         }
         return countMap;
     }
@@ -104,10 +104,10 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         }
 
         for (ITrait trait : this.traitMap.values()) {
-            //if (trait.getCurrentAdoptionCount() > 0) {
+            if (trait.getCurrentAdoptionCount() > 0) {
                 double freq = (double) trait.getCurrentAdoptionCount() / (double) popsize;
                 freqMap.put(trait, freq);
-            //}
+            }
         }
         return freqMap;
     }
