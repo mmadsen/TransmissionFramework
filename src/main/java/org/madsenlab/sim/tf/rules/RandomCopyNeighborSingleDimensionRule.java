@@ -41,9 +41,9 @@ public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRu
         // Get a random neighbor.  First, we need the interaction topology
         IInteractionTopology topology = model.getInteractionTopology();
         IAgent neighborAgent = topology.getRandomNeighborForAgent(thisAgent);
+        log.trace("focal agent: " + thisAgent.getAgentID() + " <=> neighbor: " + neighborAgent.getAgentID());
 
         ITrait neighborTrait = this.getRandomTraitFromAgent(neighborAgent, this.mode);
-        log.trace("focal agent: " + thisAgent.getAgentID() + " <=> neighbor: " + neighborAgent.getAgentID());
         log.trace("choosing neighbor trait: " + neighborTrait.getTraitID() + " to adopt");
 
         ITrait focalTrait = this.getRandomTraitFromAgent(thisAgent, this.mode);

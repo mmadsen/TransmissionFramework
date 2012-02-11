@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -9,6 +9,8 @@
 
 package org.madsenlab.sim.tf.interfaces;
 
+
+import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.util.List;
 import java.util.Map;
@@ -35,7 +37,7 @@ public interface ITrait extends IStatisticsSubject {
      * @return count An integer representing the current number of IAgent objects which have adopted this trait
      */
 
-    public Integer getCurrentAdoptionCount();
+    public int getCurrentAdoptionCount();
 
     /**
      * Since adoption is counted globally and per IAgentTag, this method returns the
@@ -55,7 +57,7 @@ public interface ITrait extends IStatisticsSubject {
      *
      * @return countList A list of adoption counts for the lifetime of the simulation to date
      */
-    public Map<Integer, Integer> getAdoptionCountHistory();
+    public TIntIntHashMap getAdoptionCountHistory();
 
 
     /**

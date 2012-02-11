@@ -11,6 +11,7 @@ package org.madsenlab.sim.tf.traits;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
+import gnu.trove.map.hash.TIntIntHashMap;
 import org.madsenlab.sim.tf.analysis.TraitStatistic;
 import org.madsenlab.sim.tf.interfaces.*;
 
@@ -26,12 +27,10 @@ import java.util.*;
 
 
 public class UnstructuredTrait extends AbstractObservableTrait implements ITrait {
-
-
     private String id;
-    private Integer curAdoptionCount;
+    private int curAdoptionCount;
     private List<IAgent> curAdopteeList;
-    private Map<Integer, Integer> histAdoptionCountMap;
+    private TIntIntHashMap histAdoptionCountMap;
 
     private ITraitDimension owningDimension = null;
 
@@ -59,9 +58,9 @@ public class UnstructuredTrait extends AbstractObservableTrait implements ITrait
     }
 
     private void initialize() {
-        this.curAdoptionCount = new Integer(0);
+        this.curAdoptionCount = 0;
         this.curAdopteeList = Collections.synchronizedList(new ArrayList<IAgent>());
-        this.histAdoptionCountMap = Collections.synchronizedMap(new HashMap<Integer, Integer>());
+        this.histAdoptionCountMap = new TIntIntHashMap();
         this.curAdoptionByTag = Collections.synchronizedMap(new HashMap<IAgentTag, Integer>());
         this.observers = Collections.synchronizedList(new ArrayList<ITraitStatisticsObserver>());
     }
@@ -74,7 +73,7 @@ public class UnstructuredTrait extends AbstractObservableTrait implements ITrait
         this.id = id;
     }
 
-    public Integer getCurrentAdoptionCount() {
+    public int getCurrentAdoptionCount() {
         return this.curAdoptionCount;
     }
 
@@ -87,8 +86,8 @@ public class UnstructuredTrait extends AbstractObservableTrait implements ITrait
         return this.curAdoptionByTag.get(tag);
     }
 
-    public Map<Integer, Integer> getAdoptionCountHistory() {
-        return new HashMap<Integer, Integer>(this.histAdoptionCountMap);
+    public TIntIntHashMap getAdoptionCountHistory() {
+        return this.histAdoptionCountMap;
     }
 
     public void adopt(IAgent agentAdopting) {
@@ -109,7 +108,7 @@ public class UnstructuredTrait extends AbstractObservableTrait implements ITrait
             for (IAgentTag tag : tags) {
 
                 if (this.curAdoptionByTag.containsKey(tag)) {
-                    Integer count = this.curAdoptionByTag.get(tag);
+                    int count = this.curAdoptionByTag.get(tag);
 
                     count++;
                     log.trace("[" + this.getTraitID() + "] count: " + count);
@@ -120,7 +119,6 @@ public class UnstructuredTrait extends AbstractObservableTrait implements ITrait
                 }
             }
         }
-        //this.notifyObservers();
     }
 
     public void unadopt(IAgent agentUnadopting) {
@@ -137,10 +135,11 @@ public class UnstructuredTrait extends AbstractObservableTrait implements ITrait
 
         }
         synchronized (this.curAdoptionByTag) {
+
             Set<IAgentTag> tags = agentUnadopting.getAgentTags();
             for (IAgentTag tag : tags) {
                 if (this.curAdoptionByTag.containsKey(tag)) {
-                    Integer count = this.curAdoptionByTag.get(tag);
+                    int count = this.curAdoptionByTag.get(tag);
                     count--;
                     if (count == 0) {
                         this.curAdoptionByTag.remove(tag);
@@ -152,8 +151,6 @@ public class UnstructuredTrait extends AbstractObservableTrait implements ITrait
                 }
             }
         }
-        //this.notifyObservers();
-
     }
 
 
