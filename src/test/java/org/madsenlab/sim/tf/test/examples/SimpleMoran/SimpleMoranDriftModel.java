@@ -20,9 +20,7 @@ import org.madsenlab.sim.tf.rules.FiniteKAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * CLASS DESCRIPTION
@@ -180,12 +178,39 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
 
     public void modelStep() {
         log.trace("entering modelStep at time: " + this.currentTime);
-
         // pick a random agent, and fire its rules stack....
         IAgent focalAgent = this.getPopulation().getAgentAtRandom();
         log.trace("agent " + focalAgent.getAgentID() + " - firing rules");
         focalAgent.fireRules();
         this.dimension.notifyObservers();
+    }
+
+    // DEBUG ONLY
+    private void checkPopulationTraits() {
+        List<IAgent> agentList = this.population.getAgents();
+        Map<String, Integer> traitCounts = new HashMap<String, Integer>();
+        for(IAgent agent: agentList) {
+            Set<ITrait> traitList = agent.getCurrentlyAdoptedTraits();
+            if(traitList.size() > 1) {
+                log.error("agent " + agent.getAgentID() + " has " + traitList.size() + " traits - ERROR");
+            }
+            for(ITrait trait: traitList) {
+                Integer cnt = traitCounts.get(trait.getTraitID());
+                if(cnt == null) {
+                    traitCounts.put(trait.getTraitID(), 1);
+                } else {
+                    cnt++;
+                    traitCounts.put(trait.getTraitID(), cnt);
+                }
+            }
+        }
+        Set<String> traitSet = traitCounts.keySet();
+        log.info("====================================================================");
+        for(String trait: traitSet) {
+            log.info(trait + "\t" + traitCounts.get(trait)) ;
+        }
+        log.info("number of traits found: " + traitCounts.size());
+        log.info("====================================================================");
     }
 
     public void modelObservations() {

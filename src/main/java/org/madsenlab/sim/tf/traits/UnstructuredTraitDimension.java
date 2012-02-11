@@ -85,7 +85,8 @@ public class UnstructuredTraitDimension implements ITraitDimension {
     public Map<ITrait, Integer> getCurGlobalTraitCounts() {
         Map<ITrait, Integer> countMap = new HashMap<ITrait, Integer>();
 
-        for (ITrait trait : this.traitMap.values()) {
+        //for (ITrait trait : this.traitMap.values()) {
+        for (ITrait trait : this.traitList) {
             if(trait.getCurrentAdoptionCount() > 0) {
                 countMap.put(trait, trait.getCurrentAdoptionCount());
             }
@@ -103,7 +104,7 @@ public class UnstructuredTraitDimension implements ITraitDimension {
             throw new IllegalStateException("getCurGlobalTraitFrequencies called with empty population");
         }
 
-        for (ITrait trait : this.traitMap.values()) {
+        for (ITrait trait : this.traitList) {
             if (trait.getCurrentAdoptionCount() > 0) {
                 double freq = (double) trait.getCurrentAdoptionCount() / (double) popsize;
                 freqMap.put(trait, freq);

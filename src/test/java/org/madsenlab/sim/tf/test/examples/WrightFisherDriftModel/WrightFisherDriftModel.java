@@ -21,9 +21,7 @@ import org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule;
 import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * CLASS DESCRIPTION
@@ -109,11 +107,12 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         }
 
         // Verify proper initialization
+        log.debug("Verifying proper initial frequencies =======================");
         Map<ITrait, Double> freqMap = this.dimension.getCurGlobalTraitFrequencies();
         for(Map.Entry<ITrait,Double> entry: freqMap.entrySet()) {
-            log.info("Trait " + entry.getKey().getTraitID() + " Freq: " + entry.getValue().toString());
+            log.debug("Trait " + entry.getKey().getTraitID() + " Freq: " + entry.getValue().toString());
         }
-
+        log.debug("=============================================");
 
     }
 
@@ -212,6 +211,40 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         //log.trace("exiting modelStep at time: " + this.currentTime);
     }
 
+
+    // Used for verification and debugging ONLY
+    private void checkPopulationTraits() {
+        List<IAgent> agentList = this.population.getAgents();
+        Map<String, Integer> traitCounts = new HashMap<String, Integer>();
+        for(IAgent agent: agentList) {
+            Set<ITrait> traitList = agent.getCurrentlyAdoptedTraits(); 
+            if(traitList.size() > 1) {
+                log.error("agent " + agent.getAgentID() + " has " + traitList.size() + " traits - ERROR");
+            }
+            for(ITrait trait: traitList) {
+                Integer cnt = traitCounts.get(trait.getTraitID());
+                if(cnt == null) {
+                    traitCounts.put(trait.getTraitID(), 1);    
+                } else {
+                    cnt++;
+                    traitCounts.put(trait.getTraitID(), cnt);
+                }
+            }
+        }
+        Set<String> traitSet = traitCounts.keySet();
+        ArrayList<String> sortedTraits = new ArrayList<String>(traitSet);
+        Collections.sort(sortedTraits);
+        
+        log.info("====================================================================");
+        for(String trait: sortedTraits) {
+            System.out.println(trait + "\t" + traitCounts.get(trait)) ;
+        }
+        log.info("number of traits found: " + traitCounts.size());
+        log.info("====================================================================");
+    }
+    
+    
+    
 
     public void modelObservations() {
         log.trace("entering modelObservations at time: " + this.currentTime);

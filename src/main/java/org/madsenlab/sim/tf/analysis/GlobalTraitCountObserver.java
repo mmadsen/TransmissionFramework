@@ -115,13 +115,15 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
             }
             totalOfTraitCounts += count;
         }
-        sb.append(",tot:");
+        sb.append("tot:");
         sb.append(totalOfTraitCounts);
         sb.append(",numtrait:");
         sb.append(numNonZeroTraits);
         return sb;
     }
 
+    
+    
     private void logFrequencies() {
         log.trace("entering logFrequencies");
         Set<Integer> keys = this.histTraitCount.keySet();

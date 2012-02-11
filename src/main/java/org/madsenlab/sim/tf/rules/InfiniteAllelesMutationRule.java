@@ -24,6 +24,7 @@ import java.util.List;
 
 public class InfiniteAllelesMutationRule extends AbstractInteractionRule implements IMutationRule {
     Double mutationRate;
+    Integer newTraitID;
 
     public InfiniteAllelesMutationRule(ISimulationModel m) {
         model = m;
@@ -31,6 +32,7 @@ public class InfiniteAllelesMutationRule extends AbstractInteractionRule impleme
         this.setRuleName("InfiniteAllelesMutationRule");
         this.setRuleDescription("Randomly mutate trait with a probability to a completely new trait");
         this.mutationRate = this.model.getModelConfiguration().getMutationRate();
+        this.newTraitID = 0;
     }
 
     public void ruleBody(Object o) {
@@ -43,10 +45,11 @@ public class InfiniteAllelesMutationRule extends AbstractInteractionRule impleme
         ITraitDimension dim = this.getRandomTraitDimension();
         log.trace("Number of traits/dim prior to mutation: " + dim.getTraitsInDimension().size());
 
-        log.debug("Selected dimension: " + dim + " for mutation");
+        log.trace("Selected dimension: " + dim + " for mutation");
         // Generate a new trait
+        this.newTraitID++;
         ITrait newTrait = this.model.getNewTrait(dim);
-        Integer timeAdded = 100000 + this.model.getCurrentModelTime();
+        Integer timeAdded = 100000 + this.newTraitID;
         newTrait.setTraitID(timeAdded.toString());
         dim.addTrait(newTrait);
 
