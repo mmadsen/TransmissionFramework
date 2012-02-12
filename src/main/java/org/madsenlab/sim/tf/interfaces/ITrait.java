@@ -112,4 +112,20 @@ public interface ITrait extends IStatisticsSubject {
 
     public void clearAdoptionData();
 
+    /**
+     * Returns true if the trait has zero adoptees and has been "lost" from the population, and thus
+     * a total duration can be calculated.  If this returns false for a given trait, the caller should assume
+     * that the trait has a non-zero adoption count and thus is still "in play" within the population, so asking for its
+     * duration would skew any statistics.
+     */
+    public Boolean hasCompleteDuration();
+
+    /**
+     * Returns the number of model ticks (copying events in Moran-style models, or N * tick copying events in WF models)
+     * the trait persisted in the population at non-zero adoption levels before the adoption count first hit zero.
+     *
+     * @return number of model ticks the trait persisted in the population before being lost
+     */
+    public Integer getTraitDuration();
+
 }

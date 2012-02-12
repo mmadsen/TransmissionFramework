@@ -40,6 +40,7 @@ public class UnstructuredTrait extends AbstractObservableTrait implements ITrait
     @Inject
     public void setSimulationModel(ISimulationModel m) {
         model = m;
+        this.tickTraitIntroduced = this.model.getCurrentModelTime();
         log = model.getModelLogger(this.getClass());
     }
 
@@ -132,7 +133,7 @@ public class UnstructuredTrait extends AbstractObservableTrait implements ITrait
             this.curAdopteeList.remove(agentUnadopting);
             agentUnadopting.unadoptTrait(this);
             this.decrementAdoptionCount();
-
+            this.checkDurationAtAdoptionCountChange();
         }
         synchronized (this.curAdoptionByTag) {
 
@@ -173,6 +174,13 @@ public class UnstructuredTrait extends AbstractObservableTrait implements ITrait
     private synchronized void decrementAdoptionCount() {
         this.curAdoptionCount--;
         this.histAdoptionCountMap.put(model.getCurrentModelTime(), this.curAdoptionCount);
+    }
+
+    private void checkDurationAtAdoptionCountChange() {
+        if (this.curAdoptionCount == 0) {
+            this.tickTraitExited = this.model.getCurrentModelTime();
+            this.traitLifetime = this.tickTraitExited - this.tickTraitIntroduced;
+        }
     }
 
 

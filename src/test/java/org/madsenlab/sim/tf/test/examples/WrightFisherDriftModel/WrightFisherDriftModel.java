@@ -12,6 +12,7 @@ package org.madsenlab.sim.tf.test.examples.WrightFisherDriftModel;
 import org.apache.commons.cli.*;
 import org.madsenlab.sim.tf.analysis.GlobalTraitCountObserver;
 import org.madsenlab.sim.tf.analysis.GlobalTraitFrequencyObserver;
+import org.madsenlab.sim.tf.analysis.GlobalTraitLifetimeObserver;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.models.AbstractSimModel;
@@ -34,6 +35,7 @@ import java.util.*;
 public class WrightFisherDriftModel extends AbstractSimModel {
     GlobalTraitCountObserver countObserver;
     GlobalTraitFrequencyObserver freqObserver;
+    GlobalTraitLifetimeObserver lifetimeObserver;
     ITraitDimension dimension;
     Integer numAgents;
     Double mutationRate;
@@ -48,8 +50,6 @@ public class WrightFisherDriftModel extends AbstractSimModel {
     }
 
 
-
-
     public void initializeModel() {
         // first, set up the traits in a dimension
         // second, set up agents, assigning an initial trait to each agent at random
@@ -58,9 +58,9 @@ public class WrightFisherDriftModel extends AbstractSimModel {
 
         // Now can initialize Observers
         this.countObserver = new GlobalTraitCountObserver(this);
-        this.freqObserver = new GlobalTraitFrequencyObserver(this);
+        this.lifetimeObserver = new GlobalTraitLifetimeObserver(this);
         this.observerList.add(this.countObserver);
-        this.observerList.add(this.freqObserver);
+        this.observerList.add(this.lifetimeObserver);
 
         // We observe the dimension, not individual traits, in WF, so we get a single consistent picture
         // of the population at the end of a model step.
@@ -76,11 +76,10 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         decisionRule.registerSubRule(rcmRule);
 
 
-        if(this.isInfiniteAlleles) {
+        if (this.isInfiniteAlleles) {
             IInteractionRule iiMutation = new InfiniteAllelesMutationRule(this);
             decisionRule.registerSubRule(iiMutation);
-        }
-        else {
+        } else {
             IInteractionRule fkMutation = new FiniteKAllelesMutationRule(this);
             decisionRule.registerSubRule(fkMutation);
         }
@@ -109,7 +108,7 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         // Verify proper initialization
         log.debug("Verifying proper initial frequencies =======================");
         Map<ITrait, Double> freqMap = this.dimension.getCurGlobalTraitFrequencies();
-        for(Map.Entry<ITrait,Double> entry: freqMap.entrySet()) {
+        for (Map.Entry<ITrait, Double> entry : freqMap.entrySet()) {
             log.debug("Trait " + entry.getKey().getTraitID() + " Freq: " + entry.getValue().toString());
         }
         log.debug("=============================================");
@@ -120,6 +119,7 @@ public class WrightFisherDriftModel extends AbstractSimModel {
      * parseCommandLineOptions will be called at the very beginning of the simulation run,
      * before logging is configured, to determine options.  Thus, we cannot use log4j to
      * document its operation.
+     *
      * @param args
      */
     public void parseCommandLineOptions(String[] args) {
@@ -133,6 +133,8 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         cliOptions.addOption("s", true, "starting number of traits (must not be greater than max traits value");
         cliOptions.addOption("l", true, "length of simulation in steps");
         cliOptions.addOption("p", true, "pathname of properties file giving general model configuration (e.g., log file locations)");
+        cliOptions.addOption("t", true, "model time to start recording statistics (i.e., ignore initial transient");
+
 
         // Option group for handling traits
         Option infiniteAllelesOption = new Option("i", false, "use infinite alleles model");
@@ -147,20 +149,18 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         CommandLine cmd = null;
 
         try {
-            cmd = parser.parse( cliOptions, args );
-        }
-        catch( ParseException ex ) {
+            cmd = parser.parse(cliOptions, args);
+        } catch (ParseException ex) {
             System.out.println("ERROR: Command line exception: " + ex.toString());
             System.exit(1);
         }
 
-        if(cmd.hasOption("i")) {
+        if (cmd.hasOption("i")) {
             this.params.setInfiniteAlleles(true);
             this.isInfiniteAlleles = true;
             //this.log.info("infinite alleles model selected - no maximum trait number");
             this.params.setMaxTraits(Integer.MAX_VALUE);
-        }
-        else {
+        } else {
             this.params.setInfiniteAlleles(false);
             this.isInfiniteAlleles = false;
             //this.log.info("finite alleles model selected");
@@ -175,6 +175,7 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         this.params.setMutationRate(Double.parseDouble(cmd.getOptionValue("m", "0.000001")));
         this.params.setStartingTraits(Integer.parseInt(cmd.getOptionValue("s", "2")));
         this.propertiesFileName = cmd.getOptionValue("p", "tf-configuration.properties");
+        this.params.setTimeStartStatistics(Integer.parseInt(cmd.getOptionValue("t", "100")));
 
         // Report starting parameters
         //this.log.info("starting number of traits: " + this.params.getStartingTraits());
@@ -202,7 +203,7 @@ public class WrightFisherDriftModel extends AbstractSimModel {
 
         // Now iterate over all agents in the population and fire their rules, forming a new sample of the
         // previous step's trait distribution
-        for(IAgent agent: shuffledAgentList) {
+        for (IAgent agent : shuffledAgentList) {
             agent.fireRules();
         }
 
@@ -216,15 +217,15 @@ public class WrightFisherDriftModel extends AbstractSimModel {
     private void checkPopulationTraits() {
         List<IAgent> agentList = this.population.getAgents();
         Map<String, Integer> traitCounts = new HashMap<String, Integer>();
-        for(IAgent agent: agentList) {
-            Set<ITrait> traitList = agent.getCurrentlyAdoptedTraits(); 
-            if(traitList.size() > 1) {
+        for (IAgent agent : agentList) {
+            Set<ITrait> traitList = agent.getCurrentlyAdoptedTraits();
+            if (traitList.size() > 1) {
                 log.error("agent " + agent.getAgentID() + " has " + traitList.size() + " traits - ERROR");
             }
-            for(ITrait trait: traitList) {
+            for (ITrait trait : traitList) {
                 Integer cnt = traitCounts.get(trait.getTraitID());
-                if(cnt == null) {
-                    traitCounts.put(trait.getTraitID(), 1);    
+                if (cnt == null) {
+                    traitCounts.put(trait.getTraitID(), 1);
                 } else {
                     cnt++;
                     traitCounts.put(trait.getTraitID(), cnt);
@@ -234,31 +235,29 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         Set<String> traitSet = traitCounts.keySet();
         ArrayList<String> sortedTraits = new ArrayList<String>(traitSet);
         Collections.sort(sortedTraits);
-        
+
         log.info("====================================================================");
-        for(String trait: sortedTraits) {
-            System.out.println(trait + "\t" + traitCounts.get(trait)) ;
+        for (String trait : sortedTraits) {
+            System.out.println(trait + "\t" + traitCounts.get(trait));
         }
         log.info("number of traits found: " + traitCounts.size());
         log.info("====================================================================");
     }
-    
-    
-    
+
 
     public void modelObservations() {
         log.trace("entering modelObservations at time: " + this.currentTime);
-        for(ITraitStatisticsObserver<ITraitDimension> obs: this.observerList) {
-           obs.perStepAction();
+        for (ITraitStatisticsObserver<ITraitDimension> obs : this.observerList) {
+            obs.perStepAction();
         }
     }
 
     public void modelFinalize() {
-       for(ITraitStatisticsObserver<ITraitDimension> obs: this.observerList) {
-           obs.endSimulationAction();
-           obs.finalizeObservation();
-       }
-       log.info("Finalizing model run, writing historical data, and closing any files or connections");
+        for (ITraitStatisticsObserver<ITraitDimension> obs : this.observerList) {
+            obs.endSimulationAction();
+            obs.finalizeObservation();
+        }
+        log.info("Finalizing model run, writing historical data, and closing any files or connections");
     }
 
 }

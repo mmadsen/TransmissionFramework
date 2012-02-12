@@ -12,6 +12,7 @@ package org.madsenlab.sim.tf.test.examples.SimpleMoran;
 import org.apache.commons.cli.*;
 import org.madsenlab.sim.tf.analysis.GlobalTraitCountObserver;
 import org.madsenlab.sim.tf.analysis.GlobalTraitFrequencyObserver;
+import org.madsenlab.sim.tf.analysis.GlobalTraitLifetimeObserver;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.models.AbstractSimModel;
@@ -33,6 +34,7 @@ import java.util.*;
 public class SimpleMoranDriftModel extends AbstractSimModel {
     GlobalTraitCountObserver countObserver;
     GlobalTraitFrequencyObserver freqObserver;
+    GlobalTraitLifetimeObserver lifetimeObserver;
     ITraitDimension dimension;
     Integer numAgents;
     Double mutationRate;
@@ -41,7 +43,6 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
     Integer startingTraits;
 
     List<IActionRule> ruleList;
-
 
 
     public SimpleMoranDriftModel() {
@@ -57,9 +58,9 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
 
         // Now can initialize Observers
         this.countObserver = new GlobalTraitCountObserver(this);
-        this.freqObserver = new GlobalTraitFrequencyObserver(this);
+        this.lifetimeObserver = new GlobalTraitLifetimeObserver(this);
         this.observerList.add(this.countObserver);
-        this.observerList.add(this.freqObserver);
+        this.observerList.add(this.lifetimeObserver);
         this.dimension.attach(this.observerList);
 
         // set up the stack of rules, to be fired in the order given in the list
@@ -71,11 +72,10 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         decisionRule.registerSubRule(rcmRule);
 
 
-        if(this.isInfiniteAlleles) {
+        if (this.isInfiniteAlleles) {
             IInteractionRule iiMutation = new InfiniteAllelesMutationRule(this);
             decisionRule.registerSubRule(iiMutation);
-        }
-        else {
+        } else {
             IInteractionRule fkMutation = new FiniteKAllelesMutationRule(this);
             decisionRule.registerSubRule(fkMutation);
         }
@@ -103,7 +103,7 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
 
         // Verify proper initialization
         Map<ITrait, Double> freqMap = this.dimension.getCurGlobalTraitFrequencies();
-        for(Map.Entry<ITrait,Double> entry: freqMap.entrySet()) {
+        for (Map.Entry<ITrait, Double> entry : freqMap.entrySet()) {
             log.trace("Trait " + entry.getKey().getTraitID() + " Freq: " + entry.getValue().toString());
         }
 
@@ -121,6 +121,8 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         cliOptions.addOption("s", true, "starting number of traits (must not be greater than max traits value");
         cliOptions.addOption("l", true, "length of simulation in steps");
         cliOptions.addOption("p", true, "pathname of properties file giving general model configuration (e.g., log file locations)");
+        cliOptions.addOption("t", true, "model time to start recording statistics (i.e., ignore initial transient");
+
 
         // Option group for handling traits
         Option infiniteAllelesOption = new Option("i", false, "use infinite alleles model");
@@ -135,20 +137,18 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         CommandLine cmd = null;
 
         try {
-            cmd = parser.parse( cliOptions, args );
-        }
-        catch( ParseException ex ) {
+            cmd = parser.parse(cliOptions, args);
+        } catch (ParseException ex) {
             System.out.println("ERROR: Command line exception: " + ex.toString());
             System.exit(1);
         }
 
-        if(cmd.hasOption("i")) {
+        if (cmd.hasOption("i")) {
             this.params.setInfiniteAlleles(true);
             this.isInfiniteAlleles = true;
             //this.log.info("infinite alleles model selected - no maximum trait number");
             this.params.setMaxTraits(Integer.MAX_VALUE);
-        }
-        else {
+        } else {
             this.params.setInfiniteAlleles(false);
             this.isInfiniteAlleles = false;
             //this.log.info("finite alleles model selected");
@@ -164,6 +164,7 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         this.params.setStartingTraits(Integer.parseInt(cmd.getOptionValue("s", "2")));
         this.propertiesFileName = cmd.getOptionValue("p", "tf-configuration.properties");
         System.out.println("properties File: " + this.propertiesFileName);
+        this.params.setTimeStartStatistics(Integer.parseInt(cmd.getOptionValue("t", "100")));
 
         // Report starting parameters
         //this.log.info("starting number of traits: " + this.params.getStartingTraits());
@@ -189,14 +190,14 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
     private void checkPopulationTraits() {
         List<IAgent> agentList = this.population.getAgents();
         Map<String, Integer> traitCounts = new HashMap<String, Integer>();
-        for(IAgent agent: agentList) {
+        for (IAgent agent : agentList) {
             Set<ITrait> traitList = agent.getCurrentlyAdoptedTraits();
-            if(traitList.size() > 1) {
+            if (traitList.size() > 1) {
                 log.error("agent " + agent.getAgentID() + " has " + traitList.size() + " traits - ERROR");
             }
-            for(ITrait trait: traitList) {
+            for (ITrait trait : traitList) {
                 Integer cnt = traitCounts.get(trait.getTraitID());
-                if(cnt == null) {
+                if (cnt == null) {
                     traitCounts.put(trait.getTraitID(), 1);
                 } else {
                     cnt++;
@@ -206,8 +207,8 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         }
         Set<String> traitSet = traitCounts.keySet();
         log.info("====================================================================");
-        for(String trait: traitSet) {
-            log.info(trait + "\t" + traitCounts.get(trait)) ;
+        for (String trait : traitSet) {
+            log.info(trait + "\t" + traitCounts.get(trait));
         }
         log.info("number of traits found: " + traitCounts.size());
         log.info("====================================================================");
@@ -215,17 +216,17 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
 
     public void modelObservations() {
         log.trace("entering modelObservations at time: " + this.currentTime);
-        for(ITraitStatisticsObserver<ITraitDimension> obs: this.observerList) {
-           obs.perStepAction();
+        for (ITraitStatisticsObserver<ITraitDimension> obs : this.observerList) {
+            obs.perStepAction();
         }
     }
 
     public void modelFinalize() {
-       for(ITraitStatisticsObserver<ITraitDimension> obs: this.observerList) {
-           obs.endSimulationAction();
-           obs.finalizeObservation();
-       }
-       log.info("Finalizing model run, writing historical data, and closing any files or connections");
+        for (ITraitStatisticsObserver<ITraitDimension> obs : this.observerList) {
+            obs.endSimulationAction();
+            obs.finalizeObservation();
+        }
+        log.info("Finalizing model run, writing historical data, and closing any files or connections");
     }
 
 }

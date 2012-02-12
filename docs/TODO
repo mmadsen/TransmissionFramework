@@ -1,1 +1,3 @@
-TODO: Wright Fisher is leaking trait counts somehow.  Moran isn't leaking trait counts.
+TODO: EwensSampleObserver - take sample of configurable size n every M steps, reporting frequency spectrum and trait counts in separate files
+TODO: Keep lifetime data on traits - how long from origin to zero adoption.  Write an observer for these stats.
+

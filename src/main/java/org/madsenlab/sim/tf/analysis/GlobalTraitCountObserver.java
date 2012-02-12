@@ -9,6 +9,7 @@
 
 package org.madsenlab.sim.tf.analysis;
 
+import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.TraitIDComparator;
@@ -31,61 +32,77 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
     private Map<ITrait, Integer> traitCountMap;
     private Integer lastTimeIndexUpdated;
     private PrintWriter pw;
-    private Map<Integer,Map<ITrait,Integer>> histTraitCount;
+    private Map<Integer, Map<ITrait, Integer>> histTraitCount;
+    private List<Integer> totalTraitsPerTick;
+    private PrintWriter statsPW;
 
     public GlobalTraitCountObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
-        this.histTraitCount = new HashMap<Integer,Map<ITrait, Integer>>();
+        this.histTraitCount = new HashMap<Integer, Map<ITrait, Integer>>();
+        this.totalTraitsPerTick = new ArrayList<Integer>();
 
         String traitFreqLogFile = this.model.getModelConfiguration().getProperty("global-trait-count-logfile");
-        log.debug("traitCountLogFile: " + traitFreqLogFile);
+        String countStatsLogFile = this.model.getModelConfiguration().getProperty("global-trait-count-statsfile");
+
         this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(traitFreqLogFile);
-//        try{
-//            this.pw = new PrintWriter(new BufferedWriter(new FileWriter("trait-frequencies-by-time.txt")));
-//        } catch(IOException ex) {
-//            log.error("ERROR CREATING TRAIT FREQUENCIES BY TIME LOG FILE");
-//            System.exit(1);
-//        }
+        this.statsPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(countStatsLogFile);
+
     }
 
+    // we only want to start recording trait counts after the initial transient behavior decays and we reach equilibrium
     public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
         log.trace("entering updateTraitStatistics");
-        this.lastTimeIndexUpdated = stat.getTimeIndex();
-        ITraitDimension dim = stat.getTarget();
-        Map<ITrait,Integer> countMap = dim.getCurGlobalTraitCounts();
-        this.histTraitCount.put(this.lastTimeIndexUpdated,countMap);
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getTimeStartStatistics()) {
+            this.lastTimeIndexUpdated = stat.getTimeIndex();
+            ITraitDimension dim = stat.getTarget();
+            Map<ITrait, Integer> countMap = dim.getCurGlobalTraitCounts();
+            this.histTraitCount.put(this.lastTimeIndexUpdated, countMap);
+            this.totalTraitsPerTick.add(countMap.size());
+        }
     }
 
+    // we only want to start recording trait counts after the initial transient behavior decays and we reach equilibrium
     public void perStepAction() {
         log.trace("entering perStepAction");
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getTimeStartStatistics()) {
+            //log.trace("histTraitFreq: " + this.histTraitFreq);
+            this.printFrequencies();
 
-        //log.trace("histTraitFreq: " + this.histTraitFreq);
-        this.printFrequencies();
-
-        Integer tick = this.model.getCurrentModelTime();
-        // Every 100 ticks, write historical data to disk and flush it to keep memory usage and performance reasonable.
-        if(tick % 100 == 0) {
-            this.logFrequencies();
-            this.histTraitCount.clear();
+            Integer tick = this.model.getCurrentModelTime();
+            // Every 100 ticks, write historical data to disk and flush it to keep memory usage and performance reasonable.
+            if (tick % 100 == 0) {
+                this.logFrequencies();
+                this.histTraitCount.clear();
+            }
         }
     }
 
     public void endSimulationAction() {
         log.trace("entering endSimulationAction");
+        DescriptiveStatistics stats = new DescriptiveStatistics();
+        for (Integer val : this.totalTraitsPerTick) {
+            stats.addValue((double) val);
+        }
+        log.info("Trait Count Stats: =============");
+        log.info(stats.toString());
+
+        this.statsPW.write(stats.toString());
         this.logFrequencies();
     }
 
     public void finalizeObservation() {
         log.trace("entering finalizeObservation");
-            this.pw.flush();
-            this.pw.close();
+        this.pw.flush();
+        this.pw.close();
+        this.statsPW.flush();
+        this.statsPW.close();
     }
 
     private void printFrequencies() {
         Integer time = this.model.getCurrentModelTime();
 
-        Map<ITrait,Integer> countMap = this.histTraitCount.get(time);
+        Map<ITrait, Integer> countMap = this.histTraitCount.get(time);
         //log.debug("printCounts - getting counts for time: " + time + " : " + countMap);
 
         StringBuffer sb = prepareCountLogString(time, countMap);
@@ -94,7 +111,7 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
 
     }
 
-    private StringBuffer prepareCountLogString(Integer time, Map<ITrait,Integer> countMap) {
+    private StringBuffer prepareCountLogString(Integer time, Map<ITrait, Integer> countMap) {
         //log.debug("prepare string: freqMap: " + freqMap);
         Integer numNonZeroTraits = 0;
         Integer totalOfTraitCounts = 0;
@@ -110,7 +127,7 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
             sb.append(":");
             sb.append(count);
             sb.append(",");
-            if(count != 0) {
+            if (count != 0) {
                 numNonZeroTraits++;
             }
             totalOfTraitCounts += count;
@@ -122,15 +139,14 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
         return sb;
     }
 
-    
-    
+
     private void logFrequencies() {
         log.trace("entering logFrequencies");
         Set<Integer> keys = this.histTraitCount.keySet();
         List<Integer> sortedKeys = new ArrayList<Integer>(keys);
         Collections.sort(sortedKeys);
-        for(Integer time: sortedKeys) {
-            Map<ITrait,Integer> countMap = this.histTraitCount.get(time);
+        for (Integer time : sortedKeys) {
+            Map<ITrait, Integer> countMap = this.histTraitCount.get(time);
             StringBuffer sb = prepareCountLogString(time, countMap);
             sb.append('\n');
             this.pw.write(sb.toString());

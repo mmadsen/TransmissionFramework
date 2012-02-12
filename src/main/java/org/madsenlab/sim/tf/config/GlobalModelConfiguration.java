@@ -31,7 +31,8 @@ public class GlobalModelConfiguration {
     Boolean isInfiniteAlleles = false;
     Integer maxTraits;
     Integer startingTraits;
-    Map<String,String> otherProperties;
+    Map<String, String> otherProperties;
+    Integer timeStartStatistics;
 
     public Integer getNumDemes() {
         return numDemes;
@@ -56,7 +57,7 @@ public class GlobalModelConfiguration {
 
     public GlobalModelConfiguration(ISimulationModel m) {
         this.model = m;
-        this.otherProperties = new HashMap<String,String>();
+        this.otherProperties = new HashMap<String, String>();
     }
 
     public Double getMutationRate() {
@@ -105,5 +106,13 @@ public class GlobalModelConfiguration {
 
     public String getProperty(String propName) {
         return this.otherProperties.get(propName);
+    }
+
+    public void setTimeStartStatistics(Integer t) {
+        this.timeStartStatistics = t;
+    }
+
+    public Integer getTimeStartStatistics() {
+        return this.timeStartStatistics;
     }
 }

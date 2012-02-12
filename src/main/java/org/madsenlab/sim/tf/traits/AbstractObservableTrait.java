@@ -10,6 +10,7 @@
 package org.madsenlab.sim.tf.traits;
 
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.exceptions.TraitDurationIncompleteException;
 import org.madsenlab.sim.tf.interfaces.*;
 
 import java.util.List;
@@ -23,6 +24,10 @@ import java.util.List;
  */
 
 public abstract class AbstractObservableTrait implements ITrait {
+    protected Integer traitLifetime = 0;
+    protected Integer tickTraitIntroduced;
+    protected Integer tickTraitExited;
+
     protected List<ITraitStatisticsObserver> observers;
     protected ISimulationModel model;
     protected Logger log;
@@ -35,7 +40,7 @@ public abstract class AbstractObservableTrait implements ITrait {
     }
 
     public void attach(List<ITraitStatisticsObserver<ITraitDimension>> obsList) {
-        for(ITraitStatisticsObserver obs: obsList) {
+        for (ITraitStatisticsObserver obs : obsList) {
             this.attach(obs);
         }
     }
@@ -48,7 +53,7 @@ public abstract class AbstractObservableTrait implements ITrait {
     }
 
     public void detach(List<ITraitStatisticsObserver<ITraitDimension>> obsList) {
-        for(ITraitStatisticsObserver obs: obsList) {
+        for (ITraitStatisticsObserver obs : obsList) {
             this.detach(obs);
         }
     }
@@ -69,4 +74,20 @@ public abstract class AbstractObservableTrait implements ITrait {
     public abstract ITraitStatistic getChangeStatistic();
 
 
+    @Override
+    public Boolean hasCompleteDuration() {
+        if (this.traitLifetime > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public Integer getTraitDuration() {
+        if (this.traitLifetime == 0) {
+            throw new TraitDurationIncompleteException(this.getClass(), "getTraitDuration");
+        }
+        return this.traitLifetime;
+    }
 }

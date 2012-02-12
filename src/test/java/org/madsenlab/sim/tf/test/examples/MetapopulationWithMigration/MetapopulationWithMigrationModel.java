@@ -14,6 +14,7 @@ import com.google.inject.Provider;
 import org.apache.commons.cli.*;
 import org.madsenlab.sim.tf.analysis.GlobalTraitCountObserver;
 import org.madsenlab.sim.tf.analysis.GlobalTraitFrequencyObserver;
+import org.madsenlab.sim.tf.analysis.GlobalTraitLifetimeObserver;
 import org.madsenlab.sim.tf.analysis.PerDemeTraitFrequencyObserver;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
@@ -40,6 +41,7 @@ import java.util.Map;
 public class MetapopulationWithMigrationModel extends AbstractSimModel {
     GlobalTraitCountObserver countObserver;
     GlobalTraitFrequencyObserver freqObserver;
+    GlobalTraitLifetimeObserver lifetimeObserver;
     ITraitDimension dimension;
     Integer numAgents;
     Double mutationRate;
@@ -60,7 +62,7 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
     public void initializeModel() {
         this.demeTagList = new ArrayList<IAgentTag>();
         // needed only temporarily to later initialize demes and agents
-        HashMap<Integer,IAgentTag> demeTagMap = new HashMap<Integer,IAgentTag>();
+        HashMap<Integer, IAgentTag> demeTagMap = new HashMap<Integer, IAgentTag>();
 
         // first, set up the traits in a dimension
         // second, set up agents, assigning an initial trait to each agent at random
@@ -68,24 +70,22 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
         this.dimensionList.add(this.dimension);
 
 
-
-
-        // Now can initialize simulation-global Observers
-        // Deme-specific observers are initialized below during population construction
+        // Now can initialize Observers
         this.countObserver = new GlobalTraitCountObserver(this);
-        this.freqObserver = new GlobalTraitFrequencyObserver(this);
+        this.lifetimeObserver = new GlobalTraitLifetimeObserver(this);
         this.observerList.add(this.countObserver);
-        this.observerList.add(this.freqObserver);
+        this.observerList.add(this.lifetimeObserver);
+
 
         // Construct trait frequency observers for each deme - need to do this now, so we can register
         // each with the traits they observe
-        for(Integer i = 0; i < this.params.getNumDemes(); i++ ) {
+        for (Integer i = 0; i < this.params.getNumDemes(); i++) {
             // Construct a tag that marks all agents in this deme
             IAgentTag demeTag = this.tagProvider.get();
             demeTag.setTagType(AgentTagType.DEME);
             demeTag.setTagName(i.toString());
             this.demeTagList.add(demeTag);
-            demeTagMap.put(i,demeTag); // not used outside initializeModel()
+            demeTagMap.put(i, demeTag); // not used outside initializeModel()
             PerDemeTraitFrequencyObserver demeObs = new PerDemeTraitFrequencyObserver(this, demeTag);
             this.observerList.add(demeObs);
         }
@@ -105,11 +105,10 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
         decisionRule.registerSubRule(rcmRule);
 
 
-        if(this.isInfiniteAlleles) {
+        if (this.isInfiniteAlleles) {
             IInteractionRule iiMutation = new InfiniteAllelesMutationRule(this);
             decisionRule.registerSubRule(iiMutation);
-        }
-        else {
+        } else {
             IInteractionRule fkMutation = new FiniteKAllelesMutationRule(this);
             decisionRule.registerSubRule(fkMutation);
         }
@@ -130,26 +129,28 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
         Integer numAgents = this.params.getNumAgents();
         Integer numAgentsPerDeme = numAgents / numDemes;
 
-        if(numAgents % numDemes != 0) {
+        if (numAgents % numDemes != 0) {
             log.info("numAgents is not an integer multiple of numDemes, using only " + numAgentsPerDeme + " agents");
         }
 
         // Debug only
         //XStream xs = new XStream();
 
-        for(Integer i = 0; i < numDemes; i++) {
+        for (Integer i = 0; i < numDemes; i++) {
             IAgentTag demeTag = demeTagMap.get(i);
 
             log.debug("Creating " + numAgentsPerDeme + " agents with deme : " + demeTag);
 
-            for(Integer j = 0; j < numAgentsPerDeme; j++) {
+            for (Integer j = 0; j < numAgentsPerDeme; j++) {
                 log.trace("creating agent " + j + " for deme " + i);
                 IAgent agent = this.getPopulation().createAgentWithTag(demeTag);
                 agent.setAgentID(i.toString());
                 agent.addActionRuleList(this.ruleList);
                 ITrait randomTrait = this.dimension.getRandomTraitFromDimension();
 
-                if(!agent.hasTag(demeTag)) { throw new IllegalStateException("agent doesn't have the deme tag"); }
+                if (!agent.hasTag(demeTag)) {
+                    throw new IllegalStateException("agent doesn't have the deme tag");
+                }
 
                 randomTrait.adopt(agent);
             }
@@ -157,7 +158,7 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
 
         // Verify proper initialization
         Map<ITrait, Double> freqMap = this.dimension.getCurGlobalTraitFrequencies();
-        for(Map.Entry<ITrait,Double> entry: freqMap.entrySet()) {
+        for (Map.Entry<ITrait, Double> entry : freqMap.entrySet()) {
             log.trace("Trait " + entry.getKey().getTraitID() + " Freq: " + entry.getValue().toString());
         }
 
@@ -176,6 +177,7 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
         cliOptions.addOption("l", true, "length of simulation in steps");
         cliOptions.addOption("p", true, "pathname of properties file giving general model configuration (e.g., log file locations)");
         cliOptions.addOption("d", true, "number of demes in the metapopulation (make this an integer multiple of -n");
+        cliOptions.addOption("t", true, "model time to start recording statistics (i.e., ignore initial transient");
 
         // Option group for handling traits
         Option infiniteAllelesOption = new Option("i", false, "use infinite alleles model");
@@ -190,20 +192,18 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
         CommandLine cmd = null;
 
         try {
-            cmd = parser.parse( cliOptions, args );
-        }
-        catch( ParseException ex ) {
+            cmd = parser.parse(cliOptions, args);
+        } catch (ParseException ex) {
             System.out.println("ERROR: Command line exception: " + ex.toString());
             System.exit(1);
         }
 
-        if(cmd.hasOption("i")) {
+        if (cmd.hasOption("i")) {
             this.params.setInfiniteAlleles(true);
             this.isInfiniteAlleles = true;
             //this.log.info("infinite alleles model selected - no maximum trait number");
             this.params.setMaxTraits(Integer.MAX_VALUE);
-        }
-        else {
+        } else {
             this.params.setInfiniteAlleles(false);
             this.isInfiniteAlleles = false;
             //this.log.info("finite alleles model selected");
@@ -219,6 +219,7 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
         this.params.setStartingTraits(Integer.parseInt(cmd.getOptionValue("s", "2")));
         this.propertiesFileName = cmd.getOptionValue("p", "tf-configuration.properties");
         this.params.setNumDemes(Integer.parseInt(cmd.getOptionValue("d", "2")));
+        this.params.setTimeStartStatistics(Integer.parseInt(cmd.getOptionValue("t", "100")));
 
         // Report starting parameters
         //this.log.info("starting number of traits: " + this.params.getStartingTraits());
@@ -244,17 +245,17 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
 
     public void modelObservations() {
         log.trace("entering modelObservations at time: " + this.currentTime);
-        for(ITraitStatisticsObserver<ITraitDimension> obs: this.observerList) {
-           obs.perStepAction();
+        for (ITraitStatisticsObserver<ITraitDimension> obs : this.observerList) {
+            obs.perStepAction();
         }
     }
 
     public void modelFinalize() {
-       for(ITraitStatisticsObserver<ITraitDimension> obs: this.observerList) {
-           obs.endSimulationAction();
-           obs.finalizeObservation();
-       }
-       log.info("Finalizing model run, writing historical data, and closing any files or connections");
+        for (ITraitStatisticsObserver<ITraitDimension> obs : this.observerList) {
+            obs.endSimulationAction();
+            obs.finalizeObservation();
+        }
+        log.info("Finalizing model run, writing historical data, and closing any files or connections");
     }
 
 }
