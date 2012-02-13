@@ -10,7 +10,6 @@
 package org.madsenlab.sim.tf.agent;
 
 import com.google.inject.Inject;
-import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.AgentTagType;
 
@@ -26,10 +25,8 @@ import java.util.*;
  * Time: 3:26:08 PM
  */
 
-public class DimensionalTraitAgent implements IAgent {
+public class DimensionalTraitAgent extends AbstractAgent {
     private String agentID;
-    private ISimulationModel model;
-    private Logger log;
     private Set<ITraitDimension> dimensionSet;
     private Set<ITrait> traitSet;
     private Set<IAgentTag> tagSet;

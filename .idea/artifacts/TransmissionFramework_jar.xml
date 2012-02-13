@@ -17,7 +17,6 @@
       <element id="library" level="project" name="Maven: stax:stax-api:1.0.1" />
       <element id="library" level="project" name="Maven: com.google.guava:guava:r05" />
       <element id="library" level="project" name="Maven: colt:colt:1.2.0" />
-      <element id="library" level="project" name="Maven: org.apache.commons:commons-math:2.1" />
       <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
       <element id="library" level="project" name="Maven: net.sourceforge.collections:collections-generic:4.01" />
       <element id="library" level="project" name="Maven: com.google.inject:guice:2.0" />
@@ -26,6 +25,12 @@
       <element id="library" level="project" name="Maven: net.sf.jung:jung-api:2.0.1" />
       <element id="library" level="project" name="Maven: concurrent:concurrent:1.3.4" />
       <element id="library" level="project" name="Maven: commons-cli:commons-cli:1.2" />
+      <element id="library" level="project" name="Maven: org.apache.commons:commons-math:2.2" />
+      <element id="library" level="project" name="Maven: com.google.code:atunit:1.0.1" />
+      <element id="library" level="project" name="Maven: com.thoughtworks.xstream:xstream:1.2.2" />
+      <element id="library" level="project" name="Maven: junit:junit:4.8.1" />
+      <element id="library" level="project" name="Maven: net.sf.trove4j:trove4j:3.0.2" />
+      <element id="library" level="project" name="Maven: xpp3:xpp3_min:1.1.3.4.O" />
     </root>
   </artifact>
 </component>

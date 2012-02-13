@@ -12,10 +12,7 @@ package org.madsenlab.sim.tf.test.examples.MetapopulationWithMigration;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.apache.commons.cli.*;
-import org.madsenlab.sim.tf.analysis.GlobalTraitCountObserver;
-import org.madsenlab.sim.tf.analysis.GlobalTraitFrequencyObserver;
-import org.madsenlab.sim.tf.analysis.GlobalTraitLifetimeObserver;
-import org.madsenlab.sim.tf.analysis.PerDemeTraitFrequencyObserver;
+import org.madsenlab.sim.tf.analysis.*;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.models.AbstractSimModel;
@@ -178,6 +175,7 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
         cliOptions.addOption("p", true, "pathname of properties file giving general model configuration (e.g., log file locations)");
         cliOptions.addOption("d", true, "number of demes in the metapopulation (make this an integer multiple of -n");
         cliOptions.addOption("t", true, "model time to start recording statistics (i.e., ignore initial transient");
+        cliOptions.addOption("e", true, "size of sample to take for comparison to Ewens Sampling Distribution (per deme)");
 
         // Option group for handling traits
         Option infiniteAllelesOption = new Option("i", false, "use infinite alleles model");
@@ -220,6 +218,7 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
         this.propertiesFileName = cmd.getOptionValue("p", "tf-configuration.properties");
         this.params.setNumDemes(Integer.parseInt(cmd.getOptionValue("d", "2")));
         this.params.setTimeStartStatistics(Integer.parseInt(cmd.getOptionValue("t", "100")));
+        this.params.setEwensSampleSize(Integer.parseInt(cmd.getOptionValue("e", "50")));
 
         // Report starting parameters
         //this.log.info("starting number of traits: " + this.params.getStartingTraits());

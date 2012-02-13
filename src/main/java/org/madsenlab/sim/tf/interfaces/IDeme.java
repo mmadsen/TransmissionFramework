@@ -64,16 +64,15 @@ public interface IDeme {
 
     /**
      * Returns a typed list of agents currently in the population, in a randomized order each time
-     * it is called.  This allows one to then perform actions on all agents, but ensure that results are 
+     * it is called.  This allows one to then perform actions on all agents, but ensure that results are
      * not dependent upon the single fixed order that the underlying Collections framework will return
      * the agents in.  This is meant for models like Wright-Fisher, where we do something to all agents
-     * at a step.  
-     * 
+     * at a step.
+     *
      * @return agentListShuffled
-     * 
      */
-    
-     List<IAgent> getAgentsShuffledOrder();
+
+    List<IAgent> getAgentsShuffledOrder();
 
     /**
      * Query interface, returning an IPopulation instance which is populated by the agents for which
@@ -103,4 +102,12 @@ public interface IDeme {
      * @return
      */
     Boolean hasMemberAgents();
+
+    /**
+     * Returns a sample of agents of size N from the deme, taken without replacement.  In other words, no agent
+     * is represented more than once in the sample.
+     *
+     * @return List<IAgent>
+     */
+    List<IAgent> getRandomAgentSampleWithoutReplacement(Integer size);
 }

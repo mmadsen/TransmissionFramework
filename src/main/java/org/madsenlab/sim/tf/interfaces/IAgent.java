@@ -11,6 +11,7 @@ package org.madsenlab.sim.tf.interfaces;
 
 
 import org.madsenlab.sim.tf.utils.AgentTagType;
+import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
 import java.util.List;
 import java.util.Set;
@@ -91,7 +92,9 @@ public interface IAgent {
     public Set<ITrait> getCurrentlyAdoptedTraitsForDimension(ITraitDimension dim);
 
     public void savePreviousStepTraits();
-    
+
     public Set<ITrait> getPreviousStepAdoptedTraits();
+
+    public ITrait getRandomTraitFromAgent(TraitCopyingMode mode);
 
 }

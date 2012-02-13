@@ -1,3 +1,5 @@
 TODO: EwensSampleObserver - take sample of configurable size n every M steps, reporting frequency spectrum and trait counts in separate files
-TODO: Keep lifetime data on traits - how long from origin to zero adoption.  Write an observer for these stats.
+TODO:  ESO - need CL params for sample size n - all models
+TODO:  ESO - observer needs to pick sample of individuals each tick of size n, count traits, log
+TODO:  Do we need descriptive statistics on this?  Or just the samples for Slatkin testing?
 

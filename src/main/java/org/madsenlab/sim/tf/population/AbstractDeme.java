@@ -105,4 +105,19 @@ public class AbstractDeme implements IDeme {
         } else return true;
     }
 
+    @Override
+    public List<IAgent> getRandomAgentSampleWithoutReplacement(Integer size) {
+        int uniqueAgents = 0;
+        List<IAgent> agentSample = new ArrayList<IAgent>();
+        while (uniqueAgents != size) {
+            IAgent agent = this.getAgentAtRandom();
+            if (!agentSample.contains(agent)) {
+                agentSample.add(agent);
+                uniqueAgents++;
+            }
+        }
+        log.debug("agentSample: " + agentSample);
+        return agentSample;
+    }
+
 }

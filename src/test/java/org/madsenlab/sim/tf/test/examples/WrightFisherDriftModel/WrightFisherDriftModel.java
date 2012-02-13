@@ -10,6 +10,7 @@
 package org.madsenlab.sim.tf.test.examples.WrightFisherDriftModel;
 
 import org.apache.commons.cli.*;
+import org.madsenlab.sim.tf.analysis.EwensSampleFullPopulationObserver;
 import org.madsenlab.sim.tf.analysis.GlobalTraitCountObserver;
 import org.madsenlab.sim.tf.analysis.GlobalTraitFrequencyObserver;
 import org.madsenlab.sim.tf.analysis.GlobalTraitLifetimeObserver;
@@ -36,6 +37,7 @@ public class WrightFisherDriftModel extends AbstractSimModel {
     GlobalTraitCountObserver countObserver;
     GlobalTraitFrequencyObserver freqObserver;
     GlobalTraitLifetimeObserver lifetimeObserver;
+    EwensSampleFullPopulationObserver ewensSampler;
     ITraitDimension dimension;
     Integer numAgents;
     Double mutationRate;
@@ -59,8 +61,10 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         // Now can initialize Observers
         this.countObserver = new GlobalTraitCountObserver(this);
         this.lifetimeObserver = new GlobalTraitLifetimeObserver(this);
+        this.ewensSampler = new EwensSampleFullPopulationObserver(this);
         this.observerList.add(this.countObserver);
         this.observerList.add(this.lifetimeObserver);
+        this.observerList.add(this.ewensSampler);
 
         // We observe the dimension, not individual traits, in WF, so we get a single consistent picture
         // of the population at the end of a model step.
@@ -134,6 +138,7 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         cliOptions.addOption("l", true, "length of simulation in steps");
         cliOptions.addOption("p", true, "pathname of properties file giving general model configuration (e.g., log file locations)");
         cliOptions.addOption("t", true, "model time to start recording statistics (i.e., ignore initial transient");
+        cliOptions.addOption("e", true, "size of sample to take for comparison to Ewens Sampling Distribution");
 
 
         // Option group for handling traits
@@ -176,6 +181,7 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         this.params.setStartingTraits(Integer.parseInt(cmd.getOptionValue("s", "2")));
         this.propertiesFileName = cmd.getOptionValue("p", "tf-configuration.properties");
         this.params.setTimeStartStatistics(Integer.parseInt(cmd.getOptionValue("t", "100")));
+        this.params.setEwensSampleSize(Integer.parseInt(cmd.getOptionValue("e", "50")));
 
         // Report starting parameters
         //this.log.info("starting number of traits: " + this.params.getStartingTraits());

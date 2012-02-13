@@ -8,5 +8,10 @@ org.madsenlab.sim.tf.models
 org.madsenlab.sim.tf.population
 org.madsenlab.sim.tf.rules
 org.madsenlab.sim.tf.structure
+org.madsenlab.sim.tf.test
+org.madsenlab.sim.tf.test.examples.MetapopulationWithMigration
+org.madsenlab.sim.tf.test.examples.SimpleMoran
+org.madsenlab.sim.tf.test.examples.WrightFisherDriftModel
+org.madsenlab.sim.tf.test.util
 org.madsenlab.sim.tf.traits
 org.madsenlab.sim.tf.utils

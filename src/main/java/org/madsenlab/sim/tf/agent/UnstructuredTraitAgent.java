@@ -10,7 +10,6 @@
 package org.madsenlab.sim.tf.agent;
 
 import com.google.inject.Inject;
-import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.AgentTagType;
 
@@ -22,10 +21,8 @@ import java.util.*;
  *
  * @author Mark E. Madsen
  */
-public class UnstructuredTraitAgent implements IAgent {
+public class UnstructuredTraitAgent extends AbstractAgent {
     private String agentID;
-    private ISimulationModel model;
-    private Logger log;
     private Set<ITrait> traitsAdopted;
     private Set<IAgentTag> tagSet;
     private List<IActionRule> ruleList;
@@ -108,8 +105,8 @@ public class UnstructuredTraitAgent implements IAgent {
     public Set<IAgentTag> getAgentTagsMatchingType(AgentTagType type) {
         HashSet<IAgentTag> matchingTags = new HashSet<IAgentTag>();
 
-        for(IAgentTag tag: this.tagSet) {
-            if(tag.getTagType() == type) {
+        for (IAgentTag tag : this.tagSet) {
+            if (tag.getTagType() == type) {
                 matchingTags.add(tag);
             }
         }
@@ -143,7 +140,7 @@ public class UnstructuredTraitAgent implements IAgent {
      */
     public void fireRules() {
 
-        for(IActionRule rule: ruleList) {
+        for (IActionRule rule : ruleList) {
             rule.execute(this);
         }
     }

@@ -1,0 +1,164 @@
+/*
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ *
+ * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
+ *
+ * For detailed license terms, see:
+ * http://creativecommons.org/licenses/GPL/2.0/
+ */
+
+package org.madsenlab.sim.tf.analysis;
+
+import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.interfaces.*;
+import org.madsenlab.sim.tf.utils.TraitCopyingMode;
+import org.madsenlab.sim.tf.utils.TraitIDComparator;
+
+import java.io.PrintWriter;
+import java.util.*;
+
+/**
+ * CLASS DESCRIPTION
+ * <p/>
+ * User: mark
+ * Date: 2/12/12
+ * Time: 4:28 PM
+ */
+
+public class EwensSampleFullPopulationObserver implements ITraitStatisticsObserver<ITraitDimension> {
+    private ISimulationModel model;
+    private Logger log;
+    private PrintWriter pw;
+    private Map<Integer, Map<ITrait, Integer>> histSamples;
+    private Integer sampleSize = 0;
+
+
+    public EwensSampleFullPopulationObserver(ISimulationModel m) {
+        this.model = m;
+        this.log = this.model.getModelLogger(this.getClass());
+        this.histSamples = new HashMap<Integer, Map<ITrait, Integer>>();
+        String ewenSampleLogFile = this.model.getModelConfiguration().getProperty("ewens-sample-logfile");
+        this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(ewenSampleLogFile);
+    }
+
+    @Override
+    public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
+        log.trace("entering updateTraitStatistics");
+        if (this.sampleSize == 0) {
+            // memoize this
+            this.sampleSize = this.model.getModelConfiguration().getEwensSampleSize();
+        }
+
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getTimeStartStatistics()) {
+            // take a sample from the population, construct a list
+            Map<ITrait, Integer> sampleMap = new HashMap<ITrait, Integer>();
+
+            // Need to sample a number of unique agents, and tally their traits.  In other words, we need an agent
+            // sample without replacement
+            List<IAgent> agentSample = this.model.getPopulation().getRandomAgentSampleWithoutReplacement(this.sampleSize);
+
+            for (IAgent agent : agentSample) {
+                ITrait trait = agent.getRandomTraitFromAgent(TraitCopyingMode.CURRENT);
+                if (sampleMap.containsKey(trait)) {
+                    int cnt = sampleMap.get(trait);
+                    cnt++;
+                    sampleMap.put(trait, cnt);
+                } else {
+                    sampleMap.put(trait, 1);
+                }
+            }
+
+            // store the list in histSamples
+            this.histSamples.put(this.model.getCurrentModelTime(), sampleMap);
+        }
+    }
+
+    @Override
+    public void perStepAction() {
+        log.trace("entering perStepAction");
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getTimeStartStatistics()) {
+            // occasionally flush the histSamples to log file to prevent memory explosion
+            this.printFrequencies();
+
+            Integer tick = this.model.getCurrentModelTime();
+            // Every 100 ticks, write historical data to disk and flush it to keep memory usage and performance reasonable.
+            if (tick % 100 == 0) {
+                this.logFrequencies();
+                this.histSamples.clear();
+            }
+        }
+    }
+
+    @Override
+    public void endSimulationAction() {
+        log.trace("entering endSimulationAction");
+        // write any remaining histSamples to log file
+        this.logFrequencies();
+    }
+
+    @Override
+    public void finalizeObservation() {
+        this.pw.flush();
+        this.pw.close();
+    }
+
+    private StringBuffer prepareSlatkinTestInputString(Integer time, Map<ITrait, Integer> sampleMap) {
+        StringBuffer sb = new StringBuffer();
+        // I really think it's stupid that values() returns something generic so I have to allocate a whole
+        // separate object just to sort the damned thing
+        Collection<Integer> countSet = sampleMap.values();
+        List<Integer> countList = new ArrayList<Integer>(countSet);
+        Collections.sort(countList);   // this puts it in ascending order
+        Collections.reverse(countList); // this puts it in the descending order req'd by slatkin-enumerate.c
+        sb.append(time);
+        sb.append("\t");
+        for (Integer i : countList) {
+            sb.append(i);
+            sb.append(" ");
+        }
+        return sb;
+    }
+
+    private StringBuffer prepareSampleLogString(Integer time, Map<ITrait, Integer> sampleMap) {
+        StringBuffer sb = new StringBuffer();
+        Set<ITrait> keys = sampleMap.keySet();
+        List<ITrait> sortedKeys = new ArrayList<ITrait>(keys);
+        Collections.sort(sortedKeys, new TraitIDComparator());
+        sb.append(time);
+        for (ITrait aTrait : sortedKeys) {
+            sb.append(",");
+            Integer count = sampleMap.get(aTrait);
+            sb.append(aTrait.getTraitID());
+            sb.append(":");
+            sb.append(count);
+        }
+        return sb;
+    }
+
+    private void printFrequencies() {
+        Integer time = this.model.getCurrentModelTime();
+
+        Map<ITrait, Integer> sampleMap = this.histSamples.get(time);
+        //log.debug("printCounts - getting counts for time: " + time + " : " + countMap);
+
+        StringBuffer sb = prepareSlatkinTestInputString(time, sampleMap);
+        log.debug(sb.toString());
+        sb = null;
+
+    }
+
+    private void logFrequencies() {
+        log.trace("entering logFrequencies");
+        Set<Integer> keys = this.histSamples.keySet();
+        List<Integer> sortedKeys = new ArrayList<Integer>(keys);
+        Collections.sort(sortedKeys);
+        for (Integer time : sortedKeys) {
+            Map<ITrait, Integer> sampleMap = this.histSamples.get(time);
+            StringBuffer sb = prepareSlatkinTestInputString(time, sampleMap);
+            sb.append('\n');
+            this.pw.write(sb.toString());
+            //this.pw.flush();
+        }
+
+    }
+}

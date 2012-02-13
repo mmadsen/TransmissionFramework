@@ -23,7 +23,7 @@
     <option name="OTHER_OPTIONS" />
     <option name="HEAP_SIZE" />
     <option name="LOCALE" />
-    <option name="OPEN_IN_BROWSER" value="true" />
+    <option name="OPEN_IN_BROWSER" value="false" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">

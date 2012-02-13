@@ -1,16 +1,17 @@
 /*
  * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
- * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
+ * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.  
  *
  * For detailed license terms, see:
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.rules;
+package org.madsenlab.sim.tf.agent;
 
+import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.IAgent;
-import org.madsenlab.sim.tf.interfaces.IInteractionRule;
+import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITrait;
 import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
@@ -21,20 +22,22 @@ import java.util.Set;
  * CLASS DESCRIPTION
  * <p/>
  * User: mark
- * Date: Jul 25, 2010
- * Time: 4:20:49 PM
+ * Date: 2/13/12
+ * Time: 2:06 PM
  */
 
-public abstract class AbstractInteractionRule extends AbstractActionRule implements IInteractionRule {
-    // TODO - refactor this usage, since IAgent now has this.
-    // if anything except a rule uses this code, might want to refactor it into IAgent and impl. classes
-    public ITrait getRandomTraitFromAgent(IAgent thisAgent, TraitCopyingMode mode) {
+public abstract class AbstractAgent implements IAgent {
+    protected Logger log;
+    protected ISimulationModel model;
+
+    public ITrait getRandomTraitFromAgent(TraitCopyingMode mode) {
         Set<ITrait> focalTraits;
 
+
         if (mode == TraitCopyingMode.CURRENT) {
-            focalTraits = thisAgent.getCurrentlyAdoptedTraits();
+            focalTraits = this.getCurrentlyAdoptedTraits();
         } else {
-            focalTraits = thisAgent.getPreviousStepAdoptedTraits();
+            focalTraits = this.getPreviousStepAdoptedTraits();
         }
         ITrait focalTrait;
 
@@ -49,6 +52,4 @@ public abstract class AbstractInteractionRule extends AbstractActionRule impleme
         }
         return focalTrait;
     }
-
-
 }
