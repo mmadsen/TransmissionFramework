@@ -141,6 +141,7 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         cliOptions.addOption("e", true, "size of sample to take for comparison to Ewens Sampling Distribution");
 
 
+
         // Option group for handling traits
         Option infiniteAllelesOption = new Option("i", false, "use infinite alleles model");
         Option finiteAllelesOption = new Option("f", true, "specify K alleles model (e.g., 2, 100");

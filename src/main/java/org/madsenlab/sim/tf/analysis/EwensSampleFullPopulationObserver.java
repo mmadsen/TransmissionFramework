@@ -9,6 +9,7 @@
 
 package org.madsenlab.sim.tf.analysis;
 
+import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.TraitCopyingMode;
@@ -29,16 +30,21 @@ public class EwensSampleFullPopulationObserver implements ITraitStatisticsObserv
     private ISimulationModel model;
     private Logger log;
     private PrintWriter pw;
+    private PrintWriter statPW;
     private Map<Integer, Map<ITrait, Integer>> histSamples;
     private Integer sampleSize = 0;
+    private List<Integer> numTraitsInSamplePerTick;
 
 
     public EwensSampleFullPopulationObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
         this.histSamples = new HashMap<Integer, Map<ITrait, Integer>>();
+        this.numTraitsInSamplePerTick = new ArrayList<Integer>();
         String ewenSampleLogFile = this.model.getModelConfiguration().getProperty("ewens-sample-logfile");
         this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(ewenSampleLogFile);
+        String ewenStatsLogFile = this.model.getModelConfiguration().getProperty("ewens-kn-summary-statsfile");
+        this.statPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(ewenStatsLogFile);
     }
 
     @Override
@@ -68,6 +74,8 @@ public class EwensSampleFullPopulationObserver implements ITraitStatisticsObserv
                 }
             }
 
+            // add the size of the sample map (k_n for this sample) to a list for descriptive stats.
+            this.numTraitsInSamplePerTick.add(sampleMap.size());
             // store the list in histSamples
             this.histSamples.put(this.model.getCurrentModelTime(), sampleMap);
         }
@@ -94,12 +102,15 @@ public class EwensSampleFullPopulationObserver implements ITraitStatisticsObserv
         log.trace("entering endSimulationAction");
         // write any remaining histSamples to log file
         this.logFrequencies();
+        this.logStats();
     }
 
     @Override
     public void finalizeObservation() {
         this.pw.flush();
         this.pw.close();
+        this.statPW.flush();
+        this.statPW.close();
     }
 
     private StringBuffer prepareSlatkinTestInputString(Integer time, Map<ITrait, Integer> sampleMap) {
@@ -160,5 +171,28 @@ public class EwensSampleFullPopulationObserver implements ITraitStatisticsObserv
             //this.pw.flush();
         }
 
+
     }
+
+    private void logStats() {
+        log.trace("entering logStats");
+        DescriptiveStatistics stats = new DescriptiveStatistics();
+        for(Integer count: this.numTraitsInSamplePerTick ) {
+            stats.addValue((double) count);
+        }
+        this.statPW.write("Samples of size " + this.sampleSize + " taken each tick\n");
+        this.statPW.write(stats.toString());
+        this.statPW.write("\n");
+        this.statPW.write("\n");
+        log.info("Ewens K_n Sample Stats: =============");
+        log.info("Samples of size " + this.sampleSize + " taken each tick");
+        log.info(stats.toString());
+        
+        for(Integer count: this.numTraitsInSamplePerTick) {
+            this.statPW.write(count.toString());
+            this.statPW.write("\n");
+        }
+    }
+
+
 }

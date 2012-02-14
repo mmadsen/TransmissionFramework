@@ -81,7 +81,7 @@ public class GlobalTraitLifetimeObserver implements ITraitStatisticsObserver<ITr
         log.info(stats.toString());
 
         this.pw.write(stats.toString());
-        this.pw.write(" ");
+        this.pw.write("\n\n");
         this.logFrequencies();
     }
 
