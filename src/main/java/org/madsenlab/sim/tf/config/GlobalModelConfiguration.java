@@ -11,6 +11,7 @@ package org.madsenlab.sim.tf.config;
 
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITraitDimension;
+import org.madsenlab.sim.tf.utils.GenerationDynamicsMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +34,16 @@ public class GlobalModelConfiguration {
     Integer startingTraits;
     Map<String, String> otherProperties;
     Integer timeStartStatistics;
+
+    public GenerationDynamicsMode getModelRateTimeRuns() {
+        return modelRateTimeRuns;
+    }
+
+    public void setModelRateTimeRuns(GenerationDynamicsMode modelRateTimeRuns) {
+        this.modelRateTimeRuns = modelRateTimeRuns;
+    }
+
+    GenerationDynamicsMode modelRateTimeRuns;
 
     public Integer getEwensSampleSize() {
         return ewensSampleSize;

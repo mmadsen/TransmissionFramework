@@ -21,6 +21,7 @@ import org.madsenlab.sim.tf.rules.CopyOrMutateDecisionRule;
 import org.madsenlab.sim.tf.rules.FiniteKAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule;
+import org.madsenlab.sim.tf.utils.GenerationDynamicsMode;
 
 import java.util.*;
 
@@ -160,6 +161,8 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
             this.params.setMaxTraits(Integer.parseInt(cmd.getOptionValue("f", "2")));
         }
 
+        // This is a constant for MORAN models
+        this.params.setModelRateTimeRuns(GenerationDynamicsMode.CONTINUOUS);
 
         this.params.setLengthSimulation(Integer.parseInt(cmd.getOptionValue("l", "10000")));
         // this is the only parameter that's directly needed in a superclass implementation

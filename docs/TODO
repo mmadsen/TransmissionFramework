@@ -1,3 +1,9 @@
-TODO:  EwenSampler for multiple demes in metapopulation model - NOT NOW
+TODO:  LT: EwenSampler for multiple demes in metapopulation model - NOT NOW
 TODO:  Time averaging observers for trait counts and Ewens samples
+TODO:  LT: handling of CLI parameters and config needed by observers is always a pain.  Maybe Observers have properties files?
+TODO:  Implementation of conformism/anti-conformism matching Mesoudi and Lycett
+TODO:  Binning algorithm for frequencies matching M&L?
+TODO:  Implementation of a more realistic "local" algorithm for conformism/anti-conformism?
 
+
+TODO:  Implement a random duration TA sampler

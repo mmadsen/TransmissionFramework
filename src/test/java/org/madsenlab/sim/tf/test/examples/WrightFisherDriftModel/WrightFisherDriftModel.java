@@ -10,10 +10,7 @@
 package org.madsenlab.sim.tf.test.examples.WrightFisherDriftModel;
 
 import org.apache.commons.cli.*;
-import org.madsenlab.sim.tf.analysis.EwensSampleFullPopulationObserver;
-import org.madsenlab.sim.tf.analysis.GlobalTraitCountObserver;
-import org.madsenlab.sim.tf.analysis.GlobalTraitFrequencyObserver;
-import org.madsenlab.sim.tf.analysis.GlobalTraitLifetimeObserver;
+import org.madsenlab.sim.tf.analysis.*;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.models.AbstractSimModel;
@@ -21,6 +18,7 @@ import org.madsenlab.sim.tf.rules.CopyOrMutateDecisionRule;
 import org.madsenlab.sim.tf.rules.FiniteKAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule;
+import org.madsenlab.sim.tf.utils.GenerationDynamicsMode;
 import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
 import java.util.*;
@@ -38,6 +36,7 @@ public class WrightFisherDriftModel extends AbstractSimModel {
     GlobalTraitFrequencyObserver freqObserver;
     GlobalTraitLifetimeObserver lifetimeObserver;
     EwensSampleFullPopulationObserver ewensSampler;
+    TimeAveragedTraitCountObserver taCountSampler;
     ITraitDimension dimension;
     Integer numAgents;
     Double mutationRate;
@@ -62,6 +61,8 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         this.countObserver = new GlobalTraitCountObserver(this);
         this.lifetimeObserver = new GlobalTraitLifetimeObserver(this);
         this.ewensSampler = new EwensSampleFullPopulationObserver(this);
+        this.taCountSampler = new TimeAveragedTraitCountObserver(this);
+        this.observerList.add(this.taCountSampler);
         this.observerList.add(this.countObserver);
         this.observerList.add(this.lifetimeObserver);
         this.observerList.add(this.ewensSampler);
@@ -173,6 +174,8 @@ public class WrightFisherDriftModel extends AbstractSimModel {
             this.params.setMaxTraits(Integer.parseInt(cmd.getOptionValue("f", "2")));
         }
 
+        // This is a constant for Wright Fisher models
+        this.params.setModelRateTimeRuns(GenerationDynamicsMode.DISCRETE);
 
         this.params.setLengthSimulation(Integer.parseInt(cmd.getOptionValue("l", "10000")));
         // this is the only parameter that's directly needed in a superclass implementation

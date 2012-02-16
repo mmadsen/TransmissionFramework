@@ -58,7 +58,7 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
             ITraitDimension dim = stat.getTarget();
             Map<ITrait, Integer> countMap = dim.getCurGlobalTraitCounts();
             this.histTraitCount.put(this.lastTimeIndexUpdated, countMap);
-            this.totalTraitsPerTick.add(countMap.size());
+            this.totalTraitsPerTick.add(countMap.keySet().size());
         }
     }
 
