@@ -9,6 +9,7 @@
 
 package org.madsenlab.sim.tf.analysis;
 
+import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.GenerationDynamicsMode;
@@ -42,12 +43,13 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
     private ISimulationModel model;
     private Logger log;
     private PrintWriter pw;
-    private PrintWriter statPW;
     private List<Integer> samplingIntervals;
     private Map<Integer, Map<ITrait, Integer>> histTraitCount;
     private String perWindowSizeBaseLogFile;
     private List<TimeAveragedWindowProcessor> windowProcessorList;
     private String perWindowSizeBaseStatFile;
+    private String perWindowSizeEwensBaseFile;
+    private PrintWriter statPW;
     
     public TimeAveragedTraitCountObserver(ISimulationModel m) {
         this.model = m;
@@ -55,11 +57,13 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
         int length = this.model.getModelConfiguration().getLengthSimulation();
         this.histTraitCount = new HashMap<Integer, Map<ITrait, Integer>>();
         this.perWindowSizeBaseLogFile = this.model.getModelConfiguration().getProperty("ta-per-windowsize-count-log-base");
-        this.perWindowSizeBaseStatFile = this.model.getModelConfiguration().getProperty("ta-per-windowsize-count-stats-base");
+        this.perWindowSizeBaseStatFile = this.model.getModelConfiguration().getProperty("ta-per-windowsize-count-stats");
+        this.perWindowSizeEwensBaseFile = this.model.getModelConfiguration().getProperty("ta-per-windowsize-ewens-sample-base");
+        this.statPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(this.perWindowSizeBaseStatFile);
         this.windowProcessorList = new ArrayList<TimeAveragedWindowProcessor>();
         this.samplingIntervals = this.calculateTimeAvWindows();
         for(Integer interval: this.samplingIntervals) {
-            this.windowProcessorList.add(new TimeAveragedWindowProcessor(this.model,interval,this.perWindowSizeBaseLogFile, this.perWindowSizeBaseStatFile));
+            this.windowProcessorList.add(new TimeAveragedWindowProcessor(this.model,interval,this.perWindowSizeBaseLogFile, this.perWindowSizeEwensBaseFile));
         }
     }
 
@@ -93,9 +97,12 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
     public void endSimulationAction() {
         // we've been logging all the way along, but probably good to signal to all Processors that we're done and
         // write their final logs.
+        Map<Integer,DescriptiveStatistics> statisticsMap = new HashMap<Integer, DescriptiveStatistics>();
         for(TimeAveragedWindowProcessor proc: this.windowProcessorList) {
-            proc.endSimulationAction();
+            statisticsMap.put(proc.getWindowSize(),proc.calculateStatisticsAndFinalizeLogs());
         }
+        this.logSummaryStatisticsAcrossWindows(statisticsMap);
+
     }
 
     @Override
@@ -104,6 +111,8 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
         for(TimeAveragedWindowProcessor proc: this.windowProcessorList) {
             proc.finalizeObservation();
         }
+        this.statPW.flush();
+        this.statPW.close();
     }
 
     private List<Integer> calculateTimeAvWindows() {
@@ -144,10 +153,24 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
             nextWindow = n;
         }
 
-
         // now convert generations back into tick sizes for a given model
         return windowSizes;
     }
 
+    private void logSummaryStatisticsAcrossWindows(Map<Integer,DescriptiveStatistics> statsMap) {
+        log.trace("entering logSummaryStatisticsAcrossWindows");
+        this.statPW.write("Duration \t Num \t Mean \t StDev \t Min \t Max \n\n");
+        for(Integer windowsize: statsMap.keySet()) {
+            DescriptiveStatistics stats = statsMap.get(windowsize);
+            StringBuffer sb = new StringBuffer();
+            sb.append(windowsize + "\t");
+            sb.append(stats.getN() + "\t");
+            sb.append(stats.getMean() + "\t");
+            sb.append(stats.getStandardDeviation() + "\t");
+            sb.append(stats.getMin() + "\t");
+            sb.append(stats.getMax() + "\n");
+            this.statPW.write(sb.toString());
+        }
+    }
 
 }

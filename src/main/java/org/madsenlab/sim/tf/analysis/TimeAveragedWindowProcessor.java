@@ -40,24 +40,30 @@ public class TimeAveragedWindowProcessor {
     private Logger log;
     private Integer windowSize;
     private PrintWriter wsPW;
-    private PrintWriter statPW;
+    private PrintWriter ewensPW;
     private TraitCountsOverInterval currentAggregateSample;
     private List<Integer> totalTraitsPerWindow;
+    private Map<Integer, Map<ITrait, Integer>> histSamples;
     
-    public TimeAveragedWindowProcessor(ISimulationModel model, Integer windowSize, String logBaseName, String logStatBaseName) {
+    public TimeAveragedWindowProcessor(ISimulationModel model, Integer windowSize, String logBaseName, String ewensBaseName) {
         this.model = model;
         this.log = this.model.getModelLogger(this.getClass());
         this.windowSize = windowSize;
+        this.histSamples = new HashMap<Integer, Map<ITrait, Integer>>();
+        
+        // Initialize log file for this window size
         StringBuffer sb = new StringBuffer();
         sb.append(logBaseName);
         sb.append(windowSize);
-        
-        StringBuffer sb2 = new StringBuffer();
-        sb2.append(logStatBaseName);
-        sb2.append(windowSize);
-
         this.wsPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(sb.toString());
-        this.statPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(sb2.toString());
+        
+        // Initialize a Ewens sample log for this window size
+        StringBuffer sb2 = new StringBuffer();
+        sb2.append(ewensBaseName);
+        sb2.append(windowSize);
+        this.ewensPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(sb2.toString());
+        
+        // initial sample for the first window
         this.currentAggregateSample = new TraitCountsOverInterval(this.model, this.windowSize);
         this.currentAggregateSample.startCounting(this.model.getCurrentModelTime());
 
@@ -80,6 +86,13 @@ public class TimeAveragedWindowProcessor {
             this.totalTraitsPerWindow.add(this.currentAggregateSample.getIntervalCountMap().keySet().size());
             
             
+            // take a Ewens sample from this window before we lose the detailed data.
+            Map<ITrait,Integer> sampleMap = this.takeEwensSampleFromCurrentWindow();
+            StringBuffer sb2 = this.prepareSlatkinTestInputString(this.model.getCurrentModelTime(),sampleMap);
+            this.ewensPW.write(sb2.toString());
+            this.ewensPW.write("\n");
+            this.ewensPW.flush();
+
             // destroy the previous sample
             this.currentAggregateSample = null;
 
@@ -93,7 +106,7 @@ public class TimeAveragedWindowProcessor {
 
     }
 
-    public void endSimulationAction() {
+    public DescriptiveStatistics calculateStatisticsAndFinalizeLogs() {
         // we're done and write their final logs, even if we have a partial sample, which could happen
         // for the end of the simulation given integer rounding in determining the window sizes.
         StringBuffer sb = this.prepareCountLogString(this.currentAggregateSample);
@@ -105,18 +118,20 @@ public class TimeAveragedWindowProcessor {
         for (Integer val : this.totalTraitsPerWindow) {
             stats.addValue((double) val);
         }
-        log.info("TA Trait Count for Window " + this.windowSize + ": =============");
-        log.info(stats.toString());
+        return stats;
 
-        this.statPW.write(stats.toString());
+        //log.info("TA Trait Count for Window " + this.windowSize + ": =============");
+        //log.info(stats.toString());
+
+        //this.statPW.write(stats.toString());
 
     }
 
     public void finalizeObservation() {
         this.wsPW.flush();
         this.wsPW.close();
-        this.statPW.flush();
-        this.statPW.close();
+        this.ewensPW.flush();
+        this.ewensPW.close();
     }
 
 
@@ -150,8 +165,58 @@ public class TimeAveragedWindowProcessor {
         return sb;
     }
 
+    private StringBuffer prepareSlatkinTestInputString(Integer time, Map<ITrait, Integer> sampleMap) {
+        StringBuffer sb = new StringBuffer();
+        // I really think it's stupid that values() returns something generic so I have to allocate a whole
+        // separate object just to sort the damned thing
+        Collection<Integer> countSet = sampleMap.values();
+        List<Integer> countList = new ArrayList<Integer>(countSet);
+        Collections.sort(countList);   // this puts it in ascending order
+        Collections.reverse(countList); // this puts it in the descending order req'd by slatkin-enumerate.c
+        sb.append(time);
+        sb.append("\t");
+        for (Integer i : countList) {
+            sb.append(i);
+            sb.append(" ");
+        }
+        return sb;
+    }
 
     public Integer getWindowSize() {
         return windowSize;
+    }
+
+    private Map<ITrait,Integer> takeEwensSampleFromCurrentWindow() {
+        Map<ITrait, Integer> sampleMap = new HashMap<ITrait, Integer>();
+        Integer ewensSampleSize = this.model.getModelConfiguration().getEwensSampleSize();
+
+        // We don't actually have agents to sample from all of the generations in the TA sample, but
+        // it should be equivalent to take a random sample of size N of traits held in the current window,
+        // with replacement, with each trait being represented by its count (thus increasing the chance of selecting
+        // a trait with higher count.
+        List<ITrait> expandedTraitList = new ArrayList<ITrait>();
+        Map<ITrait,Integer> countMap = this.currentAggregateSample.getIntervalCountMap();
+        for(ITrait trait: countMap.keySet()) {
+            int numCopies = countMap.get(trait);
+            for(int i = 0; i < numCopies; i++) {
+                expandedTraitList.add(trait);
+            }
+        }
+
+        int samplesTaken = 0;
+        while(samplesTaken < ewensSampleSize) {
+            int rnd = this.model.getUniformRandomInteger(expandedTraitList.size() - 1);
+            ITrait sampledTrait = expandedTraitList.get(rnd);
+            if (sampleMap.containsKey(sampledTrait)) {
+                int cnt = sampleMap.get(sampledTrait);
+                cnt++;
+                sampleMap.put(sampledTrait, cnt);
+            } else {
+                sampleMap.put(sampledTrait, 1);
+            }
+            samplesTaken++;
+        }
+        
+        return sampleMap;
     }
 }
