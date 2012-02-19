@@ -61,6 +61,7 @@ public class LogFileHandler implements ILogFiles {
 
         try {
             this.mainOutputDirectory = new File(sb.toString());
+            //noinspection ResultOfMethodCallIgnored
             this.mainOutputDirectory.mkdir();
         }
         catch(SecurityException ex) {
@@ -93,7 +94,7 @@ public class LogFileHandler implements ILogFiles {
         Integer maxTraits = this.params.getMaxTraits();
         String maxTraitsString;
         if(maxTraits == Integer.MAX_VALUE) {
-            maxTraitsString = new String("INF");
+            maxTraitsString = "INF";
         }
         else {
             maxTraitsString = maxTraits.toString();

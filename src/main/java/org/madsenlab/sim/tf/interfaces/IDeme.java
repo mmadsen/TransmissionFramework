@@ -10,6 +10,7 @@
 package org.madsenlab.sim.tf.interfaces;
 
 import org.madsenlab.sim.tf.utils.AgentPredicate;
+import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
 import java.util.List;
 
@@ -110,4 +111,25 @@ public interface IDeme {
      * @return List<IAgent>
      */
     List<IAgent> getRandomAgentSampleWithoutReplacement(Integer size);
+
+
+    /**
+     * Returns the least frequent trait from the agents in this deme.  This can either be from a
+     * snapshot of the previous generation, or the current one, depending upon the type of copying dynamics
+     * involved (WF vs. Moran)
+     *
+     * @param mode
+     * @return ITrait
+     */
+    public ITrait getLeastFrequentTrait(TraitCopyingMode mode);
+
+    /**
+     * Returns the most frequent trait from the agents in this deme.  This can either be from a
+     * snapshot of the previous generation, or the current one, depending upon the type of copying dynamics
+     * involved (WF vs. Moran)
+     *
+     * @param mode
+     * @return ITrait
+     */
+    public ITrait getMostFrequentTrait(TraitCopyingMode mode);
 }

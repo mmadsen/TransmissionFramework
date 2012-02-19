@@ -20,14 +20,17 @@ import org.madsenlab.sim.tf.utils.TraitCopyingMode;
  * Time: 2:39 PM
  */
 
-public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRule implements ICopyingRule, IUnbiasedCopyingRule {
+public class CopyConformistTraitNeighborRule extends AbstractInteractionRule implements ICopyingRule, IConformistCopyingRule {
     TraitCopyingMode mode = TraitCopyingMode.CURRENT;    // default to Moran model style copying
-    
-    public RandomCopyNeighborSingleDimensionRule(ISimulationModel m) {
+    Boolean antiConformismFlag = false;
+
+    public CopyConformistTraitNeighborRule(ISimulationModel m) {
         model = m;
-        log = model.getModelLogger(this.getClass());
+        this.log = model.getModelLogger(this.getClass());
         this.setRuleName("RCMNeighborSD");
         this.setRuleDescription("Randomly Copy a Neighbor's Trait from a Single Dimension");
+        this.antiConformismFlag = this.model.getModelConfiguration().getAntiConformist();
+        log.info("Conformism Mode - anticonformism is " + this.antiConformismFlag);
     }
 
     public void setTraitCopyingMode(TraitCopyingMode m) {
@@ -40,20 +43,26 @@ public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRu
 
         // Get a random neighbor.  First, we need the interaction topology
         IInteractionTopology topology = model.getInteractionTopology();
-        IAgent neighborAgent = topology.getRandomNeighborForAgent(thisAgent);
-        log.trace("focal agent: " + thisAgent.getAgentID() + " <=> neighbor: " + neighborAgent.getAgentID());
+        IDeme neighborAgents = topology.getNeighborsForAgent(thisAgent);
 
-        ITrait neighborTrait = this.getRandomTraitFromAgent(neighborAgent, this.mode);
-        log.trace("choosing neighbor trait: " + neighborTrait.getTraitID() + " to adopt");
+        ITrait newTrait;
+        if(this.antiConformismFlag == true) {
+            // Determine the least frequent trait among neighbors
+            newTrait = neighborAgents.getLeastFrequentTrait(this.mode);
+        } else {
+            // Determine the most frequent trait among neighbors
+            newTrait = neighborAgents.getMostFrequentTrait(this.mode);
+        }
 
         ITrait focalTrait = this.getRandomTraitFromAgent(thisAgent, this.mode);
         log.trace("focal agent unadopting trait: " + focalTrait.getTraitID());
+        log.trace("focal agent adopting most freq trait: " + newTrait.getTraitID());
 
         // Now unadopt the existing trait from thisAgent, and adopt the neighbor's random trait
         // shortcircuit if the traits are the same
-        if(!focalTrait.getTraitID().equals(neighborTrait.getTraitID())) {
+        if(!focalTrait.getTraitID().equals(newTrait.getTraitID())) {
             focalTrait.unadopt(thisAgent);
-            neighborTrait.adopt(thisAgent);
+            newTrait.adopt(thisAgent);
         } else {
             log.trace("traits the same, not copying");
         }

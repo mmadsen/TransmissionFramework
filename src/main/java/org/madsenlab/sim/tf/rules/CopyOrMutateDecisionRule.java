@@ -23,7 +23,7 @@ import java.util.List;
  * Time: 10:15 AM
  */
 
-public class CopyOrMutateDecisionRule extends AbstractInteractionRule {
+public class CopyOrMutateDecisionRule extends AbstractInteractionRule implements ICopyingRule {
     private List<IActionRule> copyingRuleList;
     private List<IActionRule> mutationRuleList;
     private Double mutationRate;
@@ -70,7 +70,7 @@ public class CopyOrMutateDecisionRule extends AbstractInteractionRule {
             this.mutationRuleList.add(rule);
         }
         else {
-            log.error("FATAL: Rule object being registered in CopyOrMutateDecisionRule of unknown rule type");
+            log.error("FATAL: Rule object being registered in CopyOrMutateDecisionRule of unknown rule type" + rule.getRuleDescription());
             System.exit(1);
         }
 

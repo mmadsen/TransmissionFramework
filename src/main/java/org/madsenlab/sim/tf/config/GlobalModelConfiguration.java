@@ -35,6 +35,26 @@ public class GlobalModelConfiguration {
     Map<String, String> otherProperties;
     Integer timeStartStatistics;
 
+    public Boolean getAntiConformist() {
+        return isAntiConformist;
+    }
+
+    public void setAntiConformist(Boolean antiConformist) {
+        isAntiConformist = antiConformist;
+    }
+
+    Boolean isAntiConformist = false;
+    
+    public Double getConformismRate() {
+        return conformismRate;
+    }
+
+    public void setConformismRate(Double conformismRate) {
+        this.conformismRate = conformismRate;
+    }
+
+    Double conformismRate;
+
     public GenerationDynamicsMode getModelRateTimeRuns() {
         return modelRateTimeRuns;
     }

@@ -12,7 +12,6 @@ package org.madsenlab.sim.tf.structure;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.AgentTagType;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -40,22 +39,15 @@ public class WellMixedWithinDemeTopology implements IInteractionTopology {
         return deme.getAgentAtRandom();
     }
 
-    // Return a new IDeme object with all agents except the focal agent, since this
-    // is a well-mixed model, but from a deme of agents restricted to a single tag representing the deme
+    // Return a new IDeme object with all agents from a deme of agents restricted to a single tag representing the deme
 
     public IDeme getNeighborsForAgent(IAgent focalAgent) {
         Set<IAgentTag> agentTags = focalAgent.getAgentTagsMatchingType(AgentTagType.DEME);
         IAgentTag demeTag = agentTags.iterator().next();
         // TODO: bit of hack, hopefully we only have one set of Deme tags, and one per agent...so this won't work if we have nested demes etc etc.
 
-        IDeme deme = this.population.getDemeForTag(demeTag);
-        IDeme allButFocalDeme = this.model.getDemeProvider().get();
+        return this.population.getDemeForTag(demeTag);
 
-        List<IAgent> agentList = deme.getAgents();
-        agentList.remove(focalAgent);
-        allButFocalDeme.setAgentList(agentList);
-
-        return allButFocalDeme;
     }
 
 }

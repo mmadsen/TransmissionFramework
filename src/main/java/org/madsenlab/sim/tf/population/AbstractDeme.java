@@ -12,16 +12,12 @@ package org.madsenlab.sim.tf.population;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.apache.log4j.Logger;
-import org.madsenlab.sim.tf.interfaces.IAgent;
-import org.madsenlab.sim.tf.interfaces.IAgentTag;
-import org.madsenlab.sim.tf.interfaces.IDeme;
-import org.madsenlab.sim.tf.interfaces.ISimulationModel;
+import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.AgentPredicate;
 import org.madsenlab.sim.tf.utils.AgentTagPredicate;
+import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * AbstractDeme provides the base class and most of the implementation for dealing with
@@ -76,7 +72,7 @@ public class AbstractDeme implements IDeme {
     }
 
     public IDeme getDemeMatchingPredicate(AgentPredicate pred) {
-        log.trace("demeProvider: " + demeProvider);
+        //log.trace("demeProvider: " + demeProvider);
         List<IAgent> matches = new ArrayList<IAgent>();
 
         for (IAgent agent : agentList) {
@@ -86,7 +82,7 @@ public class AbstractDeme implements IDeme {
             }
         }
 
-        log.trace("size of match list: " + matches.size());
+        //log.trace("size of match list: " + matches.size());
 
         IDeme subDeme = demeProvider.get();
         subDeme.setAgentList(matches);
@@ -95,7 +91,7 @@ public class AbstractDeme implements IDeme {
     }
 
     public Integer getCurrentPopulationSize() {
-        log.trace("agentList size: " + this.agentList.size());
+        //log.trace("agentList size: " + this.agentList.size());
         return this.agentList.size();  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -116,8 +112,70 @@ public class AbstractDeme implements IDeme {
                 uniqueAgents++;
             }
         }
-        log.debug("agentSample: " + agentSample);
+        //log.debug("agentSample: " + agentSample);
         return agentSample;
     }
 
+    public ITrait getMostFrequentTrait(TraitCopyingMode mode) {
+        SortedSet<Map.Entry<ITrait,Integer>> sortedTraits = this.getSortedTraitCountsForAgentList(this.agentList,mode);
+        Map.Entry<ITrait,Integer> highestEntry = sortedTraits.last();
+        log.trace("highest trait: " + highestEntry.getKey().getTraitID() + " count: " + highestEntry.getValue());
+        return highestEntry.getKey();
+    }
+    
+    public ITrait getLeastFrequentTrait(TraitCopyingMode mode) {
+        SortedSet<Map.Entry<ITrait,Integer>> sortedTraits = this.getSortedTraitCountsForAgentList(this.agentList,mode);
+        Map.Entry<ITrait,Integer> lowestEntry = sortedTraits.first();
+        log.trace("lowest trait: " + lowestEntry.getKey().getTraitID() + " count: " + lowestEntry.getValue());
+        return lowestEntry.getKey();
+    }
+    
+
+    private SortedSet<Map.Entry<ITrait,Integer>> getSortedTraitCountsForAgentList(List<IAgent> agentList, TraitCopyingMode mode) {
+        Map<ITrait,Integer> countMap = new HashMap<ITrait, Integer>();
+        Set<ITrait> myTraits;
+        for (IAgent agent : agentList) {
+            if(mode == TraitCopyingMode.CURRENT) {
+                myTraits = agent.getCurrentlyAdoptedTraits();
+            } else {
+                myTraits = agent.getPreviousStepAdoptedTraits();
+            }
+
+            for (ITrait trait : myTraits) {
+                if(countMap.containsKey(trait)) {
+                    int cnt = countMap.get(trait);
+                    cnt++;
+                    countMap.put(trait,cnt);
+                } else {
+                    countMap.put(trait,1);
+                }
+            }
+        }
+        return entriesSortedByValues(countMap);
+    }
+
+    static SortedSet<Map.Entry<ITrait,Integer>> entriesSortedByValues(Map<ITrait,Integer> map) {
+        SortedSet<Map.Entry<ITrait,Integer>> sortedEntries = new TreeSet<Map.Entry<ITrait,Integer>>(
+                new Comparator<Map.Entry<ITrait,Integer>>() {
+                    @Override public int compare(Map.Entry<ITrait,Integer> e1, Map.Entry<ITrait,Integer> e2) {
+                        return e1.getValue().compareTo(e2.getValue());
+                    }
+                }
+        );
+        sortedEntries.addAll(map.entrySet());
+        return sortedEntries;
+    }
+
+    /*static <K,V extends Comparable<? super V>>
+    SortedSet<Map.Entry<K,V>> entriesSortedByValues(Map<K,V> map) {
+        SortedSet<Map.Entry<K,V>> sortedEntries = new TreeSet<Map.Entry<K,V>>(
+                new Comparator<Map.Entry<K,V>>() {
+                    @Override public int compare(Map.Entry<K,V> e1, Map.Entry<K,V> e2) {
+                        return e1.getValue().compareTo(e2.getValue());
+                    }
+                }
+        );
+        sortedEntries.addAll(map.entrySet());
+        return sortedEntries;
+    }*/
 }

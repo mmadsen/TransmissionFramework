@@ -9,9 +9,12 @@
 
 package org.madsenlab.sim.tf.analysis;
 
+import hep.aida.ref.Converter;
+import hep.aida.ref.Histogram1D;
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.*;
+import org.madsenlab.sim.tf.utils.Log2HistogramBinUtil;
 import org.madsenlab.sim.tf.utils.TraitIDComparator;
 
 import java.io.PrintWriter;
@@ -35,6 +38,7 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
     private Map<Integer, Map<ITrait, Integer>> histTraitCount;
     private List<Integer> totalTraitsPerTick;
     private PrintWriter statsPW;
+    private Histogram1D histo;
 
     public GlobalTraitCountObserver(ISimulationModel m) {
         this.model = m;
@@ -47,6 +51,11 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
 
         this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(traitFreqLogFile);
         this.statsPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(countStatsLogFile);
+
+        // initialize a histogram for counts with bins in powers of two
+        Log2HistogramBinUtil histoBinUtil = new Log2HistogramBinUtil(this.model);
+        double[] bins = histoBinUtil.getLog2HistogramBins();
+        this.histo = new Histogram1D("Trait Count Histogram", bins);
 
     }
 
@@ -69,6 +78,15 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
             //log.trace("histTraitFreq: " + this.histTraitFreq);
             this.printFrequencies();
 
+            if(this.model.getCurrentModelTime() == this.model.getModelConfiguration().getLengthSimulation() - 1) {
+                Map<ITrait,Integer> countMap = this.histTraitCount.get(this.model.getCurrentModelTime());
+                for(ITrait trait: countMap.keySet()) {
+                    this.histo.fill((double)countMap.get(trait));
+                }
+                Converter conv = new Converter();
+                log.info(conv.toString(this.histo));
+            }
+
             Integer tick = this.model.getCurrentModelTime();
             // Every 100 ticks, write historical data to disk and flush it to keep memory usage and performance reasonable.
             if (tick % 100 == 0) {
@@ -80,6 +98,9 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
 
     public void endSimulationAction() {
         log.trace("entering endSimulationAction");
+        // this is only required if the simulation length is not evenly divisible by 100
+        this.logFrequencies();
+
         DescriptiveStatistics stats = new DescriptiveStatistics();
         for (Integer val : this.totalTraitsPerTick) {
             stats.addValue((double) val);

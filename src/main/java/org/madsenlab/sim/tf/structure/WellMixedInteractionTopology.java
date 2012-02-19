@@ -35,7 +35,7 @@ public class WellMixedInteractionTopology implements IInteractionTopology {
         return deme.getAgentAtRandom();
     }
 
-    // Return a new IDeme object with all agents since there should be a probability of keeping one's current trait
+    // Return a new IDeme object with all agents since there should be a probability of keeping one's current trait (ignore the param)
 
     public IDeme getNeighborsForAgent(IAgent focalAgent) {
         return this.population.getDemeMatchingPredicate(new AllAgentsPredicate());
