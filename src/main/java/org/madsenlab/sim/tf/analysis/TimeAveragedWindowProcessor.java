@@ -41,15 +41,19 @@ public class TimeAveragedWindowProcessor {
     private Integer windowSize;
     private PrintWriter wsPW;
     private PrintWriter ewensPW;
+    private PrintWriter knPW;
     private TraitCountsOverInterval currentAggregateSample;
     private List<Integer> totalTraitsPerWindow;
     private Map<Integer, Map<ITrait, Integer>> histSamples;
+    private List<Integer> numTraitsInSamplePerTick;
     
-    public TimeAveragedWindowProcessor(ISimulationModel model, Integer windowSize, String logBaseName, String ewensBaseName) {
+    
+    public TimeAveragedWindowProcessor(ISimulationModel model, Integer windowSize, String logBaseName, String ewensBaseName, String knSampleBase) {
         this.model = model;
         this.log = this.model.getModelLogger(this.getClass());
         this.windowSize = windowSize;
         this.histSamples = new HashMap<Integer, Map<ITrait, Integer>>();
+        this.numTraitsInSamplePerTick = new ArrayList<Integer>();
         
         // Initialize log file for this window size
         StringBuffer sb = new StringBuffer();
@@ -62,6 +66,12 @@ public class TimeAveragedWindowProcessor {
         sb2.append(ewensBaseName);
         sb2.append(windowSize);
         this.ewensPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(sb2.toString());
+        
+        // Initialize log file for kn samples per window
+        StringBuffer sb3 = new StringBuffer();
+        sb3.append(knSampleBase);
+        sb3.append(windowSize);
+        this.knPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(sb3.toString());
         
         // initial sample for the first window
         this.currentAggregateSample = new TraitCountsOverInterval(this.model, this.windowSize);
@@ -88,6 +98,9 @@ public class TimeAveragedWindowProcessor {
             
             // take a Ewens sample from this window before we lose the detailed data.
             Map<ITrait,Integer> sampleMap = this.takeEwensSampleFromCurrentWindow();
+            // record the number of traits seen in the sample (k_n)
+            this.numTraitsInSamplePerTick.add(sampleMap.keySet().size());
+            // record the sample itself
             StringBuffer sb2 = this.prepareSlatkinTestInputString(this.model.getCurrentModelTime(),sampleMap);
             this.ewensPW.write(sb2.toString());
             this.ewensPW.write("\n");
@@ -113,18 +126,15 @@ public class TimeAveragedWindowProcessor {
         this.wsPW.write(sb.toString());
         this.wsPW.write("\n");
 
+        // Write the k_n counts for each windowsize sample to its log
+        this.logKnSamples();
+
         // Now calculate stats
         DescriptiveStatistics stats = new DescriptiveStatistics();
         for (Integer val : this.totalTraitsPerWindow) {
             stats.addValue((double) val);
         }
         return stats;
-
-        //log.info("TA Trait Count for Window " + this.windowSize + ": =============");
-        //log.info(stats.toString());
-
-        //this.statPW.write(stats.toString());
-
     }
 
     public void finalizeObservation() {
@@ -132,6 +142,8 @@ public class TimeAveragedWindowProcessor {
         this.wsPW.close();
         this.ewensPW.flush();
         this.ewensPW.close();
+        this.knPW.flush();
+        this.knPW.close();
     }
 
 
@@ -218,5 +230,12 @@ public class TimeAveragedWindowProcessor {
         }
         
         return sampleMap;
+    }
+
+    private void logKnSamples() {
+        for(Integer count: this.numTraitsInSamplePerTick) {
+            this.knPW.write(count.toString());
+            this.knPW.write("\n");
+        }
     }
 }

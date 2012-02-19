@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TransmissionFrameworkModels">
+    <output-path>$PROJECT_DIR$/out/artifacts/TransmissionFrameworkModels</output-path>
+    <root id="archive" name="TransmissionFrameworkModels.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/test/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="TransmissionFramework" />
+      <element id="module-test-output" name="TransmissionFramework" />
+    </root>
+  </artifact>
+</component>

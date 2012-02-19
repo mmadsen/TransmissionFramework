@@ -34,6 +34,7 @@ public class EwensSampleFullPopulationObserver implements ITraitStatisticsObserv
     private Map<Integer, Map<ITrait, Integer>> histSamples;
     private Integer sampleSize = 0;
     private List<Integer> numTraitsInSamplePerTick;
+    private PrintWriter knPW;
 
 
     public EwensSampleFullPopulationObserver(ISimulationModel m) {
@@ -45,6 +46,8 @@ public class EwensSampleFullPopulationObserver implements ITraitStatisticsObserv
         this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(ewenSampleLogFile);
         String ewenStatsLogFile = this.model.getModelConfiguration().getProperty("ewens-kn-summary-statsfile");
         this.statPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(ewenStatsLogFile);
+        String knSampleLog = this.model.getModelConfiguration().getProperty("kn-sample-log");
+        this.knPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(knSampleLog);
     }
 
     @Override
@@ -103,6 +106,7 @@ public class EwensSampleFullPopulationObserver implements ITraitStatisticsObserv
         // write any remaining histSamples to log file
         this.logFrequencies();
         this.logStats();
+        this.logKnSamples();
     }
 
     @Override
@@ -111,6 +115,8 @@ public class EwensSampleFullPopulationObserver implements ITraitStatisticsObserv
         this.pw.close();
         this.statPW.flush();
         this.statPW.close();
+        this.knPW.flush();
+        this.knPW.close();
     }
 
     private StringBuffer prepareSlatkinTestInputString(Integer time, Map<ITrait, Integer> sampleMap) {
@@ -188,9 +194,13 @@ public class EwensSampleFullPopulationObserver implements ITraitStatisticsObserv
         log.info("Samples of size " + this.sampleSize + " taken each tick");
         log.info(stats.toString());
         
+
+    }
+
+    private void logKnSamples() {
         for(Integer count: this.numTraitsInSamplePerTick) {
-            this.statPW.write(count.toString());
-            this.statPW.write("\n");
+            this.knPW.write(count.toString());
+            this.knPW.write("\n");
         }
     }
 

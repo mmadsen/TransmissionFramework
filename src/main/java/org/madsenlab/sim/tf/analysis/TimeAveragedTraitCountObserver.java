@@ -49,6 +49,7 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
     private List<TimeAveragedWindowProcessor> windowProcessorList;
     private String perWindowSizeBaseStatFile;
     private String perWindowSizeEwensBaseFile;
+    private String perWindowsSizeKnSampleBaseFile;
     private PrintWriter statPW;
     
     public TimeAveragedTraitCountObserver(ISimulationModel m) {
@@ -59,11 +60,12 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
         this.perWindowSizeBaseLogFile = this.model.getModelConfiguration().getProperty("ta-per-windowsize-count-log-base");
         this.perWindowSizeBaseStatFile = this.model.getModelConfiguration().getProperty("ta-per-windowsize-count-stats");
         this.perWindowSizeEwensBaseFile = this.model.getModelConfiguration().getProperty("ta-per-windowsize-ewens-sample-base");
+        this.perWindowsSizeKnSampleBaseFile = this.model.getModelConfiguration().getProperty("ta-per-windowsize-kn-sample-base");
         this.statPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(this.perWindowSizeBaseStatFile);
         this.windowProcessorList = new ArrayList<TimeAveragedWindowProcessor>();
         this.samplingIntervals = this.calculateTimeAvWindows();
         for(Integer interval: this.samplingIntervals) {
-            this.windowProcessorList.add(new TimeAveragedWindowProcessor(this.model,interval,this.perWindowSizeBaseLogFile, this.perWindowSizeEwensBaseFile));
+            this.windowProcessorList.add(new TimeAveragedWindowProcessor(this.model,interval,this.perWindowSizeBaseLogFile, this.perWindowSizeEwensBaseFile, this.perWindowsSizeKnSampleBaseFile));
         }
     }
 
