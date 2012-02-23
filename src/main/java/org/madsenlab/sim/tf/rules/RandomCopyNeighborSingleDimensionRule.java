@@ -43,10 +43,10 @@ public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRu
         IAgent neighborAgent = topology.getRandomNeighborForAgent(thisAgent);
         log.trace("focal agent: " + thisAgent.getAgentID() + " <=> neighbor: " + neighborAgent.getAgentID());
 
-        ITrait neighborTrait = this.getRandomTraitFromAgent(neighborAgent, this.mode);
+        ITrait neighborTrait = neighborAgent.getRandomTraitFromAgent(this.mode);
         log.trace("choosing neighbor trait: " + neighborTrait.getTraitID() + " to adopt");
 
-        ITrait focalTrait = this.getRandomTraitFromAgent(thisAgent, this.mode);
+        ITrait focalTrait = thisAgent.getRandomTraitFromAgent(this.mode);
         log.trace("focal agent unadopting trait: " + focalTrait.getTraitID());
 
         // Now unadopt the existing trait from thisAgent, and adopt the neighbor's random trait

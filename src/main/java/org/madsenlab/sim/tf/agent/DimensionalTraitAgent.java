@@ -25,6 +25,8 @@ import java.util.*;
  * Time: 3:26:08 PM
  */
 
+// TODO:  Is this implemented yet?  Correctly, given current framework?
+
 public class DimensionalTraitAgent extends AbstractAgent {
     private String agentID;
     private Set<ITraitDimension> dimensionSet;

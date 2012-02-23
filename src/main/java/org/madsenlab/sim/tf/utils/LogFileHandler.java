@@ -16,6 +16,7 @@ import org.madsenlab.sim.tf.interfaces.ILogFiles;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 /**
@@ -99,13 +100,19 @@ public class LogFileHandler implements ILogFiles {
         else {
             maxTraitsString = maxTraits.toString();
         }
+
+        // Ensure that we don't end up with scientific notion in the mutation rate, we want to pull info
+        // directly out of logs into statistical programs and munge it with scripts, so 0.000001 ought to stay
+        // 0.000001.
+        String mutationRateDecimal = new DecimalFormat("0.#################").format(this.params.getMutationRate());
+
         StringBuffer ident = new StringBuffer();
         String batchPrefix = this.params.getProperty("model-name-prefix");
         ident.append(batchPrefix);
         ident.append("-");
         ident.append(this.params.getNumAgents());
         ident.append("-");
-        ident.append(this.params.getMutationRate());
+        ident.append(mutationRateDecimal);
         ident.append("-");
         ident.append(this.params.getStartingTraits());
         ident.append("-");

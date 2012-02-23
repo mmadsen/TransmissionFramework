@@ -54,7 +54,7 @@ public class GlobalTraitLifetimeObserver implements ITraitStatisticsObserver<ITr
         log.trace("entering updateTraitStatistics");
         this.lastTimeIndexUpdated = stat.getTimeIndex();
         ITraitDimension dim = stat.getTarget();
-        // TODO - basically we look at traits, and put any that have finite positive lifetimes in our stash
+
         Collection<ITrait> traitCollection = dim.getTraitsInDimension();
         for (ITrait trait : traitCollection) {
             if (trait.hasCompleteDuration()) {
@@ -65,14 +65,14 @@ public class GlobalTraitLifetimeObserver implements ITraitStatisticsObserver<ITr
 
     public void perStepAction() {
         log.trace("entering perStepAction");
-        // TODO normally we don't do anything here but for debugging, do some output
+
         this.printFrequencies();
 
     }
 
     public void endSimulationAction() {
         log.trace("entering endSimulationAction");
-        // TODO - this is where the action is.  Calculate stats, output stats, and then a vector of raw data
+
         DescriptiveStatistics stats = new DescriptiveStatistics();
         for (Integer val : this.traitLifetimeMap.values()) {
             stats.addValue((double) val);

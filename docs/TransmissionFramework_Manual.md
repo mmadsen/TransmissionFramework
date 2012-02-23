@@ -1,9 +1,13 @@
 # TransmissionFramework Manual #
 
 Author:  Mark E. Madsen
+
 Email:  mark@madsenlab.org
+
 Version:  1.4
+
 Date:  2/19/12
+
 
 ## Overview ##
 
@@ -23,7 +27,7 @@ If a specific model is not listed after the command line switch, the given param
 
 *  -n
 
-   Number of agents (N) to be created at the beginning of the simulation model.  Currently, this number of agents is static throughout the model run, but future versions may allow different population histories.  
+   Number of agents (N) to be created at the beginning of the simulation model.  Currently, this number of agents is static throughout the model run, but future versions may allow different population histories.
 
 *  -s
 

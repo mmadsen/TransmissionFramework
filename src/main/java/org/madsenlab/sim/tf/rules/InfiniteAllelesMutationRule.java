@@ -53,7 +53,7 @@ public class InfiniteAllelesMutationRule extends AbstractInteractionRule impleme
         newTrait.setTraitID(timeAdded.toString());
         dim.addTrait(newTrait);
 
-        ITrait oldTrait = this.getRandomTraitFromAgent(thisAgent, TraitCopyingMode.CURRENT);
+        ITrait oldTrait = thisAgent.getRandomTraitFromAgent(TraitCopyingMode.CURRENT);
         oldTrait.unadopt(thisAgent);
         newTrait.adopt(thisAgent);
 

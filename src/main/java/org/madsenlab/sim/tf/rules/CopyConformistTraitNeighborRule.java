@@ -54,7 +54,7 @@ public class CopyConformistTraitNeighborRule extends AbstractInteractionRule imp
             newTrait = neighborAgents.getMostFrequentTrait(this.mode);
         }
 
-        ITrait focalTrait = this.getRandomTraitFromAgent(thisAgent, this.mode);
+        ITrait focalTrait = thisAgent.getRandomTraitFromAgent(this.mode);
         log.trace("focal agent unadopting trait: " + focalTrait.getTraitID());
         log.trace("focal agent adopting most freq trait: " + newTrait.getTraitID());
 

@@ -9,13 +9,7 @@
 
 package org.madsenlab.sim.tf.rules;
 
-import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.IInteractionRule;
-import org.madsenlab.sim.tf.interfaces.ITrait;
-import org.madsenlab.sim.tf.utils.TraitCopyingMode;
-
-import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * CLASS DESCRIPTION
@@ -26,29 +20,6 @@ import java.util.Set;
  */
 
 public abstract class AbstractInteractionRule extends AbstractActionRule implements IInteractionRule {
-    // TODO - refactor this usage, since IAgent now has this.
-    // if anything except a rule uses this code, might want to refactor it into IAgent and impl. classes
-    public ITrait getRandomTraitFromAgent(IAgent thisAgent, TraitCopyingMode mode) {
-        Set<ITrait> focalTraits;
-
-        if (mode == TraitCopyingMode.CURRENT) {
-            focalTraits = thisAgent.getCurrentlyAdoptedTraits();
-        } else {
-            focalTraits = thisAgent.getPreviousStepAdoptedTraits();
-        }
-        ITrait focalTrait;
-
-        if (focalTraits.size() == 1) {
-            focalTrait = focalTraits.iterator().next();
-        } else {
-            log.trace("focal agent has more than one trait, selecting random trait");
-            ArrayList<ITrait> focalTraitList = new ArrayList<ITrait>(focalTraits);
-            int numTraits = focalTraitList.size();
-            int randomTrait = this.model.getUniformRandomInteger(numTraits - 1);
-            focalTrait = focalTraitList.get(randomTrait);
-        }
-        return focalTrait;
-    }
 
 
 }

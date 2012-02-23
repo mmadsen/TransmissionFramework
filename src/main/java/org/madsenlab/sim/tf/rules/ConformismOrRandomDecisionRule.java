@@ -41,7 +41,6 @@ public class ConformismOrRandomDecisionRule extends AbstractInteractionRule impl
         this.setRuleName("ConformismOrRandomDecisionRule");
         this.setRuleDescription("Ensure that copying by conformism versus random copying occurs at correct rate");
 
-        // TODO:  Need a model parameter for how often we do agent interaction versus artifact observation...
         this.conformismRate = this.model.getModelConfiguration().getConformismRate();
     }
 

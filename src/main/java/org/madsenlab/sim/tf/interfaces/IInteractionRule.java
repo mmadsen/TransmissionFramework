@@ -22,6 +22,5 @@ import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
 public interface IInteractionRule extends Closure, IActionRule {
 
-    ITrait getRandomTraitFromAgent(IAgent thisAgent, TraitCopyingMode mode);
     void setTraitCopyingMode(TraitCopyingMode mode);
 }
