@@ -7,7 +7,7 @@ class SlatkinExactMultiple
     @log = Debug.get_logger()
     @result_log = File.open('unified-slatkin-results-by-windowsize-and-gen', "w")
     @log.debug("result log: #{@result_log}");
-    @result_log.puts("Model\tPopsize\tMutation\tWindowsize\tGeneration\tSampleConfig\tSlatkinExactP")
+    @result_log.puts("Model\tTheta\tPopsize\tMutation\tWindowsize\tConformismRate\tGeneration\tSampleConfig\tSlatkinExactP")
 
   end
 
@@ -15,7 +15,7 @@ class SlatkinExactMultiple
     @orig_directory = directory
     @log.info("Processing all output in: " + directory)
     Dir.chdir(directory)
-    Dir.glob("Wright*") do |dir|
+    Dir.glob("*-tfout") do |dir|
       if(File.directory?(dir) == false)
         @log.debug("dir is not a directory, skipping: #{dir}")
         next
@@ -49,14 +49,18 @@ class SlatkinExactMultiple
   def get_run_params_from_dirname(d)
     params = Hash.new
 
-    # typical directory name is:   WrightFisherDrift-2000-0.0010-100-3000-INF-1329859120382
-    # which means <modelname>-<numagents>-<mutationrate>-<initialtraitnum>-<length>-<mutationtype>-<uniqueid>
+    # typical directory name is:   WrightFisherDrift-1000-0.000005-100-3000-0.0-INF-1330037790521-tfout
+    # which means <modelname>-<numagents>-<mutationrate>-<initialtraitnum>-<length>-<conformism rate>-mutationtype-<uniqueid>-tfout
     #@log.debug("pattern matching on dir: #{d}")
-    d =~ /([a-zA-Z]+)-(\d+)-([\w|\.]+)\S+-(\d+)/
+    d =~ /([a-zA-Z]+)-(\d+)-([\w|\.]+)-(\d+)-(\d+)-([\w|\.]+)-\S+-(\d+)/
     params['model'] = String($1)
     params['popsize'] = String($2)
     params['mutation'] = String($3)
-    params['runid'] = String($4)
+    params['runid'] = String($7)
+    params['conformism'] = String($6)
+
+    theta = Float(params['mutation']) * Float(params['popsize']) * 2.0
+    params['theta'] = theta
 
     params
   end
@@ -78,14 +82,14 @@ class SlatkinExactMultiple
         line =~ /(\d+)\s+(.+)$/
         gen = Integer($1)
         config = String($2)
-        #@log.debug("#{params['model']}\t#{params['popsize']}\t#{params['mutation']}\t#{windowsize} gen #{gen} with config #{config}")
+
 
         # get the P(E) result from slatkin exact
 
         result = `~/bin/slatkin-pe-only 100000 #{config}`
         #@log.debug("slatkin result: #{result}")
 
-        @result_log.puts("#{params['model']}\t#{params['popsize']}\t#{params['mutation']}\t#{windowsize}\t#{gen}\t#{config}\t#{result}")
+        @result_log.puts("#{params['model']}\t#{params['theta']}\t#{params['popsize']}\t#{params['mutation']}\t#{windowsize}\t#{params['conformism']}\t#{gen}\t#{config}\t#{result}")
       end
     end
   end

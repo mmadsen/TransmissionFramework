@@ -118,9 +118,12 @@ public class LogFileHandler implements ILogFiles {
         ident.append("-");
         ident.append(this.params.getLengthSimulation());
         ident.append("-");
+        ident.append(this.params.getConformismRate());
+        ident.append("-");
         ident.append(maxTraitsString);
         ident.append("-");
         ident.append(now.getTime());
+        ident.append("-tfout");  // useful for matching in post-processing scripts since the rest can vary
 
         this.uniqueRunIdentifier = ident.toString();
     }

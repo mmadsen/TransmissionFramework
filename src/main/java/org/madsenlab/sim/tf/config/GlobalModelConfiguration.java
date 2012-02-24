@@ -100,6 +100,8 @@ public class GlobalModelConfiguration {
     public GlobalModelConfiguration(ISimulationModel m) {
         this.model = m;
         this.otherProperties = new HashMap<String, String>();
+        // set a default for conformism rate since it may not be set in unbiased models etc
+        this.setConformismRate(0.00);
     }
 
     public Double getMutationRate() {
