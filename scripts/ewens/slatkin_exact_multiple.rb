@@ -7,7 +7,7 @@ class SlatkinExactMultiple
     @log = Debug.get_logger()
     @result_log = File.open('unified-slatkin-results-by-windowsize-and-gen', "w")
     @log.debug("result log: #{@result_log}");
-    @result_log.puts("Model\tTheta\tPopsize\tMutation\tWindowsize\tConformismRate\tGeneration\tSampleConfig\tSlatkinExactP")
+    @result_log.puts("Model\tTheta\tPopsize\tMutation\tWindowsize\tConformismRate\tGeneration\tSampleConfig\tSlatkinExactP\tThetaEst")
 
   end
 
@@ -84,12 +84,18 @@ class SlatkinExactMultiple
         config = String($2)
 
 
+
         # get the P(E) result from slatkin exact
 
-        result = `~/bin/slatkin-pe-only 100000 #{config}`
+        result = `~/bin/slatkin-pe-theta 100000 #{config}`
         #@log.debug("slatkin result: #{result}")
+        result =~ /([\w|\.]+)\s+([\w|\.]+)/
+        pe = Float($1)
+        theta_est = Float($2)
+        #@log.debug("logging #{pe}\t#{theta_est}")
 
-        @result_log.puts("#{params['model']}\t#{params['theta']}\t#{params['popsize']}\t#{params['mutation']}\t#{windowsize}\t#{params['conformism']}\t#{gen}\t#{config}\t#{result}")
+
+        @result_log.puts("#{params['model']}\t#{params['theta']}\t#{params['popsize']}\t#{params['mutation']}\t#{windowsize}\t#{params['conformism']}\t#{gen}\t#{config}\t#{pe}\t#{theta_est}")
       end
     end
   end
