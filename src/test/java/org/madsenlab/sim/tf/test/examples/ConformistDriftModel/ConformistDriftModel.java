@@ -156,7 +156,7 @@ public class ConformistDriftModel extends AbstractSimModel {
         cliOptions.addOption("e", true, "size of sample to take for comparison to Ewens Sampling Distribution");
         cliOptions.addOption("c", true, "conformism rate in decimal form (e.g., 0.25)");
         cliOptions.addOption("a", false, "switch from conformist to anti-conformist copying at the rate described by -c ");
-
+        cliOptions.addOption("b", false, "switch to collecting just the five biggest time averaging windows");
 
 
         // Option group for handling traits
@@ -208,6 +208,12 @@ public class ConformistDriftModel extends AbstractSimModel {
             this.params.setAntiConformist(true);
         } else {
             this.params.setAntiConformist(false);
+        }
+
+        if(cmd.hasOption("b")) {
+            this.params.setCollectLongTAWindowsOnly(true);
+        } else {
+            this.params.setCollectLongTAWindowsOnly(false);
         }
 
 

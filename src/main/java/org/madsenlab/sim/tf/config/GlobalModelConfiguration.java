@@ -35,6 +35,16 @@ public class GlobalModelConfiguration {
     Map<String, String> otherProperties;
     Integer timeStartStatistics;
 
+    public Boolean getCollectLongTAWindowsOnly() {
+        return collectLongTAWindowsOnly;
+    }
+
+    public void setCollectLongTAWindowsOnly(Boolean collectLongTAWindowsOnly) {
+        this.collectLongTAWindowsOnly = collectLongTAWindowsOnly;
+    }
+
+    Boolean collectLongTAWindowsOnly;
+    
     public Boolean getAntiConformist() {
         return isAntiConformist;
     }

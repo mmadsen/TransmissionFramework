@@ -54,12 +54,12 @@ class SlatkinExactMultiple
     #@log.debug("pattern matching on dir: #{d}")
     d =~ /([a-zA-Z]+)-(\d+)-([\w|\.]+)-(\d+)-(\d+)-([\w|\.]+)-\S+-(\d+)/
     params['model'] = String($1)
-    params['popsize'] = String($2)
-    params['mutation'] = String($3)
+    params['popsize'] = String($2).to_i
+    params['mutation'] = String($3).to_f
     params['runid'] = String($7)
     params['conformism'] = String($6)
 
-    theta = Float(params['mutation']) * Float(params['popsize']) * 2.0
+    theta = Float(params['mutation']) * Integer(params['popsize']) * 2.0
     params['theta'] = theta
 
     params
@@ -90,8 +90,8 @@ class SlatkinExactMultiple
         result = `~/bin/slatkin-pe-theta 100000 #{config}`
         #@log.debug("slatkin result: #{result}")
         result =~ /([\w|\.]+)\s+([\w|\.]+)/
-        pe = Float($1)
-        theta_est = Float($2)
+        pe = $1.to_f
+        theta_est = $2.to_f
         #@log.debug("logging #{pe}\t#{theta_est}")
 
 

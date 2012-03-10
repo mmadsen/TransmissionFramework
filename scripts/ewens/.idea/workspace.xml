@@ -22,15 +22,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="slatkin_exact_multiple.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/slatkin_exact_multiple.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="90" column="9" selection-start="2793" selection-end="2793" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="slatkin_exact.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/slatkin_exact.rb">
           <provider selected="true" editor-type-id="text-editor">
@@ -40,10 +31,28 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="slatkin_exact_multiple.rb" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/slatkin_exact_multiple.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="49" column="187" selection-start="1470" selection-end="1470" vertical-scroll-proportion="0.89416057">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="ewens_sample_kn_processor.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ewens_sample_kn_processor.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="4" selection-start="99" selection-end="124" vertical-scroll-proportion="0.0">
+            <state line="0" column="0" selection-start="0" selection-end="24" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="trait_lifetime_stats_processor.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/trait_lifetime_stats_processor.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="81" column="27" selection-start="2366" selection-end="2366" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -52,25 +61,16 @@
       <file leaf-file-name="slatkin-annotate.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/slatkin-annotate.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="19" vertical-scroll-proportion="0.0">
+            <state line="6" column="106" selection-start="129" selection-end="129" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="generate-sim-script.rb" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/generate-sim-script.rb">
+      <file leaf-file-name="trait-lifetime-summarize.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/trait-lifetime-summarize.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="60" column="1" selection-start="1645" selection-end="1645" vertical-scroll-proportion="0.5201422">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ewens-kn-process.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ewens-kn-process.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="10" selection-start="112" selection-end="112" vertical-scroll-proportion="0.0">
+            <state line="5" column="70" selection-start="137" selection-end="137" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -101,8 +101,11 @@
         <option value="$PROJECT_DIR$/trait_richness_multiple.rb" />
         <option value="$PROJECT_DIR$/ewens-kn-process.rb" />
         <option value="$PROJECT_DIR$/ewens_sample_kn_processor.rb" />
-        <option value="$PROJECT_DIR$/slatkin_exact_multiple.rb" />
         <option value="$PROJECT_DIR$/generate-sim-script.rb" />
+        <option value="$PROJECT_DIR$/test-scinot.rb" />
+        <option value="$PROJECT_DIR$/slatkin_exact_multiple.rb" />
+        <option value="$PROJECT_DIR$/trait-lifetime-summarize.rb" />
+        <option value="$PROJECT_DIR$/trait_lifetime_stats_processor.rb" />
       </list>
     </option>
   </component>
@@ -399,11 +402,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/slatkin_exact.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="75" selection-start="93" selection-end="93" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ewens-kn-process.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="10" selection-start="112" selection-end="112" vertical-scroll-proportion="0.0" />
@@ -414,30 +412,56 @@
         <state line="12" column="0" selection-start="155" selection-end="155" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/slatkin_exact_multiple.rb">
+    <entry file="file://$PROJECT_DIR$/slatkin_exact.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="9" selection-start="2793" selection-end="2793" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="5" column="75" selection-start="93" selection-end="93" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/slatkin-annotate.rb">
+    <entry file="file://$PROJECT_DIR$/test-scinot.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="19" vertical-scroll-proportion="0.0">
+        <state line="1" column="11" selection-start="31" selection-end="31" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ewens_sample_kn_processor.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="4" selection-start="99" selection-end="124" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="24" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/slatkin-annotate.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="106" selection-start="129" selection-end="129" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/generate-sim-script.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="1" selection-start="1645" selection-end="1645" vertical-scroll-proportion="0.5201422">
+        <state line="0" column="0" selection-start="0" selection-end="19" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/trait-lifetime-summarize.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="70" selection-start="137" selection-end="137" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/trait_lifetime_stats_processor.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="81" column="27" selection-start="2366" selection-end="2366" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/slatkin_exact_multiple.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="49" column="187" selection-start="1470" selection-end="1470" vertical-scroll-proportion="0.89416057">
           <folding />
         </state>
       </provider>

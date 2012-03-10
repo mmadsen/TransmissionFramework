@@ -146,7 +146,7 @@ public class MultiDimensionWrightFisherDriftModel extends AbstractSimModel {
         cliOptions.addOption("p", true, "pathname of properties file giving general model configuration (e.g., log file locations)");
         cliOptions.addOption("t", true, "model time to start recording statistics (i.e., ignore initial transient");
         cliOptions.addOption("e", true, "size of sample to take for comparison to Ewens Sampling Distribution");
-
+        cliOptions.addOption("b", false, "switch to collecting just the five biggest time averaging windows");
 
 
         // Option group for handling traits
@@ -193,6 +193,11 @@ public class MultiDimensionWrightFisherDriftModel extends AbstractSimModel {
         this.params.setTimeStartStatistics(Integer.parseInt(cmd.getOptionValue("t", "100")));
         this.params.setEwensSampleSize(Integer.parseInt(cmd.getOptionValue("e", "50")));
 
+        if(cmd.hasOption("b")) {
+            this.params.setCollectLongTAWindowsOnly(true);
+        } else {
+            this.params.setCollectLongTAWindowsOnly(false);
+        }
         // Report starting parameters
         //this.log.info("starting number of traits: " + this.params.getStartingTraits());
         //this.log.info("maximum number of traits: " + this.params.getMaxTraits());

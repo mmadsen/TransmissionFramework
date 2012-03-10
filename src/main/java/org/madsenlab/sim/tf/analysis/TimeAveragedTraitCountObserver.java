@@ -12,7 +12,7 @@ package org.madsenlab.sim.tf.analysis;
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.*;
-import org.madsenlab.sim.tf.utils.GenerationDynamicsMode;
+import org.madsenlab.sim.tf.utils.TimeAveragingWindowUtil;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -51,11 +51,13 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
     private String perWindowSizeEwensBaseFile;
     private String perWindowsSizeKnSampleBaseFile;
     private PrintWriter statPW;
-    
+    private TimeAveragingWindowUtil timeAveragingWindowUtil;
+
     public TimeAveragedTraitCountObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
         int length = this.model.getModelConfiguration().getLengthSimulation();
+        this.timeAveragingWindowUtil = new TimeAveragingWindowUtil(this.model);
         this.histTraitCount = new HashMap<Integer, Map<ITrait, Integer>>();
         this.perWindowSizeBaseLogFile = this.model.getModelConfiguration().getProperty("ta-per-windowsize-count-log-base");
         this.perWindowSizeBaseStatFile = this.model.getModelConfiguration().getProperty("ta-per-windowsize-count-stats");
@@ -63,6 +65,8 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
         this.perWindowsSizeKnSampleBaseFile = this.model.getModelConfiguration().getProperty("ta-per-windowsize-kn-sample-base");
         this.statPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(this.perWindowSizeBaseStatFile);
         this.windowProcessorList = new ArrayList<TimeAveragedWindowProcessor>();
+
+        // Figure out the sampling intervals for time-averaging, and create a window processor for each
         this.samplingIntervals = this.calculateTimeAvWindows();
         for(Integer interval: this.samplingIntervals) {
             this.windowProcessorList.add(new TimeAveragedWindowProcessor(this.model,interval,this.perWindowSizeBaseLogFile, this.perWindowSizeEwensBaseFile, this.perWindowsSizeKnSampleBaseFile));
@@ -117,46 +121,17 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
         this.statPW.close();
     }
 
+    // calculate a full list of windows, from 20% of the length, on down to windows 3 ticks long,
+    // unless the -L switch is present, and then only collect data across the five largest windows.
+    // in descending powers of 2.  e.g., 10000, 5000, 2500, 1250, 625
     private List<Integer> calculateTimeAvWindows() {
-        GenerationDynamicsMode timeRate = this.model.getModelConfiguration().getModelRateTimeRuns();
-        Integer numTicksPerGeneration;
-
-        // First, we want to normalize what a "generation" is, since Moran models
-        // need N ticks to equal the same number of copying events as 1 tick in WF
-        if(timeRate == GenerationDynamicsMode.CONTINUOUS) {
-            numTicksPerGeneration = this.model.getModelConfiguration().getNumAgents();
+        if(this.model.getModelConfiguration().getCollectLongTAWindowsOnly() == true) {
+            log.info("Long Time Averaging Windows selected");
+            return timeAveragingWindowUtil.getLongTimeAvWindows();
         } else {
-            numTicksPerGeneration = 1;
+            log.info("Full Time Averaging Windows selected");
+            return timeAveragingWindowUtil.calculateTimeAvWindows();
         }
-
-        int generationsInRun = this.model.getModelConfiguration().getLengthSimulation() / numTicksPerGeneration;
-        log.trace("generations in run: " + generationsInRun);
-
-        // For each simulation run, we want at least 10 window samples, at the *longest* window size
-        // For example, if we have 2000 generations in WF, we should only time-average up to 100 generations,
-        // and this would give us 20 time-averaged blocks of 100 generations each.
-        int numSamples = (int)(generationsInRun * 0.1);
-        log.trace("2% of generations for max window size: " + numSamples);
-
-
-        // Future ref, if we want intervals in powers of 2:  Math.Ceil(Math.log(x)/Math.log(2))
-
-        // Now figure out 
-        List<Integer> windowSizes = new ArrayList<Integer>();
-
-        int nextWindow = numSamples;
-        windowSizes.add(nextWindow);
-        log.trace("nextWindow = " + nextWindow);
-        // The minimum window size we want is 3 generations
-        while(nextWindow > 3) {
-            int n = (int) nextWindow / 2;
-            log.trace("nextWindow = " + n);
-            windowSizes.add(n);
-            nextWindow = n;
-        }
-
-        // now convert generations back into tick sizes for a given model
-        return windowSizes;
     }
 
     private void logSummaryStatisticsAcrossWindows(Map<Integer,DescriptiveStatistics> statsMap) {
