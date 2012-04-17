@@ -1,3 +1,10 @@
+# Contact #
+
+Please send all queries related to TransmissionFramework to:  transmissionframework@box.squadmail.com
+
+This will ensure that questions are properly distributed to those working on the system, including its original author.  
+
+
 # Introduction #
 
 TransmissionFramework (TF) is a Java framework and library for constructing numerical simulation models of cultural transmission and social learning phenomena.

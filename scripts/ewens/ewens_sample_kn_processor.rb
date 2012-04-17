@@ -25,11 +25,11 @@ def post_process(directory)
       next if (dir.eql?('.') || dir.eql?('..'))
 
       @log.debug("Processing subdirectory: #{dir}")
-      process_files_in_subdir(dir)
+      process_kn_files_in_subdir(dir)
     end
 end
 
-def process_files_in_subdir(dir)
+def process_kn_files_in_subdir(dir)
   @log.info("PROCESSING DIRECTORY:#{dir} ============================")
   Dir.chdir(dir)
   params = get_run_params_from_dirname(dir)

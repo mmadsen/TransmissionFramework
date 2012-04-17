@@ -3,7 +3,8 @@ require_relative 'debug'
 class SlatkinExactMultiple
   VERSION = '1.0.0'
 
-  def initialize()
+  def initialize(skip_unaveraged)
+    @skip_unaveraged = skip_unaveraged
     @log = Debug.get_logger()
     @result_log = File.open('unified-slatkin-results-by-windowsize-and-gen', "w")
     @log.debug("result log: #{@result_log}");
@@ -35,7 +36,7 @@ class SlatkinExactMultiple
     @log.debug(pp params)
 
     files = Dir.glob("ewens-sample-ta-*")
-    files << 'ewens-sampling-distro-by-time'
+    files << 'ewens-sampling-distro-by-time' unless @skip_unaveraged
 
     files.each do |file|
       next if file == nil
