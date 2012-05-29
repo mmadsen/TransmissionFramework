@@ -19,7 +19,7 @@ import java.util.Map;
  * Time: 11:26:16 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface ITraitDimension extends IStatisticsSubject {
+public interface ITraitDimension<T> extends IStatisticsSubject {
 
     public void setSimulationModel(ISimulationModel m);
 
@@ -27,17 +27,17 @@ public interface ITraitDimension extends IStatisticsSubject {
 
     public void setDimensionName(String name);
 
-    public void addTrait(ITrait newTrait);
+    public void addTrait(ITrait<T> newTrait);
 
-    public ITrait getTrait(String traitID);
+    public ITrait<T> getTrait(T traitID);
 
-    public Collection<ITrait> getTraitsInDimension();
+    public Collection<ITrait<T>> getTraitsInDimension();
 
     public ITrait getRandomTraitFromDimension();
 
-    public Map<ITrait, Integer> getCurGlobalTraitCounts();
+    public Map<ITrait<T>, Integer> getCurGlobalTraitCounts();
 
-    public Map<ITrait, Integer> getCurTraitCountByTag(IAgentTag tag);
+    public Map<ITrait<T>, Integer> getCurTraitCountByTag(IAgentTag tag);
 
     /*
         Methods for calculating frequencies will throw an IllegalStateException if the size of the
@@ -45,9 +45,9 @@ public interface ITraitDimension extends IStatisticsSubject {
         fact that something is being done out of order, not initialized, etc.
      */
 
-    public Map<ITrait, Double> getCurGlobalTraitFrequencies();
+    public Map<ITrait<T>, Double> getCurGlobalTraitFrequencies();
 
-    public Map<ITrait, Double> getCurTraitFreqByTag(IAgentTag tag);
+    public Map<ITrait<T>, Double> getCurTraitFreqByTag(IAgentTag tag);
 
-    public void removeTrait(ITrait traitToRemove);
+    public void removeTrait(ITrait<T> traitToRemove);
 }

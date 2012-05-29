@@ -193,7 +193,7 @@ public class MultiDimensionWrightFisherDriftModel extends AbstractSimModel {
         this.params.setTimeStartStatistics(Integer.parseInt(cmd.getOptionValue("t", "100")));
         this.params.setEwensSampleSize(Integer.parseInt(cmd.getOptionValue("e", "50")));
 
-        if(cmd.hasOption("b")) {
+        if (cmd.hasOption("b")) {
             this.params.setCollectLongTAWindowsOnly(true);
         } else {
             this.params.setCollectLongTAWindowsOnly(false);
@@ -246,10 +246,10 @@ public class MultiDimensionWrightFisherDriftModel extends AbstractSimModel {
             for (ITrait trait : traitList) {
                 Integer cnt = traitCounts.get(trait.getTraitID());
                 if (cnt == null) {
-                    traitCounts.put(trait.getTraitID(), 1);
+                    traitCounts.put(trait.getTraitID().toString(), 1);
                 } else {
                     cnt++;
-                    traitCounts.put(trait.getTraitID(), cnt);
+                    traitCounts.put(trait.getTraitID().toString(), cnt);
                 }
             }
         }

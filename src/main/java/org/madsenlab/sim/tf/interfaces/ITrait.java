@@ -22,16 +22,19 @@ import java.util.Map;
  * Time: 11:26:38 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface ITrait extends IStatisticsSubject {
+public interface ITrait<T> extends IStatisticsSubject {
 
     public void setSimulationModel(ISimulationModel m);
 
     /**
      * @return idString A string representation of the ITrait including any dependent child traits
      */
-    public String getTraitID();
+    public T getTraitID();
 
-    public void setTraitID(String id);
+    public void setTraitID(T id);
+
+    public int compareTo(ITrait<T> otherTrait);
+
 
     /**
      * @return count An integer representing the current number of IAgent objects which have adopted this trait

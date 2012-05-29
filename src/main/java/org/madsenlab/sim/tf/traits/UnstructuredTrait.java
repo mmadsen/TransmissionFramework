@@ -26,8 +26,8 @@ import java.util.*;
  */
 
 
-public class UnstructuredTrait extends AbstractObservableTrait implements ITrait {
-    private String id;
+public class UnstructuredTrait<T> extends AbstractObservableTrait<T> {
+    private T id;
     private int curAdoptionCount;
     private List<IAgent> curAdopteeList;
     private TIntIntHashMap histAdoptionCountMap;
@@ -66,12 +66,17 @@ public class UnstructuredTrait extends AbstractObservableTrait implements ITrait
         this.observers = Collections.synchronizedList(new ArrayList<ITraitStatisticsObserver>());
     }
 
-    public String getTraitID() {
+    public T getTraitID() {
         return this.id;
     }
 
-    public void setTraitID(String id) {
+    public void setTraitID(T id) {
         this.id = id;
+    }
+
+    @Override
+    public int compareTo(ITrait<T> otherTrait) {
+        return ((Comparable<T>) this.id).compareTo(otherTrait.getTraitID());
     }
 
     public int getCurrentAdoptionCount() {
@@ -187,4 +192,5 @@ public class UnstructuredTrait extends AbstractObservableTrait implements ITrait
     public ITraitStatistic getChangeStatistic() {
         return new TraitStatistic(this.owningDimension, model.getCurrentModelTime());
     }
+
 }

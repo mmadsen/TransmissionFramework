@@ -18,9 +18,8 @@ import org.madsenlab.sim.tf.population.SimpleAgentDemeProvider;
 import org.madsenlab.sim.tf.population.SimpleAgentPopulationProvider;
 import org.madsenlab.sim.tf.structure.SimpleAgentTagProvider;
 import org.madsenlab.sim.tf.structure.WellMixedInteractionTopologyProvider;
-import org.madsenlab.sim.tf.test.examples.WrightFisherDriftModel.WrightFisherDriftModel;
+import org.madsenlab.sim.tf.traits.IntegerTraitProvider;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitDimensionProvider;
-import org.madsenlab.sim.tf.traits.UnstructuredTraitProvider;
 import org.madsenlab.sim.tf.utils.LogFileHandler;
 
 /**
@@ -40,7 +39,7 @@ public class ConformistDriftModule implements Module {
         binder.bind(ITraitDimension.class)
                 .toProvider(UnstructuredTraitDimensionProvider.class);
         binder.bind(ITrait.class)
-                .toProvider(UnstructuredTraitProvider.class);
+                .toProvider(IntegerTraitProvider.class);
         binder.bind(IAgentTag.class)
                 .toProvider(SimpleAgentTagProvider.class);
         binder.bind(IPopulation.class).toProvider(SimpleAgentPopulationProvider.class);

@@ -23,7 +23,7 @@ import java.util.List;
  * Time: 10:59:12 AM
  */
 
-public abstract class AbstractObservableTrait implements ITrait {
+public abstract class AbstractObservableTrait<T> implements ITrait<T> {
     protected Integer traitLifetime = 0;
     protected Integer tickTraitIntroduced;
     protected Integer tickTraitExited;

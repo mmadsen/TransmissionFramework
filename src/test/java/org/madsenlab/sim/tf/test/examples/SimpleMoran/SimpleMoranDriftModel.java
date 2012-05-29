@@ -207,10 +207,10 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
             for (ITrait trait : traitList) {
                 Integer cnt = traitCounts.get(trait.getTraitID());
                 if (cnt == null) {
-                    traitCounts.put(trait.getTraitID(), 1);
+                    traitCounts.put(trait.getTraitID().toString(), 1);
                 } else {
                     cnt++;
-                    traitCounts.put(trait.getTraitID(), cnt);
+                    traitCounts.put(trait.getTraitID().toString(), cnt);
                 }
             }
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -22,12 +22,12 @@ import org.madsenlab.sim.tf.interfaces.ITrait;
  * Time: 10:55:19 AM
  */
 
-public class UnstructuredTraitProvider implements Provider<ITrait> {
+public class IntegerTraitProvider implements Provider<ITrait> {
     @Inject
     private ISimulationModel model;
 
-    public ITrait get() {
-        ITrait trait = new UnstructuredTrait();
+    public ITrait<Integer> get() {
+        ITrait<Integer> trait = new UnstructuredTrait<Integer>();
         trait.setSimulationModel(model);
         return trait;
     }

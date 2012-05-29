@@ -24,11 +24,11 @@ import java.util.*;
  * Time: 2:19:43 PM
  * To change this template use File | Settings | File Templates.
  */
-public class UnstructuredTraitDimension implements ITraitDimension {
+public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
     private List<ITraitStatisticsObserver> observers;
     String dimensionName = null;
-    Map<String, ITrait> traitMap = null;
-    List<ITrait> traitList = null;
+    Map<T, ITrait<T>> traitMap = null;
+    List<ITrait<T>> traitList = null;
     Logger log;
     private ISimulationModel model;
 
@@ -47,8 +47,8 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         // when we want a random trait it's more efficient to have a list than to make a new
         // temporary list every time we want to get a random trait.  We don't add and remove traits
         // very often, so the performance hit is very low
-        this.traitMap = new HashMap<String, ITrait>();
-        this.traitList = new ArrayList<ITrait>();
+        this.traitMap = new HashMap<T, ITrait<T>>();
+        this.traitList = new ArrayList<ITrait<T>>();
         this.observers = Collections.synchronizedList(new ArrayList<ITraitStatisticsObserver>());
 
     }
@@ -61,42 +61,42 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         this.dimensionName = dimensionName;
     }
 
-    public synchronized void addTrait(ITrait newTrait) {
+    public synchronized void addTrait(ITrait<T> newTrait) {
         this.traitMap.put(newTrait.getTraitID(), newTrait);
         this.traitList.add(newTrait);
     }
 
-    public ITrait getTrait(String traitID) {
+    public ITrait<T> getTrait(T traitID) {
         // only needs to use the map
         return this.traitMap.get(traitID);
     }
 
-    public Collection<ITrait> getTraitsInDimension() {
+    public Collection<ITrait<T>> getTraitsInDimension() {
         // only needs to use the map
         return this.traitMap.values();
     }
 
-    public ITrait getRandomTraitFromDimension() {
+    public ITrait<T> getRandomTraitFromDimension() {
         // needs to use the list only
-        Integer randomTraitNumber = this.model.getUniformRandomInteger(this.traitList.size()-1);
+        Integer randomTraitNumber = this.model.getUniformRandomInteger(this.traitList.size() - 1);
         return this.traitList.get(randomTraitNumber);
     }
 
-    public Map<ITrait, Integer> getCurGlobalTraitCounts() {
-        Map<ITrait, Integer> countMap = new HashMap<ITrait, Integer>();
+    public Map<ITrait<T>, Integer> getCurGlobalTraitCounts() {
+        Map<ITrait<T>, Integer> countMap = new HashMap<ITrait<T>, Integer>();
 
         //for (ITrait trait : this.traitMap.values()) {
         for (ITrait trait : this.traitList) {
-            if(trait.getCurrentAdoptionCount() > 0) {
+            if (trait.getCurrentAdoptionCount() > 0) {
                 countMap.put(trait, trait.getCurrentAdoptionCount());
             }
         }
         return countMap;
     }
 
-    public Map<ITrait, Double> getCurGlobalTraitFrequencies() {
+    public Map<ITrait<T>, Double> getCurGlobalTraitFrequencies() {
         log.trace("getting current trait frequency map");
-        Map<ITrait, Double> freqMap = new HashMap<ITrait, Double>();
+        Map<ITrait<T>, Double> freqMap = new HashMap<ITrait<T>, Double>();
         Integer total = 0;
 
         Integer popsize = this.model.getPopulation().getCurrentPopulationSize();
@@ -104,7 +104,7 @@ public class UnstructuredTraitDimension implements ITraitDimension {
             throw new IllegalStateException("getCurGlobalTraitFrequencies called with empty population");
         }
 
-        for (ITrait trait : this.traitList) {
+        for (ITrait<T> trait : this.traitList) {
             if (trait.getCurrentAdoptionCount() > 0) {
                 double freq = (double) trait.getCurrentAdoptionCount() / (double) popsize;
                 freqMap.put(trait, freq);
@@ -113,13 +113,13 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         return freqMap;
     }
 
-    public Map<ITrait, Integer> getCurTraitCountByTag(IAgentTag tag) {
+    public Map<ITrait<T>, Integer> getCurTraitCountByTag(IAgentTag tag) {
         Preconditions.checkNotNull(tag, "Getting trait counts by tag requires a non-null reference to an IAgentTag object");
         log.debug("Entering getCurTraitCountByTag for tag: " + tag);
 
         // We use a Set to gather a unique list of the traits held by all
         // agents tagged with the tag specified.    
-        Set<ITrait> traitsAdopted = new HashSet<ITrait>();
+        Set<ITrait<T>> traitsAdopted = new HashSet<ITrait<T>>();
         List<IAgent> agentList = tag.getCurAgentsTagged();
 
         log.debug("agents tagged: " + agentList.size());
@@ -128,7 +128,7 @@ public class UnstructuredTraitDimension implements ITraitDimension {
         for (IAgent agent : agentList) {
             Set<ITrait> myTraits = agent.getCurrentlyAdoptedTraits();
 
-            for (ITrait aTrait : myTraits) {
+            for (ITrait<T> aTrait : myTraits) {
                 //log.debug("trait added to traitsAdopted: " + aTrait);
                 traitsAdopted.add(aTrait);
             }
@@ -138,8 +138,8 @@ public class UnstructuredTraitDimension implements ITraitDimension {
 
         // Now we go through and ask each trait its adoption count for
         // this tag
-        Map<ITrait, Integer> adoptionCountMap = new HashMap<ITrait, Integer>();
-        for (ITrait trait : traitsAdopted) {
+        Map<ITrait<T>, Integer> adoptionCountMap = new HashMap<ITrait<T>, Integer>();
+        for (ITrait<T> trait : traitsAdopted) {
 
             Integer count = trait.getCurrentAdoptionCountForTag(tag);
             log.debug("trait: " + trait + " count: " + count);
@@ -152,19 +152,18 @@ public class UnstructuredTraitDimension implements ITraitDimension {
     }
 
 
-    public Map<ITrait, Double> getCurTraitFreqByTag(IAgentTag tag) {
+    public Map<ITrait<T>, Double> getCurTraitFreqByTag(IAgentTag tag) {
         Preconditions.checkNotNull(tag, "Getting trait frequencies by tag requires a non-null reference to an IAgentTag object");
         Integer agentCountForTag = tag.curAgentCount();
 
-        Map<ITrait, Integer> adoptionCountMap = this.getCurTraitCountByTag(tag);
+        Map<ITrait<T>, Integer> adoptionCountMap = this.getCurTraitCountByTag(tag);
         log.trace("adoptionCountMap: " + adoptionCountMap);
-        Map<ITrait, Double> adoptionFreqMap = new HashMap<ITrait, Double>();
+        Map<ITrait<T>, Double> adoptionFreqMap = new HashMap<ITrait<T>, Double>();
 
-        for (ITrait trait : adoptionCountMap.keySet()) {
-            if(agentCountForTag == 0) {
-                adoptionFreqMap.put(trait,0.0);
-            }
-            else {
+        for (ITrait<T> trait : adoptionCountMap.keySet()) {
+            if (agentCountForTag == 0) {
+                adoptionFreqMap.put(trait, 0.0);
+            } else {
                 double freq = (double) adoptionCountMap.get(trait) / (double) agentCountForTag;
                 log.debug("count: " + adoptionCountMap.get(trait) + " total: " + agentCountForTag + " freq: " + freq);
                 adoptionFreqMap.put(trait, freq);
@@ -175,7 +174,7 @@ public class UnstructuredTraitDimension implements ITraitDimension {
     }
 
 
-    public synchronized void removeTrait(ITrait traitToRemove) {
+    public synchronized void removeTrait(ITrait<T> traitToRemove) {
         this.traitMap.remove(traitToRemove);
         this.traitList.remove(traitToRemove);
     }
@@ -188,7 +187,7 @@ public class UnstructuredTraitDimension implements ITraitDimension {
     }
 
     public void attach(List<ITraitStatisticsObserver<ITraitDimension>> obsList) {
-        for(ITraitStatisticsObserver obs: obsList) {
+        for (ITraitStatisticsObserver obs : obsList) {
             this.attach(obs);
         }
     }
@@ -201,7 +200,7 @@ public class UnstructuredTraitDimension implements ITraitDimension {
     }
 
     public void detach(List<ITraitStatisticsObserver<ITraitDimension>> obsList) {
-        for(ITraitStatisticsObserver obs: obsList) {
+        for (ITraitStatisticsObserver obs : obsList) {
             this.detach(obs);
         }
     }
@@ -218,6 +217,7 @@ public class UnstructuredTraitDimension implements ITraitDimension {
             obs.updateTraitStatistics(stat);
         }
     }
+
     public ITraitStatistic getChangeStatistic() {
         return new TraitStatistic(this, model.getCurrentModelTime());
     }
