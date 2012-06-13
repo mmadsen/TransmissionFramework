@@ -32,7 +32,7 @@ import java.util.Set;
  * Time: 2:51:57 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class  AbstractSimModel implements ISimulationModel {
+public abstract class AbstractSimModel implements ISimulationModel {
     protected Logger log;
     protected Integer currentTime = 0;
     @Inject
@@ -77,8 +77,7 @@ public abstract class  AbstractSimModel implements ISimulationModel {
         try {
             this.modelProperties = new Properties();
             this.modelProperties.load(new FileReader(this.propertiesFileName));
-        }
-        catch(IOException ex) {
+        } catch (IOException ex) {
             System.exit(1);
         }
 
@@ -105,7 +104,7 @@ public abstract class  AbstractSimModel implements ISimulationModel {
     }
 
     public Double getUniformDouble() {
-        return this.uniformDist.nextDoubleFromTo(0,1);
+        return this.uniformDist.nextDoubleFromTo(0, 1);
     }
 
     public Integer getCurrentModelTime() {
@@ -133,6 +132,7 @@ public abstract class  AbstractSimModel implements ISimulationModel {
 
     }
 
+/*  DEPRECATED....
     public ITrait getNewTrait(ITraitDimension owningDimension) {
         ITrait newTrait = this.traitProvider.get();
         for(ITraitStatisticsObserver<ITraitDimension> obs: this.observerList) {
@@ -140,7 +140,7 @@ public abstract class  AbstractSimModel implements ISimulationModel {
             newTrait.setOwningDimension(owningDimension);
         }
         return newTrait;
-    }
+    }*/
 
     public Provider<ITrait> getTraitProvider() {
         return traitProvider;
@@ -154,12 +154,17 @@ public abstract class  AbstractSimModel implements ISimulationModel {
         return this.dimensionList;
     }
 
+    @Override
+    public List<ITraitStatisticsObserver<ITraitDimension>> getObserverList() {
+        return this.observerList;
+    }
+
     public Provider<IDeme> getDemeProvider() {
         return demeProvider;
     }
 
     public void incrementModelTime() {
-        synchronized(this.currentTime) {
+        synchronized (this.currentTime) {
             this.currentTime++;
         }
     }
@@ -176,8 +181,8 @@ public abstract class  AbstractSimModel implements ISimulationModel {
     public void run() {
         log.info("Beginning simulation run");
         int tenpercent = this.lengthSimulation / 10;
-        while(this.currentTime < this.lengthSimulation) {
-            if(this.currentTime % tenpercent == 0) {
+        while (this.currentTime < this.lengthSimulation) {
+            if (this.currentTime % tenpercent == 0) {
                 log.info("    Time: " + this.currentTime);
                 System.gc();
             }
@@ -198,7 +203,7 @@ public abstract class  AbstractSimModel implements ISimulationModel {
 
     protected void loadPropertiesToConfig() {
         Set<String> propNames = this.modelProperties.stringPropertyNames();
-        for(String propName: propNames) {
+        for (String propName : propNames) {
             this.params.setProperty(propName, this.modelProperties.getProperty(propName));
         }
     }

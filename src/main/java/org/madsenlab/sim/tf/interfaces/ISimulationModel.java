@@ -87,6 +87,7 @@ public interface ISimulationModel extends Runnable {
      * Returns a random Double between 0 and 1, from a Uniform distribution using
      * the underlying Mersenne Twister generator.  Heavily used in determining the chance
      * of a mutation occurring in some models.
+     *
      * @return randomDouble
      */
     public Double getUniformDouble();
@@ -101,12 +102,13 @@ public interface ISimulationModel extends Runnable {
 
     /**
      * Creating a new trait involves some housekeeping - like attaching all currently registered Observers
-     * to the new trait - otherwise *bad things happen*.  This utility method creates a new, unconfigured and empty
-     * trait, attaches all current observers, and returns it to the caller.  This is similar to the way IPopulation is
-     * responsible for agent creation, so we can do the housekeeping.
+     * to the new trait - otherwise *bad things happen*.  This utility method returns the list of all
+     * observers for this simulation model, so that ITraitDimension objects and other parts of the
+     * model can attach traits, detach them, etc.
+     *
      * @return
      */
-    public ITrait getNewTrait(ITraitDimension owningDimension);
+    public List<ITraitStatisticsObserver<ITraitDimension>> getObserverList();
 
     public void parseCommandLineOptions(String[] args);
 

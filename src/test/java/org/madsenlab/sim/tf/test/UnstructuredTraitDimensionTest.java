@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.test.util.AbstractGuiceTestClass;
+import org.madsenlab.sim.tf.traits.InfiniteAllelesIntegerTraitFactory;
 
 import java.util.Collection;
 import java.util.Map;
@@ -78,8 +79,9 @@ public class UnstructuredTraitDimensionTest extends AbstractGuiceTestClass imple
 
         log.info("Entering testAddTraitAndGetTraitsInDimension");
         ITraitDimension dimension = dimensionProvider.get();
-        ITrait trait = traitProvider.get();
-        dimension.addTrait(trait);
+        ITraitFactory traitFactory = new InfiniteAllelesIntegerTraitFactory(this.model);
+        dimension.setTraitVariationModel(traitFactory);
+        ITrait trait = dimension.getNewVariant();
         Collection<ITrait> traitList = dimension.getTraitsInDimension();
         log.info("expected size: 1 observed: " + traitList.size());
         assertTrue(traitList.size() == 1);
@@ -181,6 +183,8 @@ public class UnstructuredTraitDimensionTest extends AbstractGuiceTestClass imple
     private ITraitDimension _createTestData() {
         log.info("entering _createTestData");
         ITraitDimension dimension = dimensionProvider.get();
+        ITraitFactory traitFactory = new InfiniteAllelesIntegerTraitFactory(this.model);
+        dimension.setTraitVariationModel(traitFactory);
         this.redTag = tagProvider.get();
         redTag.setTagName("redTag");
         this.blueTag = tagProvider.get();
@@ -189,9 +193,7 @@ public class UnstructuredTraitDimensionTest extends AbstractGuiceTestClass imple
         // We're going to add five traits to a dimension
         for (Integer i = 1; i < 6; i++) {
             // we can't rely on injection here, so just construct them directly.
-            ITrait newTrait = traitProvider.get();
-            newTrait.setOwningDimension(dimension);
-            newTrait.setTraitID(i.toString());
+            ITrait newTrait = dimension.getNewVariant();
 
             // stash references to a couple of traits to use in tests later
             if (i == 3) {
@@ -229,8 +231,6 @@ public class UnstructuredTraitDimensionTest extends AbstractGuiceTestClass imple
                 blueTag.registerAgent(newAgent);
                 newTrait.adopt(newAgent);
             }
-
-            dimension.addTrait(newTrait);
 
         }
 

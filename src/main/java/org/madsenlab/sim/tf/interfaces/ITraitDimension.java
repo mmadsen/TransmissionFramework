@@ -13,21 +13,28 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Created by IntelliJ IDEA.
- * User: mark
- * Date: Jun 27, 2010
- * Time: 11:26:16 AM
- * To change this template use File | Settings | File Templates.
+ * An ITraitDimension is analogous to a "locus" which can have many variant alleles, or a haplotype.
+ * Each dimension can be represented by a finite or infinite number of ITraits, which can have differing
+ * underlying representations (i.e., discrete categories perhaps represented by integer tags, continuous
+ * variables represented by a float, or arbitrarily structured traits which might be "recipes").
+ * <p/>
+ * Each ITraitDimension has a "variation model," by which new traits are generated (i.e., by innovation
+ * or mutation), and is the object through which trait counts and especially frequencies are obtained
+ * (although ITraits are responsible for "counting themselves" upon adoption or unadoption events).
  */
-public interface ITraitDimension<T> extends IStatisticsSubject {
+public interface ITraitDimension<T> extends IStatisticsSubject, ITraitFactory {
 
     public void setSimulationModel(ISimulationModel m);
+
+    public void setTraitVariationModel(ITraitFactory f);
 
     public String getDimensionName();
 
     public void setDimensionName(String name);
 
-    public void addTrait(ITrait<T> newTrait);
+    // deprecated now that we're using the ITraitFactory, this migrated
+    //public void addTrait(ITrait<T> newTrait);
+
 
     public ITrait<T> getTrait(T traitID);
 
@@ -49,5 +56,5 @@ public interface ITraitDimension<T> extends IStatisticsSubject {
 
     public Map<ITrait<T>, Double> getCurTraitFreqByTag(IAgentTag tag);
 
-    public void removeTrait(ITrait<T> traitToRemove);
+    //public void removeTrait(ITrait<T> traitToRemove);
 }

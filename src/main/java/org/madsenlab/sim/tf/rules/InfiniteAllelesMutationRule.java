@@ -48,10 +48,7 @@ public class InfiniteAllelesMutationRule extends AbstractInteractionRule impleme
         log.trace("Selected dimension: " + dim + " for mutation");
         // Generate a new trait
         this.newTraitID++;
-        ITrait newTrait = this.model.getNewTrait(dim);
-        Integer timeAdded = 100000 + this.newTraitID;
-        newTrait.setTraitID(timeAdded.toString());
-        dim.addTrait(newTrait);
+        ITrait newTrait = dim.getNewVariant();
 
         ITrait oldTrait = thisAgent.getRandomTraitFromAgent(TraitCopyingMode.CURRENT);
         oldTrait.unadopt(thisAgent);
@@ -74,12 +71,11 @@ public class InfiniteAllelesMutationRule extends AbstractInteractionRule impleme
         Integer numDimensions = dimensionList.size();
         ITraitDimension dim;
 
-        if(numDimensions == 1) {
+        if (numDimensions == 1) {
             // shortcut the obvious case
             dim = dimensionList.get(0);
 
-        }
-        else {
+        } else {
             Integer selectedDimNum = this.model.getUniformRandomInteger(numDimensions - 1);
             dim = dimensionList.get(selectedDimNum);
         }

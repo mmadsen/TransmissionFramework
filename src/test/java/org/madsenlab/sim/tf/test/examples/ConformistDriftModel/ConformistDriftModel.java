@@ -15,6 +15,7 @@ import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.models.AbstractSimModel;
 import org.madsenlab.sim.tf.rules.*;
+import org.madsenlab.sim.tf.traits.InfiniteAllelesIntegerTraitFactory;
 import org.madsenlab.sim.tf.utils.GenerationDynamicsMode;
 import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
@@ -49,9 +50,17 @@ public class ConformistDriftModel extends AbstractSimModel {
 
 
     public void initializeModel() {
-        // first, set up the traits in a dimension
-        // second, set up agents, assigning an initial trait to each agent at random
+        // We create a single dimension, with
+        //
+        ITraitFactory traitFactory = null;
+        if (isInfiniteAlleles == Boolean.TRUE) {
+            traitFactory = new InfiniteAllelesIntegerTraitFactory(this);
+        } else {
+            log.error("NEED IMPLEMENTATION FOR NON INFINITE ALLELES TRAIT FACTORY!!!");
+            System.exit(1);
+        }
         this.dimension = this.dimensionProvider.get();
+        this.dimension.setTraitVariationModel(traitFactory);
         this.dimensionList.add(this.dimension);
 
         // Now can initialize Observers
@@ -109,10 +118,7 @@ public class ConformistDriftModel extends AbstractSimModel {
 
         this.log.debug("Creating one dimension and " + this.params.getStartingTraits() + " traits to begin");
         for (Integer i = 0; i < this.params.getStartingTraits(); i++) {
-            ITrait newTrait = this.traitProvider.get();
-            newTrait.setTraitID(i.toString());
-            newTrait.setOwningDimension(this.dimension);
-            this.dimension.addTrait(newTrait);
+            this.dimension.getNewVariant();
         }
 
         this.log.debug("Creating " + this.params.getNumAgents() + " agents with random starting traits");

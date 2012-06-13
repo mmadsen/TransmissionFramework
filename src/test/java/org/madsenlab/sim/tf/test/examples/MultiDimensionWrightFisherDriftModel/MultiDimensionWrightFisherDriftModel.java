@@ -18,6 +18,7 @@ import org.madsenlab.sim.tf.rules.CopyOrMutateDecisionRule;
 import org.madsenlab.sim.tf.rules.FiniteKAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule;
+import org.madsenlab.sim.tf.traits.InfiniteAllelesIntegerTraitFactory;
 import org.madsenlab.sim.tf.utils.GenerationDynamicsMode;
 import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
@@ -56,10 +57,14 @@ public class MultiDimensionWrightFisherDriftModel extends AbstractSimModel {
         // first, set up the traits in a dimension
         // second, set up agents, assigning an initial trait to each agent at random
         this.dimensionList = new ArrayList<ITraitDimension>();
+        ITraitFactory traitFactory1 = new InfiniteAllelesIntegerTraitFactory(this);
+        ITraitFactory traitFactory2 = new InfiniteAllelesIntegerTraitFactory(this);
         ITraitDimension dim1 = this.dimensionProvider.get();
         ITraitDimension dim2 = this.dimensionProvider.get();
         dim1.setDimensionName("Surface Treatment");
         dim2.setDimensionName("Decoration");
+        dim1.setTraitVariationModel(traitFactory1);
+        dim2.setTraitVariationModel(traitFactory2);
         this.dimensionList.add(dim1);
         this.dimensionList.add(dim2);
 
@@ -75,7 +80,9 @@ public class MultiDimensionWrightFisherDriftModel extends AbstractSimModel {
 
         // We observe the dimension, not individual traits, in WF, so we get a single consistent picture
         // of the population at the end of a model step.
-        this.dimension.attach(this.observerList);
+        for (ITraitDimension dim : this.dimensionList) {
+            dim.attach(this.observerList);
+        }
 
         // set up the stack of rules, to be fired in the order given in the list
         // in this first simulation, all agents get the same rule, but this need not be the
@@ -104,7 +111,7 @@ public class MultiDimensionWrightFisherDriftModel extends AbstractSimModel {
             ITrait newTrait = this.traitProvider.get();
             newTrait.setTraitID(i.toString());
             newTrait.setOwningDimension(this.dimension);
-            this.dimension.addTrait(newTrait);
+            //this.dimension.addTrait(newTrait);
         }
 
         this.log.debug("Creating " + this.params.getNumAgents() + " agents with random starting traits");

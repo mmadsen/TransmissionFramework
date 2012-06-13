@@ -31,11 +31,17 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
     List<ITrait<T>> traitList = null;
     Logger log;
     private ISimulationModel model;
+    private ITraitFactory traitFactory;
 
     @Inject
     public void setSimulationModel(ISimulationModel m) {
         model = m;
         log = model.getModelLogger(this.getClass());
+    }
+
+    @Override
+    public void setTraitVariationModel(ITraitFactory f) {
+        this.traitFactory = f;
     }
 
     public UnstructuredTraitDimension() {
@@ -61,9 +67,13 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
         this.dimensionName = dimensionName;
     }
 
-    public synchronized void addTrait(ITrait<T> newTrait) {
+    private synchronized void addTrait(ITrait<T> newTrait) {
         this.traitMap.put(newTrait.getTraitID(), newTrait);
         this.traitList.add(newTrait);
+        for (ITraitStatisticsObserver<ITraitDimension> obs : this.model.getObserverList()) {
+            newTrait.attach(obs);
+            newTrait.setOwningDimension(this);
+        }
     }
 
     public ITrait<T> getTrait(T traitID) {
@@ -174,7 +184,7 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
     }
 
 
-    public synchronized void removeTrait(ITrait<T> traitToRemove) {
+    private synchronized void removeTrait(ITrait<T> traitToRemove) {
         this.traitMap.remove(traitToRemove);
         this.traitList.remove(traitToRemove);
     }
@@ -222,4 +232,22 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
         return new TraitStatistic(this, model.getCurrentModelTime());
     }
 
+    @Override
+    public ITrait getNewVariant() {
+        ITrait newTrait = this.traitFactory.getNewVariant();
+        this.addTrait(newTrait);
+        return newTrait;
+    }
+
+    @Override
+    public ITrait getNewVariantBasedUponExistingVariant(ITrait existingTrait) {
+        ITrait newTrait = this.traitFactory.getNewVariantBasedUponExistingVariant(existingTrait);
+        this.addTrait(newTrait);
+        return newTrait;
+    }
+
+    @Override
+    public Boolean providesInfiniteVariants() {
+        return this.traitFactory.providesInfiniteVariants();
+    }
 }

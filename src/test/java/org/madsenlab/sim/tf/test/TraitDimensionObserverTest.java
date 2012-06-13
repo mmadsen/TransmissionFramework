@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -24,6 +24,7 @@ import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.test.util.AbstractGuiceTestClass;
 import org.madsenlab.sim.tf.test.util.TraitCountAccumulatorObserver;
 import org.madsenlab.sim.tf.test.util.TraitCountPrinterObserver;
+import org.madsenlab.sim.tf.traits.InfiniteAllelesIntegerTraitFactory;
 
 import static org.junit.Assert.assertTrue;
 
@@ -77,6 +78,8 @@ public class TraitDimensionObserverTest extends AbstractGuiceTestClass implement
         TraitCountAccumulatorObserver accum = new TraitCountAccumulatorObserver(model);
 
         ITraitDimension dimension = dimensionProvider.get();
+        ITraitFactory traitFactory = new InfiniteAllelesIntegerTraitFactory(this.model);
+        dimension.setTraitVariationModel(traitFactory);
         this.redTag = tagProvider.get();
         redTag.setTagName("redTag");
         this.blueTag = tagProvider.get();
@@ -86,11 +89,8 @@ public class TraitDimensionObserverTest extends AbstractGuiceTestClass implement
         // We're going to add eight traits to a dimension
         for (Integer i = 2; i < 10; i++) {
             // we can't rely on injection here, so just construct them directly.
-            ITrait newTrait = traitProvider.get();
+            ITrait newTrait = dimension.getNewVariant();
 
-            newTrait.setOwningDimension(dimension);
-            newTrait.setTraitID(i.toString());
-            dimension.addTrait(newTrait);
             newTrait.attach(obs);
             newTrait.attach(accum);
 
