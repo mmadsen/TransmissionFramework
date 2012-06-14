@@ -48,6 +48,17 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
         this.initialize();
     }
 
+    public UnstructuredTraitDimension(ISimulationModel m) {
+        this.setSimulationModel(m);
+        this.initialize();
+    }
+
+    public UnstructuredTraitDimension(ISimulationModel m, ITraitFactory f) {
+        this.setSimulationModel(m);
+        this.setTraitVariationModel(f);
+        this.initialize();
+    }
+
     private void initialize() {
         // We keep both a hash and a list; normally we get things via mapping, but
         // when we want a random trait it's more efficient to have a list than to make a new
@@ -85,6 +96,15 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
         // only needs to use the map
         return this.traitMap.values();
     }
+
+    /**
+     * Returns a random trait from the dimension.  CAUTION:  This returns ANY trait in the dimension,
+     * even one which has a zero adoption count.  It is useful for initializing a population, or when
+     * you want innovation to "resurrect" extinct traits.  But it should not be used to select a *current*
+     * trait randomly with a non-zero adoption count.
+     *
+     * @return
+     */
 
     public ITrait<T> getRandomTraitFromDimension() {
         // needs to use the list only

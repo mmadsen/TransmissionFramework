@@ -19,6 +19,7 @@ import org.madsenlab.sim.tf.rules.FiniteKAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule;
 import org.madsenlab.sim.tf.traits.InfiniteAllelesIntegerTraitFactory;
+import org.madsenlab.sim.tf.traits.UnstructuredTraitDimension;
 import org.madsenlab.sim.tf.utils.GenerationDynamicsMode;
 import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
@@ -62,8 +63,9 @@ public class WrightFisherDriftModel extends AbstractSimModel {
             log.error("NEED IMPLEMENTATION FOR NON INFINITE ALLELES TRAIT FACTORY!!!");
             System.exit(1);
         }
-        this.dimension = this.dimensionProvider.get();
-        this.dimension.setTraitVariationModel(traitFactory);
+        this.dimension = new UnstructuredTraitDimension<Integer>(this, traitFactory);
+        //this.dimension = this.dimensionProvider.get();
+        //this.dimension.setTraitVariationModel(traitFactory);
         this.dimensionList.add(this.dimension);
 
         // Now can initialize Observers
