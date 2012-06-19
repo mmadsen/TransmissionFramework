@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
   ~ Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
   ~
@@ -6,5 +7,25 @@
   ~ For detailed license terms, see:
   ~ http://creativecommons.org/licenses/GPL/2.0/
   -->
+<configuration>
+    <model>
+        <runparameters config-class="org.madsenlab.sim.tf.config.RunParameters"
+                       theta="2.0" numagents="2000" runlength="10000"/>
+        <rules>
+            <innovationrule config-class="org.madsenlab.sim.tf.config.rules.InnovationRuleParameters"
+                    />
+        </rules>
+    </model>
+    <observers>
+        <traitobservers>
+            <traitobserver config-class="org.madsenlab.sim.tf.config.TraitObserverParameters"
+                           ewens-sample-size="100"/>
+        </traitobservers>
+        <traitspace>
 
+        </traitspace>
+        <classifications>
 
+        </classifications>
+    </observers>
+</configuration>

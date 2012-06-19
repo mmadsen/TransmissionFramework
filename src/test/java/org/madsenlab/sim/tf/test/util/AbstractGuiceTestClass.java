@@ -17,6 +17,7 @@ import org.madsenlab.sim.tf.population.SimpleAgentDemeProvider;
 import org.madsenlab.sim.tf.population.SimpleAgentPopulationProvider;
 import org.madsenlab.sim.tf.structure.SimpleAgentTagProvider;
 import org.madsenlab.sim.tf.structure.WellMixedInteractionTopologyProvider;
+import org.madsenlab.sim.tf.test.examples.WrightFisherDriftModel.WrightFisherDriftModel;
 import org.madsenlab.sim.tf.traits.IntegerTraitProvider;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitDimensionProvider;
 import org.madsenlab.sim.tf.utils.LogFileHandler;
@@ -32,14 +33,21 @@ import org.madsenlab.sim.tf.utils.LogFileHandler;
 public abstract class AbstractGuiceTestClass {
 
     public void configure(Binder binder) {
-        binder.bind(ITrait.class).toProvider(IntegerTraitProvider.class);
-        binder.bind(ITraitDimension.class).toProvider(UnstructuredTraitDimensionProvider.class);
-        binder.bind(IAgent.class).toProvider(UnstructuredTraitAgentProvider.class);
-        binder.bind(ISimulationModel.class).to(SimulationModelFixture.class).in(Singleton.class);
+
+        binder.bind(ISimulationModel.class)
+                .to(SimulationModelFixture.class)
+                .in(Singleton.class);
+        binder.bind(IAgent.class)
+                .toProvider(UnstructuredTraitAgentProvider.class);
+        binder.bind(ITraitDimension.class)
+                .toProvider(UnstructuredTraitDimensionProvider.class);
+        binder.bind(ITrait.class)
+                .toProvider(IntegerTraitProvider.class);
+        binder.bind(IAgentTag.class)
+                .toProvider(SimpleAgentTagProvider.class);
         binder.bind(IPopulation.class).toProvider(SimpleAgentPopulationProvider.class);
-        binder.bind(IDeme.class).toProvider(SimpleAgentDemeProvider.class);
-        binder.bind(IAgentTag.class).toProvider(SimpleAgentTagProvider.class);
         binder.bind(IInteractionTopology.class).toProvider(WellMixedInteractionTopologyProvider.class);
-        binder.bind(ILogFiles.class).to(LogFileHandler.class);
+        binder.bind(IDeme.class).toProvider(SimpleAgentDemeProvider.class);
+        binder.bind(ILogFiles.class).to(LogFileHandler.class).in(Singleton.class);
     }
 }

@@ -78,6 +78,9 @@ public class TraitDimensionObserverTest extends AbstractGuiceTestClass implement
         TraitCountAccumulatorObserver accum = new TraitCountAccumulatorObserver(model);
 
         ITraitDimension dimension = dimensionProvider.get();
+        dimension.attach(obs);
+        dimension.attach(accum);
+
         ITraitFactory traitFactory = new InfiniteAllelesIntegerTraitFactory(this.model);
         dimension.setTraitVariationModel(traitFactory);
         this.redTag = tagProvider.get();
@@ -91,10 +94,7 @@ public class TraitDimensionObserverTest extends AbstractGuiceTestClass implement
             // we can't rely on injection here, so just construct them directly.
             ITrait newTrait = dimension.getNewVariant();
 
-            newTrait.attach(obs);
-            newTrait.attach(accum);
-
-            //log.info("creating trait " + i );
+            log.info("creating trait " + newTrait.getTraitID().toString());
 
 
             for (Integer j = 0; j < (i * 2); j++) {
@@ -104,10 +104,11 @@ public class TraitDimensionObserverTest extends AbstractGuiceTestClass implement
                 newAgent.setAgentID(sb.toString());
                 redTag.registerAgent(newAgent);
                 newTrait.adopt(newAgent);
+                dimension.notifyObservers();
             }
 
-
         }
+
 
         Integer adoptionEvents = accum.getAdoptionEventCount();
 
