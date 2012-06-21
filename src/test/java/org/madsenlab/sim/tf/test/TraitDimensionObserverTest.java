@@ -83,10 +83,6 @@ public class TraitDimensionObserverTest extends AbstractGuiceTestClass implement
 
         ITraitFactory traitFactory = new InfiniteAllelesIntegerTraitFactory(this.model);
         dimension.setTraitVariationModel(traitFactory);
-        this.redTag = tagProvider.get();
-        redTag.setTagName("redTag");
-        this.blueTag = tagProvider.get();
-        blueTag.setTagName("blueTag");
 
 
         // We're going to add eight traits to a dimension
@@ -102,7 +98,6 @@ public class TraitDimensionObserverTest extends AbstractGuiceTestClass implement
                 StringBuffer sb = new StringBuffer();
                 sb.append("<" + i + "." + j + ">");
                 newAgent.setAgentID(sb.toString());
-                redTag.registerAgent(newAgent);
                 newTrait.adopt(newAgent);
                 dimension.notifyObservers();
             }

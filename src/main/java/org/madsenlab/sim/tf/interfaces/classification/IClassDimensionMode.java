@@ -9,6 +9,10 @@
 
 package org.madsenlab.sim.tf.interfaces.classification;
 
+import org.madsenlab.sim.tf.interfaces.ITrait;
+
+import java.util.Set;
+
 /**
  * CLASS DESCRIPTION
  * <p/>
@@ -18,5 +22,18 @@ package org.madsenlab.sim.tf.interfaces.classification;
  */
 
 public interface IClassDimensionMode {
+
+    /**
+     * Returns the current set of traits which are mapped to this mode. Given the argument, either
+     * returns just the currently adopted set of traits (i.e., those with non-zero adoption counts),
+     * or the entire historical set of traits which have mapped to this mode, to date (i.e., including
+     * those with zero adoption counts).
+     * <p/>
+     * This is NOT an indication of what the mode "boundaries" are, given a specific variation model.
+     *
+     * @return
+     */
+    public Set<ITrait> getTraitsMappedToMode(Boolean includeTraitsWithZeroAdoptionCount);
+
 
 }
