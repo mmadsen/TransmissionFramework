@@ -26,7 +26,7 @@ import java.util.*;
  * Time: 4:28 PM
  */
 
-public class EwensSampleFullPopulationObserver implements ITraitStatisticsObserver<ITraitDimension> {
+public class EwensSampleFullPopulationObserver implements IStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
     private PrintWriter pw;
@@ -51,8 +51,8 @@ public class EwensSampleFullPopulationObserver implements ITraitStatisticsObserv
     }
 
     @Override
-    public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
-        log.trace("entering updateTraitStatistics");
+    public void updateStatistics(IStatistic<ITraitDimension> stat) {
+        log.trace("entering updateStatistics");
         if (this.sampleSize == 0) {
             // memoize this
             this.sampleSize = this.model.getModelConfiguration().getEwensSampleSize();
@@ -183,7 +183,7 @@ public class EwensSampleFullPopulationObserver implements ITraitStatisticsObserv
     private void logStats() {
         log.trace("entering logStats");
         DescriptiveStatistics stats = new DescriptiveStatistics();
-        for(Integer count: this.numTraitsInSamplePerTick ) {
+        for (Integer count : this.numTraitsInSamplePerTick) {
             stats.addValue((double) count);
         }
         this.statPW.write("Samples of size " + this.sampleSize + " taken each tick\n");
@@ -193,12 +193,12 @@ public class EwensSampleFullPopulationObserver implements ITraitStatisticsObserv
         log.info("Ewens K_n Sample Stats: =============");
         log.info("Samples of size " + this.sampleSize + " taken each tick");
         log.info(stats.toString());
-        
+
 
     }
 
     private void logKnSamples() {
-        for(Integer count: this.numTraitsInSamplePerTick) {
+        for (Integer count : this.numTraitsInSamplePerTick) {
             this.knPW.write(count.toString());
             this.knPW.write("\n");
         }

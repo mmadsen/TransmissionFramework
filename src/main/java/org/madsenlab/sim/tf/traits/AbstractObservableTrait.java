@@ -28,32 +28,32 @@ public abstract class AbstractObservableTrait<T> implements ITrait<T> {
     protected Integer tickTraitIntroduced;
     protected Integer tickTraitExited;
 
-    protected List<ITraitStatisticsObserver> observers;
+    protected List<IStatisticsObserver> observers;
     protected ISimulationModel model;
     protected Logger log;
 
-    public void attach(ITraitStatisticsObserver obs) {
+    public void attach(IStatisticsObserver obs) {
         synchronized (this.observers) {
             log.trace("attaching to obs: " + obs);
             this.observers.add(obs);
         }
     }
 
-    public void attach(List<ITraitStatisticsObserver<ITraitDimension>> obsList) {
-        for (ITraitStatisticsObserver obs : obsList) {
+    public void attach(List<IStatisticsObserver> obsList) {
+        for (IStatisticsObserver obs : obsList) {
             this.attach(obs);
         }
     }
 
-    public void detach(ITraitStatisticsObserver obs) {
+    public void detach(IStatisticsObserver obs) {
         synchronized (this.observers) {
             this.observers.remove(obs);
         }
 
     }
 
-    public void detach(List<ITraitStatisticsObserver<ITraitDimension>> obsList) {
-        for (ITraitStatisticsObserver obs : obsList) {
+    public void detach(List<IStatisticsObserver> obsList) {
+        for (IStatisticsObserver obs : obsList) {
             this.detach(obs);
         }
     }
@@ -63,15 +63,15 @@ public abstract class AbstractObservableTrait<T> implements ITrait<T> {
     }
 
     public void notifyObservers() {
-        ITraitStatistic stat = this.getChangeStatistic();
+        IStatistic stat = this.getChangeStatistic();
         log.debug("change statistic: " + stat);
-        for (ITraitStatisticsObserver obs : this.observers) {
+        for (IStatisticsObserver obs : this.observers) {
             log.debug("notify observer: " + obs);
-            obs.updateTraitStatistics(stat);
+            obs.updateStatistics(stat);
         }
     }
 
-    public abstract ITraitStatistic getChangeStatistic();
+    public abstract IStatistic getChangeStatistic();
 
 
     @Override

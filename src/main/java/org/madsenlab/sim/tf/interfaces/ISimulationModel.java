@@ -108,7 +108,7 @@ public interface ISimulationModel extends Runnable {
      *
      * @return
      */
-    public List<ITraitStatisticsObserver<ITraitDimension>> getObserverList();
+    public List<IStatisticsObserver> getObserverList();
 
     public void parseCommandLineOptions(String[] args);
 

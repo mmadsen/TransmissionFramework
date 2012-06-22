@@ -72,10 +72,10 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         this.countObserver = new GlobalTraitCountObserver(this);
         this.lifetimeObserver = new GlobalTraitLifetimeObserver(this);
         this.ewensSampler = new EwensSampleFullPopulationObserver(this);
-        this.observerList.add(this.countObserver);
-        this.observerList.add(this.lifetimeObserver);
-        this.observerList.add(this.ewensSampler);
-        this.dimension.attach(this.observerList);
+        this.traitObserverList.add(this.countObserver);
+        this.traitObserverList.add(this.lifetimeObserver);
+        this.traitObserverList.add(this.ewensSampler);
+        this.dimension.attach(this.traitObserverList);
 
         // set up the stack of rules, to be fired in the order given in the list
         // in this first simulation, all agents get the same rule, but this need not be the
@@ -231,13 +231,13 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
 
     public void modelObservations() {
         log.trace("entering modelObservations at time: " + this.currentTime);
-        for (ITraitStatisticsObserver<ITraitDimension> obs : this.observerList) {
+        for (IStatisticsObserver<ITraitDimension> obs : this.traitObserverList) {
             obs.perStepAction();
         }
     }
 
     public void modelFinalize() {
-        for (ITraitStatisticsObserver<ITraitDimension> obs : this.observerList) {
+        for (IStatisticsObserver<ITraitDimension> obs : this.traitObserverList) {
             obs.endSimulationAction();
             obs.finalizeObservation();
         }

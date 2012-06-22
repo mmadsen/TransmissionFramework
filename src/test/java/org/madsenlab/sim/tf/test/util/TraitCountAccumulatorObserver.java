@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -12,9 +12,9 @@ package org.madsenlab.sim.tf.test.util;
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
+import org.madsenlab.sim.tf.interfaces.IStatistic;
+import org.madsenlab.sim.tf.interfaces.IStatisticsObserver;
 import org.madsenlab.sim.tf.interfaces.ITraitDimension;
-import org.madsenlab.sim.tf.interfaces.ITraitStatistic;
-import org.madsenlab.sim.tf.interfaces.ITraitStatisticsObserver;
 
 /**
  * The only job of this observer is to receive notifications of trait
@@ -30,7 +30,7 @@ import org.madsenlab.sim.tf.interfaces.ITraitStatisticsObserver;
 //@Ignore needed to prevent JUnit from trying to execute test helper classes
 
 @Ignore
-public class TraitCountAccumulatorObserver implements ITraitStatisticsObserver<ITraitDimension> {
+public class TraitCountAccumulatorObserver implements IStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
     private Integer adoptionEvents;
@@ -46,7 +46,7 @@ public class TraitCountAccumulatorObserver implements ITraitStatisticsObserver<I
         return this.adoptionEvents;
     }
 
-    public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
+    public void updateStatistics(IStatistic<ITraitDimension> stat) {
         this.adoptionEvents++;
 
     }

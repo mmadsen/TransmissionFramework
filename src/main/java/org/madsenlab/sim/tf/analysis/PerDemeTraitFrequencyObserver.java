@@ -25,19 +25,19 @@ import java.util.*;
  */
 
 
-public class PerDemeTraitFrequencyObserver implements ITraitStatisticsObserver<ITraitDimension> {
+public class PerDemeTraitFrequencyObserver implements IStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
     private Map<ITrait, Double> traitFreqMap;
     private Integer lastTimeIndexUpdated;
     private PrintWriter pw;
-    private Map<Integer,Map<ITrait,Double>> histTraitFreq;
+    private Map<Integer, Map<ITrait, Double>> histTraitFreq;
     private IAgentTag demeTag;
 
     public PerDemeTraitFrequencyObserver(ISimulationModel m, IAgentTag demeTag) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
-        this.histTraitFreq = new HashMap<Integer,Map<ITrait, Double>>();
+        this.histTraitFreq = new HashMap<Integer, Map<ITrait, Double>>();
         this.demeTag = demeTag;
         log.debug("demeTag for this observer: " + this.demeTag);
 
@@ -50,15 +50,15 @@ public class PerDemeTraitFrequencyObserver implements ITraitStatisticsObserver<I
     }
 
 
-    public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
-        log.trace("entering updateTraitStatistics for demeTag: " + this.demeTag);
+    public void updateStatistics(IStatistic<ITraitDimension> stat) {
+        log.trace("entering updateStatistics for demeTag: " + this.demeTag);
         this.lastTimeIndexUpdated = stat.getTimeIndex();
         ITraitDimension dim = stat.getTarget();
-        Map<ITrait,Double> freqMap = dim.getCurTraitFreqByTag(this.demeTag);
+        Map<ITrait, Double> freqMap = dim.getCurTraitFreqByTag(this.demeTag);
 
-        //log.trace("freqMap after updateTraitStatistics: " + freqMap);
+        //log.trace("freqMap after updateStatistics: " + freqMap);
 
-        this.histTraitFreq.put(this.lastTimeIndexUpdated,freqMap);
+        this.histTraitFreq.put(this.lastTimeIndexUpdated, freqMap);
     }
 
     public void perStepAction() {
@@ -68,7 +68,7 @@ public class PerDemeTraitFrequencyObserver implements ITraitStatisticsObserver<I
 
         Integer tick = this.model.getCurrentModelTime();
         // every 100 ticks, write historical data to disk and flush it
-        if(tick % 100 == 0){
+        if (tick % 100 == 0) {
             this.logFrequencies();
             this.histTraitFreq.clear();
         }
@@ -83,8 +83,8 @@ public class PerDemeTraitFrequencyObserver implements ITraitStatisticsObserver<I
     public void finalizeObservation() {
         log.trace("entering finalizeObservation");
 
-            this.pw.flush();
-            this.pw.close();
+        this.pw.flush();
+        this.pw.close();
 
 
     }
@@ -92,7 +92,7 @@ public class PerDemeTraitFrequencyObserver implements ITraitStatisticsObserver<I
     private void printFrequencies() {
         Integer time = this.model.getCurrentModelTime();
 
-        Map<ITrait,Double> freqMap = this.histTraitFreq.get(time);
+        Map<ITrait, Double> freqMap = this.histTraitFreq.get(time);
         //log.debug("printFrequencies - getting freqs for time: " + time + " : " + freqMap);
 
         StringBuffer sb = prepareFrequencyLogString(time, freqMap);
@@ -101,7 +101,7 @@ public class PerDemeTraitFrequencyObserver implements ITraitStatisticsObserver<I
 
     }
 
-    private StringBuffer prepareFrequencyLogString(Integer time, Map<ITrait,Double> freqMap) {
+    private StringBuffer prepareFrequencyLogString(Integer time, Map<ITrait, Double> freqMap) {
         //log.debug("prepare string: freqMap: " + freqMap);
         Integer numNonZeroTraits = 0;
         StringBuffer sb = new StringBuffer();
@@ -116,7 +116,7 @@ public class PerDemeTraitFrequencyObserver implements ITraitStatisticsObserver<I
             sb.append(":");
             sb.append(freq);
             sb.append(",");
-            if(freq != 0) {
+            if (freq != 0) {
                 numNonZeroTraits++;
             }
         }
@@ -129,8 +129,8 @@ public class PerDemeTraitFrequencyObserver implements ITraitStatisticsObserver<I
         Set<Integer> keys = this.histTraitFreq.keySet();
         List<Integer> sortedKeys = new ArrayList<Integer>(keys);
         Collections.sort(sortedKeys);
-        for(Integer time: sortedKeys) {
-            Map<ITrait,Double> freqMap = this.histTraitFreq.get(time);
+        for (Integer time : sortedKeys) {
+            Map<ITrait, Double> freqMap = this.histTraitFreq.get(time);
             StringBuffer sb = prepareFrequencyLogString(time, freqMap);
             sb.append('\n');
             this.pw.write(sb.toString());

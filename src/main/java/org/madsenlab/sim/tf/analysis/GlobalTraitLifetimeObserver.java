@@ -27,7 +27,7 @@ import java.util.*;
  */
 
 
-public class GlobalTraitLifetimeObserver implements ITraitStatisticsObserver<ITraitDimension> {
+public class GlobalTraitLifetimeObserver implements IStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
     private Map<ITrait, Integer> traitLifetimeMap;
@@ -50,8 +50,8 @@ public class GlobalTraitLifetimeObserver implements ITraitStatisticsObserver<ITr
 //        }
     }
 
-    public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
-        log.trace("entering updateTraitStatistics");
+    public void updateStatistics(IStatistic<ITraitDimension> stat) {
+        log.trace("entering updateStatistics");
         this.lastTimeIndexUpdated = stat.getTimeIndex();
         ITraitDimension dim = stat.getTarget();
 

@@ -63,7 +63,7 @@ public abstract class AbstractSimModel implements ISimulationModel {
     protected GlobalModelConfiguration params;
     protected Properties modelProperties;
     protected List<ITraitDimension> dimensionList;
-    protected List<ITraitStatisticsObserver<ITraitDimension>> observerList;
+    protected List<IStatisticsObserver> traitObserverList;
     protected String propertiesFileName;
     protected String modelNamePrefix;
 
@@ -128,14 +128,14 @@ public abstract class AbstractSimModel implements ISimulationModel {
         this.population = populationProvider.get();
         this.topology = topologyProvider.get();
         this.dimensionList = new ArrayList<ITraitDimension>();
-        this.observerList = new ArrayList<ITraitStatisticsObserver<ITraitDimension>>();
+        this.traitObserverList = new ArrayList<IStatisticsObserver>();
 
     }
 
 /*  DEPRECATED....
     public ITrait getNewTrait(ITraitDimension owningDimension) {
         ITrait newTrait = this.traitProvider.get();
-        for(ITraitStatisticsObserver<ITraitDimension> obs: this.observerList) {
+        for(IStatisticsObserver<ITraitDimension> obs: this.traitObserverList) {
             newTrait.attach(obs);
             newTrait.setOwningDimension(owningDimension);
         }
@@ -155,8 +155,8 @@ public abstract class AbstractSimModel implements ISimulationModel {
     }
 
     @Override
-    public List<ITraitStatisticsObserver<ITraitDimension>> getObserverList() {
-        return this.observerList;
+    public List<IStatisticsObserver> getObserverList() {
+        return this.traitObserverList;
     }
 
     public Provider<IDeme> getDemeProvider() {

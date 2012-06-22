@@ -29,7 +29,7 @@ import java.util.*;
  */
 
 
-public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITraitDimension> {
+public class GlobalTraitCountObserver implements IStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
     private Map<ITrait, Integer> traitCountMap;
@@ -60,8 +60,8 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
     }
 
     // we only want to start recording trait counts after the initial transient behavior decays and we reach equilibrium
-    public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
-        log.trace("entering updateTraitStatistics");
+    public void updateStatistics(IStatistic<ITraitDimension> stat) {
+        log.trace("entering updateStatistics");
         if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getTimeStartStatistics()) {
             this.lastTimeIndexUpdated = stat.getTimeIndex();
             ITraitDimension dim = stat.getTarget();
@@ -78,10 +78,10 @@ public class GlobalTraitCountObserver implements ITraitStatisticsObserver<ITrait
             //log.trace("histTraitFreq: " + this.histTraitFreq);
             this.printFrequencies();
 
-            if(this.model.getCurrentModelTime() == this.model.getModelConfiguration().getLengthSimulation() - 1) {
-                Map<ITrait,Integer> countMap = this.histTraitCount.get(this.model.getCurrentModelTime());
-                for(ITrait trait: countMap.keySet()) {
-                    this.histo.fill((double)countMap.get(trait));
+            if (this.model.getCurrentModelTime() == this.model.getModelConfiguration().getLengthSimulation() - 1) {
+                Map<ITrait, Integer> countMap = this.histTraitCount.get(this.model.getCurrentModelTime());
+                for (ITrait trait : countMap.keySet()) {
+                    this.histo.fill((double) countMap.get(trait));
                 }
                 Converter conv = new Converter();
                 log.info(conv.toString(this.histo));

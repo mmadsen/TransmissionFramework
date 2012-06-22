@@ -51,5 +51,4 @@ public interface ITraitFactory {
 
     public Boolean providesInfiniteVariants();
 
-
 }

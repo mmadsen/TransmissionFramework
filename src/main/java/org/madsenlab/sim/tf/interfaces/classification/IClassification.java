@@ -9,6 +9,10 @@
 
 package org.madsenlab.sim.tf.interfaces.classification;
 
+import org.madsenlab.sim.tf.interfaces.IAgentTag;
+import org.madsenlab.sim.tf.interfaces.IStatisticsSubject;
+
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -19,7 +23,7 @@ import java.util.Set;
  * Time: 11:44 AM
  */
 
-public interface IClassification {
+public interface IClassification extends IStatisticsSubject {
 
     public Set<IClassDimension> getClassificationDimensions();
 
@@ -34,6 +38,50 @@ public interface IClassification {
      * @return
      */
     public IClassIdentifier getClassIdentifier();
+
+    /**
+     * To form a classification, we first create IClassDimensions which point at underlying
+     * TraitDimensions.  Then, we add each IClassDimension to the classification.
+     * <p/>
+     * After all dimensions have been called, the classes are created by intersection.
+     *
+     * @param dim
+     * @link initializeClassesByIntersection
+     */
+
+    public void addClassDimension(IClassDimension dim);
+
+
+    /**
+     * Called after a set of ClassDimensions has been added, this method
+     * intersects all ClassDimensionModes belonging to all the dimensions, and creates an
+     * IClass for each mode intersection.
+     * <p/>
+     * This method must be called before the classification is used to "observe" an
+     * underlying set of traits.
+     */
+    public void initializeClasses();
+
+    /**
+     * Returns the set of classes created by intersection.
+     *
+     * @return
+     */
+    public Set<IClass> getClasses();
+
+    public Map<IClass, Integer> getCurGlobalClassCounts();
+
+    public Map<IClass, Integer> getCurClassCountByTag(IAgentTag tag);
+
+    /*
+        Methods for calculating frequencies will throw an IllegalStateException if the size of the
+        population against which the calculation depends is zero.  This alerts calling code to the
+        fact that something is being done out of order, not initialized, etc.
+     */
+
+    public Map<IClass, Double> getCurGlobalClassFrequencies();
+
+    public Map<IClass, Double> getCurClassFreqByTag(IAgentTag tag);
 
 
 }

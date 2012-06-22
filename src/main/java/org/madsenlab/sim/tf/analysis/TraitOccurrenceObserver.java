@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -25,13 +25,13 @@ import java.util.*;
  */
 
 
-public class TraitOccurrenceObserver implements ITraitStatisticsObserver<ITraitDimension> {
+public class TraitOccurrenceObserver implements IStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
     private Map<ITrait, Double> traitFreqMap;
     private Integer lastTimeIndexUpdated;
     private PrintWriter pw;
-    private Map<Integer, Map<ITrait,Integer>> histTraitCount;
+    private Map<Integer, Map<ITrait, Integer>> histTraitCount;
 
     public TraitOccurrenceObserver(ISimulationModel m) {
         this.model = m;
@@ -46,13 +46,13 @@ public class TraitOccurrenceObserver implements ITraitStatisticsObserver<ITraitD
     }
 
 
-    public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
-        log.trace("entering updateTraitStatistics");
+    public void updateStatistics(IStatistic<ITraitDimension> stat) {
+        log.trace("entering updateStatistics");
         this.lastTimeIndexUpdated = stat.getTimeIndex();
         ITraitDimension dim = stat.getTarget();
 
-        Map<ITrait,Integer> countMap = dim.getCurGlobalTraitCounts();
-        this.histTraitCount.put(this.lastTimeIndexUpdated,countMap);
+        Map<ITrait, Integer> countMap = dim.getCurGlobalTraitCounts();
+        this.histTraitCount.put(this.lastTimeIndexUpdated, countMap);
     }
 
     public void perStepAction() {
@@ -70,8 +70,8 @@ public class TraitOccurrenceObserver implements ITraitStatisticsObserver<ITraitD
     public void finalizeObservation() {
         log.trace("entering finalizeObservation");
 
-            this.pw.flush();
-            this.pw.close();
+        this.pw.flush();
+        this.pw.close();
 
 
     }
@@ -79,7 +79,7 @@ public class TraitOccurrenceObserver implements ITraitStatisticsObserver<ITraitD
     private void printFrequencies() {
         Integer time = this.model.getCurrentModelTime();
 
-        Map<ITrait,Integer> countMap = this.histTraitCount.get(time);
+        Map<ITrait, Integer> countMap = this.histTraitCount.get(time);
         //log.debug("printFrequencies - getting freqs for time: " + time + " : " + freqMap);
 
         StringBuffer sb = prepareFrequencyLogString(time, countMap);
@@ -88,7 +88,7 @@ public class TraitOccurrenceObserver implements ITraitStatisticsObserver<ITraitD
 
     }
 
-    private StringBuffer prepareFrequencyLogString(Integer time, Map<ITrait,Integer> countMap) {
+    private StringBuffer prepareFrequencyLogString(Integer time, Map<ITrait, Integer> countMap) {
         //log.debug("prepare string: freqMap: " + freqMap);
         Integer numNonZeroTraits = 0;
         StringBuffer sb = new StringBuffer();
@@ -99,7 +99,7 @@ public class TraitOccurrenceObserver implements ITraitStatisticsObserver<ITraitD
         for (ITrait aTrait : sortedKeys) {
             sb.append(",");
             sb.append(countMap.get(aTrait));
-            if(countMap.get(aTrait) != 0) {
+            if (countMap.get(aTrait) != 0) {
                 numNonZeroTraits++;
             }
         }
@@ -113,8 +113,8 @@ public class TraitOccurrenceObserver implements ITraitStatisticsObserver<ITraitD
         Set<Integer> keys = this.histTraitCount.keySet();
         List<Integer> sortedKeys = new ArrayList<Integer>(keys);
         Collections.sort(sortedKeys);
-        for(Integer time: sortedKeys) {
-            Map<ITrait,Integer> countMap = this.histTraitCount.get(time);
+        for (Integer time : sortedKeys) {
+            Map<ITrait, Integer> countMap = this.histTraitCount.get(time);
             StringBuffer sb = prepareFrequencyLogString(time, countMap);
             sb.append('\n');
             this.pw.write(sb.toString());

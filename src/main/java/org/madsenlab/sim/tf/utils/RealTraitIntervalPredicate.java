@@ -32,14 +32,15 @@ import org.madsenlab.sim.tf.interfaces.ITrait;
  */
 
 public class RealTraitIntervalPredicate extends TraitPredicate {
-    double lowerBound;
-    double upperBound;
-    Boolean isClosedLower;
-    Boolean isClosedUpper;
+    private RealInterval interval;
+    private final static double EPSILON = 0.000001;
 
     /**
      * Constructs an interval predicate for doubles between lower and upper bound, with Boolean flags indicating
      * whether each endpoint is closed (i.e., FALSE indicates an open endpoint).
+     * <p/>
+     * Boundary testing is performed with a small EPSILON test 1/10^6 to deal with floating point equality issues,
+     * which actually showed up randomly in repeated unit testing of the naive equality test.
      *
      * @param lowerBound
      * @param isClosedLower
@@ -47,10 +48,7 @@ public class RealTraitIntervalPredicate extends TraitPredicate {
      * @param isClosedUpper
      */
     public RealTraitIntervalPredicate(double lowerBound, Boolean isClosedLower, double upperBound, Boolean isClosedUpper) {
-        this.lowerBound = lowerBound;
-        this.upperBound = upperBound;
-        this.isClosedLower = isClosedLower;
-        this.isClosedUpper = isClosedUpper;
+        this.interval = new RealInterval(lowerBound, isClosedLower, upperBound, isClosedUpper);
     }
 
     @Override
@@ -59,14 +57,20 @@ public class RealTraitIntervalPredicate extends TraitPredicate {
         Double traitID = (Double) trait.getTraitID();
 
         // first, the closed endpoint cases
-        if (isClosedLower && traitID == lowerBound) {
-            answer = true;
+        if (interval.isClosedLower) {
+            if (Math.abs(interval.lowerBound - traitID) < EPSILON) {
+                answer = true;
+            }
         }
-        if (isClosedUpper && traitID == upperBound) {
-            answer = true;
+        if (interval.isClosedUpper) {
+            if (Math.abs(interval.upperBound - traitID) < EPSILON) {
+                answer = true;
+            }
         }
+
+
         // now, the interior
-        if (traitID > lowerBound && traitID < upperBound) {
+        if (traitID > interval.lowerBound && traitID < interval.upperBound) {
             answer = true;
         }
 

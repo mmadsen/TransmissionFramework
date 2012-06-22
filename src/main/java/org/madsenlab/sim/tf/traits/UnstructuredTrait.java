@@ -63,7 +63,7 @@ public class UnstructuredTrait<T> extends AbstractObservableTrait<T> {
         this.curAdopteeList = Collections.synchronizedList(new ArrayList<IAgent>());
         this.histAdoptionCountMap = new TIntIntHashMap();
         this.curAdoptionByTag = Collections.synchronizedMap(new HashMap<IAgentTag, Integer>());
-        this.observers = Collections.synchronizedList(new ArrayList<ITraitStatisticsObserver>());
+        this.observers = Collections.synchronizedList(new ArrayList<IStatisticsObserver>());
     }
 
     public T getTraitID() {
@@ -189,7 +189,7 @@ public class UnstructuredTrait<T> extends AbstractObservableTrait<T> {
     }
 
 
-    public ITraitStatistic getChangeStatistic() {
+    public IStatistic getChangeStatistic() {
         return new TraitStatistic(this.owningDimension, model.getCurrentModelTime());
     }
 

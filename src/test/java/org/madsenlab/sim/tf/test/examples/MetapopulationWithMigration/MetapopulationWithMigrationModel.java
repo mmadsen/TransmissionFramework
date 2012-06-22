@@ -80,8 +80,8 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
         // Now can initialize Observers
         this.countObserver = new GlobalTraitCountObserver(this);
         this.lifetimeObserver = new GlobalTraitLifetimeObserver(this);
-        this.observerList.add(this.countObserver);
-        this.observerList.add(this.lifetimeObserver);
+        this.traitObserverList.add(this.countObserver);
+        this.traitObserverList.add(this.lifetimeObserver);
 
 
         // Construct trait frequency observers for each deme - need to do this now, so we can register
@@ -94,11 +94,11 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
             this.demeTagList.add(demeTag);
             demeTagMap.put(i, demeTag); // not used outside initializeModel()
             PerDemeTraitFrequencyObserver demeObs = new PerDemeTraitFrequencyObserver(this, demeTag);
-            this.observerList.add(demeObs);
+            this.traitObserverList.add(demeObs);
         }
         // this must be done AFTER all observers have been constructed and added to the Observer list, otherwise we get
         // NPEs from dangling references when we notify() later...
-        this.dimension.attach(this.observerList);
+        this.dimension.attach(this.traitObserverList);
 
 
         log.debug("demeTagMap: " + demeTagMap);
@@ -253,13 +253,13 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
 
     public void modelObservations() {
         log.trace("entering modelObservations at time: " + this.currentTime);
-        for (ITraitStatisticsObserver<ITraitDimension> obs : this.observerList) {
+        for (IStatisticsObserver<ITraitDimension> obs : this.traitObserverList) {
             obs.perStepAction();
         }
     }
 
     public void modelFinalize() {
-        for (ITraitStatisticsObserver<ITraitDimension> obs : this.observerList) {
+        for (IStatisticsObserver<ITraitDimension> obs : this.traitObserverList) {
             obs.endSimulationAction();
             obs.finalizeObservation();
         }

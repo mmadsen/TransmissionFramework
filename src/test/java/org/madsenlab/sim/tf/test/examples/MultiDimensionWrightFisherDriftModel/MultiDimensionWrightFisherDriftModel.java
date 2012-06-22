@@ -73,15 +73,15 @@ public class MultiDimensionWrightFisherDriftModel extends AbstractSimModel {
         this.lifetimeObserver = new GlobalTraitLifetimeObserver(this);
         this.ewensSampler = new EwensSampleFullPopulationObserver(this);
         this.taCountSampler = new TimeAveragedTraitCountObserver(this);
-        this.observerList.add(this.taCountSampler);
-        this.observerList.add(this.countObserver);
-        this.observerList.add(this.lifetimeObserver);
-        this.observerList.add(this.ewensSampler);
+        this.traitObserverList.add(this.taCountSampler);
+        this.traitObserverList.add(this.countObserver);
+        this.traitObserverList.add(this.lifetimeObserver);
+        this.traitObserverList.add(this.ewensSampler);
 
         // We observe the dimension, not individual traits, in WF, so we get a single consistent picture
         // of the population at the end of a model step.
         for (ITraitDimension dim : this.dimensionList) {
-            dim.attach(this.observerList);
+            dim.attach(this.traitObserverList);
         }
 
         // set up the stack of rules, to be fired in the order given in the list
@@ -275,13 +275,13 @@ public class MultiDimensionWrightFisherDriftModel extends AbstractSimModel {
 
     public void modelObservations() {
         log.trace("entering modelObservations at time: " + this.currentTime);
-        for (ITraitStatisticsObserver<ITraitDimension> obs : this.observerList) {
+        for (IStatisticsObserver<ITraitDimension> obs : this.traitObserverList) {
             obs.perStepAction();
         }
     }
 
     public void modelFinalize() {
-        for (ITraitStatisticsObserver<ITraitDimension> obs : this.observerList) {
+        for (IStatisticsObserver<ITraitDimension> obs : this.traitObserverList) {
             obs.endSimulationAction();
             obs.finalizeObservation();
         }

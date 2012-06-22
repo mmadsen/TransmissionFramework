@@ -10,6 +10,9 @@
 package org.madsenlab.sim.tf.interfaces.classification;
 
 import org.madsenlab.sim.tf.interfaces.ITraitDimension;
+import org.madsenlab.sim.tf.utils.TraitPredicate;
+
+import java.util.Set;
 
 /**
  * CLASS DESCRIPTION
@@ -28,6 +31,35 @@ public interface IClassDimension {
     // TODO:  Do we need remove/revise dimension modes?  Maybe second round.
 
     public Integer getNumDimensionModes();
+
+    /**
+     * Creates the desired number of DimensionModes against the tracked TraitDimension.
+     * The mode "boundaries" are chosen at random and are not guaranteed to cover
+     * equal amounts of the "space" represented by the trait dimension.
+     *
+     * @param desiredNumModes
+     */
+
+    public void createRandomModeSet(Integer desiredNumModes);
+
+    /**
+     * Creates DimensionModes against the tracked TraitDimension using the specified
+     * set of TraitPredicates. This method is used for replicating specific external
+     * classifications and is especially useful for testing.
+     *
+     * @param predicates
+     */
+
+    public void createSpecifiedModeSet(Set<TraitPredicate> predicates);
+
+    /**
+     * Returns a set of the DimensionModes for this ClassDimension.  Must be called *after* one of the two
+     * create methods are called.
+     *
+     * @return
+     */
+
+    public Set<IClassDimensionMode> getModeSet();
 
 
 }

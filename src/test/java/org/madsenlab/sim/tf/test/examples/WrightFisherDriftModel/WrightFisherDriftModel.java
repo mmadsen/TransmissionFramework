@@ -73,14 +73,14 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         this.lifetimeObserver = new GlobalTraitLifetimeObserver(this);
         this.ewensSampler = new EwensSampleFullPopulationObserver(this);
         this.taCountSampler = new TimeAveragedTraitCountObserver(this);
-        this.observerList.add(this.taCountSampler);
-        this.observerList.add(this.countObserver);
-        this.observerList.add(this.lifetimeObserver);
-        this.observerList.add(this.ewensSampler);
+        this.traitObserverList.add(this.taCountSampler);
+        this.traitObserverList.add(this.countObserver);
+        this.traitObserverList.add(this.lifetimeObserver);
+        this.traitObserverList.add(this.ewensSampler);
 
         // We observe the dimension, not individual traits, in WF, so we get a single consistent picture
         // of the population at the end of a model step.
-        this.dimension.attach(this.observerList);
+        this.dimension.attach(this.traitObserverList);
 
         // set up the stack of rules, to be fired in the order given in the list
         // in this first simulation, all agents get the same rule, but this need not be the
@@ -272,13 +272,13 @@ public class WrightFisherDriftModel extends AbstractSimModel {
 
     public void modelObservations() {
         log.trace("entering modelObservations at time: " + this.currentTime);
-        for (ITraitStatisticsObserver<ITraitDimension> obs : this.observerList) {
+        for (IStatisticsObserver<ITraitDimension> obs : this.traitObserverList) {
             obs.perStepAction();
         }
     }
 
     public void modelFinalize() {
-        for (ITraitStatisticsObserver<ITraitDimension> obs : this.observerList) {
+        for (IStatisticsObserver<ITraitDimension> obs : this.traitObserverList) {
             obs.endSimulationAction();
             obs.finalizeObservation();
         }

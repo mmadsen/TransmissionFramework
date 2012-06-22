@@ -25,7 +25,7 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
-    private List<ITraitStatisticsObserver> observers;
+    private List<IStatisticsObserver> observers;
     String dimensionName = null;
     Map<T, ITrait<T>> traitMap = null;
     List<ITrait<T>> traitList = null;
@@ -66,7 +66,7 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
         // very often, so the performance hit is very low
         this.traitMap = new HashMap<T, ITrait<T>>();
         this.traitList = new ArrayList<ITrait<T>>();
-        this.observers = Collections.synchronizedList(new ArrayList<ITraitStatisticsObserver>());
+        this.observers = Collections.synchronizedList(new ArrayList<IStatisticsObserver>());
 
     }
 
@@ -81,7 +81,7 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
     private synchronized void addTrait(ITrait<T> newTrait) {
         this.traitMap.put(newTrait.getTraitID(), newTrait);
         this.traitList.add(newTrait);
-        for (ITraitStatisticsObserver<ITraitDimension> obs : this.model.getObserverList()) {
+        for (IStatisticsObserver<ITraitDimension> obs : this.model.getObserverList()) {
             newTrait.attach(obs);
             newTrait.setOwningDimension(this);
         }
@@ -209,28 +209,28 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
         this.traitList.remove(traitToRemove);
     }
 
-    public void attach(ITraitStatisticsObserver obs) {
+    public void attach(IStatisticsObserver obs) {
         synchronized (this.observers) {
             log.trace("attaching to obs: " + obs);
             this.observers.add(obs);
         }
     }
 
-    public void attach(List<ITraitStatisticsObserver<ITraitDimension>> obsList) {
-        for (ITraitStatisticsObserver obs : obsList) {
+    public void attach(List<IStatisticsObserver> obsList) {
+        for (IStatisticsObserver obs : obsList) {
             this.attach(obs);
         }
     }
 
-    public void detach(ITraitStatisticsObserver obs) {
+    public void detach(IStatisticsObserver obs) {
         synchronized (this.observers) {
             this.observers.remove(obs);
         }
 
     }
 
-    public void detach(List<ITraitStatisticsObserver<ITraitDimension>> obsList) {
-        for (ITraitStatisticsObserver obs : obsList) {
+    public void detach(List<IStatisticsObserver> obsList) {
+        for (IStatisticsObserver obs : obsList) {
             this.detach(obs);
         }
     }
@@ -240,15 +240,15 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
     }
 
     public void notifyObservers() {
-        ITraitStatistic stat = this.getChangeStatistic();
+        IStatistic stat = this.getChangeStatistic();
         log.debug("change statistic: " + stat);
-        for (ITraitStatisticsObserver obs : this.observers) {
+        for (IStatisticsObserver obs : this.observers) {
             log.debug("notify observer: " + obs);
-            obs.updateTraitStatistics(stat);
+            obs.updateStatistics(stat);
         }
     }
 
-    public ITraitStatistic getChangeStatistic() {
+    public IStatistic getChangeStatistic() {
         return new TraitStatistic(this, model.getCurrentModelTime());
     }
 

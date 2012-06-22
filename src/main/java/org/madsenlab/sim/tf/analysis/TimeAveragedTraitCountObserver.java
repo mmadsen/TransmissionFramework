@@ -26,20 +26,20 @@ import java.util.Map;
  * list of objects each of which manages a single size of time-averaging window, aggregating the incoming counts for
  * that window size, and maintaining its own log.  So no actual logging is done within this object, which serves
  * to construct and contain the per-windowsize processors, and pass them incoming data.
- *
+ * <p/>
  * This strategy, of course, can be used for tracking time-averaging whose window size varies during a run, but
  * after equilibrium, the statistics of that would be derivable from comparing different window sizes.  The only
  * reason to build variable duration processors would be to see what the effect of our ability to seriate or fit
  * exact frequency change patterns is, after variable duration averaging.  (also, it might be useful to time average
  * different demes differently....)
- *
+ * <p/>
  * <p/>
  * User: mark
  * Date: 2/14/12
  * Time: 10:09 AM
  */
 
-public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<ITraitDimension> {
+public class TimeAveragedTraitCountObserver implements IStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
     private PrintWriter pw;
@@ -68,14 +68,14 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
 
         // Figure out the sampling intervals for time-averaging, and create a window processor for each
         this.samplingIntervals = this.calculateTimeAvWindows();
-        for(Integer interval: this.samplingIntervals) {
-            this.windowProcessorList.add(new TimeAveragedWindowProcessor(this.model,interval,this.perWindowSizeBaseLogFile, this.perWindowSizeEwensBaseFile, this.perWindowsSizeKnSampleBaseFile));
+        for (Integer interval : this.samplingIntervals) {
+            this.windowProcessorList.add(new TimeAveragedWindowProcessor(this.model, interval, this.perWindowSizeBaseLogFile, this.perWindowSizeEwensBaseFile, this.perWindowsSizeKnSampleBaseFile));
         }
     }
 
     @Override
-    public void updateTraitStatistics(ITraitStatistic<ITraitDimension> stat) {
-        log.trace("entering updateTraitStatistics");
+    public void updateStatistics(IStatistic<ITraitDimension> stat) {
+        log.trace("entering updateStatistics");
         Integer lastTimeIndexUpdated;
         if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getTimeStartStatistics()) {
             lastTimeIndexUpdated = stat.getTimeIndex();
@@ -83,7 +83,7 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
             Map<ITrait, Integer> countMap = dim.getCurGlobalTraitCounts();
 
             // now, pass the countMap to all of the Processors...
-            for(TimeAveragedWindowProcessor proc: this.windowProcessorList) {
+            for (TimeAveragedWindowProcessor proc : this.windowProcessorList) {
                 log.trace("updating processor " + proc.getWindowSize());
                 proc.updateTraitStatistics(countMap);
             }
@@ -103,9 +103,9 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
     public void endSimulationAction() {
         // we've been logging all the way along, but probably good to signal to all Processors that we're done and
         // write their final logs.
-        Map<Integer,DescriptiveStatistics> statisticsMap = new HashMap<Integer, DescriptiveStatistics>();
-        for(TimeAveragedWindowProcessor proc: this.windowProcessorList) {
-            statisticsMap.put(proc.getWindowSize(),proc.calculateStatisticsAndFinalizeLogs());
+        Map<Integer, DescriptiveStatistics> statisticsMap = new HashMap<Integer, DescriptiveStatistics>();
+        for (TimeAveragedWindowProcessor proc : this.windowProcessorList) {
+            statisticsMap.put(proc.getWindowSize(), proc.calculateStatisticsAndFinalizeLogs());
         }
         this.logSummaryStatisticsAcrossWindows(statisticsMap);
 
@@ -114,7 +114,7 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
     @Override
     public void finalizeObservation() {
         // signal to processors to close their logs.
-        for(TimeAveragedWindowProcessor proc: this.windowProcessorList) {
+        for (TimeAveragedWindowProcessor proc : this.windowProcessorList) {
             proc.finalizeObservation();
         }
         this.statPW.flush();
@@ -125,7 +125,7 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
     // unless the -L switch is present, and then only collect data across the five largest windows.
     // in descending powers of 2.  e.g., 10000, 5000, 2500, 1250, 625
     private List<Integer> calculateTimeAvWindows() {
-        if(this.model.getModelConfiguration().getCollectLongTAWindowsOnly() == true) {
+        if (this.model.getModelConfiguration().getCollectLongTAWindowsOnly() == true) {
             log.info("Long Time Averaging Windows selected");
             return timeAveragingWindowUtil.getLongTimeAvWindows();
         } else {
@@ -134,10 +134,10 @@ public class TimeAveragedTraitCountObserver implements ITraitStatisticsObserver<
         }
     }
 
-    private void logSummaryStatisticsAcrossWindows(Map<Integer,DescriptiveStatistics> statsMap) {
+    private void logSummaryStatisticsAcrossWindows(Map<Integer, DescriptiveStatistics> statsMap) {
         log.trace("entering logSummaryStatisticsAcrossWindows");
         this.statPW.write("Duration \t Num \t Mean \t StDev \t Min \t Max \n\n");
-        for(Integer windowsize: statsMap.keySet()) {
+        for (Integer windowsize : statsMap.keySet()) {
             DescriptiveStatistics stats = statsMap.get(windowsize);
             StringBuffer sb = new StringBuffer();
             sb.append(windowsize + "\t");
