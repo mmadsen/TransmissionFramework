@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -35,6 +35,16 @@ public interface ITraitDimension<T> extends IStatisticsSubject, ITraitFactory {
     // deprecated now that we're using the ITraitFactory, this migrated
     //public void addTrait(ITrait<T> newTrait);
 
+    /**
+     * Returns a new ITrait with the specified value.  This cannot be included in the ITraitFactory
+     * interface because that interface is not a generic and does not expose the underlying type.  So
+     * we do it here.  Often this will not be used in models, but in validation and verification tests.
+     *
+     * @param T value
+     * @return
+     */
+
+    public ITrait<T> getNewVariantWithSpecifiedValue(T val);
 
     public ITrait<T> getTrait(T traitID);
 

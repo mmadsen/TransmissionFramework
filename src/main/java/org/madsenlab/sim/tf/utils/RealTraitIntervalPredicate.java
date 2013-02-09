@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -33,7 +33,7 @@ import org.madsenlab.sim.tf.interfaces.ITrait;
 
 public class RealTraitIntervalPredicate extends TraitPredicate {
     private RealInterval interval;
-    private final static double EPSILON = 0.000001;
+    private final static double EPSILON = 0.0000001;
 
     /**
      * Constructs an interval predicate for doubles between lower and upper bound, with Boolean flags indicating
@@ -47,8 +47,32 @@ public class RealTraitIntervalPredicate extends TraitPredicate {
      * @param upperBound
      * @param isClosedUpper
      */
-    public RealTraitIntervalPredicate(double lowerBound, Boolean isClosedLower, double upperBound, Boolean isClosedUpper) {
+    public RealTraitIntervalPredicate(double lowerBound, Boolean isClosedLower, double upperBound, Boolean isClosedUpper, String id) {
         this.interval = new RealInterval(lowerBound, isClosedLower, upperBound, isClosedUpper);
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        if (interval.isClosedLower) {
+            sb.append("[");
+        } else {
+            sb.append("(");
+        }
+
+        sb.append(interval.lowerBound);
+
+        sb.append(",");
+
+        sb.append(interval.upperBound);
+
+        if (interval.isClosedUpper) {
+            sb.append("]");
+        } else {
+            sb.append(")");
+        }
+        return sb.toString();
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -7,7 +7,7 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.classification;
+package org.madsenlab.sim.tf.analysis;
 
 import org.madsenlab.sim.tf.interfaces.IStatistic;
 import org.madsenlab.sim.tf.interfaces.classification.IClassification;
@@ -20,11 +20,11 @@ import org.madsenlab.sim.tf.interfaces.classification.IClassification;
  * Time: 3:56 PM
  */
 
-public class ClassStatistic implements IStatistic<IClassification> {
+public class ClassificationStatistic implements IStatistic<IClassification> {
     private IClassification classification;
     private Integer timeIndex;
 
-    public ClassStatistic(IClassification cf, Integer time) {
+    public ClassificationStatistic(IClassification cf, Integer time) {
         this.classification = cf;
         this.timeIndex = time;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -14,6 +14,7 @@ import org.madsenlab.sim.tf.utils.AgentTagType;
 import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -31,15 +32,6 @@ public interface IAgent {
 
     public void setAgentID(String id);
 
-    /* Trait Handling methods */
-
-    /**
-     * Adds a trait dimension to an agent
-     *
-     * @param dimension
-     */
-
-    public void addTraitDimension(ITraitDimension dimension);
 
 
     /* Trait adoption methods */
@@ -79,17 +71,14 @@ public interface IAgent {
 
     /* Adoption related methods */
 
-    /**
-     * Use this to get the list of current ITraits an agent has adopted.
-     * Since ITraits count their own frequency, in toto and by tag, this
-     * can be useful for certain kinds of frequency-dependent adoption.
-     *
-     * @return traitList
-     */
+
+    public Map<ITraitDimension, ITrait> getCurrentlyAdoptedDimensionsAndTraits();
+
+    public Map<ITraitDimension, ITrait> getPreviousStepAdoptedDimensionsAndTraits();
 
     public Set<ITrait> getCurrentlyAdoptedTraits();
 
-    public Set<ITrait> getCurrentlyAdoptedTraitsForDimension(ITraitDimension dim);
+    public ITrait getCurrentlyAdoptedTraitForDimension(ITraitDimension dim);
 
     public void savePreviousStepTraits();
 

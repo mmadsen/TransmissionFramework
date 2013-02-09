@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -91,6 +91,12 @@ public interface ISimulationModel extends Runnable {
      * @return randomDouble
      */
     public Double getUniformDouble();
+
+    public Double getStandardNormalVariate();
+
+    public Double getNormalVariate(double mean, double stdev);
+
+    public Double getExponentialVariate(double lambda);
 
     public Provider<IDeme> getDemeProvider();
 

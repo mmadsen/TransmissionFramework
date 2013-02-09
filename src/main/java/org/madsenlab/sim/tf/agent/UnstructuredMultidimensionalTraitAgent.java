@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -16,7 +16,7 @@ import org.madsenlab.sim.tf.utils.AgentTagType;
 import java.util.*;
 
 /**
- * DimensionalTraitAgent
+ * UnstructuredMultidimensionalTraitAgent
  * <p/>
  * <p/>
  * <p/>
@@ -25,18 +25,25 @@ import java.util.*;
  * Time: 3:26:08 PM
  */
 
-// TODO:  Is this implemented yet?  Correctly, given current framework?
 
-public class DimensionalTraitAgent extends AbstractAgent {
+public class UnstructuredMultidimensionalTraitAgent extends AbstractAgent {
     private String agentID;
+    private Set<IAgentTag> tagSet;
+
+    // data structures for current traits
     private Set<ITraitDimension> dimensionSet;
     private Set<ITrait> traitSet;
-    private Set<IAgentTag> tagSet;
     private Map<ITrait, ITraitDimension> traitToDimensionMap;
-    private Map<ITraitDimension, Set<ITrait>> dimensionToTraitMap;
-    private Set<ITrait> traitsLastStep;
+    private Map<ITraitDimension, ITrait> dimensionToTraitMap;
 
-    public DimensionalTraitAgent() {
+    // data structures for traits from previous step
+    private Set<ITrait> traitsLastStep;
+    private Set<ITraitDimension> dimensionsLastStep;
+    private Map<ITrait, ITraitDimension> traitToDimensionMapLastStep;
+    private Map<ITraitDimension, ITrait> dimensionToTraitMapLastStep;
+
+
+    public UnstructuredMultidimensionalTraitAgent() {
         super();
         initialize();
     }
@@ -51,7 +58,7 @@ public class DimensionalTraitAgent extends AbstractAgent {
         this.dimensionSet = Collections.synchronizedSet(new HashSet<ITraitDimension>());
         this.traitSet = Collections.synchronizedSet(new HashSet<ITrait>());
         this.traitToDimensionMap = Collections.synchronizedMap(new HashMap<ITrait, ITraitDimension>());
-        this.dimensionToTraitMap = Collections.synchronizedMap(new HashMap<ITraitDimension, Set<ITrait>>());
+        this.dimensionToTraitMap = Collections.synchronizedMap(new HashMap<ITraitDimension, ITrait>());
         this.tagSet = Collections.synchronizedSet(new HashSet<IAgentTag>());
 
     }
@@ -62,18 +69,6 @@ public class DimensionalTraitAgent extends AbstractAgent {
 
     public void setAgentID(String id) {
         this.agentID = id;
-    }
-
-    public void addTraitDimension(ITraitDimension dimension) {
-        synchronized (this.dimensionSet) {
-            this.dimensionSet.add(dimension);
-        }
-        synchronized (this.dimensionToTraitMap) {
-            if (!this.dimensionToTraitMap.containsKey(dimension)) {
-                this.dimensionToTraitMap.put(dimension, new HashSet<ITrait>());
-            }
-        }
-
     }
 
     public void adoptTrait(ITrait trait) {
@@ -93,10 +88,7 @@ public class DimensionalTraitAgent extends AbstractAgent {
             this.traitToDimensionMap.put(trait, dim);
         }
         synchronized (this.dimensionToTraitMap) {
-            if (!this.dimensionToTraitMap.containsKey(dim)) {
-                this.dimensionToTraitMap.put(dim, new HashSet<ITrait>());
-            }
-            this.dimensionToTraitMap.get(dim).add(trait);
+            this.dimensionToTraitMap.put(dim, trait);
         }
     }
 
@@ -118,7 +110,7 @@ public class DimensionalTraitAgent extends AbstractAgent {
             this.traitToDimensionMap.remove(trait);
         }
         synchronized (this.dimensionToTraitMap) {
-            this.dimensionToTraitMap.get(dim).remove(trait);
+            this.dimensionToTraitMap.remove(dim);
         }
     }
 
@@ -159,22 +151,40 @@ public class DimensionalTraitAgent extends AbstractAgent {
 
     }
 
+    @Override
+    public Map<ITraitDimension, ITrait> getCurrentlyAdoptedDimensionsAndTraits() {
+        return this.dimensionToTraitMap;
+    }
+
+    @Override
+    public Map<ITraitDimension, ITrait> getPreviousStepAdoptedDimensionsAndTraits() {
+        return this.dimensionToTraitMapLastStep;
+    }
+
     public Set<ITrait> getCurrentlyAdoptedTraits() {
         return new HashSet<ITrait>(this.traitSet);
     }
 
-    public Set<ITrait> getCurrentlyAdoptedTraitsForDimension(ITraitDimension dim) {
-        return new HashSet<ITrait>(this.dimensionToTraitMap.get(dim));
+    public ITrait getCurrentlyAdoptedTraitForDimension(ITraitDimension dim) {
+        return this.dimensionToTraitMap.get(dim);
     }
 
     @Override
     public void savePreviousStepTraits() {
+        this.traitsLastStep = null;
+        this.dimensionsLastStep = null;
+        this.traitToDimensionMapLastStep = null;
+        this.dimensionToTraitMapLastStep = null;
 
+        this.traitsLastStep = Collections.synchronizedSet(new HashSet<ITrait>(this.traitSet));
+        this.dimensionsLastStep = Collections.synchronizedSet(new HashSet<ITraitDimension>(this.dimensionSet));
+        this.dimensionToTraitMapLastStep = Collections.synchronizedMap(new HashMap<ITraitDimension, ITrait>());
+        this.traitToDimensionMapLastStep = Collections.synchronizedMap(new HashMap<ITrait, ITraitDimension>());
     }
 
     @Override
     public Set<ITrait> getPreviousStepAdoptedTraits() {
-        return null;
+        return this.traitsLastStep;
     }
 
     public List<IAgent> getNeighboringAgents() {

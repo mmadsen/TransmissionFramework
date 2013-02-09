@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -60,7 +60,7 @@ public class RealTraitIntervalPredicateTest extends AbstractGuiceTestClass imple
     @Test
     public void testInsideInterval() throws Exception {
         log.info("entering testInsideInterval");
-        RealTraitIntervalPredicate testPredicate = new RealTraitIntervalPredicate(0.0, true, 1.0, true);
+        RealTraitIntervalPredicate testPredicate = new RealTraitIntervalPredicate(0.0, true, 1.0, true, "Closed-0,1");
 
         ITrait<Double> testTrait = new UnstructuredTrait<Double>();
         testTrait.setTraitID(0.5);
@@ -75,7 +75,7 @@ public class RealTraitIntervalPredicateTest extends AbstractGuiceTestClass imple
     @Test
     public void testOutsideInterval() throws Exception {
         log.info("entering testOutsideInterval");
-        RealTraitIntervalPredicate testPredicate = new RealTraitIntervalPredicate(0.5, true, 1.0, true);
+        RealTraitIntervalPredicate testPredicate = new RealTraitIntervalPredicate(0.5, true, 1.0, true, "Closed-0.5,1");
 
         ITrait<Double> testTrait = new UnstructuredTrait<Double>();
         testTrait.setTraitID(0.1);
@@ -91,7 +91,7 @@ public class RealTraitIntervalPredicateTest extends AbstractGuiceTestClass imple
     @Test
     public void testClosedIntervalBoundary() throws Exception {
         log.info("entering testClosedIntervalBoundary");
-        RealTraitIntervalPredicate testPredicate = new RealTraitIntervalPredicate(0.5, true, 1.0, true);
+        RealTraitIntervalPredicate testPredicate = new RealTraitIntervalPredicate(0.5, true, 1.0, true, "closed-0.5,1");
         ITrait<Double> testTrait = new UnstructuredTrait<Double>();
         testTrait.setTraitID(0.5);
 
@@ -106,7 +106,7 @@ public class RealTraitIntervalPredicateTest extends AbstractGuiceTestClass imple
     @Test
     public void testOpenIntervalBoundary() throws Exception {
         log.info("entering testOpenIntervalBoundary");
-        RealTraitIntervalPredicate testPredicate = new RealTraitIntervalPredicate(0.5, false, 1.0, true);
+        RealTraitIntervalPredicate testPredicate = new RealTraitIntervalPredicate(0.5, false, 1.0, true, "open-0.5,1");
         ITrait<Double> testTrait = new UnstructuredTrait<Double>();
         testTrait.setTraitID(0.5);
 

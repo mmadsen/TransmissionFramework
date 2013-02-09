@@ -52,6 +52,26 @@ Class counts are Observed just like TraitDimensions, in the modelStep().
 Multiple classifications are accomodated efficiently by having a set of classifications, each associated with a name.  Each agent keeps a hash of <name, class in classification>, and a classifier takes the agent's current class in each classification, and its current trait set, and evaluates class changes for all classifications.  Etc.  
 
 
+#### Aug 2012 Implementation Notes ####
+
+* The simplest method here would be to zero-count classes each model tick for Wright-Fisher style models and then iterate over agents, identifying each to class, and then notifying classification observers.  
+* This is deadly for Moran-style models, however, since we know only one possible agent may have changed.  
+* The only way to avoid it is to have agents store previous and new traits for each dimension, and hand these all to the classifier, and have the classifier register a "change of class" if trait change crosses a dimension mode threshold.  This would trigger a class adopt/unadopt (although these should be renamed).  
+* This way, we can still call notify() on classification observers at the end of a tick, whether 1 or N agents are changed.  
+
+* Two methods are added to IAgent:
+* __public Map<ITraitDimension, ITrait> getCurrentlyAdoptedDimensionsAndTraits();__
+* __public Map<ITraitDimension, ITrait> getPreviousStepAdoptedDimensionsAndTraits();__
+
+Also created a new method for the IClassIdentificationEngine, which will become the new default:
+
+__public void updateClassForAgent(IAgent agent);__
+
+in a modelStep(), the logical thing to do is find the loop where an agent, or multiple agents are iterated over, and for each agent involved (perhaps only one in Moran models), iterate over all classifications/classIdentificationEngines, and call updateClassForAgent() on each agent.  
+
+Then, at the end of the step, we call notifyObservers() on all classifications.  
+
+
 
 
 

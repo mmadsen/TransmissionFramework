@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -27,7 +27,7 @@ public class UnstructuredTraitDimensionProvider implements Provider<ITraitDimens
     private ISimulationModel model;
 
     public ITraitDimension get() {
-        ITraitDimension dim = new UnstructuredTraitDimension();
+        ITraitDimension dim = new UnstructuredTraitDimension<Integer>();
         dim.setSimulationModel(model);
         return dim;
     }

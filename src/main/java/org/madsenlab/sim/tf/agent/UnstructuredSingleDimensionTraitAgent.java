@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -21,14 +21,14 @@ import java.util.*;
  *
  * @author Mark E. Madsen
  */
-public class UnstructuredTraitAgent extends AbstractAgent {
+public class UnstructuredSingleDimensionTraitAgent extends AbstractAgent {
     private String agentID;
     private Set<ITrait> traitsAdopted;
     private Set<IAgentTag> tagSet;
     private List<IActionRule> ruleList;
     private Set<ITrait> traitsLastStep;
 
-    public UnstructuredTraitAgent() {
+    public UnstructuredSingleDimensionTraitAgent() {
         super();
         initialize();
     }
@@ -61,7 +61,7 @@ public class UnstructuredTraitAgent extends AbstractAgent {
     }
 
     public void adoptTrait(ITraitDimension dimension, ITrait trait) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.adoptTrait(trait);
     }
 
     public void unadoptTrait(ITrait trait) {
@@ -72,7 +72,7 @@ public class UnstructuredTraitAgent extends AbstractAgent {
     }
 
     public void unadoptTrait(ITraitDimension dimension, ITrait trait) {
-
+        this.unadoptTrait(trait);
     }
 
     public void addTag(IAgentTag tag) {
@@ -145,12 +145,32 @@ public class UnstructuredTraitAgent extends AbstractAgent {
         }
     }
 
+    @Override
+    public Map<ITraitDimension, ITrait> getCurrentlyAdoptedDimensionsAndTraits() {
+        Map<ITraitDimension, ITrait> resultMap = new HashMap<ITraitDimension, ITrait>();
+        for (ITrait trait : this.traitsAdopted) {
+            resultMap.put(trait.getOwningDimension(), trait);
+        }
+        return resultMap;
+    }
+
+    @Override
+    public Map<ITraitDimension, ITrait> getPreviousStepAdoptedDimensionsAndTraits() {
+        Map<ITraitDimension, ITrait> resultMap = new HashMap<ITraitDimension, ITrait>();
+        for (ITrait trait : this.traitsLastStep) {
+            resultMap.put(trait.getOwningDimension(), trait);
+        }
+        return resultMap;
+    }
+
     public Set<ITrait> getCurrentlyAdoptedTraits() {
         return new HashSet<ITrait>(this.traitsAdopted);
     }
 
-    public Set<ITrait> getCurrentlyAdoptedTraitsForDimension(ITraitDimension dim) {
-        return null;
+    public ITrait getCurrentlyAdoptedTraitForDimension(ITraitDimension dim) {
+        // short circuit because we have a single dimension
+        ITrait trait = this.traitsAdopted.iterator().next();
+        return trait;
     }
 
     @Override
@@ -168,7 +188,5 @@ public class UnstructuredTraitAgent extends AbstractAgent {
         return null;
     }
 
-    public void addTraitDimension(ITraitDimension dimension) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -9,7 +9,6 @@
 
 package org.madsenlab.sim.tf.interfaces.classification;
 
-import org.madsenlab.sim.tf.interfaces.ITraitDimension;
 import org.madsenlab.sim.tf.utils.TraitPredicate;
 
 import java.util.Set;
@@ -23,8 +22,6 @@ import java.util.Set;
  */
 
 public interface IClassDimension {
-
-    public void setTraitDimensionToTrack(ITraitDimension dimension);
 
     // TODO:  Add dimension modes
     // TODO:  Add human readable dimension description (for doing simulations on real situations)

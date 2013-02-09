@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -37,7 +37,7 @@ public interface IClassification extends IStatisticsSubject {
      *
      * @return
      */
-    public IClassIdentifier getClassIdentifier();
+    public IClassIdentificationEngine getClassIdentifier();
 
     /**
      * To form a classification, we first create IClassDimensions which point at underlying
@@ -48,8 +48,18 @@ public interface IClassification extends IStatisticsSubject {
      * @param dim
      * @link initializeClassesByIntersection
      */
-
     public void addClassDimension(IClassDimension dim);
+
+    /**
+     * For each class dimension in the classification (each of which points at a trait dimension),
+     * we need to create a set of modes which will form the classes through which we observe
+     * change in the underlying trait space.  This method assumes that a set of class dimensions
+     * have been added, and creates a random set of modes for each dimension, in preparation for
+     * intersection into IClass objects.
+     *
+     */
+
+    //public void createRandomModesForDimensions();
 
 
     /**

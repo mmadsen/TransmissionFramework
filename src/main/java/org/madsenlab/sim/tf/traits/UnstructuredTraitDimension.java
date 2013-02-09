@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -76,6 +76,15 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
 
     public void setDimensionName(String dimensionName) {
         this.dimensionName = dimensionName;
+    }
+
+    @Override
+    public ITrait<T> getNewVariantWithSpecifiedValue(T val) {
+        ITrait<T> newTrait = new UnstructuredTrait<T>();
+        newTrait.setTraitID(val);
+        log.debug("Creating new trait with value: " + String.valueOf(val));
+        this.addTrait(newTrait);
+        return newTrait;
     }
 
     private synchronized void addTrait(ITrait<T> newTrait) {

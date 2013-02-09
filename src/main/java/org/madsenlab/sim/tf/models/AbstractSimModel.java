@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -9,8 +9,11 @@
 
 package org.madsenlab.sim.tf.models;
 
+import cern.jet.random.Exponential;
+import cern.jet.random.Normal;
 import cern.jet.random.Uniform;
 import cern.jet.random.engine.MersenneTwister;
+import cern.jet.random.engine.MersenneTwister64;
 import cern.jet.random.engine.RandomEngine;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -56,7 +59,11 @@ public abstract class AbstractSimModel implements ISimulationModel {
     protected IInteractionTopology topology;
 
     protected RandomEngine rngGenerator;
+    protected RandomEngine rngGeneratorNormal;
+    protected RandomEngine rngGeneratorExp;
     protected Uniform uniformDist;
+    protected Normal normalDist;
+    protected Exponential expDist;
 
     protected IPopulation agentPopulation;
     protected Integer lengthSimulation;
@@ -107,6 +114,21 @@ public abstract class AbstractSimModel implements ISimulationModel {
         return this.uniformDist.nextDoubleFromTo(0, 1);
     }
 
+    @Override
+    public Double getStandardNormalVariate() {
+        return this.normalDist.nextDouble();
+    }
+
+    @Override
+    public Double getNormalVariate(double mean, double stdev) {
+        return this.normalDist.nextDouble(mean, stdev);
+    }
+
+    @Override
+    public Double getExponentialVariate(double lambda) {
+        return expDist.nextDouble(lambda);
+    }
+
     public Integer getCurrentModelTime() {
         return this.currentTime;  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -117,11 +139,18 @@ public abstract class AbstractSimModel implements ISimulationModel {
 
     public void initializeRNG(Boolean reproducibleStream) {
         if (reproducibleStream) {
-            this.rngGenerator = new MersenneTwister();
+            this.rngGenerator = new MersenneTwister64();
+            this.rngGeneratorNormal = new MersenneTwister64();
+            this.rngGeneratorExp = new MersenneTwister64();
+
         } else {
             this.rngGenerator = new MersenneTwister(new java.util.Date());
+            this.rngGeneratorNormal = new MersenneTwister64(new java.util.Date());
+            this.rngGeneratorExp = new MersenneTwister64(new java.util.Date());
         }
         this.uniformDist = new Uniform(this.rngGenerator);
+        this.normalDist = new Normal(0, 1, this.rngGeneratorNormal);
+        this.expDist = new Exponential(1.0, this.rngGeneratorExp);
     }
 
     public void initializeProviders() {

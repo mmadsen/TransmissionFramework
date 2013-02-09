@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -11,9 +11,11 @@ package org.madsenlab.sim.tf.interfaces.classification;
 
 import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.IAgentTag;
+import org.madsenlab.sim.tf.interfaces.IStatisticsSubject;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * CLASS DESCRIPTION
@@ -23,12 +25,20 @@ import java.util.Map;
  * Time: 11:44 AM
  */
 
-public interface IClass {
+public interface IClass extends IStatisticsSubject {
 
-    // TODO:  getClassSignificata()
-    // classes are all about counting like traits, but it would also be nice to get a readable
-    // version of the significata, which would be the IClassDimensionModes that make them up.
-    // Perhaps each mode carries a textual version of the predicates that define a mode?
+    /**
+     * @return modes - A List of IClassDimensionModes representing the definition of this class as a
+     *         combination of modes along N different dimensions.
+     */
+
+    public Set<IClassDimensionMode> getModesDefiningClass();
+
+    /**
+     * @return modeDescriptions - A string representing the textual description of all modes making up this class
+     */
+
+    public String getClassDescription();
 
     /**
      * @return count An integer representing the current number of IAgent objects which have adopted this trait
@@ -91,5 +101,15 @@ public interface IClass {
      * @return number of model ticks the trait persisted in the population before being lost
      */
     public Integer getTraitDuration();
+
+    /**
+     * We often want to index classes for fast lookup given a set of IClassDimensionModes.  This method returns the hashcode()
+     * value for the underlying Set<IClassDimensionMode> which makes up the class.  This value should always match
+     * the value one obtains by hashcoding a set of the relevant modes.
+     *
+     * @return hashcode
+     */
+
+    public int getUniqueID();
 
 }
