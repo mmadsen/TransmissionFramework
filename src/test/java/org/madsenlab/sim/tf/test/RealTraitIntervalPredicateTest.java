@@ -13,7 +13,6 @@ import atunit.AtUnit;
 import atunit.Container;
 import atunit.Unit;
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -21,12 +20,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITrait;
-import org.madsenlab.sim.tf.test.util.AbstractGuiceTestClass;
+import org.madsenlab.sim.tf.test.util.SingleDimensionAgentModule;
 import org.madsenlab.sim.tf.traits.UnstructuredTrait;
 import org.madsenlab.sim.tf.utils.RealTraitIntervalPredicate;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * CLASS DESCRIPTION
@@ -38,7 +37,7 @@ import static org.junit.Assert.assertFalse;
 
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
-public class RealTraitIntervalPredicateTest extends AbstractGuiceTestClass implements Module {
+public class RealTraitIntervalPredicateTest extends SingleDimensionAgentModule {
     @Unit
     @Inject
     private ISimulationModel model;

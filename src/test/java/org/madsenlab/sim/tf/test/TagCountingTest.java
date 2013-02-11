@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -13,7 +13,6 @@ import atunit.AtUnit;
 import atunit.Container;
 import atunit.Unit;
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import com.google.inject.Provider;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -24,7 +23,7 @@ import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.IAgentTag;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITrait;
-import org.madsenlab.sim.tf.test.util.AbstractGuiceTestClass;
+import org.madsenlab.sim.tf.test.util.SingleDimensionAgentModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
-public class TagCountingTest extends AbstractGuiceTestClass implements Module {
+public class TagCountingTest extends SingleDimensionAgentModule {
     @Unit
     private IAgentTag unusedTag; // here to make Junit4 happy
     @Inject

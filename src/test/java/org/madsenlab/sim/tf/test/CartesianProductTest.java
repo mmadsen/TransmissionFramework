@@ -15,14 +15,13 @@ import atunit.Unit;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
-import org.madsenlab.sim.tf.test.util.AbstractGuiceTestClass;
+import org.madsenlab.sim.tf.test.util.SingleDimensionAgentModule;
 
 import java.util.List;
 import java.util.Set;
@@ -39,7 +38,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
-public class CartesianProductTest extends AbstractGuiceTestClass implements Module {
+public class CartesianProductTest extends SingleDimensionAgentModule {
     @Unit
     @Inject
     private ISimulationModel model;

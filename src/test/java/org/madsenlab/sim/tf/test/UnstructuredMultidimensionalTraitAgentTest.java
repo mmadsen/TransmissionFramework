@@ -12,27 +12,21 @@ package org.madsenlab.sim.tf.test;
 import atunit.AtUnit;
 import atunit.Container;
 import atunit.Unit;
-import com.google.inject.*;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.madsenlab.sim.tf.agent.UnstructuredMultidimensionalTraitAgentProvider;
 import org.madsenlab.sim.tf.interfaces.*;
-import org.madsenlab.sim.tf.population.SimpleAgentDemeProvider;
-import org.madsenlab.sim.tf.population.SimpleAgentPopulationProvider;
-import org.madsenlab.sim.tf.structure.SimpleAgentTagProvider;
-import org.madsenlab.sim.tf.structure.WellMixedInteractionTopologyProvider;
-import org.madsenlab.sim.tf.test.util.SimulationModelFixture;
+import org.madsenlab.sim.tf.test.util.MultidimensionalAgentModule;
 import org.madsenlab.sim.tf.traits.InfiniteAllelesIntegerTraitFactory;
-import org.madsenlab.sim.tf.traits.IntegerTraitProvider;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitDimension;
-import org.madsenlab.sim.tf.traits.UnstructuredTraitDimensionProvider;
-import org.madsenlab.sim.tf.utils.LogFileHandler;
 
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -45,7 +39,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
-public class UnstructuredMultidimensionalTraitAgentTest implements Module {
+public class UnstructuredMultidimensionalTraitAgentTest extends MultidimensionalAgentModule {
     @Unit
     @Inject
     private ISimulationModel model;
@@ -76,7 +70,6 @@ public class UnstructuredMultidimensionalTraitAgentTest implements Module {
     @Test
     public void testMultipleTraitAdoption() throws Exception {
         log.info("entering testMultipleTraitAdoption");
-        int numAgents = 4;
 
         ITraitFactory traitFactory = new InfiniteAllelesIntegerTraitFactory(this.model);
         ITraitFactory traitFactory2 = new InfiniteAllelesIntegerTraitFactory(this.model);
@@ -119,30 +112,65 @@ public class UnstructuredMultidimensionalTraitAgentTest implements Module {
         log.info("exiting testMultipleTraitAdoption");
     }
 
-
     /*
-        We do not subclass AbstractGuiceTestClass because it configures a unidimensional trait agent
-        for the agent provider.
+        Goal of this test is to ensure that we can add a bunch of dimensions and traits, and have
+        the correct number when we ask for the "genotype" and its size, particularly in cases
+        where we try to add two traits from the same dimension.
 
-        TODO:  refactor the way tests are configured to allow multiple options for a given interface easily
      */
-    public void configure(Binder binder) {
 
-        binder.bind(ISimulationModel.class)
-                .to(SimulationModelFixture.class)
-                .in(Singleton.class);
-        binder.bind(IAgent.class)
-                .toProvider(UnstructuredMultidimensionalTraitAgentProvider.class);
-        binder.bind(ITraitDimension.class)
-                .toProvider(UnstructuredTraitDimensionProvider.class);
-        binder.bind(ITrait.class)
-                .toProvider(IntegerTraitProvider.class);
-        binder.bind(IAgentTag.class)
-                .toProvider(SimpleAgentTagProvider.class);
-        binder.bind(IPopulation.class).toProvider(SimpleAgentPopulationProvider.class);
-        binder.bind(IInteractionTopology.class).toProvider(WellMixedInteractionTopologyProvider.class);
-        binder.bind(IDeme.class).toProvider(SimpleAgentDemeProvider.class);
-        binder.bind(ILogFiles.class).to(LogFileHandler.class).in(Singleton.class);
+    @Test
+    public void testAgentGenotypeSize() throws Exception {
+        log.info("Entering testAgentGenotypeSize");
+        ITraitFactory traitFactory = new InfiniteAllelesIntegerTraitFactory(this.model);
+        ITraitFactory traitFactory2 = new InfiniteAllelesIntegerTraitFactory(this.model);
+        ITraitFactory traitFactory3 = new InfiniteAllelesIntegerTraitFactory(this.model);
+        ITraitDimension dim1 = new UnstructuredTraitDimension<Integer>(this.model, traitFactory);
+        ITraitDimension dim2 = new UnstructuredTraitDimension<Integer>(this.model, traitFactory2);
+        ITraitDimension dim3 = new UnstructuredTraitDimension<Integer>(this.model, traitFactory3);
+
+        IAgent agent = agentProvider.get();
+
+        // Create traits from three dimensions, and two traits in the first dimension
+        ITrait dim1Trait1 = dim1.getNewVariant();
+        ITrait dim1Trait2 = dim1.getNewVariant();
+        ITrait dim2Trait1 = dim2.getNewVariant();
+        ITrait dim3Trait1 = dim3.getNewVariant();
+
+        dim1Trait1.adopt(agent);
+        dim2Trait1.adopt(agent);
+        dim3Trait1.adopt(agent);
+
+        log.info("Test that adopting 3 orthogonal dimension/traits yields proper genotype size");
+        Map<ITraitDimension, ITrait> traitMap = agent.getCurrentlyAdoptedDimensionsAndTraits();
+        int numDimensions = traitMap.size();
+        log.info("Number of dimensions/traits expected: 3 adopted: " + numDimensions);
+        assertTrue(numDimensions == 3);
+        numDimensions = 0;
+
+        dim2Trait1.unadopt(agent);
+
+        log.info("Test that unadopting one of the dimension/traits reduces the genotype size");
+        Map<ITraitDimension, ITrait> traitMap2 = agent.getCurrentlyAdoptedDimensionsAndTraits();
+        int numDimensions2 = traitMap2.size();
+        log.info("Number of dimensions/traits expected: 2 adopted: " + numDimensions2);
+        assertTrue(numDimensions2 == 2);
+
+        // now adopt the second trait from the first dimension.  This should replace the existing dim1 trait,
+        // so the number of dimensions present in an agent should still be two
+        dim1Trait2.adopt(agent);
+
+        log.info("Test that adopting a second trait from existing dimension replaces, not adds");
+        Map<ITraitDimension, ITrait> traitMap3 = agent.getCurrentlyAdoptedDimensionsAndTraits();
+        int numDimensions3 = traitMap3.size();
+        log.info("Number of dimensions/traits expected: 2 adopted: " + numDimensions3);
+        assertTrue(numDimensions3 == 2);
+
+        log.info("Test that dimension 1 is now represented by trait 2, not trait 1");
+        ITrait adoptedTrait = traitMap3.get(dim1);
+        assertEquals("Agent did not have dim1trait2 as expected", dim1Trait2, adoptedTrait);
+
+        log.info("Existing testAgentGenotypeSize");
     }
 
 }

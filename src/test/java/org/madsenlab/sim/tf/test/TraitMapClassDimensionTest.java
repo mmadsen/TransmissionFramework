@@ -13,7 +13,6 @@ import atunit.AtUnit;
 import atunit.Container;
 import atunit.Unit;
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -26,7 +25,7 @@ import org.madsenlab.sim.tf.interfaces.ITraitDimension;
 import org.madsenlab.sim.tf.interfaces.ITraitFactory;
 import org.madsenlab.sim.tf.interfaces.classification.IClassDimension;
 import org.madsenlab.sim.tf.interfaces.classification.IClassDimensionMode;
-import org.madsenlab.sim.tf.test.util.AbstractGuiceTestClass;
+import org.madsenlab.sim.tf.test.util.MultidimensionalAgentModule;
 import org.madsenlab.sim.tf.traits.InfiniteAllelesUnitIntervalTraitFactory;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitDimension;
 import org.madsenlab.sim.tf.utils.RealTraitIntervalPredicate;
@@ -90,7 +89,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
-public class TraitMapClassDimensionTest extends AbstractGuiceTestClass implements Module {
+public class TraitMapClassDimensionTest extends MultidimensionalAgentModule {
     @Unit
     @Inject
     private ISimulationModel model;

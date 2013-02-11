@@ -13,7 +13,6 @@ import atunit.AtUnit;
 import atunit.Container;
 import atunit.Unit;
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -22,7 +21,7 @@ import org.junit.runner.RunWith;
 import org.madsenlab.sim.tf.classification.UnitIntervalClassDimension;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITraitDimension;
-import org.madsenlab.sim.tf.test.util.AbstractGuiceTestClass;
+import org.madsenlab.sim.tf.test.util.SingleDimensionAgentModule;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitDimension;
 
 import static org.junit.Assert.assertTrue;
@@ -37,7 +36,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
-public class DiscreteClassesUnitIntervalTraitDimensionTest extends AbstractGuiceTestClass implements Module {
+public class DiscreteClassesUnitIntervalTraitDimensionTest extends SingleDimensionAgentModule {
     @Unit
     @Inject
     private ISimulationModel model;

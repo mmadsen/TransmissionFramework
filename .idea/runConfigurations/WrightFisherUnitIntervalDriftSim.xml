@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="WrightFisherUnitIntervalDriftSim" type="Application" factoryName="Application">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="emma" />
-    <option name="MAIN_CLASS_NAME" value="org.madsenlab.sim.tf.test.examples.WrightFisherUnitIntervalDriftModel.WrightFisherUnitIntervalDriftSim" />
-    <option name="VM_PARAMETERS" value="-Xms1g -Xmx1g -Dlog4j.configuration=file://$PROJECT_DIR$/src/main/resources/log4j.config -ea " />
+    <option name="MAIN_CLASS_NAME" value="org.madsenlab.sim.tf.models.WrightFisherUnitIntervalDriftModel.WrightFisherUnitIntervalDriftSim" />
+    <option name="VM_PARAMETERS" value="-Xms1g -Xmx1g -Dlog4j.configuration=file://$PROJECT_DIR$/src/models/resources/log4j.config -ea " />
     <option name="PROGRAM_PARAMETERS" value="-n 500 -i -s 100 -m 0.005 -l 2000 -p tf.properties -t 150 -e 30" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -13,7 +13,6 @@ import atunit.AtUnit;
 import atunit.Container;
 import atunit.Unit;
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import com.google.inject.Provider;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -21,7 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.madsenlab.sim.tf.interfaces.*;
-import org.madsenlab.sim.tf.test.util.AbstractGuiceTestClass;
+import org.madsenlab.sim.tf.test.util.SingleDimensionAgentModule;
 import org.madsenlab.sim.tf.traits.InfiniteAllelesIntegerTraitFactory;
 
 import java.util.Collection;
@@ -40,7 +39,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
-public class UnstructuredTraitDimensionTest extends AbstractGuiceTestClass implements Module {
+public class UnstructuredTraitDimensionTest extends SingleDimensionAgentModule {
     @Inject
     public Provider<IAgent> agentProvider;
     @Inject
