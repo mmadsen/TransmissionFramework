@@ -27,7 +27,7 @@ public class RealTraitProvider implements Provider<ITrait> {
     private ISimulationModel model;
 
     public ITrait<Double> get() {
-        ITrait<Double> trait = new UnstructuredTrait<Double>();
+        ITrait<Double> trait = new UnstructuredTrait<Double>(this.model);
         trait.setSimulationModel(model);
         return trait;
     }

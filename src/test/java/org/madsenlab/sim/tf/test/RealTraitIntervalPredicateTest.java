@@ -61,7 +61,7 @@ public class RealTraitIntervalPredicateTest extends SingleDimensionAgentModule {
         log.info("entering testInsideInterval");
         RealTraitIntervalPredicate testPredicate = new RealTraitIntervalPredicate(0.0, true, 1.0, true, "Closed-0,1");
 
-        ITrait<Double> testTrait = new UnstructuredTrait<Double>();
+        ITrait<Double> testTrait = new UnstructuredTrait<Double>(this.model);
         testTrait.setTraitID(0.5);
         boolean result = testPredicate.evaluate(testTrait);
         log.info("expecting: true observed: " + result);
@@ -76,7 +76,7 @@ public class RealTraitIntervalPredicateTest extends SingleDimensionAgentModule {
         log.info("entering testOutsideInterval");
         RealTraitIntervalPredicate testPredicate = new RealTraitIntervalPredicate(0.5, true, 1.0, true, "Closed-0.5,1");
 
-        ITrait<Double> testTrait = new UnstructuredTrait<Double>();
+        ITrait<Double> testTrait = new UnstructuredTrait<Double>(this.model);
         testTrait.setTraitID(0.1);
         boolean result = testPredicate.evaluate(testTrait);
 
@@ -91,7 +91,7 @@ public class RealTraitIntervalPredicateTest extends SingleDimensionAgentModule {
     public void testClosedIntervalBoundary() throws Exception {
         log.info("entering testClosedIntervalBoundary");
         RealTraitIntervalPredicate testPredicate = new RealTraitIntervalPredicate(0.5, true, 1.0, true, "closed-0.5,1");
-        ITrait<Double> testTrait = new UnstructuredTrait<Double>();
+        ITrait<Double> testTrait = new UnstructuredTrait<Double>(this.model);
         testTrait.setTraitID(0.5);
 
         boolean result = testPredicate.evaluate(testTrait);
@@ -106,7 +106,7 @@ public class RealTraitIntervalPredicateTest extends SingleDimensionAgentModule {
     public void testOpenIntervalBoundary() throws Exception {
         log.info("entering testOpenIntervalBoundary");
         RealTraitIntervalPredicate testPredicate = new RealTraitIntervalPredicate(0.5, false, 1.0, true, "open-0.5,1");
-        ITrait<Double> testTrait = new UnstructuredTrait<Double>();
+        ITrait<Double> testTrait = new UnstructuredTrait<Double>(this.model);
         testTrait.setTraitID(0.5);
 
         boolean result = testPredicate.evaluate(testTrait);

@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITrait;
 import org.madsenlab.sim.tf.interfaces.ITraitDimension;
+import org.madsenlab.sim.tf.interfaces.classification.IClassDimension;
 import org.madsenlab.sim.tf.interfaces.classification.IClassDimensionMode;
 import org.madsenlab.sim.tf.utils.NonZeroAdoptionCountTraitPredicate;
 import org.madsenlab.sim.tf.utils.TraitPredicate;
@@ -35,11 +36,13 @@ public class RealIntervalDimensionMode implements IClassDimensionMode {
     private ISimulationModel model;
     private Logger log;
     private TraitPredicate modePredicate;
+    private IClassDimension owningClassDimension;
 
-    public RealIntervalDimensionMode(ISimulationModel model, ITraitDimension<Double> watched, TraitPredicate modePredicate) {
+    public RealIntervalDimensionMode(ISimulationModel model, IClassDimension classDimension, ITraitDimension<Double> watched, TraitPredicate modePredicate) {
         this.model = model;
         this.modePredicate = modePredicate;
         this.watchedDimension = watched;
+        this.owningClassDimension = classDimension;
         this.log = this.model.getModelLogger(this.getClass());
     }
 
@@ -51,7 +54,7 @@ public class RealIntervalDimensionMode implements IClassDimensionMode {
 
     @Override
     public String getModeDescription() {
-        return this.modePredicate.getID();
+        return this.modePredicate.toString();
     }
 
     @Override
@@ -79,6 +82,11 @@ public class RealIntervalDimensionMode implements IClassDimensionMode {
         log.debug("mode: num traits in result set " + resultSet.size());
         log.debug("exiting getTraitsMappedToMode");
         return resultSet;
+    }
+
+    @Override
+    public IClassDimension getOwningClassDimension() {
+        return this.owningClassDimension;
     }
 
 

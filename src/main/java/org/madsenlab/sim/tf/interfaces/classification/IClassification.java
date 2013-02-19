@@ -9,8 +9,7 @@
 
 package org.madsenlab.sim.tf.interfaces.classification;
 
-import org.madsenlab.sim.tf.interfaces.IAgentTag;
-import org.madsenlab.sim.tf.interfaces.IStatisticsSubject;
+import org.madsenlab.sim.tf.interfaces.*;
 
 import java.util.Map;
 import java.util.Set;
@@ -92,6 +91,29 @@ public interface IClassification extends IStatisticsSubject {
     public Map<IClass, Double> getCurGlobalClassFrequencies();
 
     public Map<IClass, Double> getCurClassFreqByTag(IAgentTag tag);
+
+    public IClass getClassForTraits(Map<ITraitDimension, ITrait> traitMap);
+
+    /**
+     * Given previous and currently adopted traits for a particular agent, determines if an agent has
+     * "changed class" given its traits, and if so, it does the class unadopt/adopt pair to update class
+     * counts.
+     * <p/>
+     * This method is one of the main usages of this interface, and should be used to update system state after every
+     * trait adopt event.
+     */
+
+    public void updateClassForAgent(IAgent agent);
+
+    /**
+     * Given an IPopulation object, determines for each agent if a class has changed, and if so, executes
+     * the appropriate class unadopt/adopt pair to update class adoption counts.
+     * <p/>
+     * This method is one of the main usages of this interface, and for many types of models will be the method
+     * used after each model step but before notifying classification observers to record class counts.
+     */
+
+    public void updateClassForPopulation(IPopulation pop);
 
 
 }

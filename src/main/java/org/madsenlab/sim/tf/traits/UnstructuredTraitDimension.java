@@ -67,6 +67,7 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
         this.traitMap = new HashMap<T, ITrait<T>>();
         this.traitList = new ArrayList<ITrait<T>>();
         this.observers = Collections.synchronizedList(new ArrayList<IStatisticsObserver>());
+        this.dimensionName = "UNNAMED";
 
     }
 
@@ -80,7 +81,7 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
 
     @Override
     public ITrait<T> getNewVariantWithSpecifiedValue(T val) {
-        ITrait<T> newTrait = new UnstructuredTrait<T>();
+        ITrait<T> newTrait = new UnstructuredTrait<T>(this.model);
         newTrait.setTraitID(val);
         log.debug("Creating new trait with value: " + String.valueOf(val));
         newTrait.setOwningDimension(this);

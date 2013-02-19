@@ -27,7 +27,7 @@ public class IntegerTraitProvider implements Provider<ITrait> {
     private ISimulationModel model;
 
     public ITrait<Integer> get() {
-        ITrait<Integer> trait = new UnstructuredTrait<Integer>();
+        ITrait<Integer> trait = new UnstructuredTrait<Integer>(this.model);
         trait.setSimulationModel(model);
         return trait;
     }

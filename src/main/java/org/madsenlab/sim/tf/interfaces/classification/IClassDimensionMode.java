@@ -50,5 +50,5 @@ public interface IClassDimensionMode {
      */
     public Set<ITrait> getTraitsMappedToMode(Boolean includeTraitsWithZeroAdoptionCount);
 
-
+    public IClassDimension getOwningClassDimension();
 }

@@ -11,6 +11,7 @@ package org.madsenlab.sim.tf.classification;
 
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
+import org.madsenlab.sim.tf.interfaces.ITrait;
 import org.madsenlab.sim.tf.interfaces.ITraitDimension;
 import org.madsenlab.sim.tf.interfaces.classification.IClassDimension;
 import org.madsenlab.sim.tf.interfaces.classification.IClassDimensionMode;
@@ -27,7 +28,7 @@ import java.util.*;
  * Time: 2:34 PM
  */
 
-public class UnitIntervalClassDimension implements IClassDimension {
+public class UnitIntervalClassDimension<T> implements IClassDimension<T> {
     private ITraitDimension<Double> traitDimension;
     private Set<IClassDimensionMode> dimensionModeSet;
     private ISimulationModel model;
@@ -39,6 +40,33 @@ public class UnitIntervalClassDimension implements IClassDimension {
         this.model = model;
         this.log = this.model.getModelLogger(this.getClass());
         this.traitDimension = traitDimension;
+    }
+
+    @Override
+    public ITraitDimension getTrackedTraitDimension() {
+        return this.traitDimension;
+    }
+
+    @Override
+    public String getClassDimensionName() {
+        return this.traitDimension.getDimensionName();
+    }
+
+    @Override
+    public IClassDimensionMode getModeForTraitValue(ITrait<T> trait) {
+        T traitValue = trait.getTraitID();
+        IClassDimensionMode resultMode = null;
+        for (IClassDimensionMode mode : this.getModeSet()) {
+            // Find the traits *currently* mapped to this mode, ignoring historical ones
+            Set<ITrait> traitSet = mode.getTraitsMappedToMode(false);
+            if (traitSet.contains(trait)) {
+                resultMode = mode;
+                break;
+            }
+        }
+
+        // TODO how to handle it if no mode exists for this trait?  This shouldn't happen in a running simulation but...
+        return resultMode;
     }
 
     @Override
@@ -95,7 +123,7 @@ public class UnitIntervalClassDimension implements IClassDimension {
     @Override
     public void createSpecifiedModeSet(Set<TraitPredicate> predicates) {
         for (TraitPredicate pred : predicates) {
-            IClassDimensionMode mode = new RealIntervalDimensionMode(this.model, this.traitDimension, pred);
+            IClassDimensionMode mode = new RealIntervalDimensionMode(this.model, this, this.traitDimension, pred);
             log.debug("Constructing new mode: " + mode + " from predicate: " + pred);
             this.dimensionModeSet.add(mode);
         }

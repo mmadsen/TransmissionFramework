@@ -7,7 +7,7 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.test;
+package org.madsenlab.sim.tf.test.classification;
 
 import atunit.AtUnit;
 import atunit.Container;
@@ -110,7 +110,7 @@ public class TraitMapClassDimensionTest extends MultidimensionalAgentModule {
         this.expectedTraitsPerMode = new HashMap<String, Integer>();
         this.traitFactory = new InfiniteAllelesUnitIntervalTraitFactory(this.model);
         this.traitDimension = new UnstructuredTraitDimension<Double>(this.model, this.traitFactory);
-        this.classDim = new UnitIntervalClassDimension(this.model, this.traitDimension);
+        this.classDim = new UnitIntervalClassDimension<Double>(this.model, this.traitDimension);
 
 
     }

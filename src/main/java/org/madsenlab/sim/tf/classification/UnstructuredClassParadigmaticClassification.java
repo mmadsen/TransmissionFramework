@@ -34,6 +34,7 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
     private Logger log;
     private Map<IAgent, IClass> memoClassIdentificationForAgent;
     private Map<Integer, IClass> indexModesToClass;
+    private Map<ITraitDimension, IClassDimension> indexTraitDimensionsToClassDimension;
 
 
     public UnstructuredClassParadigmaticClassification(ISimulationModel model) {
@@ -42,6 +43,7 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
         this.classObserverList = new ArrayList<IStatisticsObserver>();
         this.memoClassIdentificationForAgent = new HashMap<IAgent, IClass>();
         this.indexModesToClass = new HashMap<Integer, IClass>();
+        this.indexTraitDimensionsToClassDimension = new HashMap<ITraitDimension, IClassDimension>();
         this.model = model;
         log = model.getModelLogger(this.getClass());
     }
@@ -67,6 +69,8 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
     @Override
     public void addClassDimension(IClassDimension dim) {
         this.classDimensionSet.add(dim);
+        ITraitDimension traitDim = dim.getTrackedTraitDimension();
+        this.indexTraitDimensionsToClassDimension.put(traitDim, dim);
     }
 
     @Override
@@ -89,11 +93,10 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
         // For each element of the cartesian product, create an IClass object, add to the classSet
         // Register the IClass object into the index of hashcodes, so that we can look up a class by a list of its modes.
         for (List<IClassDimensionMode> modeList : setAllModeCombinations) {
-            IClass newClass = new UnstructuredClass(modeList);
-            log.debug("Creating class: " + newClass.getClassDescription());
+            IClass newClass = new UnstructuredClass(this.model, modeList);
+            log.debug("Creating class: " + newClass.getClassDescription() + " with unique ID: " + newClass.getUniqueID());
             this.classSet.add(newClass);
             this.indexModesToClass.put(newClass.getUniqueID(), newClass);
-
         }
     }
 
@@ -103,10 +106,14 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
         return this.classSet;
     }
 
-    // TODO:  class counts
     @Override
     public Map<IClass, Integer> getCurGlobalClassCounts() {
-        return null;
+        Map<IClass, Integer> countMap = new HashMap<IClass, Integer>();
+        for (IClass cz : this.classSet) {
+            countMap.put(cz, cz.getCurrentAdoptionCount());
+        }
+
+        return countMap;
     }
 
     // TODO:  class counts by tag
@@ -168,35 +175,19 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
         }
     }
 
-
-    /* Methods deriving from IClassIdentificationEngine */
-
-    @Override
-    public IClass getClassForAgent(IAgent agent) {
-        log.trace("Entering getClassForAgent");
-        // calls getClassForTraits() for the current traits held by an agent
-        // by determining the ITraitDimension for each trait,
-        // then figuring out which IClassDimension corresponds to a given ITraitDimension,
-        // asking the IClassDimension which IClassDimensionMode corresponds to a given ITrait value
-        // and then asking the classification for the IClass which is indexed to a given list of modes.
-
-
-        log.trace("Exiting getClassForAgent");
-        return null;
-    }
-
-    @Override
-    public IClass getClassForTraits(Set<ITrait> traitSet) {
-        return null;
-    }
-
     @Override
     public void updateClassForAgent(IAgent agent) {
         log.trace("Entering updateClassForAgent");
         // calls getClassForAgent() to get the current class given adopted traits
         // checks to see if the current class has changed from previous step
         // if so, does class unadopt/adopt
+        if (this.memoClassIdentificationForAgent.get(agent) == null) {
+            log.debug("Initializing dummy class for agent to prime cache");
+            this.memoClassIdentificationForAgent.put(agent, new DummyClass());
+        }
+
         IClass currentClass = this.getClassForAgent(agent);
+        log.debug("current class: " + currentClass.getClassDescription());
         IClass prevClass = this.memoClassIdentificationForAgent.get(agent);
         if (currentClass.equals(prevClass)) {
             log.trace("No change in class for agent: " + agent.getAgentID());
@@ -219,4 +210,151 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
         }
         log.trace("Exiting updateClassForPopulation");
     }
+
+
+    /* Methods deriving from IClassIdentificationEngine */
+
+    @Override
+    public IClass getClassForAgent(IAgent agent) {
+        log.trace("Entering getClassForAgent");
+        // Get traits and dimensions held by the agent, look up which class dimensions are
+        // tracking each trait dimension.  Create a map of ClassDimension -> ITrait for an agent
+        Map<ITraitDimension, ITrait> traitDimensionMap = agent.getCurrentlyAdoptedDimensionsAndTraits();
+        IClass identifiedClass = this.getClassForTraits(traitDimensionMap);
+
+        log.trace("Exiting getClassForAgent");
+        return identifiedClass;
+    }
+
+    @Override
+    public IClass getClassForTraits(Map<ITraitDimension, ITrait> traitMap) {
+        log.trace("Entering getClassForTraits");
+        Map<IClassDimension, ITrait> classDimensionsToTraits = new HashMap<IClassDimension, ITrait>();
+        for (ITraitDimension traitDim : traitMap.keySet()) {
+
+            ITrait trait = traitMap.get(traitDim);
+            IClassDimension classDim = this.indexTraitDimensionsToClassDimension.get(traitDim);
+            log.debug("traitDim: " + traitDim.getDimensionName() + " classDim: " + classDim.getClassDimensionName() + " trait: " + trait.toString());
+            classDimensionsToTraits.put(classDim, trait);
+        }
+
+        // asking the IClassDimension which IClassDimensionMode corresponds to a given ITrait value
+        Set<IClassDimensionMode> modeSet = new HashSet<IClassDimensionMode>();
+        for (Map.Entry<IClassDimension, ITrait> entry : classDimensionsToTraits.entrySet()) {
+            IClassDimension classDim = entry.getKey();
+            ITrait trait = entry.getValue();
+
+            IClassDimensionMode mode = classDim.getModeForTraitValue(trait);
+
+            log.debug("classDim: " + classDim + " and trait: " + trait.toString() + " maps to mode: " + mode.getModeDescription());
+            modeSet.add(mode);
+        }
+
+        // and then asking the classification for the IClass which is indexed to a given list of modes.
+        Integer modeSetID = modeSet.hashCode();
+
+        IClass identifiedClass = this.indexModesToClass.get(modeSetID);
+
+        log.debug("Identified agent to class: " + identifiedClass.getClassDescription());
+
+
+        log.trace("Exiting getClassForTraits");
+        return identifiedClass;
+    }
+
+
+    // Used for the first update a population, where there isn't any "previous" class...
+    private class DummyClass implements IClass {
+
+        public DummyClass() {
+
+        }
+
+        @Override
+        public Set<IClassDimensionMode> getModesDefiningClass() {
+            return null;
+        }
+
+        @Override
+        public String getClassDescription() {
+            return null;
+        }
+
+        @Override
+        public int getCurrentAdoptionCount() {
+            return 0;
+        }
+
+        @Override
+        public Map<IAgentTag, Integer> getCurrentAdoptionCountsByTag() {
+            return null;
+        }
+
+        @Override
+        public Integer getCurrentAdoptionCountForTag(IAgentTag tag) {
+            return null;
+        }
+
+        @Override
+        public void adopt(IAgent agent) {
+
+        }
+
+        @Override
+        public void unadopt(IAgent agent) {
+
+        }
+
+        @Override
+        public List<IAgent> getCurrentAdopterList() {
+            return null;
+        }
+
+        @Override
+        public Boolean hasCompleteDuration() {
+            return null;
+        }
+
+        @Override
+        public Integer getTraitDuration() {
+            return null;
+        }
+
+        @Override
+        public int getUniqueID() {
+            return 0;
+        }
+
+        @Override
+        public void attach(IStatisticsObserver obs) {
+
+        }
+
+        @Override
+        public void attach(List<IStatisticsObserver> obsList) {
+
+        }
+
+        @Override
+        public void detach(IStatisticsObserver obs) {
+
+        }
+
+        @Override
+        public void detach(List<IStatisticsObserver> obsList) {
+
+        }
+
+        @Override
+        public Integer getNumObservers() {
+            return null;
+        }
+
+        @Override
+        public void notifyObservers() {
+
+        }
+    }
+
+
 }

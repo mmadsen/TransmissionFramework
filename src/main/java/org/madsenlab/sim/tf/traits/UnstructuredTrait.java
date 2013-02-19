@@ -7,69 +7,55 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.classification;
+package org.madsenlab.sim.tf.traits;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.apache.log4j.Logger;
-import org.madsenlab.sim.tf.analysis.ClassStatistic;
+import org.madsenlab.sim.tf.analysis.TraitStatistic;
 import org.madsenlab.sim.tf.interfaces.*;
-import org.madsenlab.sim.tf.interfaces.classification.IClass;
-import org.madsenlab.sim.tf.interfaces.classification.IClassDimensionMode;
 
 import java.util.*;
 
 /**
- * CLASS DESCRIPTION
- * <p/>
+ * Created by IntelliJ IDEA.
  * User: mark
- * Date: 1/30/13
- * Time: 12:00 PM
+ * Date: Jun 30, 2010
+ * Time: 9:18:36 AM
+ * To change this template use File | Settings | File Templates.
  */
 
-public class UnstructuredClass implements IClass {
-    private Set<IClassDimensionMode> definingModeSet;
+
+public class UnstructuredTrait<T> extends AbstractObservableTrait<T> {
+    private T id;
     private int curAdoptionCount;
     private List<IAgent> curAdopteeList;
-    private Map<IAgentTag, Integer> curAdoptionByTag;
-    private List<IStatisticsObserver> observers;
     private TIntIntHashMap histAdoptionCountMap;
-    private ISimulationModel model;
-    private Logger log;
-    private Integer traitLifetime = 0;
-    private Integer tickTraitIntroduced;
-    private Integer tickTraitExited;
-    private int objectID;
+    private ITraitDimension owningDimension = null;
+    private Map<IAgentTag, Integer> curAdoptionByTag;
+
 
     @Inject
     public void setSimulationModel(ISimulationModel m) {
+        initialize(m);
+    }
+
+    public ITraitDimension getOwningDimension() {
+        return owningDimension;
+    }
+
+    public void setOwningDimension(ITraitDimension owningDimension) {
+        this.owningDimension = owningDimension;
+    }
+
+    public UnstructuredTrait(ISimulationModel m) {
+        this.initialize(m);
+    }
+
+    private void initialize(ISimulationModel m) {
         model = m;
         this.tickTraitIntroduced = this.model.getCurrentModelTime();
         log = model.getModelLogger(this.getClass());
-    }
-
-    /*
-     * Two constructors, because sometimes we'll have an actual Set<Mode>
-     * and sometimes (as when cartesianProduct() is used), we'll have a
-     * List<Mode>
-     */
-
-    public UnstructuredClass(Set<IClassDimensionMode> definingModes) {
-        this.initialize();
-        this.definingModeSet = new HashSet<IClassDimensionMode>(definingModes);
-    }
-
-    public UnstructuredClass(List<IClassDimensionMode> listDefiningModes) {
-        this.initialize();
-        this.definingModeSet = new HashSet<IClassDimensionMode>(listDefiningModes);
-    }
-
-    private void setObjectID() {
-        this.objectID = this.definingModeSet.hashCode();
-    }
-
-    private void initialize() {
         this.curAdoptionCount = 0;
         this.curAdopteeList = Collections.synchronizedList(new ArrayList<IAgent>());
         this.histAdoptionCountMap = new TIntIntHashMap();
@@ -77,24 +63,19 @@ public class UnstructuredClass implements IClass {
         this.observers = Collections.synchronizedList(new ArrayList<IStatisticsObserver>());
     }
 
+    public T getTraitID() {
+        return this.id;
+    }
 
-    @Override
-    public Set<IClassDimensionMode> getModesDefiningClass() {
-        return new HashSet<IClassDimensionMode>(this.definingModeSet);
+    public void setTraitID(T id) {
+        this.id = id;
     }
 
     @Override
-    public String getClassDescription() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("{");
-        for (IClassDimensionMode mode : this.definingModeSet) {
-            sb.append(mode.getModeDescription());
-        }
-        sb.append("}");
-        return sb.toString();
+    public int compareTo(ITrait<T> otherTrait) {
+        return ((Comparable<T>) this.id).compareTo(otherTrait.getTraitID());
     }
 
-    @Override
     public int getCurrentAdoptionCount() {
         return this.curAdoptionCount;
     }
@@ -108,10 +89,11 @@ public class UnstructuredClass implements IClass {
         return this.curAdoptionByTag.get(tag);
     }
 
-    public void adopt(IAgent agentAdopting) {
+    public TIntIntHashMap getAdoptionCountHistory() {
+        return this.histAdoptionCountMap;
+    }
 
-        // TODO:  Do agents need a method to keep track of their current class?  see agentAdopting.adoptTrait().
-        // TODO:  Needs adaptation for classes, copied directly from UnstruturedTrait
+    public void adopt(IAgent agentAdopting) {
 
         // add the agent to the list for this trait
         // then register this trait with the agent adopting
@@ -119,8 +101,9 @@ public class UnstructuredClass implements IClass {
 
         synchronized (this.curAdopteeList) {
             this.curAdopteeList.add(agentAdopting);
+            agentAdopting.adoptTrait(this);
             this.incrementAdoptionCount();
-            log.trace("Agent " + agentAdopting.getAgentID() + " adopting " + this.getClassDescription() + " count: " + this.curAdoptionCount);
+            log.trace("Agent " + agentAdopting.getAgentID() + " adopting [" + this.getTraitID() + "] count: " + this.curAdoptionCount);
         }
         synchronized (this.curAdoptionByTag) {
             Set<IAgentTag> tags = agentAdopting.getAgentTags();
@@ -131,10 +114,10 @@ public class UnstructuredClass implements IClass {
                     int count = this.curAdoptionByTag.get(tag);
 
                     count++;
-                    log.trace("" + this.getClassDescription() + " count: " + count);
+                    log.trace("[" + this.getTraitID() + "] count: " + count);
                     this.curAdoptionByTag.put(tag, count);
                 } else {
-                    log.trace("" + this.getClassDescription() + " initializing tag: " + tag.getTagName() + " with 1 count");
+                    log.trace("[" + this.getTraitID() + "] initializing tag: " + tag.getTagName() + " with 1 count");
                     this.curAdoptionByTag.put(tag, 1);
                 }
             }
@@ -147,11 +130,12 @@ public class UnstructuredClass implements IClass {
         // then unregister this trait with the agent adopting
         // then update this trait's counts per tag from the unadopting agent
         // if a tag count gets to zero, we remove the tag from the list
-        log.trace("Agent " + agentUnadopting.getAgentID() + " unadopting trait " + this.getClassDescription() + " count: " + this.curAdoptionCount);
+        log.trace("Agent " + agentUnadopting.getAgentID() + " unadopting trait " + this.getTraitID() + " count: " + this.curAdoptionCount);
         synchronized (this.curAdopteeList) {
             this.curAdopteeList.remove(agentUnadopting);
+            agentUnadopting.unadoptTrait(this);
             this.decrementAdoptionCount();
-            //this.checkDurationAtAdoptionCountChange();
+            this.checkDurationAtAdoptionCountChange();
         }
         synchronized (this.curAdoptionByTag) {
 
@@ -166,79 +150,28 @@ public class UnstructuredClass implements IClass {
                         this.curAdoptionByTag.put(tag, count);
                     }
                 } else {
-                    log.error("unadopting trait " + this.getClassDescription() + " by agent " + agentUnadopting.getAgentID() + " with unknown tag - BUG");
+                    log.error("unadopting trait " + this.getTraitID() + " by agent " + agentUnadopting.getAgentID() + " with unknown tag - BUG");
                 }
             }
         }
     }
 
-    @Override
+
     public List<IAgent> getCurrentAdopterList() {
         return new ArrayList<IAgent>(this.curAdopteeList);
-    }
-
-    @Override
-    public Boolean hasCompleteDuration() {
-        return null;
-    }
-
-    @Override
-    public Integer getTraitDuration() {
-        return null;
-    }
-
-    @Override
-    public int getUniqueID() {
-        return this.objectID;
-    }
-
-    public void attach(IStatisticsObserver obs) {
-        synchronized (this.observers) {
-            log.trace("attaching to obs: " + obs);
-            this.observers.add(obs);
-        }
-    }
-
-    public void attach(List<IStatisticsObserver> obsList) {
-        for (IStatisticsObserver obs : obsList) {
-            this.attach(obs);
-        }
-    }
-
-    public void detach(IStatisticsObserver obs) {
-        synchronized (this.observers) {
-            this.observers.remove(obs);
-        }
-
-    }
-
-    public void detach(List<IStatisticsObserver> obsList) {
-        for (IStatisticsObserver obs : obsList) {
-            this.detach(obs);
-        }
-    }
-
-    public Integer getNumObservers() {
-        return this.observers.size();
-    }
-
-    public void notifyObservers() {
-        IStatistic stat = this.getChangeStatistic();
-        log.debug("change statistic: " + stat);
-        for (IStatisticsObserver obs : this.observers) {
-            log.debug("notify observer: " + obs);
-            obs.updateStatistics(stat);
-        }
     }
 
     public void clearAdoptionData() {
         this.curAdoptionCount = 0;
         this.curAdopteeList = null;
         this.histAdoptionCountMap = null;
-        this.initialize();
+        this.initialize(this.model);
     }
 
     private synchronized void incrementAdoptionCount() {
+        Preconditions.checkNotNull(model);
+        Preconditions.checkNotNull(this.curAdoptionCount);
+
         this.curAdoptionCount++;
         this.histAdoptionCountMap.put(model.getCurrentModelTime(), this.curAdoptionCount);
     }
@@ -255,8 +188,9 @@ public class UnstructuredClass implements IClass {
         }
     }
 
-    public IStatistic getChangeStatistic() {
-        return new ClassStatistic(this, model.getCurrentModelTime());
-    }
-}
 
+    public IStatistic getChangeStatistic() {
+        return new TraitStatistic(this.owningDimension, model.getCurrentModelTime());
+    }
+
+}

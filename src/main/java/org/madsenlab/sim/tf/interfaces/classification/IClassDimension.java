@@ -9,6 +9,8 @@
 
 package org.madsenlab.sim.tf.interfaces.classification;
 
+import org.madsenlab.sim.tf.interfaces.ITrait;
+import org.madsenlab.sim.tf.interfaces.ITraitDimension;
 import org.madsenlab.sim.tf.utils.TraitPredicate;
 
 import java.util.Set;
@@ -21,10 +23,18 @@ import java.util.Set;
  * Time: 11:42 AM
  */
 
-public interface IClassDimension {
+public interface IClassDimension<T> {
 
-    // TODO:  Add dimension modes
-    // TODO:  Add human readable dimension description (for doing simulations on real situations)
+    public ITraitDimension getTrackedTraitDimension();
+
+    /**
+     * The name of a class dimension is simply the name of the underlying trait dimension that it tracks.
+     * For meaningful class dimension names, make sure you set the trait dimension name at creation.
+     *
+     * @return
+     */
+    public String getClassDimensionName();
+
     // TODO:  Do we need remove/revise dimension modes?  Maybe second round.
 
     public Integer getNumDimensionModes();
@@ -58,5 +68,6 @@ public interface IClassDimension {
 
     public Set<IClassDimensionMode> getModeSet();
 
+    public IClassDimensionMode getModeForTraitValue(ITrait<T> trait);
 
 }
