@@ -27,8 +27,7 @@ public class SimpleAgentTagProvider implements Provider<IAgentTag> {
     private ISimulationModel model;
 
     public IAgentTag get() {
-        IAgentTag tag = new SimpleAgentTag();
-        tag.setSimulationModel(model);
+        IAgentTag tag = new SimpleAgentTag(this.model);
         return tag;
     }
 }

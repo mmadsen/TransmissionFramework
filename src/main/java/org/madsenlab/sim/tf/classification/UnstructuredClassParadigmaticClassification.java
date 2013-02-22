@@ -35,6 +35,7 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
     private Map<IAgent, IClass> memoClassIdentificationForAgent;
     private Map<Integer, IClass> indexModesToClass;
     private Map<ITraitDimension, IClassDimension> indexTraitDimensionsToClassDimension;
+    private Integer highestClassIDWithinClassification = 0;
 
 
     public UnstructuredClassParadigmaticClassification(ISimulationModel model) {
@@ -75,7 +76,6 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
 
     @Override
     public void initializeClasses() {
-        // Precondition is that the classDimensionSet.size() > 1
 
         // Make an array of sets of modes
         int numDimensions = this.classDimensionSet.size();
@@ -93,8 +93,9 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
         // For each element of the cartesian product, create an IClass object, add to the classSet
         // Register the IClass object into the index of hashcodes, so that we can look up a class by a list of its modes.
         for (List<IClassDimensionMode> modeList : setAllModeCombinations) {
-            IClass newClass = new UnstructuredClass(this.model, modeList);
-            log.debug("Creating class: " + newClass.getClassDescription() + " with unique ID: " + newClass.getUniqueID());
+            this.highestClassIDWithinClassification++;
+            IClass newClass = new UnstructuredClass(this.model, modeList, this.highestClassIDWithinClassification);
+            log.debug("Creating class: " + this.highestClassIDWithinClassification + " description: " + newClass.getClassDescription() + " with mode hashcode: " + newClass.getUniqueID());
             this.classSet.add(newClass);
             this.indexModesToClass.put(newClass.getUniqueID(), newClass);
         }
@@ -107,6 +108,24 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
     }
 
     @Override
+    public Map<Integer, IClass> getTableClassIDandClass() {
+        Map<Integer, IClass> classMap = new HashMap<Integer, IClass>();
+        for (IClass cz : this.classSet) {
+            classMap.put(cz.getClassIDWithinClassification(), cz);
+        }
+        return classMap;
+    }
+
+    @Override
+    public Map<Integer, String> getTableClassIDandDescription() {
+        Map<Integer, String> classMap = new HashMap<Integer, String>();
+        for (IClass cz : this.classSet) {
+            classMap.put(cz.getClassIDWithinClassification(), cz.getClassDescription());
+        }
+        return classMap;
+    }
+
+    @Override
     public Map<IClass, Integer> getCurGlobalClassCounts() {
         Map<IClass, Integer> countMap = new HashMap<IClass, Integer>();
         for (IClass cz : this.classSet) {
@@ -116,22 +135,53 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
         return countMap;
     }
 
-    // TODO:  class counts by tag
     @Override
     public Map<IClass, Integer> getCurClassCountByTag(IAgentTag tag) {
-        return null;
+        Map<IClass, Integer> countMap = new HashMap<IClass, Integer>();
+        for (IClass cz : this.classSet) {
+            countMap.put(cz, cz.getCurrentAdoptionCountForTag(tag));
+        }
+
+        return countMap;
     }
 
-    // TODO:  class freq
     @Override
     public Map<IClass, Double> getCurGlobalClassFrequencies() {
-        return null;
+        Map<IClass, Double> freqMap = new HashMap<IClass, Double>();
+
+        Integer popsize = this.model.getPopulation().getCurrentPopulationSize();
+        if (popsize == 0) {
+            throw new IllegalStateException("getCurGlobalTraitFrequencies called with empty population");
+        }
+
+        for (IClass cz : this.classSet) {
+
+            double freq = (double) cz.getCurrentAdoptionCount() / (double) popsize;
+            freqMap.put(cz, freq);
+
+        }
+        return freqMap;
     }
 
-    // TODO:  class freq by tag
     @Override
     public Map<IClass, Double> getCurClassFreqByTag(IAgentTag tag) {
-        return null;
+        Map<IClass, Double> freqMap = new HashMap<IClass, Double>();
+        int totalAdoptionCount = 0;
+
+        // first we need to know the total number of agents
+
+        totalAdoptionCount = tag.curAgentCount();
+        log.info("total adoption count: " + totalAdoptionCount);
+
+        for (IClass cz : this.classSet) {
+            int adoptionCount = cz.getCurrentAdoptionCountForTag(tag);
+            log.info("adoptionCount: " + adoptionCount);
+            double freq = (double) adoptionCount / (double) totalAdoptionCount;
+            freqMap.put(cz, freq);
+
+        }
+
+        return freqMap;
     }
 
 
@@ -271,6 +321,11 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
         }
 
         @Override
+        public Integer getClassIDWithinClassification() {
+            return 0;
+        }
+
+        @Override
         public Set<IClassDimensionMode> getModesDefiningClass() {
             return null;
         }
@@ -323,6 +378,11 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
         @Override
         public int getUniqueID() {
             return 0;
+        }
+
+        @Override
+        public int compareTo(IClass otherClass) {
+            return -1;
         }
 
         @Override

@@ -28,6 +28,17 @@ import java.util.Set;
 public interface IClass extends IStatisticsSubject {
 
     /**
+     * Primary key for the class within the classification, since class descriptions are meant to be
+     * human readable summaries of the underlying dimension/modes.
+     * <p/>
+     * This is not changeable in the public API, and is set by constructor.
+     *
+     * @return Integer
+     */
+
+    public Integer getClassIDWithinClassification();
+
+    /**
      * @return modes - A List of IClassDimensionModes representing the definition of this class as a
      *         combination of modes along N different dimensions.
      */
@@ -112,4 +123,11 @@ public interface IClass extends IStatisticsSubject {
 
     public int getUniqueID();
 
+    /**
+     * Compares class descriptions, to get a consistent ordering in log files
+     *
+     * @return integer
+     */
+
+    public int compareTo(IClass otherClass);
 }

@@ -25,15 +25,14 @@ import org.madsenlab.sim.tf.interfaces.classification.IClass;
 import org.madsenlab.sim.tf.interfaces.classification.IClassDimension;
 import org.madsenlab.sim.tf.interfaces.classification.IClassIdentificationEngine;
 import org.madsenlab.sim.tf.interfaces.classification.IClassification;
+import org.madsenlab.sim.tf.structure.SimpleAgentTag;
 import org.madsenlab.sim.tf.test.util.MultidimensionalAgentModule;
 import org.madsenlab.sim.tf.traits.InfiniteAllelesUnitIntervalTraitFactory;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitDimension;
 import org.madsenlab.sim.tf.utils.RealTraitIntervalPredicate;
 import org.madsenlab.sim.tf.utils.TraitPredicate;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -60,6 +59,8 @@ public class UnstructuredClassParadigmaticClassificationTest extends Multidimens
     private ITraitFactory traitFactory2;
     private ITraitDimension dim1;
     private ITraitDimension dim2;
+    private IAgentTag tag1;
+    private IAgentTag tag2;
 
 
     @Before
@@ -69,7 +70,7 @@ public class UnstructuredClassParadigmaticClassificationTest extends Multidimens
         // specifically we don't want to see repeatable random numbers here
         model.initializeRNG(false);
         this.classDimensionSet = new HashSet<IClassDimension>();
-        this.setupCommonData();
+        this.setupClassification();
     }
 
 
@@ -80,7 +81,7 @@ public class UnstructuredClassParadigmaticClassificationTest extends Multidimens
     }
 
 
-    private void setupCommonData() {
+    private void setupClassification() {
         // Set up two predicates which divide the unit interval into halves
         TraitPredicate pred0 = new RealTraitIntervalPredicate(0.0, true, 0.5, true, "Lower");
         TraitPredicate pred1 = new RealTraitIntervalPredicate(0.5, false, 1.0, true, "Upper");
@@ -128,13 +129,18 @@ public class UnstructuredClassParadigmaticClassificationTest extends Multidimens
         assertEquals(expected, observed);
     }
 
+
     @Test
     public void testPrintClassDefinitions() throws Exception {
         // Doesn't test anything, just gives a window into the class definitions
         log.info("entering testPrintClassDefinitions -- NOT A TEST");
         Set<IClass> classSet = this.classification.getClasses();
-        for (IClass iclass : classSet) {
-            log.info("Class definition: " + iclass.getClassDescription());
+
+        Map<Integer, String> classMap = this.classification.getTableClassIDandDescription();
+
+
+        for (Integer id : classMap.keySet()) {
+            log.info("Class id: " + id + " description: " + classMap.get(id));
         }
         log.info("exiting testPrintClassDefinitions -- NOT A TEST");
         assertTrue(true);
@@ -219,35 +225,164 @@ public class UnstructuredClassParadigmaticClassificationTest extends Multidimens
         assertEquals(maxClassCount, numAgents);
     }
 
-    /*@Test
-    public void testGetCurGlobalClassCounts() throws Exception {
-        assertTrue(false);
+
+    @Test
+    public void testClassAdoptionFrequencies() throws Exception {
+        log.info("entering testClassAdoptionFrequencies");
+        int numAgents = 10;
+        Set<IAgent> agentSetLow = new HashSet<IAgent>();
+        Set<IAgent> agentSetHigh = new HashSet<IAgent>();
+
+        /*
+            Scenario:  create 10 agents.  3 of them will adopt traits which place them in one class,
+            7 will adopt traits which place them in another class.  We update the population
+            for class membership, ask for class frequencies, and:
+
+            1.  We ought to have four classes in the frequency map
+            2.  Two of the classes ought to have 0.0 for frequencies
+            3.  One class ought to have 0.3
+            4.  One class ought to have 0.7
+         */
+
+        List<Double> resultList = new ArrayList<Double>();
+        resultList.add(0.0);
+        resultList.add(0.0);
+        resultList.add(0.3);
+        resultList.add(0.7);
+
+        for (int i = 0; i < 3; i++) {
+            agentSetLow.add(this.model.getPopulation().createAgent());
+        }
+        for (int i = 0; i < 7; i++) {
+            agentSetHigh.add(this.model.getPopulation().createAgent());
+        }
+
+        ITrait traitLowDim1 = this.dim1.getNewVariantWithSpecifiedValue(0.25);
+        ITrait traitHighDim2 = this.dim2.getNewVariantWithSpecifiedValue(0.90);
+
+        ITrait traitHighDim1 = this.dim1.getNewVariantWithSpecifiedValue(0.75);
+        ITrait traitLowDim2 = this.dim2.getNewVariantWithSpecifiedValue(0.25);
+
+        for (IAgent agent : agentSetLow) {
+            traitLowDim1.adopt(agent);
+            traitHighDim2.adopt(agent);
+        }
+
+        for (IAgent agent : agentSetHigh) {
+            traitHighDim1.adopt(agent);
+            traitLowDim2.adopt(agent);
+        }
+
+
+        // Now update the class counts for the population
+        this.classification.updateClassForPopulation(this.model.getPopulation());
+
+
+        Map<IClass, Double> freqMap = this.classification.getCurGlobalClassFrequencies();
+        List<Double> freqList = new ArrayList<Double>(freqMap.values());
+        Collections.sort(freqList);
+
+        log.info("Observed: " + freqList.toString() + " expected: " + resultList.toString());
+
+        assertEquals(freqList, resultList);
+        log.info("exiting testClassAdoptionFrequencies");
+
     }
 
     @Test
-    public void testGetCurClassCountByTag() throws Exception {
-        assertTrue(false);
+    public void testClassCountsAndFreqByTag() throws Exception {
+        log.info("entering testClassCountsAndFreqByTag");
+        int numAgents = 10;
+        Set<IAgent> agentSetLow = new HashSet<IAgent>();
+        Set<IAgent> agentSetHigh = new HashSet<IAgent>();
+        this.tag1 = new SimpleAgentTag(this.model);
+        this.tag1.setTagName("tag1");
+
+
+        /*
+            Scenario:  create 10 agents.  3 of them will adopt traits which place them in one class,
+            7 will adopt traits which place them in another class.  We update the population
+            for class membership, ask for class frequencies, and:
+
+            1.  We ought to have four classes in the frequency map
+            2.  Two of the classes ought to have 0.0 for frequencies
+            3.  One class ought to have 0.3
+            4.  One class ought to have 0.7
+
+            Tag 3 of the agents in each class with a single agent tag
+
+            Examine class counts by tag, answer ought to be 3 and 3
+            Examine class freq by tag, answer ought to be 0.5 and 0.5
+
+         */
+
+        List<Integer> expectedCountList = new ArrayList<Integer>();
+        expectedCountList.add(0);
+        expectedCountList.add(0);
+        expectedCountList.add(3);
+        expectedCountList.add(3);
+
+        List<Double> expectedFreqList = new ArrayList<Double>();
+        expectedFreqList.add(0.0);
+        expectedFreqList.add(0.0);
+        expectedFreqList.add(0.5);
+        expectedFreqList.add(0.5);
+
+
+        for (int i = 0; i < 3; i++) {
+            IAgent agent = this.model.getPopulation().createAgent();
+            agentSetLow.add(agent);
+            this.tag1.registerAgent(agent);
+        }
+        for (int i = 0; i < 7; i++) {
+            agentSetHigh.add(this.model.getPopulation().createAgent());
+        }
+
+        Iterator<IAgent> iter = agentSetHigh.iterator();
+
+        for (int i = 0; i < 3; i++) {
+            IAgent agent = iter.next();
+            this.tag1.registerAgent(agent);
+        }
+
+        ITrait traitLowDim1 = this.dim1.getNewVariantWithSpecifiedValue(0.25);
+        ITrait traitHighDim2 = this.dim2.getNewVariantWithSpecifiedValue(0.90);
+
+        ITrait traitHighDim1 = this.dim1.getNewVariantWithSpecifiedValue(0.75);
+        ITrait traitLowDim2 = this.dim2.getNewVariantWithSpecifiedValue(0.25);
+
+        for (IAgent agent : agentSetLow) {
+            traitLowDim1.adopt(agent);
+            traitHighDim2.adopt(agent);
+        }
+
+        for (IAgent agent : agentSetHigh) {
+            traitHighDim1.adopt(agent);
+            traitLowDim2.adopt(agent);
+        }
+
+
+        // Now update the class counts for the population
+        this.classification.updateClassForPopulation(this.model.getPopulation());
+
+
+        Map<IClass, Integer> countMap = this.classification.getCurClassCountByTag(this.tag1);
+        Map<IClass, Double> freqMap = this.classification.getCurClassFreqByTag(this.tag1);
+        List<Integer> countList = new ArrayList<Integer>(countMap.values());
+        List<Double> freqList = new ArrayList<Double>(freqMap.values());
+        Collections.sort(countList);
+        Collections.sort(freqList);
+
+        log.info("Observed: " + countList.toString() + " expected: " + expectedCountList.toString());
+        log.info("Observed: " + freqList.toString() + " expected: " + expectedFreqList.toString());
+
+
+        assertEquals(countList, expectedCountList);
+        assertEquals(freqList, expectedFreqList);
+
+        log.info("exiting testClassCountsAndFreqByTag");
+
     }
 
-    @Test
-    public void testGetCurGlobalClassFrequencies() throws Exception {
-        assertTrue(false);
-    }
 
-    @Test
-    public void testGetCurClassFreqByTag() throws Exception {
-        assertTrue(false);
-    }
-
-
-
-    @Test
-    public void testUpdateClassForAgent() throws Exception {
-        assertTrue(false);
-    }
-
-    @Test
-    public void testUpdateClassForPopulation() throws Exception {
-        assertTrue(false);
-    }*/
 }

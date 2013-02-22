@@ -29,17 +29,18 @@ public class SimpleAgentTag implements IAgentTag {
     private Logger log;
     private AgentTagType type;
 
-    public SimpleAgentTag() {
-        this.initialize();
+    public SimpleAgentTag(ISimulationModel model) {
+        this.initialize(model);
     }
 
     @Inject
     public void setSimulationModel(ISimulationModel model) {
-        this.model = model;
-        log = this.model.getModelLogger(this.getClass());
+        this.initialize(model);
     }
 
-    private void initialize() {
+    private void initialize(ISimulationModel model) {
+        this.model = model;
+        log = this.model.getModelLogger(this.getClass());
         this.curAgentCount = 0;
         this.agentList = Collections.synchronizedList(new ArrayList<IAgent>());
         this.histAgentCountMap = Collections.synchronizedMap(new HashMap<Integer, Integer>());

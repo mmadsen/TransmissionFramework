@@ -78,6 +78,12 @@ public interface IClassification extends IStatisticsSubject {
      */
     public Set<IClass> getClasses();
 
+    public Map<Integer, IClass> getTableClassIDandClass();
+
+    public Map<Integer, String> getTableClassIDandDescription();
+
+    /*  Statistical Methods */
+
     public Map<IClass, Integer> getCurGlobalClassCounts();
 
     public Map<IClass, Integer> getCurClassCountByTag(IAgentTag tag);

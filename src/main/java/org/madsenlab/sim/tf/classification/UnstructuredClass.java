@@ -10,7 +10,6 @@
 package org.madsenlab.sim.tf.classification;
 
 import com.google.common.base.Preconditions;
-import com.google.inject.Inject;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.analysis.ClassStatistic;
@@ -40,15 +39,8 @@ public class UnstructuredClass implements IClass {
     private Integer traitLifetime = 0;
     private Integer tickTraitIntroduced;
     private Integer tickTraitExited;
-    private int objectID;
-
-    @Inject
-    public void setSimulationModel(ISimulationModel m) {
-        this.initialize(m);
-    }
-
-
-
+    private int uniqueObjectHashcode;
+    private int classIDWithinClassification;
 
     /*
    * Two constructors, because sometimes we'll have an actual Set<Mode>
@@ -56,24 +48,25 @@ public class UnstructuredClass implements IClass {
    * List<Mode>
    */
 
-    public UnstructuredClass(ISimulationModel model, Set<IClassDimensionMode> definingModes) {
-        this.initialize(model);
+    public UnstructuredClass(ISimulationModel model, Set<IClassDimensionMode> definingModes, Integer classID) {
+        this.initialize(model, classID);
         this.definingModeSet = new HashSet<IClassDimensionMode>(definingModes);
         this.setObjectID();
     }
 
-    public UnstructuredClass(ISimulationModel model, List<IClassDimensionMode> listDefiningModes) {
-        this.initialize(model);
+    public UnstructuredClass(ISimulationModel model, List<IClassDimensionMode> listDefiningModes, Integer classID) {
+        this.initialize(model, classID);
         this.definingModeSet = new HashSet<IClassDimensionMode>(listDefiningModes);
         this.setObjectID();
     }
 
     private void setObjectID() {
-        this.objectID = this.definingModeSet.hashCode();
+        this.uniqueObjectHashcode = this.definingModeSet.hashCode();
     }
 
-    private void initialize(ISimulationModel model) {
+    private void initialize(ISimulationModel model, Integer classID) {
         this.model = model;
+        this.classIDWithinClassification = classID;
         this.tickTraitIntroduced = this.model.getCurrentModelTime();
         log = model.getModelLogger(this.getClass());
         this.curAdoptionCount = 0;
@@ -83,6 +76,11 @@ public class UnstructuredClass implements IClass {
         this.observers = Collections.synchronizedList(new ArrayList<IStatisticsObserver>());
     }
 
+
+    @Override
+    public Integer getClassIDWithinClassification() {
+        return this.classIDWithinClassification;
+    }
 
     @Override
     public Set<IClassDimensionMode> getModesDefiningClass() {
@@ -114,13 +112,14 @@ public class UnstructuredClass implements IClass {
 
     public Integer getCurrentAdoptionCountForTag(IAgentTag tag) {
         Preconditions.checkNotNull(tag, "Retrieving an adoption count by tag requires a non-null reference to an IAgentTag object");
-        return this.curAdoptionByTag.get(tag);
+        Integer count = this.curAdoptionByTag.get(tag);
+        if (count == null) {
+            count = 0;
+        }
+        return count;
     }
 
     public void adopt(IAgent agentAdopting) {
-
-        // TODO:  Do agents need a method to keep track of their current class?  see agentAdopting.adoptTrait().
-        // TODO:  Needs adaptation for classes, copied directly from UnstruturedTrait
 
         // add the agent to the list for this trait
         // then register this trait with the agent adopting
@@ -198,7 +197,12 @@ public class UnstructuredClass implements IClass {
 
     @Override
     public int getUniqueID() {
-        return this.objectID;
+        return this.uniqueObjectHashcode;
+    }
+
+    @Override
+    public int compareTo(IClass otherClass) {
+        return this.getClassDescription().compareTo(otherClass.getClassDescription());
     }
 
     public void attach(IStatisticsObserver obs) {
@@ -244,7 +248,7 @@ public class UnstructuredClass implements IClass {
         this.curAdoptionCount = 0;
         this.curAdopteeList = null;
         this.histAdoptionCountMap = null;
-        this.initialize(this.model);
+        this.initialize(this.model, this.classIDWithinClassification);
     }
 
     private synchronized void incrementAdoptionCount() {
