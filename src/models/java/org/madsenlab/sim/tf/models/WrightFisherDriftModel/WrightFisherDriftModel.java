@@ -10,7 +10,7 @@
 package org.madsenlab.sim.tf.models.WrightFisherDriftModel;
 
 import org.apache.commons.cli.*;
-import org.madsenlab.sim.tf.analysis.*;
+import org.madsenlab.sim.tf.observers.*;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.models.AbstractSimModel;
@@ -232,7 +232,7 @@ public class WrightFisherDriftModel extends AbstractSimModel {
             agent.fireRules();
         }
 
-        // Now do any analysis or observation on the results of this transmission step
+        // Now do any observers or observation on the results of this transmission step
         this.dimension.notifyObservers();
 
         // Now run through classification identification engines, and update class membership

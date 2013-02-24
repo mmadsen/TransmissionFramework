@@ -7,7 +7,7 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.analysis;
+package org.madsenlab.sim.tf.observers;
 
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.*;
@@ -25,24 +25,22 @@ import java.util.*;
  */
 
 
-public class TraitOccurrenceObserver implements IStatisticsObserver<ITraitDimension> {
+public class GlobalTraitFrequencyObserver implements IStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
     private Map<ITrait, Double> traitFreqMap;
     private Integer lastTimeIndexUpdated;
     private PrintWriter pw;
-    private Map<Integer, Map<ITrait, Integer>> histTraitCount;
+    private Map<Integer, Map<ITrait, Double>> histTraitFreq;
 
-    public TraitOccurrenceObserver(ISimulationModel m) {
+    public GlobalTraitFrequencyObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
-        this.histTraitCount = new HashMap<Integer, Map<ITrait, Integer>>();
+        this.histTraitFreq = new HashMap<Integer, Map<ITrait, Double>>();
 
-
-        String traitFreqLogFile = this.model.getModelConfiguration().getProperty("trait-occurrence-logfile");
+        String traitFreqLogFile = this.model.getModelConfiguration().getProperty("global-trait-frequency-logfile");
         log.debug("traitFreqLogFile: " + traitFreqLogFile);
         this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(traitFreqLogFile);
-
     }
 
 
@@ -50,15 +48,23 @@ public class TraitOccurrenceObserver implements IStatisticsObserver<ITraitDimens
         log.trace("entering updateStatistics");
         this.lastTimeIndexUpdated = stat.getTimeIndex();
         ITraitDimension dim = stat.getTarget();
-
-        Map<ITrait, Integer> countMap = dim.getCurGlobalTraitCounts();
-        this.histTraitCount.put(this.lastTimeIndexUpdated, countMap);
+        Map<ITrait, Double> freqMap = dim.getCurGlobalTraitFrequencies();
+        this.histTraitFreq.put(this.lastTimeIndexUpdated, freqMap);
     }
 
     public void perStepAction() {
         log.trace("entering perStepAction");
+
         //log.trace("histTraitFreq: " + this.histTraitFreq);
         this.printFrequencies();
+
+        Integer tick = this.model.getCurrentModelTime();
+        // Every 100 ticks, write historical data to disk and flush it to keep memory usage and performance reasonable.
+        if (tick % 100 == 0) {
+            this.logFrequencies();
+            this.histTraitFreq.clear();
+        }
+
 
     }
 
@@ -79,46 +85,48 @@ public class TraitOccurrenceObserver implements IStatisticsObserver<ITraitDimens
     private void printFrequencies() {
         Integer time = this.model.getCurrentModelTime();
 
-        Map<ITrait, Integer> countMap = this.histTraitCount.get(time);
+        Map<ITrait, Double> freqMap = this.histTraitFreq.get(time);
         //log.debug("printFrequencies - getting freqs for time: " + time + " : " + freqMap);
 
-        StringBuffer sb = prepareFrequencyLogString(time, countMap);
+        StringBuffer sb = prepareFrequencyLogString(time, freqMap);
         log.debug(sb.toString());
         sb = null;
 
     }
 
-    private StringBuffer prepareFrequencyLogString(Integer time, Map<ITrait, Integer> countMap) {
+    private StringBuffer prepareFrequencyLogString(Integer time, Map<ITrait, Double> freqMap) {
         //log.debug("prepare string: freqMap: " + freqMap);
         Integer numNonZeroTraits = 0;
         StringBuffer sb = new StringBuffer();
-        Set<ITrait> keys = countMap.keySet();
+        Set<ITrait> keys = freqMap.keySet();
         List<ITrait> sortedKeys = new ArrayList<ITrait>(keys);
         Collections.sort(sortedKeys, new TraitIDComparator());
         sb.append(time);
+        sb.append(",");
         for (ITrait aTrait : sortedKeys) {
+            double freq = freqMap.get(aTrait);
+            sb.append(aTrait.getTraitID());
+            sb.append(":");
+            sb.append(freq);
             sb.append(",");
-            sb.append(countMap.get(aTrait));
-            if (countMap.get(aTrait) != 0) {
+            if (freq != 0) {
                 numNonZeroTraits++;
             }
         }
-        sb.append(",");
         sb.append(numNonZeroTraits);
         return sb;
     }
 
     private void logFrequencies() {
         log.trace("entering logFrequencies");
-        Set<Integer> keys = this.histTraitCount.keySet();
+        Set<Integer> keys = this.histTraitFreq.keySet();
         List<Integer> sortedKeys = new ArrayList<Integer>(keys);
         Collections.sort(sortedKeys);
         for (Integer time : sortedKeys) {
-            Map<ITrait, Integer> countMap = this.histTraitCount.get(time);
-            StringBuffer sb = prepareFrequencyLogString(time, countMap);
+            Map<ITrait, Double> freqMap = this.histTraitFreq.get(time);
+            StringBuffer sb = prepareFrequencyLogString(time, freqMap);
             sb.append('\n');
             this.pw.write(sb.toString());
-            //this.pw.flush();
         }
 
     }

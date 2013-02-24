@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
-  ~ Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+  ~ Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
   ~
   ~ This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
   ~
@@ -9,23 +9,59 @@
   -->
 <configuration>
     <model>
-        <runparameters config-class="org.madsenlab.sim.tf.config.RunParameters"
-                       theta="2.0" numagents="2000" runlength="10000"/>
+
+        <runparameters config-class="org.madsenlab.sim.tf.config.RunParameters">
+            <numagents>2000</numagents>
+            <simlength>10000</simlength>
+            <mixingtime>1000</mixingtime>
+        </runparameters>
+
         <rules>
-            <innovationrule config-class="org.madsenlab.sim.tf.config.rules.InnovationRuleParameters"
-                    />
+            <rule id="001" ruleclass="org.madsenlab.sim.tf.rules.CopyOrMutateDecisionRule"
+                  config-class="org.madsenlab.sim.tf.config.InnovationRuleConfiguration"
+                  innovation-rate="0.0001"/>
+            <rule subrule-of="001" id="002" ruleclass="org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule"
+                  config-class="org.madsenlab.sim.tf.config.InnovationRuleConfiguration"/>
+            <rule subrule-of="001" id="003" ruleclass="org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule"
+                  config-class="org.madsenlab.sim.tf.config.CopyingRuleConfiguration"
+                  ruletype="org.madsenlab.sim.tf.utils.TraitCopyingMode.PREVIOUS"/>
+
         </rules>
     </model>
+
+    <!-- Needs thinking about log files and DB logging -->
     <observers>
-        <traitobservers>
-            <traitobserver config-class="org.madsenlab.sim.tf.config.TraitObserverParameters"
-                           ewens-sample-size="100"/>
-        </traitobservers>
-        <traitspace>
+        <observer config-class="org.madsenlab.sim.tf.config.EwensSampleConfiguration"
+                  observer-class="org.madsenlab.sim.tf.observers.EwensSampleFullPopulationObserver"
+                  sample-size="100"/>
 
-        </traitspace>
-        <classifications>
-
-        </classifications>
     </observers>
+
+    <statespace>
+        <traitdimension config-class="org.madsenlab.sim.tf.config.TraitDimensionConfiguration"
+                        type="Double" traitfactory="org.madsenlab.sim.tf.traits.InfiniteAllelesUnitIntervalTraitFactory"
+                        name="BladeLength" id="dim001"/>
+        <traitdimension config-class="org.madsenlab.sim.tf.config.TraitDimensionConfiguration"
+                        type="Double" traitfactory="org.madsenlab.sim.tf.traits.InfiniteAllelesUnitIntervalTraitFactory"
+                        name="NotchType" id="dim002"/>
+    </statespace>
+
+    <classifications>
+        <classification config-class="org.madsenlab.sim.tf.config.ClassificationSpecification">
+            <name>"FineGrainedProjectilePointClasses</name>
+            <dimensions>
+                <dimension name="BladeLength" maps="dim001" modetype="specified">
+                    <modelist>
+                        <mode predicate="[0.0,0.1)"/>
+                        <mode predicate="[0.1,0.3)"/>
+                        <mode predicate="[0.3,0.5)"/>
+                        <mode predicate="[0.5,0.7)"/>
+                        <mode predicate="[0.7,1.0]"/>
+                    </modelist>
+                </dimension>
+                <dimension name="NotchType" maps="dim002" modetype="random" nummodes="8"/>
+            </dimensions>
+        </classification>
+    </classifications>
+
 </configuration>

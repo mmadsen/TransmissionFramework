@@ -12,7 +12,7 @@ package org.madsenlab.sim.tf.traits;
 import com.google.inject.Inject;
 import com.google.inject.internal.Preconditions;
 import org.apache.log4j.Logger;
-import org.madsenlab.sim.tf.analysis.TraitStatistic;
+import org.madsenlab.sim.tf.observers.TraitStatistic;
 import org.madsenlab.sim.tf.interfaces.*;
 
 import java.util.*;

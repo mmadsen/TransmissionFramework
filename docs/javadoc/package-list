@@ -1,5 +1,5 @@
 org.madsenlab.sim.tf.agent
-org.madsenlab.sim.tf.analysis
+org.madsenlab.sim.tf.observers
 org.madsenlab.sim.tf.app
 org.madsenlab.sim.tf.classification
 org.madsenlab.sim.tf.config

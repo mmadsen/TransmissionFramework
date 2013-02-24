@@ -12,7 +12,7 @@ package org.madsenlab.sim.tf.traits;
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.madsenlab.sim.tf.analysis.TraitStatistic;
+import org.madsenlab.sim.tf.observers.TraitStatistic;
 import org.madsenlab.sim.tf.interfaces.*;
 
 import java.util.*;

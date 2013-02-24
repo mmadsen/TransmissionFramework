@@ -12,7 +12,7 @@ package org.madsenlab.sim.tf.classification;
 import com.google.common.base.Preconditions;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.log4j.Logger;
-import org.madsenlab.sim.tf.analysis.ClassStatistic;
+import org.madsenlab.sim.tf.observers.ClassStatistic;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.interfaces.classification.IClass;
 import org.madsenlab.sim.tf.interfaces.classification.IClassDimensionMode;

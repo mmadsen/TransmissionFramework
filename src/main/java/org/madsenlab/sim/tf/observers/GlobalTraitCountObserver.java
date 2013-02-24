@@ -7,7 +7,7 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.analysis;
+package org.madsenlab.sim.tf.observers;
 
 import hep.aida.ref.Converter;
 import hep.aida.ref.Histogram1D;

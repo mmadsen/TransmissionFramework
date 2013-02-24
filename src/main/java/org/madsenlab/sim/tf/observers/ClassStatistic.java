@@ -7,10 +7,10 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.analysis;
+package org.madsenlab.sim.tf.observers;
 
-import org.madsenlab.sim.tf.interfaces.ITraitDimension;
 import org.madsenlab.sim.tf.interfaces.IStatistic;
+import org.madsenlab.sim.tf.interfaces.classification.IClass;
 
 /**
  * CLASS DESCRIPTION
@@ -20,17 +20,17 @@ import org.madsenlab.sim.tf.interfaces.IStatistic;
  * Time: 12:34:30 PM
  */
 
-public class TraitStatistic implements IStatistic<ITraitDimension> {
-    private ITraitDimension dim;
+public class ClassStatistic implements IStatistic<IClass> {
+    private IClass classInstance;
     private Integer timeIndex;
 
-    public TraitStatistic(ITraitDimension aDimension, Integer time) {
-        this.dim = aDimension;
+    public ClassStatistic(IClass c, Integer time) {
+        this.classInstance = c;
         this.timeIndex = time;
     }
 
-    public ITraitDimension getTarget() {
-        return this.dim;
+    public IClass getTarget() {
+        return this.classInstance;
     }
 
     public Integer getTimeIndex() {

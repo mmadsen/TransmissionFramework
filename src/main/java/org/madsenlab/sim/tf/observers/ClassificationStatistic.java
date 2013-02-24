@@ -7,30 +7,30 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.analysis;
+package org.madsenlab.sim.tf.observers;
 
 import org.madsenlab.sim.tf.interfaces.IStatistic;
-import org.madsenlab.sim.tf.interfaces.classification.IClass;
+import org.madsenlab.sim.tf.interfaces.classification.IClassification;
 
 /**
  * CLASS DESCRIPTION
  * <p/>
  * User: mark
- * Date: Aug 8, 2010
- * Time: 12:34:30 PM
+ * Date: 6/22/12
+ * Time: 3:56 PM
  */
 
-public class ClassStatistic implements IStatistic<IClass> {
-    private IClass classInstance;
+public class ClassificationStatistic implements IStatistic<IClassification> {
+    private IClassification classification;
     private Integer timeIndex;
 
-    public ClassStatistic(IClass c, Integer time) {
-        this.classInstance = c;
+    public ClassificationStatistic(IClassification cf, Integer time) {
+        this.classification = cf;
         this.timeIndex = time;
     }
 
-    public IClass getTarget() {
-        return this.classInstance;
+    public IClassification getTarget() {
+        return this.classification;
     }
 
     public Integer getTimeIndex() {

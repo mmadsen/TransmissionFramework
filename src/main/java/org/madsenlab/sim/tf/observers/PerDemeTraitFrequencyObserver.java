@@ -7,7 +7,7 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.analysis;
+package org.madsenlab.sim.tf.observers;
 
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.*;
@@ -25,46 +25,53 @@ import java.util.*;
  */
 
 
-public class GlobalTraitFrequencyObserver implements IStatisticsObserver<ITraitDimension> {
+public class PerDemeTraitFrequencyObserver implements IStatisticsObserver<ITraitDimension> {
     private ISimulationModel model;
     private Logger log;
     private Map<ITrait, Double> traitFreqMap;
     private Integer lastTimeIndexUpdated;
     private PrintWriter pw;
     private Map<Integer, Map<ITrait, Double>> histTraitFreq;
+    private IAgentTag demeTag;
 
-    public GlobalTraitFrequencyObserver(ISimulationModel m) {
+    public PerDemeTraitFrequencyObserver(ISimulationModel m, IAgentTag demeTag) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
         this.histTraitFreq = new HashMap<Integer, Map<ITrait, Double>>();
+        this.demeTag = demeTag;
+        log.debug("demeTag for this observer: " + this.demeTag);
 
-        String traitFreqLogFile = this.model.getModelConfiguration().getProperty("global-trait-frequency-logfile");
-        log.debug("traitFreqLogFile: " + traitFreqLogFile);
-        this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(traitFreqLogFile);
+        StringBuffer traitFreqLogFile = new StringBuffer();
+        traitFreqLogFile.append(this.model.getModelConfiguration().getProperty("global-trait-frequency-logfile"));
+        traitFreqLogFile.append("-deme-");
+        traitFreqLogFile.append(demeTag.getTagName());
+        log.debug("traitFreqLogFile: " + traitFreqLogFile.toString());
+        this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(traitFreqLogFile.toString());
     }
 
 
     public void updateStatistics(IStatistic<ITraitDimension> stat) {
-        log.trace("entering updateStatistics");
+        log.trace("entering updateStatistics for demeTag: " + this.demeTag);
         this.lastTimeIndexUpdated = stat.getTimeIndex();
         ITraitDimension dim = stat.getTarget();
-        Map<ITrait, Double> freqMap = dim.getCurGlobalTraitFrequencies();
+        Map<ITrait, Double> freqMap = dim.getCurTraitFreqByTag(this.demeTag);
+
+        //log.trace("freqMap after updateStatistics: " + freqMap);
+
         this.histTraitFreq.put(this.lastTimeIndexUpdated, freqMap);
     }
 
     public void perStepAction() {
         log.trace("entering perStepAction");
-
         //log.trace("histTraitFreq: " + this.histTraitFreq);
         this.printFrequencies();
 
         Integer tick = this.model.getCurrentModelTime();
-        // Every 100 ticks, write historical data to disk and flush it to keep memory usage and performance reasonable.
+        // every 100 ticks, write historical data to disk and flush it
         if (tick % 100 == 0) {
             this.logFrequencies();
             this.histTraitFreq.clear();
         }
-
 
     }
 

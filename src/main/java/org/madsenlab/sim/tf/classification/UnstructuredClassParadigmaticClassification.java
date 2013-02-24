@@ -12,7 +12,7 @@ package org.madsenlab.sim.tf.classification;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import org.apache.log4j.Logger;
-import org.madsenlab.sim.tf.analysis.ClassificationStatistic;
+import org.madsenlab.sim.tf.observers.ClassificationStatistic;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.interfaces.classification.*;
 

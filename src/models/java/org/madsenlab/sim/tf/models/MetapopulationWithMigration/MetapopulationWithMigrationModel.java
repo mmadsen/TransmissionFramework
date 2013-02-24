@@ -12,7 +12,7 @@ package org.madsenlab.sim.tf.models.MetapopulationWithMigration;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.apache.commons.cli.*;
-import org.madsenlab.sim.tf.analysis.*;
+import org.madsenlab.sim.tf.observers.*;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.models.AbstractSimModel;

@@ -10,10 +10,10 @@
 package org.madsenlab.sim.tf.models.SimpleMoran;
 
 import org.apache.commons.cli.*;
-import org.madsenlab.sim.tf.analysis.EwensSampleFullPopulationObserver;
-import org.madsenlab.sim.tf.analysis.GlobalTraitCountObserver;
-import org.madsenlab.sim.tf.analysis.GlobalTraitFrequencyObserver;
-import org.madsenlab.sim.tf.analysis.GlobalTraitLifetimeObserver;
+import org.madsenlab.sim.tf.observers.EwensSampleFullPopulationObserver;
+import org.madsenlab.sim.tf.observers.GlobalTraitCountObserver;
+import org.madsenlab.sim.tf.observers.GlobalTraitFrequencyObserver;
+import org.madsenlab.sim.tf.observers.GlobalTraitLifetimeObserver;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.models.AbstractSimModel;

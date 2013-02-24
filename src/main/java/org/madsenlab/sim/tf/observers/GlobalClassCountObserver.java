@@ -7,7 +7,7 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.analysis;
+package org.madsenlab.sim.tf.observers;
 
 import hep.aida.ref.Converter;
 import hep.aida.ref.Histogram1D;
@@ -32,21 +32,21 @@ import java.util.*;
  */
 
 
-public class GlobalClassFreqObserver implements IStatisticsObserver<IClassification> {
+public class GlobalClassCountObserver implements IStatisticsObserver<IClassification> {
     private ISimulationModel model;
     private Logger log;
-    private Map<IClass, Double> classFreqMap;
+    private Map<IClass, Integer> classCountMap;
     private Integer lastTimeIndexUpdated;
     private PrintWriter pw;
-    private Map<Integer, Map<IClass, Double>> histClassFreq;
+    private Map<Integer, Map<IClass, Integer>> histClassCount;
     private Histogram1D histo;
 
-    public GlobalClassFreqObserver(ISimulationModel m) {
+    public GlobalClassCountObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
-        this.histClassFreq = new HashMap<Integer, Map<IClass, Double>>();
+        this.histClassCount = new HashMap<Integer, Map<IClass, Integer>>();
 
-        String countFreqLogFile = this.model.getModelConfiguration().getProperty("global-class-freq-logfile");
+        String countFreqLogFile = this.model.getModelConfiguration().getProperty("global-class-count-logfile");
 
         this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(countFreqLogFile);
 
@@ -64,7 +64,7 @@ public class GlobalClassFreqObserver implements IStatisticsObserver<IClassificat
             this.lastTimeIndexUpdated = stat.getTimeIndex();
             IClassification classification = stat.getTarget();
             Map<IClass, Integer> countMap = classification.getCurGlobalClassCounts();
-            this.histClassFreq.put(this.lastTimeIndexUpdated, classFreqMap);
+            this.histClassCount.put(this.lastTimeIndexUpdated, classCountMap);
         }
     }
 
@@ -76,9 +76,9 @@ public class GlobalClassFreqObserver implements IStatisticsObserver<IClassificat
             this.printFrequencies();
 
             if (this.model.getCurrentModelTime() == this.model.getModelConfiguration().getLengthSimulation() - 1) {
-                Map<IClass, Double> freqMap = this.histClassFreq.get(this.model.getCurrentModelTime());
-                for (IClass cz : freqMap.keySet()) {
-                    this.histo.fill((double) freqMap.get(cz));
+                Map<IClass, Integer> countMap = this.histClassCount.get(this.model.getCurrentModelTime());
+                for (IClass cz : countMap.keySet()) {
+                    this.histo.fill((double) countMap.get(cz));
                 }
                 Converter conv = new Converter();
                 log.info(conv.toString(this.histo));
@@ -88,7 +88,7 @@ public class GlobalClassFreqObserver implements IStatisticsObserver<IClassificat
             // Every 100 ticks, write historical data to disk and flush it to keep memory usage and performance reasonable.
             if (tick % 100 == 0) {
                 this.logFrequencies();
-                this.histClassFreq.clear();
+                this.histClassCount.clear();
             }
         }
     }
@@ -109,39 +109,38 @@ public class GlobalClassFreqObserver implements IStatisticsObserver<IClassificat
     private void printFrequencies() {
         Integer time = this.model.getCurrentModelTime();
 
-        Map<IClass, Double> freqMap = this.histClassFreq.get(time);
-        //log.debug("printCounts - getting counts for time: " + time + " : " + freqMap);
+        Map<IClass, Integer> countMap = this.histClassCount.get(time);
+        //log.debug("printCounts - getting counts for time: " + time + " : " + countMap);
 
-        StringBuffer sb = prepareCountLogString(time, freqMap);
+        StringBuffer sb = prepareCountLogString(time, countMap);
         log.debug(sb.toString());
         sb = null;
 
     }
 
-    private StringBuffer prepareCountLogString(Integer time, Map<IClass, Double> freqMap) {
+    private StringBuffer prepareCountLogString(Integer time, Map<IClass, Integer> countMap) {
         //log.debug("prepare string: freqMap: " + freqMap);
         Integer numNonZeroClasses = 0;
-        // should always equal 1.0, of course, but a useful check for bugs...
-        Double total = 0.0;
+        Integer totalOfClassCounts = 0;
         StringBuffer sb = new StringBuffer();
-        Set<IClass> keys = freqMap.keySet();
+        Set<IClass> keys = countMap.keySet();
         List<IClass> sortedKeys = new ArrayList<IClass>(keys);
         Collections.sort(sortedKeys, new ClassDescriptionComparator());
         sb.append(time);
         sb.append(",");
         for (IClass cz : sortedKeys) {
-            Double freq = freqMap.get(cz);
+            Integer count = countMap.get(cz);
             sb.append(cz.getClassIDWithinClassification());
             sb.append(":");
-            sb.append(freq);
+            sb.append(count);
             sb.append(",");
-            if (freq != 0) {
+            if (count != 0) {
                 numNonZeroClasses++;
             }
-            total += freq;
+            totalOfClassCounts += count;
         }
         sb.append("tot:");
-        sb.append(total);
+        sb.append(totalOfClassCounts);
         sb.append(",numtrait:");
         sb.append(numNonZeroClasses);
         return sb;
@@ -150,12 +149,12 @@ public class GlobalClassFreqObserver implements IStatisticsObserver<IClassificat
 
     private void logFrequencies() {
         log.trace("entering logFrequencies");
-        Set<Integer> keys = this.histClassFreq.keySet();
+        Set<Integer> keys = this.histClassCount.keySet();
         List<Integer> sortedKeys = new ArrayList<Integer>(keys);
         Collections.sort(sortedKeys);
         for (Integer time : sortedKeys) {
-            Map<IClass, Double> freqMap = this.histClassFreq.get(time);
-            StringBuffer sb = prepareCountLogString(time, freqMap);
+            Map<IClass, Integer> countMap = this.histClassCount.get(time);
+            StringBuffer sb = prepareCountLogString(time, countMap);
             sb.append('\n');
             this.pw.write(sb.toString());
             //this.pw.flush();
