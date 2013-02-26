@@ -80,7 +80,7 @@ public class UnstructuredTraitDimensionTest extends SingleDimensionAgentModule {
         ITraitDimension dimension = dimensionProvider.get();
         ITraitFactory traitFactory = new InfiniteAllelesIntegerTraitFactory(this.model);
         dimension.setTraitVariationModel(traitFactory);
-        ITrait trait = dimension.getNewVariant();
+        ITrait trait = dimension.getNewUniqueUniformVariant();
         Collection<ITrait> traitList = dimension.getTraitsInDimension();
         log.info("expected size: 1 observed: " + traitList.size());
         assertTrue(traitList.size() == 1);
@@ -192,7 +192,7 @@ public class UnstructuredTraitDimensionTest extends SingleDimensionAgentModule {
         // We're going to add five traits to a dimension
         for (Integer i = 1; i < 6; i++) {
             // we can't rely on injection here, so just construct them directly.
-            ITrait newTrait = dimension.getNewVariant();
+            ITrait newTrait = dimension.getNewUniqueUniformVariant();
 
             // stash references to a couple of traits to use in tests later
             if (i == 3) {

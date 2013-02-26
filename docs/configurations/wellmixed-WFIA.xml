@@ -11,22 +11,33 @@
     <model>
 
         <runparameters config-class="org.madsenlab.sim.tf.config.RunParameters">
-            <numagents>2000</numagents>
             <simlength>10000</simlength>
             <mixingtime>1000</mixingtime>
         </runparameters>
 
-        <rules>
-            <rule id="001" ruleclass="org.madsenlab.sim.tf.rules.CopyOrMutateDecisionRule"
-                  config-class="org.madsenlab.sim.tf.config.InnovationRuleConfiguration"
-                  innovation-rate="0.0001"/>
-            <rule subrule-of="001" id="002" ruleclass="org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule"
-                  config-class="org.madsenlab.sim.tf.config.InnovationRuleConfiguration"/>
-            <rule subrule-of="001" id="003" ruleclass="org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule"
-                  config-class="org.madsenlab.sim.tf.config.CopyingRuleConfiguration"
-                  ruletype="org.madsenlab.sim.tf.utils.TraitCopyingMode.PREVIOUS"/>
+        <dynamics type="WRIGHT-FISHER"/>
 
-        </rules>
+        <population>
+            <agent-class>org.madsenlab.sim.tf.agent.UnstructuredMultidimensionalTraitAgent</agent-class>
+            <numagents>2000</numagents>
+            <structure>
+                <!-- TBD on specifying population spatial structure -->
+            </structure>
+        </population>
+
+        <rulesets>
+            <ruleset id="001" name="MutateOrCopyRandomNeighbor">
+                <rule id="001" ruleclass="org.madsenlab.sim.tf.rules.CopyOrMutateDecisionRule"
+                      config-class="org.madsenlab.sim.tf.config.InnovationRuleConfiguration"
+                      innovation-rate="0.0001"/>
+                <rule subrule-of="001" id="002" ruleclass="org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule"
+                      config-class="org.madsenlab.sim.tf.config.InnovationRuleConfiguration"/>
+                <rule subrule-of="001" id="003"
+                      ruleclass="org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule"
+                      config-class="org.madsenlab.sim.tf.config.CopyingRuleConfiguration"
+                      ruletype="org.madsenlab.sim.tf.utils.TraitCopyingMode.PREVIOUS"/>
+            </ruleset>
+        </rulesets>
     </model>
 
     <!-- Needs thinking about log files and DB logging -->
@@ -38,12 +49,27 @@
     </observers>
 
     <statespace>
-        <traitdimension config-class="org.madsenlab.sim.tf.config.TraitDimensionConfiguration"
-                        type="Double" traitfactory="org.madsenlab.sim.tf.traits.InfiniteAllelesUnitIntervalTraitFactory"
-                        name="BladeLength" id="dim001"/>
-        <traitdimension config-class="org.madsenlab.sim.tf.config.TraitDimensionConfiguration"
-                        type="Double" traitfactory="org.madsenlab.sim.tf.traits.InfiniteAllelesUnitIntervalTraitFactory"
-                        name="NotchType" id="dim002"/>
+        <traitdimension config-class="org.madsenlab.sim.tf.config.TraitDimensionConfiguration" type="Double"
+                        name="BladeLength" id="dim001">
+            <variationmodel factory="org.madsenlab.sim.tf.traits.InfiniteAllelesUnitIntervalTraitFactory">
+                <initial-trait-generator>getGaussianTraitCollection</initial-trait-generator>
+                <initial-trait-generator-arglist>
+                    <argument name="numAgents" value="10"/>
+                    <argument name="mean" value="0.5"/>
+                    <argument name="stdev" value="0.2"/>
+                </initial-trait-generator-arglist>
+            </variationmodel>
+        </traitdimension>
+        <traitdimension config-class="org.madsenlab.sim.tf.config.TraitDimensionConfiguration" type="Double"
+                        name="NotchType" id="dim002">
+            <variationmodel factory="org.madsenlab.sim.tf.traits.InfiniteAllelesUnitIntervalTraitFactory">
+                <initial-trait-generator>getUniqueUniformTraitCollection</initial-trait-generator>
+                <initial-trait-generator-arglist>
+                    <argument name="numAgents" value="10"/>
+                </initial-trait-generator-arglist>
+            </variationmodel>
+        </traitdimension>
+
     </statespace>
 
     <classifications>

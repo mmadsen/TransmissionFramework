@@ -273,19 +273,4 @@ public class MultiDimensionWrightFisherDriftModel extends AbstractSimModel {
     }
 
 
-    public void modelObservations() {
-        log.trace("entering modelObservations at time: " + this.currentTime);
-        for (IStatisticsObserver<ITraitDimension> obs : this.traitObserverList) {
-            obs.perStepAction();
-        }
-    }
-
-    public void modelFinalize() {
-        for (IStatisticsObserver<ITraitDimension> obs : this.traitObserverList) {
-            obs.endSimulationAction();
-            obs.finalizeObservation();
-        }
-        log.info("Finalizing model run, writing historical data, and closing any files or connections");
-    }
-
 }

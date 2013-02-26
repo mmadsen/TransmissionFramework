@@ -87,7 +87,7 @@ public class TraitDimensionObserverTest extends SingleDimensionAgentModule {
         // We're going to add eight traits to a dimension
         for (Integer i = 2; i < 10; i++) {
             // we can't rely on injection here, so just construct them directly.
-            ITrait newTrait = dimension.getNewVariant();
+            ITrait newTrait = dimension.getNewUniqueUniformVariant();
 
             log.info("creating trait " + newTrait.getTraitID().toString());
 

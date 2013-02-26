@@ -264,8 +264,8 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
     }
 
     @Override
-    public ITrait getNewVariant() {
-        ITrait newTrait = this.traitFactory.getNewVariant();
+    public ITrait getNewUniqueUniformVariant() {
+        ITrait newTrait = this.traitFactory.getNewUniqueUniformVariant();
         newTrait.setOwningDimension(this);
         this.addTrait(newTrait);
         return newTrait;
@@ -282,5 +282,20 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
     @Override
     public Boolean providesInfiniteVariants() {
         return this.traitFactory.providesInfiniteVariants();
+    }
+
+    @Override
+    public Set<ITrait> getUniqueUniformTraitCollection(Integer numTraits) {
+        return this.traitFactory.getUniqueUniformTraitCollection(numTraits);
+    }
+
+    @Override
+    public Set<ITrait> getGaussianTraitCollection(Integer numTraits, Double mean, Double stdev) {
+        return this.traitFactory.getGaussianTraitCollection(numTraits, mean, stdev);
+    }
+
+    @Override
+    public Set<ITrait> getUniformTraitCollection(Integer numTraits) {
+        return this.traitFactory.getUniformTraitCollection(numTraits);
     }
 }

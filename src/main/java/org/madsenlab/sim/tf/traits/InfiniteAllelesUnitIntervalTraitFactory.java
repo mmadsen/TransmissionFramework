@@ -41,7 +41,7 @@ public class InfiniteAllelesUnitIntervalTraitFactory implements ITraitFactory {
     }
 
     @Override
-    public ITrait getNewVariant() {
+    public ITrait getNewUniqueUniformVariant() {
         Double nextTraitID = null;
         Boolean foundUniqueVariant = false;
         while (foundUniqueVariant == false) {
@@ -61,11 +61,52 @@ public class InfiniteAllelesUnitIntervalTraitFactory implements ITraitFactory {
 
     @Override
     public ITrait getNewVariantBasedUponExistingVariant(ITrait existingTrait) {
-        return this.getNewVariant();
+        return this.getNewUniqueUniformVariant();
     }
 
     @Override
     public Boolean providesInfiniteVariants() {
         return Boolean.TRUE;
+    }
+
+    @Override
+    public Set<ITrait> getUniqueUniformTraitCollection(Integer numTraits) {
+        Set<ITrait> traitSet = new HashSet<ITrait>();
+        for (int i = 0; i < numTraits; i++) {
+            traitSet.add(this.getNewUniqueUniformVariant());
+        }
+        return traitSet;
+    }
+
+    @Override
+    public Set<ITrait> getGaussianTraitCollection(Integer numTraits, Double mean, Double stdev) {
+        Set<ITrait> traitSet = new HashSet<ITrait>();
+        for (int i = 0; i < numTraits; i++) {
+            Double nextTraitID = null;
+            while (nextTraitID == null) {
+                Double candidate = this.model.getNormalVariate(mean, stdev);
+                if (candidate >= 0 && candidate <= 1.0) {
+                    nextTraitID = candidate;
+                    break;
+                }
+            }
+            ITrait newTrait = this.traitProvider.get();
+            newTrait.setTraitID(nextTraitID);
+            traitSet.add(newTrait);
+
+        }
+        return traitSet;
+    }
+
+    @Override
+    public Set<ITrait> getUniformTraitCollection(Integer numTraits) {
+        Set<ITrait> traitSet = new HashSet<ITrait>();
+        for (int i = 0; i < numTraits; i++) {
+            Double nextTraitID = this.model.getUniformDouble();
+            ITrait newTrait = this.traitProvider.get();
+            newTrait.setTraitID(nextTraitID);
+            traitSet.add(newTrait);
+        }
+        return traitSet;
     }
 }

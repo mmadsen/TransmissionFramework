@@ -77,10 +77,10 @@ public class UnstructuredMultidimensionalTraitAgentTest extends Multidimensional
         ITraitDimension dim2 = new UnstructuredTraitDimension<Integer>(this.model, traitFactory2);
 
         // Create two traits in each dimension
-        ITrait dim1Trait1 = dim1.getNewVariant();
-        ITrait dim1Trait2 = dim1.getNewVariant();
-        ITrait dim2Trait1 = dim2.getNewVariant();
-        ITrait dim2Trait2 = dim2.getNewVariant();
+        ITrait dim1Trait1 = dim1.getNewUniqueUniformVariant();
+        ITrait dim1Trait2 = dim1.getNewUniqueUniformVariant();
+        ITrait dim2Trait1 = dim2.getNewUniqueUniformVariant();
+        ITrait dim2Trait2 = dim2.getNewUniqueUniformVariant();
 
         IAgent agent1 = agentProvider.get();
         IAgent agent2 = agentProvider.get();
@@ -132,10 +132,10 @@ public class UnstructuredMultidimensionalTraitAgentTest extends Multidimensional
         IAgent agent = agentProvider.get();
 
         // Create traits from three dimensions, and two traits in the first dimension
-        ITrait dim1Trait1 = dim1.getNewVariant();
-        ITrait dim1Trait2 = dim1.getNewVariant();
-        ITrait dim2Trait1 = dim2.getNewVariant();
-        ITrait dim3Trait1 = dim3.getNewVariant();
+        ITrait dim1Trait1 = dim1.getNewUniqueUniformVariant();
+        ITrait dim1Trait2 = dim1.getNewUniqueUniformVariant();
+        ITrait dim2Trait1 = dim2.getNewUniqueUniformVariant();
+        ITrait dim3Trait1 = dim3.getNewUniqueUniformVariant();
 
         dim1Trait1.adopt(agent);
         dim2Trait1.adopt(agent);

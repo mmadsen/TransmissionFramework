@@ -106,7 +106,7 @@ public class WrightFisherDriftModel extends AbstractSimModel {
 
         this.log.debug("Creating one dimension and " + this.params.getStartingTraits() + " traits to begin");
         for (Integer i = 0; i < this.params.getStartingTraits(); i++) {
-            this.dimension.getNewVariant();
+            this.dimension.getNewUniqueUniformVariant();
         }
 
 
@@ -275,20 +275,5 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         log.info("====================================================================");
     }
 
-
-    public void modelObservations() {
-        log.trace("entering modelObservations at time: " + this.currentTime);
-        for (IStatisticsObserver<ITraitDimension> obs : this.traitObserverList) {
-            obs.perStepAction();
-        }
-    }
-
-    public void modelFinalize() {
-        for (IStatisticsObserver<ITraitDimension> obs : this.traitObserverList) {
-            obs.endSimulationAction();
-            obs.finalizeObservation();
-        }
-        log.info("Finalizing model run, writing historical data, and closing any files or connections");
-    }
 
 }

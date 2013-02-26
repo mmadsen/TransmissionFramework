@@ -48,7 +48,7 @@ public class InfiniteAllelesMutationRule extends AbstractInteractionRule impleme
         log.trace("Selected dimension: " + dim + " for mutation");
         // Generate a new trait
         this.newTraitID++;
-        ITrait newTrait = dim.getNewVariant();
+        ITrait newTrait = dim.getNewUniqueUniformVariant();
 
         ITrait oldTrait = thisAgent.getRandomTraitFromAgent(TraitCopyingMode.CURRENT);
         oldTrait.unadopt(thisAgent);

@@ -106,7 +106,7 @@ public class WrightFisherUnitIntervalDriftModel extends AbstractSimModel {
 
         this.log.debug("Creating one dimension and " + this.params.getStartingTraits() + " traits to begin");
         for (Integer i = 0; i < this.params.getStartingTraits(); i++) {
-            this.dimension.getNewVariant();
+            this.dimension.getNewUniqueUniformVariant();
         }
 
 

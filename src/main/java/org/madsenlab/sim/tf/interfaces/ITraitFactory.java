@@ -9,6 +9,8 @@
 
 package org.madsenlab.sim.tf.interfaces;
 
+import java.util.Set;
+
 /**
  * CLASS DESCRIPTION
  * <p/>
@@ -26,7 +28,7 @@ public interface ITraitFactory {
      * @return ITrait
      */
 
-    public ITrait getNewVariant();
+    public ITrait getNewUniqueUniformVariant();
 
     /**
      * For variation models in which new variants can be created with reference to an existing trait
@@ -51,4 +53,28 @@ public interface ITraitFactory {
 
     public Boolean providesInfiniteVariants();
 
+    /**
+     * returns a collection of traits with unique values chosen randomly from the dimension.
+     *
+     * @return Set<ITrait>
+     */
+
+    public Set<ITrait> getUniqueUniformTraitCollection(Integer numTraits);
+
+    /**
+     * returns a collection of traits with  values chosen from a Gaussian draw from the dimension.  Traits are
+     * NOT guaranteed to be unique.
+     *
+     * @return Set<ITrait>
+     */
+
+    public Set<ITrait> getGaussianTraitCollection(Integer numTraits, Double mean, Double stdev);
+
+    /**
+     * returns a collection of traits with potentially non-unique values from the dimension.
+     *
+     * @return Set<ITrait>
+     */
+
+    public Set<ITrait> getUniformTraitCollection(Integer numTraits);
 }

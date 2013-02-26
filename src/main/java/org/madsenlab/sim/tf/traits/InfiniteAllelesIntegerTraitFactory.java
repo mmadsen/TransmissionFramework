@@ -15,6 +15,9 @@ import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITrait;
 import org.madsenlab.sim.tf.interfaces.ITraitFactory;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * CLASS DESCRIPTION
  * <p/>
@@ -38,7 +41,7 @@ public class InfiniteAllelesIntegerTraitFactory implements ITraitFactory {
     }
 
     @Override
-    public ITrait getNewVariant() {
+    public ITrait getNewUniqueUniformVariant() {
         this.nextTraitID++;
         ITrait newTrait = this.traitProvider.get();
         newTrait.setTraitID(this.nextTraitID);
@@ -47,11 +50,32 @@ public class InfiniteAllelesIntegerTraitFactory implements ITraitFactory {
 
     @Override
     public ITrait getNewVariantBasedUponExistingVariant(ITrait existingTrait) {
-        return this.getNewVariant();
+        return this.getNewUniqueUniformVariant();
     }
 
     @Override
     public Boolean providesInfiniteVariants() {
         return Boolean.TRUE;
+    }
+
+    @Override
+    public Set<ITrait> getUniqueUniformTraitCollection(Integer numTraits) {
+        Set<ITrait> traitSet = new HashSet<ITrait>();
+        for (int i = 0; i < numTraits; i++) {
+            traitSet.add(this.getNewUniqueUniformVariant());
+        }
+        return traitSet;
+    }
+
+    // TODO: unimplemented
+    @Override
+    public Set<ITrait> getGaussianTraitCollection(Integer numTraits, Double mean, Double stdev) {
+        return null;
+    }
+
+    // TODO:  unimplemented
+    @Override
+    public Set<ITrait> getUniformTraitCollection(Integer numTraits) {
+        return null;
     }
 }
