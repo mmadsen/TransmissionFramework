@@ -10,6 +10,7 @@
 package org.madsenlab.sim.tf.models.SimpleMoran;
 
 import org.apache.commons.cli.*;
+import org.madsenlab.sim.tf.models.MoranDynamics;
 import org.madsenlab.sim.tf.observers.EwensSampleFullPopulationObserver;
 import org.madsenlab.sim.tf.observers.GlobalTraitCountObserver;
 import org.madsenlab.sim.tf.observers.GlobalTraitFrequencyObserver;
@@ -54,6 +55,9 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
     }
 
     public void initializeModel() {
+        this.modelDynamicsDelegate = new MoranDynamics(this);
+
+
         // We create a single dimension, with
         //
         ITraitFactory traitFactory = null;
@@ -192,14 +196,6 @@ public class SimpleMoranDriftModel extends AbstractSimModel {
         //this.log.trace("exiting parseCommandLineOptions");
     }
 
-    public void modelStep() {
-        log.trace("entering modelStep at time: " + this.currentTime);
-        // pick a random agent, and fire its rules stack....
-        IAgent focalAgent = this.getPopulation().getAgentAtRandom();
-        log.trace("agent " + focalAgent.getAgentID() + " - firing rules");
-        focalAgent.fireRules();
-        this.dimension.notifyObservers();
-    }
 
     // DEBUG ONLY
     private void checkPopulationTraits() {

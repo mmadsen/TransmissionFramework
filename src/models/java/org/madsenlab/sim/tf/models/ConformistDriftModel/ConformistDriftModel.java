@@ -10,6 +10,7 @@
 package org.madsenlab.sim.tf.models.ConformistDriftModel;
 
 import org.apache.commons.cli.*;
+import org.madsenlab.sim.tf.models.WrightFisherDynamics;
 import org.madsenlab.sim.tf.observers.*;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
@@ -50,6 +51,8 @@ public class ConformistDriftModel extends AbstractSimModel {
 
 
     public void initializeModel() {
+        this.modelDynamicsDelegate = new WrightFisherDynamics(this);
+
         // We create a single dimension, with
         //
         ITraitFactory traitFactory = null;
@@ -232,30 +235,6 @@ public class ConformistDriftModel extends AbstractSimModel {
         //this.log.info("properties file: " + this.propertiesFileName);
 
         //this.log.trace("exiting parseCommandLineOptions");
-    }
-
-    public void modelStep() {
-        log.trace("========================== STEP: " + this.currentTime + "============================");
-
-        // In order to ensure that we do not create numerical artifacts by using a fixed order of enumeration
-        // we shuffle the population before we step through it.
-        List<IAgent> shuffledAgentList = this.getPopulation().getAgentsShuffledOrder();
-
-        // In WF model, each of the N copying events in an elemental step must be done with replacement
-        // which means that *trait selection* must be done on a copy of the population made at the beginning
-        // of each step, and trait adoption/unadoption will then form the new state of the population, which
-        // is Observed.
-        this.getPopulation().savePreviousStepTraits();
-
-        // Now iterate over all agents in the population and fire their rules, forming a new sample of the
-        // previous step's trait distribution
-        for (IAgent agent : shuffledAgentList) {
-            agent.fireRules();
-        }
-
-        // Now do any observers or observation on the results of this transmission step
-        this.dimension.notifyObservers();
-        //log.trace("exiting modelStep at time: " + this.currentTime);
     }
 
 

@@ -74,6 +74,8 @@ public abstract class AbstractSimModel implements ISimulationModel {
     protected String propertiesFileName;
     protected String modelNamePrefix;
 
+    protected IModelDynamics modelDynamicsDelegate;
+
 
     public AbstractSimModel() {
 
@@ -224,6 +226,10 @@ public abstract class AbstractSimModel implements ISimulationModel {
         this.modelFinalize();
     }
 
+    public void modelStep() {
+        this.modelDynamicsDelegate.modelStep();
+    }
+
     public void modelFinalize() {
         for (IStatisticsObserver<ITraitDimension> obs : this.traitObserverList) {
             obs.endSimulationAction();
@@ -238,8 +244,6 @@ public abstract class AbstractSimModel implements ISimulationModel {
             obs.perStepAction();
         }
     }
-
-    public abstract void modelStep();
 
     protected void loadPropertiesToConfig() {
         Set<String> propNames = this.modelProperties.stringPropertyNames();

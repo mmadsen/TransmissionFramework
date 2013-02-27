@@ -10,6 +10,7 @@
 package org.madsenlab.sim.tf.models.WrightFisherDriftModel;
 
 import org.apache.commons.cli.*;
+import org.madsenlab.sim.tf.models.WrightFisherDynamics;
 import org.madsenlab.sim.tf.observers.*;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
@@ -54,6 +55,11 @@ public class WrightFisherDriftModel extends AbstractSimModel {
 
 
     public void initializeModel() {
+        // this model uses WF population dynamics with death-birth updating (i.e., standard WF model)
+        // D-B updating is implemented in an agent rule, the dynamics by the IModelDynamics delegate
+        this.modelDynamicsDelegate = new WrightFisherDynamics(this);
+
+
         // We create a single dimension, with
         //
         ITraitFactory traitFactory = null;
@@ -213,7 +219,7 @@ public class WrightFisherDriftModel extends AbstractSimModel {
         //this.log.trace("exiting parseCommandLineOptions");
     }
 
-    public void modelStep() {
+   /* public void modelStep() {
         log.trace("========================== STEP: " + this.currentTime + "============================");
 
         // In order to ensure that we do not create numerical artifacts by using a fixed order of enumeration
@@ -241,7 +247,7 @@ public class WrightFisherDriftModel extends AbstractSimModel {
 
 
         //log.trace("exiting modelStep at time: " + this.currentTime);
-    }
+    }*/
 
 
     // Used for verification and debugging ONLY

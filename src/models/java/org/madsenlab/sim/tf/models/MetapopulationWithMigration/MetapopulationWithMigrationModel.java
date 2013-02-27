@@ -12,6 +12,7 @@ package org.madsenlab.sim.tf.models.MetapopulationWithMigration;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.apache.commons.cli.*;
+import org.madsenlab.sim.tf.models.MoranDynamics;
 import org.madsenlab.sim.tf.observers.*;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
@@ -59,6 +60,8 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
     }
 
     public void initializeModel() {
+        this.modelDynamicsDelegate = new MoranDynamics(this);
+
         this.demeTagList = new ArrayList<IAgentTag>();
         // needed only temporarily to later initialize demes and agents
         HashMap<Integer, IAgentTag> demeTagMap = new HashMap<Integer, IAgentTag>();
@@ -239,16 +242,6 @@ public class MetapopulationWithMigrationModel extends AbstractSimModel {
         //this.log.info("properties file: " + this.propertiesFileName);
 
         //this.log.trace("exiting parseCommandLineOptions");
-    }
-
-    public void modelStep() {
-        log.trace("entering modelStep at time: " + this.currentTime);
-
-        // pick a random agent, and fire its rules stack....
-        IAgent focalAgent = this.getPopulation().getAgentAtRandom();
-        log.trace("agent " + focalAgent.getAgentID() + " - firing rules");
-        focalAgent.fireRules();
-        this.dimension.notifyObservers();
     }
 
 
