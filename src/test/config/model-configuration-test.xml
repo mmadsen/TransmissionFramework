@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
+  ~
+  ~ This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
+  ~
+  ~ For detailed license terms, see:
+  ~ http://creativecommons.org/licenses/GPL/2.0/
+  -->
+
+<configuration>
+    <model>
+        <simlength>10000</simlength>10000"
+        <mixingtime>1000</mixingtime>
+        <dynamicsclass>org.madsenlab.sim.tf.models.WrightFisherDynamics</dynamicsclass>
+        <population>
+            <agentclass>org.madsenlab.sim.tf.agent.UnstructuredMultidimensionalTraitAgent</agentclass>
+            <numagents>2000</numagents>
+            <topologyclass>org.madsenlab.sim.tf.structure.WellMixedInteractionTopology</topologyclass>
+            <builderclass>org.madsenlab.sim.tf.population.DefaultPopulationBuilder</builderclass>
+
+            <rulesets>
+                <ruleset id="1" name="IAMutationOrCopyRandomNeighbor">
+                    <rule id="1">
+                        <ruleclass>org.madsenlab.sim.tf.rules.CopyOrMutateDecisionRule</ruleclass>
+                        <parameters>
+                            <parameter>
+                                <name>innovationrate</name>
+                                <value>0.0001</value>
+                            </parameter>
+                        </parameters>
+                    </rule>
+                    <rule id="2">
+                        <subrule-of>1</subrule-of>
+                        <ruleclass>org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule</ruleclass>
+                    </rule>
+                    <rule id="3">
+                        <subrule-of>1</subrule-of>
+                        <ruleclass>org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule</ruleclass>
+                        <parameters>
+                            <parameter>
+                                <name>copyingmode</name>
+                                <value>PREVIOUS</value>
+                            </parameter>
+                        </parameters>
+                    </rule>
+                </ruleset>
+
+                <ruleset id="2" name="IAMutationOrConformistCopyNeighbors">
+                    <rule order="1" id="1">
+                        <ruleclass>org.madsenlab.sim.tf.rules.CopyOrMutateDecisionRule</ruleclass>
+                        <parameters>
+                            <parameter>
+                                <name>innovationrate</name>
+                                <value>0.0001</value>
+                            </parameter>
+                        </parameters>
+                    </rule>
+                    <rule id="2">
+                        <subrule-of>1</subrule-of>
+                        <ruleclass>org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule</ruleclass>
+                    </rule>
+                    <rule id="3">
+                        <subrule-of>1</subrule-of>
+                        <ruleclass>org.madsenlab.sim.tf.rules.ConformismOrRandomDecisionRule</ruleclass>
+                        <parameters>
+                            <parameter>
+                                <name>conformistfrequency</name>
+                                <value>0.01</value>
+                            </parameter>
+                        </parameters>
+                    </rule>
+                    <rule id="4">
+                        <subrule-of>3</subrule-of>
+                        <ruleclass>org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule</ruleclass>
+                        <parameters>
+                            <parameter>
+                                <name>copyingmode</name>
+                                <value>PREVIOUS</value>
+                            </parameter>
+                        </parameters>
+                    </rule>
+                    <rule id="5">
+                        <subrule-of>3</subrule-of>
+                        <ruleclass>org.madsenlab.sim.tf.rules.CopyConformistTraitNeighborRule</ruleclass>
+                        <parameters>
+                            <parameter>
+                                <name>copyingmode</name>
+                                <value>PREVIOUS</value>
+                            </parameter>
+                        </parameters>
+                    </rule>
+                </ruleset>
+            </rulesets>
+
+
+        </population>
+        <traitspace>
+            <traitdimension id="1">
+                <dimensionname>BladeLength</dimensionname>
+                <dimensiontype>java.lang.Double</dimensiontype>
+                <variationmodel>
+                    <factory>org.madsenlab.sim.tf.traits.InfiniteAllelesUnitIntervalTraitFactory</factory>
+                    <initial-trait-generator-method>getGaussianTraitCollection</initial-trait-generator-method>
+                    <parameters>
+                        <parameter>
+                            <name>numtraits</name>
+                            <value>100</value>
+                        </parameter>
+                        <parameter>
+                            <name>mean</name>
+                            <value>0.5</value>
+                        </parameter>
+                        <parameter>
+                            <name>stdev</name>
+                            <value>0.2</value>
+                        </parameter>
+                    </parameters>
+                </variationmodel>
+            </traitdimension>
+            <traitdimension id="2">
+                <dimensionname>NotchShape</dimensionname>
+                <dimensiontype>java.lang.Double</dimensiontype>
+                <variationmodel>
+                    <factory>org.madsenlab.sim.tf.traits.InfiniteAllelesUnitIntervalTraitFactory</factory>
+                    <initial-trait-generator-method>getUniqueUniformTraitCollection</initial-trait-generator-method>
+                    <parameters>
+                        <parameter>
+                            <name>numtraits</name>
+                            <value>100</value>
+                        </parameter>
+                    </parameters>
+                </variationmodel>
+            </traitdimension>
+        </traitspace>
+    </model>
+    <observers>
+        <observer>
+            <observerclass>org.madsenlab.sim.tf.observers.EwensSampleFullPopulationObserver</observerclass>
+            <parameters>
+                <parameter>
+                    <name>samplesize</name>
+                    <value>100</value>
+                </parameter>
+            </parameters>
+        </observer>
+        <observer>
+            <observerclass>org.madsenlab.sim.tf.observers.GlobalClassCountObserver</observerclass>
+        </observer>
+        <observer>
+            <observerclass>org.madsenlab.sim.tf.observers.TimeAveragedTraitCountObserver</observerclass>
+        </observer>
+    </observers>
+    <classifications>
+        <classification>
+            <name>FineGrainedProjectilePointClasses</name>
+            <dimensions>
+                <dimension>
+                    <maps-traitdimension>1</maps-traitdimension>
+                    <modetype>SPECIFIED</modetype>
+                    <modelist>
+                        <mode>
+                            <name>1</name>
+                            <parameters>
+                                <parameter>
+                                    <name>lowerBound</name>
+                                    <value>0.0</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedLower</name>
+                                    <value>true</value>
+                                </parameter>
+                                <parameter>
+                                    <name>upperBound</name>
+                                    <value>0.1</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedUpper</name>
+                                    <value>false</value>
+                                </parameter>
+                            </parameters>
+                        </mode>
+                        <mode>
+                            <name>2</name>
+                            <parameters>
+                                <parameter>
+                                    <name>lowerBound</name>
+                                    <value>0.1</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedLower</name>
+                                    <value>true</value>
+                                </parameter>
+                                <parameter>
+                                    <name>upperBound</name>
+                                    <value>0.3</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedUpper</name>
+                                    <value>false</value>
+                                </parameter>
+                            </parameters>
+                        </mode>
+                        <mode>
+                            <name>3</name>
+                            <parameters>
+                                <parameter>
+                                    <name>lowerBound</name>
+                                    <value>0.3</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedLower</name>
+                                    <value>true</value>
+                                </parameter>
+                                <parameter>
+                                    <name>upperBound</name>
+                                    <value>0.5</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedUpper</name>
+                                    <value>false</value>
+                                </parameter>
+                            </parameters>
+                        </mode>
+                        <mode>
+                            <name>4</name>
+                            <parameters>
+                                <parameter>
+                                    <name>lowerBound</name>
+                                    <value>0.5</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedLower</name>
+                                    <value>true</value>
+                                </parameter>
+                                <parameter>
+                                    <name>upperBound</name>
+                                    <value>0.7</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedUpper</name>
+                                    <value>false</value>
+                                </parameter>
+                            </parameters>
+                        </mode>
+                        <mode>
+                            <name>5</name>
+                            <parameters>
+                                <parameter>
+                                    <name>lowerBound</name>
+                                    <value>0.7</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedLower</name>
+                                    <value>true</value>
+                                </parameter>
+                                <parameter>
+                                    <name>upperBound</name>
+                                    <value>1.0</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedUpper</name>
+                                    <value>true</value>
+                                </parameter>
+                            </parameters>
+                        </mode>
+
+                    </modelist>
+                </dimension>
+                <dimension>
+                    <maps-traitdimension>2</maps-traitdimension>
+                    <modetype>RANDOM</modetype>
+                    <nummodes>8</nummodes>
+                </dimension>
+            </dimensions>
+        </classification>
+    </classifications>
+
+
+</configuration>

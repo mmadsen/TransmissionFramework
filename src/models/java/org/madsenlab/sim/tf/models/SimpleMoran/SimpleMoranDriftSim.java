@@ -11,7 +11,6 @@ package org.madsenlab.sim.tf.models.SimpleMoran;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import org.madsenlab.sim.tf.app.SimRunner;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 
 /**
@@ -23,7 +22,7 @@ import org.madsenlab.sim.tf.interfaces.ISimulationModel;
  */
 
 
-public class SimpleMoranDriftSim extends SimRunner {
+public class SimpleMoranDriftSim {
 
     public static void main(String[] args) {
         Injector injector = Guice.createInjector(new SimpleMoranDriftModule());

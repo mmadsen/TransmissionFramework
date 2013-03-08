@@ -1,0 +1,24 @@
+What is the model class doing today?
+
+- initializeModel
+	building trait dimensions, trait factory, and observers in code
+	attaching observers to their objects -- right now, trait dimensions
+	building the rule stack in code
+	initializing the starting variation in each trait dimension (by constructing traits)
+	building the initial model population and assigning initial variants (through adoption)
+
+
+- parseCLOptions
+	parses each command line switch in code, using the Apache commons library
+	initializes a GlobalModelConfiguration object, to hold all the data so other classes can get to it through the model
+
+- modelStep
+	Other than CL switches, this seems to contain most of the "model specific" code, in the sense that it covers how we step through the population (i.e., WF or Moran updating).
+
+- modelObservations
+	fully generic, could be part of AbstractSimModel
+
+- modelFinalize
+	fully generic, could be part of AbstractSimModel
+
+	

@@ -16,25 +16,24 @@ import java.util.concurrent.ConcurrentHashMap;
  * CLASS DESCRIPTION
  * <p/>
  * User: mark
- * Date: 2/8/12
- * Time: 3:01 PM
+ * Date: 3/6/13
+ * Time: 11:29 AM
  */
-public enum TraitCopyingMode {
-    CURRENT("CURRENT"),
-    PREVIOUS("PREVIOUS");
-
+public enum ClassDimensionModeType {
+    SPECIFIED("SPECIFIED"),
+    RANDOM("RANDOM");
 
     private final String modeType;
 
-    private static final Map<String, TraitCopyingMode> stringToEnum = new ConcurrentHashMap<String, TraitCopyingMode>();
+    private static final Map<String, ClassDimensionModeType> stringToEnum = new ConcurrentHashMap<String, ClassDimensionModeType>();
 
     static {
-        for (TraitCopyingMode set : values()) {
+        for (ClassDimensionModeType set : values()) {
             stringToEnum.put(set.modeType, set);
         }
     }
 
-    private TraitCopyingMode(String setting) {
+    private ClassDimensionModeType(String setting) {
         this.modeType = setting;
     }
 
@@ -42,7 +41,7 @@ public enum TraitCopyingMode {
         return this.modeType;
     }
 
-    public static TraitCopyingMode fromString(String setting) {
+    public static ClassDimensionModeType fromString(String setting) {
         return stringToEnum.get(setting);
     }
 }

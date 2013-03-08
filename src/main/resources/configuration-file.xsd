@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="MacRoman"?>
+<!--
+  ~ Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
+  ~
+  ~ This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
+  ~
+  ~ For detailed license terms, see:
+  ~ http://creativecommons.org/licenses/GPL/2.0/
+  -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="configuration">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="model"/>
+                <xs:element ref="observers"/>
+                <xs:element ref="classifications"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="model">
+        <xs:complexType mixed="true">
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="dynamicsclass"/>
+                <xs:element ref="mixingtime"/>
+                <xs:element ref="population"/>
+                <xs:element ref="simlength"/>
+                <xs:element ref="traitspace"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="dynamicsclass" type="xs:string"/>
+    <xs:element name="mixingtime" type="xs:string"/>
+    <xs:element name="population">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="agentclass"/>
+                <xs:element ref="numagents"/>
+                <xs:element ref="topologyclass"/>
+                <xs:element ref="builderclass"/>
+                <xs:element ref="rulesets"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="agentclass" type="xs:string"/>
+    <xs:element name="numagents" type="xs:string"/>
+    <xs:element name="topologyclass" type="xs:string"/>
+    <xs:element name="builderclass" type="xs:string"/>
+    <xs:element name="rulesets">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="ruleset"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ruleset">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="rule"/>
+            </xs:sequence>
+            <xs:attribute name="id" use="required"/>
+            <xs:attribute name="name" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="rule">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" ref="subrule-of"/>
+                <xs:element ref="ruleclass"/>
+                <xs:element minOccurs="0" ref="parameters"/>
+            </xs:sequence>
+            <xs:attribute name="id" use="required"/>
+            <xs:attribute name="order"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="subrule-of" type="xs:string"/>
+    <xs:element name="ruleclass" type="xs:string"/>
+    <xs:element name="simlength" type="xs:string"/>
+    <xs:element name="traitspace">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="traitdimension"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="traitdimension">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="dimensionname"/>
+                <xs:element ref="dimensiontype"/>
+                <xs:element ref="variationmodel"/>
+            </xs:sequence>
+            <xs:attribute name="id" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="dimensionname" type="xs:string"/>
+    <xs:element name="dimensiontype" type="xs:string"/>
+    <xs:element name="variationmodel">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="factory"/>
+                <xs:element ref="initial-trait-generator-method"/>
+                <xs:element ref="parameters"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="factory" type="xs:string"/>
+    <xs:element name="initial-trait-generator-method" type="xs:string"/>
+    <xs:element name="observers">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="observer"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="observer">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="observerclass"/>
+                <xs:element minOccurs="0" ref="parameters"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="observerclass" type="xs:string"/>
+    <xs:element name="classifications">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="classification"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="classification">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="name"/>
+                <xs:element ref="dimensions"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="dimensions">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="dimension"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="dimension">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="maps-traitdimension"/>
+                <xs:element ref="modetype"/>
+                <xs:choice>
+                    <xs:element ref="modelist"/>
+                    <xs:element ref="nummodes"/>
+                </xs:choice>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="maps-traitdimension" type="xs:string"/>
+    <xs:element name="modetype" type="xs:string"/>
+    <xs:element name="modelist">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="mode"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="mode">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="name"/>
+                <xs:element ref="parameters"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="nummodes" type="xs:string"/>
+    <xs:element name="parameters">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="parameter"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="parameter">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="name"/>
+                <xs:element ref="value"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="value" type="xs:string"/>
+    <xs:element name="name" type="xs:string"/>
+</xs:schema>

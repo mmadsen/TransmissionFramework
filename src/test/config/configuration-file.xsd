@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
+  ~
+  ~ This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
+  ~
+  ~ For detailed license terms, see:
+  ~ http://creativecommons.org/licenses/GPL/2.0/
+  -->
+
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="configuration" type="configurationType">
+        <xs:annotation>
+            <xs:documentation>~ Copyright (c) 2013. Mark E. Madsen &lt;mark@madsenlab.org>
+                ~
+                ~ This work is licensed under the terms of the Creative Commons-GNU General Public License 2.0, as
+                "non-commercial/sharealike". You may use, modify, and distribute this software for non-commercial
+                purposes, and you must distribute any modifications under the same license.
+                ~
+                ~ For detailed license terms, see:
+                ~ http://creativecommons.org/licenses/GPL/2.0/
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:complexType name="configurationType">
+        <xs:sequence>
+            <xs:element type="modelType" name="model"/>
+            <xs:element type="observersType" name="observers"/>
+            <xs:element type="classificationsType" name="classifications"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="parametersType">
+        <xs:sequence>
+            <xs:element type="parameterType" name="parameter" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="classificationsType">
+        <xs:sequence>
+            <xs:element type="classificationType" name="classification"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="dimensionType">
+        <xs:sequence>
+            <xs:element name="maps-traitdimension">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="1"/>
+                        <xs:enumeration value="2"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="modetype">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="SPECIFIED"/>
+                        <xs:enumeration value="RANDOM"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element type="modelistType" name="modelist" minOccurs="0"/>
+            <xs:element type="xs:string" name="nummodes" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="dimensionsType">
+        <xs:sequence>
+            <xs:element type="dimensionType" name="dimension" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="modeType">
+        <xs:sequence>
+            <xs:element name="name">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="1"/>
+                        <xs:enumeration value="2"/>
+                        <xs:enumeration value="3"/>
+                        <xs:enumeration value="4"/>
+                        <xs:enumeration value="5"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element type="parametersType" name="parameters"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="rulesetType">
+        <xs:sequence>
+            <xs:element type="ruleType" name="rule" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="traitdimensionType">
+        <xs:sequence>
+            <xs:element name="dimensionname">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="BladeLength"/>
+                        <xs:enumeration value="NotchShape"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element type="xs:string" name="dimensiontype"/>
+            <xs:element type="variationmodelType" name="variationmodel"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="ruleType">
+        <xs:sequence>
+            <xs:element name="subrule-of" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="1"/>
+                        <xs:enumeration value="3"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="ruleclass">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="org.madsenlab.sim.tf.rules.CopyOrMutateDecisionRule"/>
+                        <xs:enumeration value="org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule"/>
+                        <xs:enumeration value="org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule"/>
+                        <xs:enumeration value="org.madsenlab.sim.tf.rules.ConformismOrRandomDecisionRule"/>
+                        <xs:enumeration value="org.madsenlab.sim.tf.rules.CopyConformistTraitNeighborRule"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element type="parametersType" name="parameters" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+        <xs:attribute type="xs:string" name="order" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="variationmodelType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="factory"/>
+            <xs:element name="initial-trait-generator-method">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="getGaussianTraitCollection"/>
+                        <xs:enumeration value="getUniqueUniformTraitCollection"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element type="parametersType" name="parameters"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="traitspaceType">
+        <xs:sequence>
+            <xs:element type="traitdimensionType" name="traitdimension" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="modelType" mixed="true">
+        <xs:sequence>
+            <xs:element type="xs:string" name="simlength"/>
+            <xs:element type="xs:string" name="mixingtime"/>
+            <xs:element type="xs:string" name="dynamicsclass"/>
+            <xs:element type="populationType" name="population"/>
+            <xs:element type="traitspaceType" name="traitspace"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="classificationType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="name"/>
+            <xs:element type="dimensionsType" name="dimensions"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="rulesetsType">
+        <xs:sequence>
+            <xs:element type="rulesetType" name="ruleset" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="modelistType">
+        <xs:sequence>
+            <xs:element type="modeType" name="mode" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="parameterType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="name"/>
+            <xs:element type="xs:string" name="value"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="observersType">
+        <xs:sequence>
+            <xs:element type="observerType" name="observer" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="populationType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="agentclass"/>
+            <xs:element type="xs:string" name="numagents"/>
+            <xs:element type="xs:string" name="topologyclass"/>
+            <xs:element type="xs:string" name="builderclass"/>
+            <xs:element type="rulesetsType" name="rulesets"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="observerType">
+        <xs:sequence>
+            <xs:element name="observerclass">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="org.madsenlab.sim.tf.observers.EwensSampleFullPopulationObserver"/>
+                        <xs:enumeration value="org.madsenlab.sim.tf.observers.GlobalClassCountObserver"/>
+                        <xs:enumeration value="org.madsenlab.sim.tf.observers.TimeAveragedTraitCountObserver"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element type="parametersType" name="parameters" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

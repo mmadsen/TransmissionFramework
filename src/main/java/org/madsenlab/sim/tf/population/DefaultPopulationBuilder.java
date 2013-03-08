@@ -7,17 +7,24 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.utils;
+package org.madsenlab.sim.tf.population;
+
+import org.madsenlab.sim.tf.interfaces.IInitialPopulationBuilder;
+import org.madsenlab.sim.tf.interfaces.IPopulation;
 
 /**
- * Enumeration of types for IAgentTag classes
- * <p/>
+ * CLASS DESCRIPTION
  * <p/>
  * User: mark
- * Date: 4/6/11
- * Time: 4:25 PM
+ * Date: 2/27/13
+ * Time: 3:56 PM
  */
-public enum AgentTagType {
-    DEME,
-    AGENT_RULE_TYPE
+
+public class DefaultPopulationBuilder implements IInitialPopulationBuilder {
+    @Override
+    public IPopulation constructInitialPopulation() {
+
+
+        return null;
+    }
 }

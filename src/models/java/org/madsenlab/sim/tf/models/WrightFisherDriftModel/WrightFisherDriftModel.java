@@ -41,11 +41,8 @@ public class WrightFisherDriftModel extends AbstractSimModel {
     EwensSampleFullPopulationObserver ewensSampler;
     TimeAveragedTraitCountObserver taCountSampler;
     ITraitDimension dimension;
-    Integer numAgents;
-    Double mutationRate;
     Boolean isInfiniteAlleles = false;
-    Integer maxTraits;
-    Integer startingTraits;
+
 
     List<IActionRule> ruleList;
 
