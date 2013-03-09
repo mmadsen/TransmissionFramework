@@ -57,6 +57,11 @@ public class GlobalClassFreqObserver implements IStatisticsObserver<IClassificat
 
     }
 
+    @Override
+    public void setParameterMap(Map<String, String> parameterMap) {
+
+    }
+
     // we only want to start recording trait counts after the initial transient behavior decays and we reach equilibrium
     public void updateStatistics(IStatistic<IClassification> stat) {
         log.trace("entering updateStatistics");

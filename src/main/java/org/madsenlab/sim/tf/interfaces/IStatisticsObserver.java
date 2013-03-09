@@ -9,6 +9,8 @@
 
 package org.madsenlab.sim.tf.interfaces;
 
+import java.util.Map;
+
 /**
  * CLASS DESCRIPTION
  * <p/>
@@ -18,6 +20,17 @@ package org.madsenlab.sim.tf.interfaces;
  */
 
 public interface IStatisticsObserver<T> {
+
+    /**
+     * Since we instantiate observers by reflection from a configuration file, it's hard to feed them named
+     * parameters from the configuration file.  It's easier to simply feed an observer a map of parameters
+     * to use as desired. This is a common pattern if we're doing most composition via configuration file.
+     *
+     * @param parameterMap
+     */
+
+    public void setParameterMap(Map<String, String> parameterMap);
+
     /**
      * Called automatically by the publisher of the statistic being observed
      *

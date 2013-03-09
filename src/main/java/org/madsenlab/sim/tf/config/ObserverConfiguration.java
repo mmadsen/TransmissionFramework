@@ -9,6 +9,8 @@
 
 package org.madsenlab.sim.tf.config;
 
+import org.madsenlab.sim.tf.utils.ObserverTargetType;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +25,15 @@ import java.util.Map;
 public class ObserverConfiguration {
     private String observerClass;
     private Map<String, String> parameterMap;
+    private ObserverTargetType targetType;
+
+    public ObserverTargetType getTargetType() {
+        return targetType;
+    }
+
+    public void setTargetType(ObserverTargetType targetType) {
+        this.targetType = targetType;
+    }
 
     public String getObserverClass() {
         return observerClass;
@@ -38,6 +49,10 @@ public class ObserverConfiguration {
 
     public String getParameter(String name) {
         return this.parameterMap.get(name);
+    }
+
+    public Map<String, String> getParameterMap() {
+        return this.parameterMap;
     }
 
     public ObserverConfiguration() {

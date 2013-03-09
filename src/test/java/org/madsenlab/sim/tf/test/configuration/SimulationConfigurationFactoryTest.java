@@ -19,14 +19,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.madsenlab.sim.tf.config.*;
+import org.madsenlab.sim.tf.interfaces.IModelDynamics;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.test.util.MultidimensionalAgentModule;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * CLASS DESCRIPTION
@@ -149,5 +152,22 @@ public class SimulationConfigurationFactoryTest extends MultidimensionalAgentMod
         ClassificationConfiguration cc = ccList.get(0);
         int observed = cc.getClassificationDimensionConfigurations().size();
         assertEquals(expected, observed);
+    }
+
+    @Test
+    public void testInstantiationDynamicsClass() throws Exception {
+        log.info("entering testInstantiationDynamicsClass");
+        String dynamicsDelegate = this.mc.getDynamicsclass();
+        IModelDynamics mdd = null;
+        try {
+            Class<?> clazz = Class.forName(dynamicsDelegate);
+            Constructor<?> constructor = clazz.getConstructor(ISimulationModel.class);
+            mdd = (IModelDynamics) constructor.newInstance(this.model);
+        } catch (Exception ex) {
+            assertTrue(ex.getMessage(), false);
+        }
+
+        log.info("instantiated dynamics class: " + mdd.getClass().getSimpleName());
+        assertTrue(true);
     }
 }

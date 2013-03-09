@@ -13,6 +13,7 @@ import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
+import org.madsenlab.sim.tf.utils.ObserverTargetType;
 import org.madsenlab.sim.tf.utils.RealTraitIntervalPredicate;
 
 import java.util.HashMap;
@@ -120,6 +121,9 @@ public class SimulationConfigurationFactory {
             String obsClass = sub.getString("observerclass");
             ObserverConfiguration obsConfig = new ObserverConfiguration();
             obsConfig.setObserverClass(obsClass);
+
+            String targetType = sub.getString("target");
+            obsConfig.setTargetType(ObserverTargetType.fromString(targetType));
 
             List<HierarchicalConfiguration> paramConfigList = sub.configurationsAt("parameters.parameter");
             for (HierarchicalConfiguration param : paramConfigList) {

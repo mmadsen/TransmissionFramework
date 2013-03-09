@@ -50,6 +50,11 @@ public class PerDemeTraitFrequencyObserver implements IStatisticsObserver<ITrait
     }
 
 
+    @Override
+    public void setParameterMap(Map<String, String> parameterMap) {
+
+    }
+
     public void updateStatistics(IStatistic<ITraitDimension> stat) {
         log.trace("entering updateStatistics for demeTag: " + this.demeTag);
         this.lastTimeIndexUpdated = stat.getTimeIndex();

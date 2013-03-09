@@ -9,6 +9,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/models/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/models/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/surefire" />
@@ -36,10 +37,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Maven: info.cukes:cucumber-java:1.0.11" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: info.cukes:cucumber-core:1.0.11" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: info.cukes:gherkin:2.11.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: info.cukes:cucumber-html:0.2.1" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.12" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.1" level="project" />
     <orderEntry type="library" name="Maven: com.googlecode.combinatoricslib:combinatoricslib:2.0" level="project" />

@@ -74,6 +74,11 @@ public class TimeAveragedTraitCountObserver implements IStatisticsObserver<ITrai
     }
 
     @Override
+    public void setParameterMap(Map<String, String> parameterMap) {
+
+    }
+
+    @Override
     public void updateStatistics(IStatistic<ITraitDimension> stat) {
         log.trace("entering updateStatistics");
         Integer lastTimeIndexUpdated;

@@ -137,6 +137,7 @@
     <observers>
         <observer>
             <observerclass>org.madsenlab.sim.tf.observers.EwensSampleFullPopulationObserver</observerclass>
+            <target>TRAITDIMENSION</target>
             <parameters>
                 <parameter>
                     <name>samplesize</name>
@@ -146,9 +147,11 @@
         </observer>
         <observer>
             <observerclass>org.madsenlab.sim.tf.observers.GlobalClassCountObserver</observerclass>
+            <target>TRAITDIMENSION</target>
         </observer>
         <observer>
-            <observerclass>org.madsenlab.sim.tf.observers.TimeAveragedTraitCountObserver</observerclass>
+            <observerclass>org.madsenlab.sim.tf.observers.GlobalClassCountObserver</observerclass>
+            <target>CLASSIFICATION</target>
         </observer>
     </observers>
     <classifications>

@@ -19,17 +19,15 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
-import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
-import org.madsenlab.sim.tf.config.ModelConfiguration;
-import org.madsenlab.sim.tf.config.SimulationConfigurationFactory;
+import org.madsenlab.sim.tf.config.*;
 import org.madsenlab.sim.tf.interfaces.*;
+import org.madsenlab.sim.tf.traits.UnstructuredTraitDimensionFactory;
+import org.madsenlab.sim.tf.utils.ObserverTargetType;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
+import java.lang.reflect.Constructor;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -73,7 +71,9 @@ public abstract class ConfigurableSimulationModel implements ISimulationModel {
     protected GlobalModelConfiguration params;
     protected Properties modelProperties;
     protected List<ITraitDimension> dimensionList;
+    protected Map<Integer, ITraitDimension> dimensionMap;
     protected List<IStatisticsObserver> traitObserverList;
+    protected List<IStatisticsObserver> classObserverList;
     protected String propertiesFileName;
     protected String modelNamePrefix;
 
@@ -163,7 +163,8 @@ public abstract class ConfigurableSimulationModel implements ISimulationModel {
         this.topology = topologyProvider.get();
         this.dimensionList = new ArrayList<ITraitDimension>();
         this.traitObserverList = new ArrayList<IStatisticsObserver>();
-
+        this.classObserverList = new ArrayList<IStatisticsObserver>();
+        this.dimensionMap = new HashMap<Integer, ITraitDimension>();
     }
 
     public Provider<ITrait> getTraitProvider() {
@@ -275,5 +276,108 @@ public abstract class ConfigurableSimulationModel implements ISimulationModel {
 
     }
 
+
+    public void initializeModel() {
+        log.debug("entering initializeModel");
+
+        // Initialize a dynamics delegate
+        String dynamicsDelegate = this.modelConfig.getDynamicsclass();
+        try {
+            Class<?> clazz = Class.forName(dynamicsDelegate);
+            Constructor<?> constructor = clazz.getConstructor(ISimulationModel.class);
+            this.modelDynamicsDelegate = (IModelDynamics) constructor.newInstance(this);
+        } catch (Exception ex) {
+            System.out.println("Fatal exception loading model dynamics class: " + ex.getMessage());
+            System.exit(1);
+        }
+
+        // TODO - initialize trait dimensions
+        UnstructuredTraitDimensionFactory dimensionFactory = new UnstructuredTraitDimensionFactory(this);
+
+        List<TraitDimensionConfiguration> dimConfigList = this.modelConfig.getTraitDimensionConfigurations();
+        for (TraitDimensionConfiguration tdc : dimConfigList) {
+            String dimName = tdc.getDimensionName();
+            String variationClassName = tdc.getVariationModelFactoryClass();
+            String dimType = tdc.getDimensionType();
+            Integer dimID = tdc.getDimensionID();
+
+            ITraitFactory traitFactory = this.instantiateTraitFactory(variationClassName);
+            Class dimTypeCz = this.getClassForDimensionType(dimType);
+
+            ITraitDimension dimension = dimensionFactory.getNewTraitDimension(dimTypeCz, traitFactory);
+            dimension.setDimensionName(dimName);
+            this.dimensionList.add(dimension);
+            this.dimensionMap.put(dimID, dimension);
+        }
+
+
+        // TODO - initialize classifications, linked to trait dimensions
+
+        // TODO - initialize rulesets
+
+        List<ObserverConfiguration> observerConfigurations = this.modelConfig.getObserverConfigurations();
+        for (ObserverConfiguration obsConfig : observerConfigurations) {
+            String obsClassName = obsConfig.getObserverClass();
+            ObserverTargetType targetType = obsConfig.getTargetType();
+
+            IStatisticsObserver observer = this.instantiateObserver(obsClassName);
+            Map<String, String> parameterMap = obsConfig.getParameterMap();
+            if (parameterMap.size() > 0) {
+                observer.setParameterMap(parameterMap);
+            }
+
+            if (targetType.equals(ObserverTargetType.TRAITDIMENSION)) {
+                this.traitObserverList.add(observer);
+            } else if (targetType.equals(ObserverTargetType.CLASSIFICATION)) {
+                this.classObserverList.add(observer);
+            }
+
+
+        }
+
+
+        // TODO - initialize agent population with initial trait variants  and rulesets
+
+
+        log.debug("exiting initializeModel");
+    }
+
+    private ITraitFactory instantiateTraitFactory(String traitFactoryClassName) {
+        ITraitFactory traitFactory = null;
+        try {
+            Class<?> clazz = Class.forName(traitFactoryClassName);
+            Constructor<?> constructor = clazz.getConstructor(ISimulationModel.class);
+            traitFactory = (ITraitFactory) constructor.newInstance(this);
+        } catch (Exception ex) {
+            System.out.println("Fatal exception finding trait factory class: " + ex.getMessage());
+            System.exit(1);
+        }
+        return traitFactory;
+    }
+
+    private Class getClassForDimensionType(String dimTypeStr) {
+        Class dimTypeClass = null;
+        try {
+            dimTypeClass = Class.forName(dimTypeStr);
+
+        } catch (Exception ex) {
+            System.out.println("Fatal exception finding dimension type class: " + ex.getMessage());
+            System.exit(1);
+        }
+        return dimTypeClass;
+    }
+
+    private IStatisticsObserver instantiateObserver(String observerClassName) {
+        IStatisticsObserver observer = null;
+        try {
+            Class<?> clazz = Class.forName(observerClassName);
+            Constructor<?> constructor = clazz.getConstructor(ISimulationModel.class);
+            observer = (IStatisticsObserver) constructor.newInstance(this);
+        } catch (Exception ex) {
+            System.out.println("Fatal exception finding observer class: " + ex.getMessage());
+            System.exit(1);
+        }
+        return observer;
+    }
 
 }

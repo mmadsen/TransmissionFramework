@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AnalysisUIOptions">
-    <option name="SCOPE_TYPE" value="8" />
-    <option name="CUSTOM_SCOPE_NAME" value="Module 'TransmissionFramework'" />
+    <option name="CUSTOM_SCOPE_NAME" value="Project Files" />
   </component>
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
@@ -10,52 +9,185 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" name="Default" comment="Pushed modelStep out to an IModelDynamics delegate object, which allows the type of model dynamics to be configured.  The goal is to remove everything from concrete model classes and simply have a single model class in the framework, &#10;which can also be the SimRunner main() method, and do everything else in rules, observers, and configuration files.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/utils/ClassDimensionModeType.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/ClassificationConfiguration.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/ClassificationDimensionConfiguration.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/models/ConfigurableSimulationModel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/population/DefaultPopulationBuilder.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/interfaces/IInitialPopulationBuilder.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sf_ezmorph_ezmorph_1_0_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sf_json_lib_json_lib_jdk15_1_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/ModelConfiguration.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/ObserverConfiguration.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/PopulationConfiguration.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/RuleConfiguration.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/RulesetConfiguration.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/SimulationConfigurationFactory.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/org/madsenlab/sim/tf/test/configuration/SimulationConfigurationFactoryTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/TraitDimensionConfiguration.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/org/madsenlab/sim/tf/test/configuration/XMLConfigurationBasicTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/docs/experiments/config-refactoring-notes.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/configuration-file.xsd" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/config/configuration-file.xsd" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/config/model-configuration-test.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/models/config/wfia-2dim-2ruleset-conf.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/docs/configurations/wellmixed-WFIA.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/app/SimRunner.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_configuration_commons_configuration_1_8.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_configuration_commons_configuration_1_9.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/utils/AgentTagType.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/utils/AgentTagType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/ConformistDriftModel/ConformistDriftSim.java" afterPath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/ConformistDriftModel/ConformistDriftSim.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/HeterogeneousDriftModel/HeterogeneousDriftSim.java" afterPath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/HeterogeneousDriftModel/HeterogeneousDriftSim.java" />
+    <list default="true" id="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/utils/ObserverTargetType.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/traits/UnstructuredRealTraitDimensionProvider.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/traits/UnstructuredTraitDimensionFactory.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__info_cukes_cucumber_core_1_0_11.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__info_cukes_cucumber_html_0_2_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__info_cukes_cucumber_java_1_0_11.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__info_cukes_gherkin_2_11_1.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/package-list" afterPath="$PROJECT_DIR$/docs/javadoc/package-list" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/AbstractActionRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/AbstractActionRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/agent/AbstractAgent.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/agent/AbstractAgent.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/AbstractDeme.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/AbstractDeme.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/AbstractInteractionRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/AbstractInteractionRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/traits/AbstractObservableTrait.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/traits/AbstractObservableTrait.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/AbstractObservationRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/AbstractObservationRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/models/AbstractSimModel.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/models/AbstractSimModel.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/AgentPredicate.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/AgentPredicate.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/AgentTagPredicate.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/AgentTagPredicate.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/AgentTagType.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/AgentTagType.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/AllAgentsPredicate.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/AllAgentsPredicate.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/ArtifactPredicate.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/ArtifactPredicate.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/ArtifactTagPredicate.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/ArtifactTagPredicate.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/ArtifactTagType.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/ArtifactTagType.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/config/BasicModelModule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/config/BasicModelModule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/models/ConfigurableSimulationModel.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/models/ConfigurableSimulationModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/ConformismOrRandomDecisionRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/ConformismOrRandomDecisionRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/CopyConformistTraitNeighborRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/CopyConformistTraitNeighborRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/CopyFromAgentOrArtifactDecisionRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/CopyFromAgentOrArtifactDecisionRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/CopyOrMutateDecisionRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/CopyOrMutateDecisionRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/EwensSampleFullPopulationObserver.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/EwensSampleFullPopulationObserver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/FiniteKAllelesMutationRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/FiniteKAllelesMutationRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/GenerationDynamicsMode.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/GenerationDynamicsMode.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalClassCountObserver.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalClassCountObserver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalClassFreqObserver.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalClassFreqObserver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/config/GlobalModelConfiguration.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/config/GlobalModelConfiguration.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalTraitCountObserver.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalTraitCountObserver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalTraitFrequencyObserver.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalTraitFrequencyObserver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalTraitLifetimeObserver.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalTraitLifetimeObserver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IActionRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IActionRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IAgent.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IAgent.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IAgentTag.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IAgentTag.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IArtifact.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IArtifact.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IArtifactCollection.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IArtifactCollection.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IArtifactTag.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IArtifactTag.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IConformistCopyingRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IConformistCopyingRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/ICopyingRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/ICopyingRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IDeme.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IDeme.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IInteractionRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IInteractionRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IInteractionTopology.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IInteractionTopology.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/ILogFiles.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/ILogFiles.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IMutationRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IMutationRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IObservationRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IObservationRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IPopulation.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IPopulation.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/ISimulationModel.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/ISimulationModel.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/interfaces/IStatisticsObserver.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/interfaces/IStatisticsObserver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IStatisticsSubject.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IStatisticsSubject.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/ITrait.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/ITrait.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/ITraitDimension.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/ITraitDimension.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IUnbiasedCopyingRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/IUnbiasedCopyingRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/InfiniteAllelesMutationRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/InfiniteAllelesMutationRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/Log2HistogramBinUtil.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/Log2HistogramBinUtil.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/LogFileHandler.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/LogFileHandler.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_hibernate_core_4_1_9_Final.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_hibernate_core_4_1_9_Final.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/MetapopulationWithMigration/MetapopulationWithMigrationSim.java" afterPath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/MetapopulationWithMigration/MetapopulationWithMigrationSim.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/MultiDimensionWrightFisherDriftModel/MultiDimensionWrightFisherDriftSim.java" afterPath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/MultiDimensionWrightFisherDriftModel/MultiDimensionWrightFisherDriftSim.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/SimpleMoran/SimpleMoranDriftSim.java" afterPath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/SimpleMoran/SimpleMoranDriftSim.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/utils/TraitCopyingMode.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/utils/TraitCopyingMode.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/ObserverConfiguration.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/ObserverConfiguration.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/PerDemeTraitFrequencyObserver.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/PerDemeTraitFrequencyObserver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/PopulationDemeTest.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/PopulationDemeTest.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/PopulationDynamicsManagementTest.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/PopulationDynamicsManagementTest.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/RandomCopyNeighborSingleDimensionRule.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/RandomCopyNeighborSingleDimensionRule.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/SimpleAgentDeme.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/SimpleAgentDeme.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/SimpleAgentDemeProvider.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/SimpleAgentDemeProvider.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/SimpleAgentPopulation.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/SimpleAgentPopulation.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/SimpleAgentPopulationProvider.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/SimpleAgentPopulationProvider.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/SimpleAgentTag.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/SimpleAgentTag.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/SimpleAgentTagProvider.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/SimpleAgentTagProvider.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/SimpleAgentTagTest.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/SimpleAgentTagTest.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/SimpleArtifactTag.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/SimpleArtifactTag.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/SimulationConfigurationFactory.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/SimulationConfigurationFactory.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/madsenlab/sim/tf/test/configuration/SimulationConfigurationFactoryTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/madsenlab/sim/tf/test/configuration/SimulationConfigurationFactoryTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/util/SimulationModelFixture.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/util/SimulationModelFixture.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/TagCountingTest.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/TagCountingTest.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/models/TestingSimulationModel.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/models/TestingSimulationModel.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/TimeAveragedTraitCountObserver.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/TimeAveragedTraitCountObserver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/TimeAveragingWindowUtil.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/TimeAveragingWindowUtil.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/TraitCopyingMode.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/TraitCopyingMode.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/util/TraitCountAccumulatorObserver.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/util/TraitCountAccumulatorObserver.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/exceptions/TraitCountIntervalFullException.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/exceptions/TraitCountIntervalFullException.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/util/TraitCountPrinterObserver.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/util/TraitCountPrinterObserver.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/TraitDimensionObserverTest.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/TraitDimensionObserverTest.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/exceptions/TraitDurationIncompleteException.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/exceptions/TraitDurationIncompleteException.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/TraitIDComparator.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/TraitIDComparator.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/TraitOccurrenceObserver.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/TraitOccurrenceObserver.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TransmissionFramework.iml" afterPath="$PROJECT_DIR$/TransmissionFramework.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/WrightFisherDriftModel/WrightFisherDriftModel.java" afterPath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/WrightFisherDriftModel/WrightFisherDriftModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/WrightFisherDriftModel/WrightFisherDriftSim.java" afterPath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/WrightFisherDriftModel/WrightFisherDriftSim.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/WrightFisherUnitIntervalDriftModel/WrightFisherUnitIntervalDriftSim.java" afterPath="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/WrightFisherUnitIntervalDriftModel/WrightFisherUnitIntervalDriftSim.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/exceptions/UnimplementedMethodException.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/exceptions/UnimplementedMethodException.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/traits/UnstructuredTrait.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/traits/UnstructuredTrait.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/UnstructuredTraitAdoptionTest.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/UnstructuredTraitAdoptionTest.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/traits/UnstructuredTraitDimension.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/traits/UnstructuredTraitDimension.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/traits/UnstructuredTraitDimensionProvider.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/traits/UnstructuredTraitDimensionProvider.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/traits/UnstructuredTraitDimensionProvider.java" afterPath="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/traits/UnstructuredTraitDimensionProvider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/UnstructuredTraitDimensionTest.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/UnstructuredTraitDimensionTest.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/WellMixedInteractionTopology.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/WellMixedInteractionTopology.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/WellMixedInteractionTopologyProvider.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/WellMixedInteractionTopologyProvider.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/WellMixedWithinDemeTopology.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/WellMixedWithinDemeTopology.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/WellMixedWithinDemeTopologyProvider.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/WellMixedWithinDemeTopologyProvider.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/allclasses-frame.html" afterPath="$PROJECT_DIR$/docs/javadoc/allclasses-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/allclasses-noframe.html" afterPath="$PROJECT_DIR$/docs/javadoc/allclasses-noframe.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/constant-values.html" afterPath="$PROJECT_DIR$/docs/javadoc/constant-values.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/deprecated-list.html" afterPath="$PROJECT_DIR$/docs/javadoc/deprecated-list.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/help-doc.html" afterPath="$PROJECT_DIR$/docs/javadoc/help-doc.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-1.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-1.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-10.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-10.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-11.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-11.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-12.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-12.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-13.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-13.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-14.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-14.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-15.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-15.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-16.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-16.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-17.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-17.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-18.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-18.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-19.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-19.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-2.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-2.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-20.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-20.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-21.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-21.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-3.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-3.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-4.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-4.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-5.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-5.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-6.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-6.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-7.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-7.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-8.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-8.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index-files/index-9.html" afterPath="$PROJECT_DIR$/docs/javadoc/index-files/index-9.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/index.html" afterPath="$PROJECT_DIR$/docs/javadoc/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/overview-frame.html" afterPath="$PROJECT_DIR$/docs/javadoc/overview-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/overview-summary.html" afterPath="$PROJECT_DIR$/docs/javadoc/overview-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/overview-tree.html" afterPath="$PROJECT_DIR$/docs/javadoc/overview-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/agent/package-frame.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/agent/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/config/package-frame.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/config/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/exceptions/package-frame.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/exceptions/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/package-frame.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/models/package-frame.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/models/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/package-frame.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/package-frame.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/package-frame.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/package-frame.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/util/package-frame.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/util/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/traits/package-frame.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/traits/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/package-frame.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/package-frame.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/agent/package-summary.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/agent/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/config/package-summary.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/config/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/exceptions/package-summary.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/exceptions/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/package-summary.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/models/package-summary.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/models/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/package-summary.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/package-summary.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/package-summary.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/package-summary.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/util/package-summary.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/util/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/traits/package-summary.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/traits/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/package-summary.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/package-summary.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/agent/package-tree.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/agent/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/config/package-tree.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/config/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/exceptions/package-tree.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/exceptions/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/package-tree.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/interfaces/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/models/package-tree.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/models/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/package-tree.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/population/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/package-tree.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/rules/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/package-tree.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/structure/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/package-tree.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/util/package-tree.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/util/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/traits/package-tree.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/traits/package-tree.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/package-tree.html" afterPath="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/utils/package-tree.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/javadoc/serialized-form.html" afterPath="$PROJECT_DIR$/docs/javadoc/serialized-form.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/config/wfia-2dim-2ruleset-conf.xml" afterPath="$PROJECT_DIR$/src/models/config/wfia-2dim-2ruleset-conf.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$USER_HOME$/.grails/" />
     <ignored path="$USER_HOME$/.griffon/" />
-    <file path="/Dummy.txt" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362763746443" ignored="false" />
-    <file path="/pom.xml" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362096488553" ignored="false" />
+    <file path="/Dummy.txt" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362802747459" ignored="false" />
+    <file path="/pom.xml" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362780226054" ignored="false" />
     <file path="/ParadigmaticClassification.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1360023181278" ignored="false" />
     <file path="/ParadigmaticClassificationTest.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1359499273135" ignored="false" />
     <file path="/IClass.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1361552908601" ignored="false" />
@@ -63,7 +195,7 @@
     <file path="/RealIntervalDimensionMode.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1360773596572" ignored="false" />
     <file path="/RealIntervalDimensionClass.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1359573825490" ignored="false" />
     <file path="/UnstructuredClass.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1361553825397" ignored="false" />
-    <file path="/fragment.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362762686771" ignored="false" />
+    <file path="/fragment.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362801604052" ignored="false" />
     <file path="/ClassStatistic.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1359591026739" ignored="false" />
     <file path="/Observation-Classes.markdown" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1359758004458" ignored="false" />
     <file path="/IClassIdentificationEngine.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1361127619671" ignored="false" />
@@ -79,7 +211,7 @@
     <file path="/UnstructuredMultidimensionalTraitAgentTest.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1360616832655" ignored="false" />
     <file path="/UnstructuredClassParadigmaticClassificationTest.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1361563334607" ignored="false" />
     <file path="/log4j.config" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1361308812894" ignored="false" />
-    <file path="/UnstructuredTraitDimensionProvider.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1360450985598" ignored="false" />
+    <file path="/UnstructuredTraitDimensionProvider.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362780203560" ignored="false" />
     <file path="/UnstructuredTrait.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1361034757996" ignored="false" />
     <file path="/UnstructuredTraitDimension.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1361829988358" ignored="false" />
     <file path="$PROJECT_DIR$/docs/javadoc/org/madsenlab/sim/tf/test/RealTraitIntervalPredicateTest.html" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1360615192180" ignored="false" />
@@ -133,18 +265,23 @@
     <file path="/PopulationConfiguration.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362670118235" ignored="false" />
     <file path="/JUnit4-AtUnit-Guice Test.txt.ft" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362096718184" ignored="false" />
     <file path="/XMLConfigurationBasicTest.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362521504506" ignored="false" />
-    <file path="/ObserverConfiguration.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362436185052" ignored="false" />
+    <file path="/ObserverConfiguration.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362805655751" ignored="false" />
     <file path="/RulesetConfiguration.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362610915644" ignored="false" />
-    <file path="/wfia-2dim-2ruleset-conf.xml" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362598277392" ignored="false" />
+    <file path="/wfia-2dim-2ruleset-conf.xml" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362801737823" ignored="false" />
     <file path="/TraitDimensionConfiguration.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362612697590" ignored="false" />
     <file path="/ClassificationConfiguration.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362601490140" ignored="false" />
     <file path="/ClassDimensionModeType.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362599452555" ignored="false" />
-    <file path="/SimulationConfigurationFactory.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362698669484" ignored="false" />
+    <file path="/SimulationConfigurationFactory.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362802107849" ignored="false" />
     <file path="/RuleConfiguration.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362609918658" ignored="false" />
     <file path="/ClassificationDimensionConfiguration.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362698176281" ignored="false" />
-    <file path="/SimulationConfigurationFactoryTest.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362698750172" ignored="false" />
+    <file path="/SimulationConfigurationFactoryTest.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362766828397" ignored="false" />
     <file path="/a.dummy" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362673923385" ignored="false" />
-    <file path="/ConfigurableSimulationModel.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362763382523" ignored="false" />
+    <file path="/ConfigurableSimulationModel.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362805687970" ignored="false" />
+    <file path="$PROJECT_DIR$/src/test/config/configuration-file.xsd" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362763881362" ignored="false" />
+    <file path="/UnstructuredRealTraitDimensionProvider.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362780295117" ignored="false" />
+    <file path="/UnstructuredTraitDimensionFactory.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362778276711" ignored="false" />
+    <file path="/ObserverTargetType.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362802329563" ignored="false" />
+    <file path="/IStatisticsObserver.java" changelist="8ce9f875-2b5d-4c8d-be43-744b41bd59d1" time="1362805492866" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -210,84 +347,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AbstractSimModel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/models/AbstractSimModel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="83" column="44" selection-start="2603" selection-end="2650" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimpleMoranDriftSim.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/SimpleMoran/SimpleMoranDriftSim.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="0" selection-start="551" selection-end="551" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WrightFisherUnitIntervalDriftSim.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/WrightFisherUnitIntervalDriftModel/WrightFisherUnitIntervalDriftSim.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="90" selection-start="720" selection-end="720" vertical-scroll-proportion="0.30805686">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MultiDimensionWrightFisherDriftSim.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/MultiDimensionWrightFisherDriftModel/MultiDimensionWrightFisherDriftSim.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="48" selection-start="777" selection-end="777" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MetapopulationWithMigrationSim.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/MetapopulationWithMigration/MetapopulationWithMigrationSim.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="44" selection-start="764" selection-end="764" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HeterogeneousDriftSim.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/HeterogeneousDriftModel/HeterogeneousDriftSim.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="35" selection-start="751" selection-end="751" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ConformistDriftSim.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/ConformistDriftModel/ConformistDriftSim.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="32" selection-start="745" selection-end="745" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ConfigurableSimulationModel.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ConfigurableSimulationModel.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/models/ConfigurableSimulationModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="268" column="12" selection-start="8898" selection-end="8898" vertical-scroll-proportion="0.0">
+            <state line="335" column="55" selection-start="11828" selection-end="11828" vertical-scroll-proportion="0.9118541">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WrightFisherDriftModel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/WrightFisherDriftModel/WrightFisherDriftModel.java">
+      <file leaf-file-name="ObserverConfiguration.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/ObserverConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="183" column="81" selection-start="8339" selection-end="8339" vertical-scroll-proportion="0.0">
+            <state line="52" column="34" selection-start="1402" selection-end="1402" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -316,22 +388,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/PopulationConfiguration.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/ModelConfiguration.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/traits/UnstructuredRealTraitDimensionProvider.java" />
         <option value="$PROJECT_DIR$/src/models/config/wfia-2dim-2ruleset-conf.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/ClassificationDimensionConfiguration.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/madsenlab/sim/tf/test/configuration/SimulationConfigurationFactoryTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/SimulationConfigurationFactory.java" />
-        <option value="$PROJECT_DIR$/src/test/config/model-configuration-test.xml" />
-        <option value="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/WrightFisherDriftModel/WrightFisherDriftModel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/utils/ObserverTargetType.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/interfaces/IStatisticsObserver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/EwensSampleFullPopulationObserver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalClassCountObserver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalClassFreqObserver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalTraitCountObserver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalTraitFrequencyObserver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalTraitLifetimeObserver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/PerDemeTraitFrequencyObserver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/TimeAveragedTraitCountObserver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/TraitOccurrenceObserver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/ObserverConfiguration.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/models/ConfigurableSimulationModel.java" />
-        <option value="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/WrightFisherDriftModel/WrightFisherDriftSim.java" />
-        <option value="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/SimpleMoran/SimpleMoranDriftSim.java" />
-        <option value="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/MultiDimensionWrightFisherDriftModel/MultiDimensionWrightFisherDriftSim.java" />
-        <option value="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/MetapopulationWithMigration/MetapopulationWithMigrationSim.java" />
-        <option value="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/HeterogeneousDriftModel/HeterogeneousDriftSim.java" />
-        <option value="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/ConformistDriftModel/ConformistDriftSim.java" />
-        <option value="$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/WrightFisherUnitIntervalDriftModel/WrightFisherUnitIntervalDriftSim.java" />
       </list>
     </option>
   </component>
@@ -411,6 +483,23 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files" />
+      </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -440,6 +529,66 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="configuration" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -475,11 +624,89 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="models" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="config" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="utils" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="traits" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -530,6 +757,126 @@
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="observers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="models" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="interfaces" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="config" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TransmissionFramework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -546,23 +893,6 @@
             </PATH_ELEMENT>
           </PATH>
         </subPane>
-      </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TransmissionFramework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TransmissionFramework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scope">
-        <subPane subId="Project Files" />
       </pane>
       <pane id="Favorites" />
     </panes>
@@ -601,7 +931,7 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
-    <property name="options.lastSelected" value="fileTemplates" />
+    <property name="options.lastSelected" value="preferences.pluginManager" />
     <property name="project.structure.side.proportion" value="0.25990677" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="false" />
@@ -610,18 +940,18 @@
     <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="CreateTestDialog.RecentsKey">
-      <recent name="org.madsenlab.sim.tf.test" />
-    </key>
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="org.madsenlab.sim.tf.test" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.madsenlab.sim.tf.utils" />
+      <recent name="org.madsenlab.sim.tf.traits" />
       <recent name="org.madsenlab.sim.tf.models" />
       <recent name="org.madsenlab.sim.tf.analysis" />
-      <recent name="org.madsenlab.sim.tf.utils" />
       <recent name="org.madsenlab.sim.tf.test.util" />
-      <recent name="org.madsenlab.sim.tf.test.classification" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/models/config" />
@@ -629,16 +959,16 @@
       <recent name="$PROJECT_DIR$/src/test/java/org/madsenlab/sim/tf/test/examples/WrightFisherUnitIntervalDriftModel" />
       <recent name="$PROJECT_DIR$/src/test/java/org/madsenlab/sim/tf/test/examples/ConformistDriftModel" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/resources" />
-      <recent name="$PROJECT_DIR$/src/models" />
-    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="org.madsenlab.sim.tf.test.classification" />
       <recent name="org.madsenlab.sim.tf.models" />
       <recent name="org.madsenlab.sim.tf.classification" />
       <recent name="org.madsenlab.sim.tf.analysis" />
       <recent name="org.madsenlab.sim.tf.interfaces.classification" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+      <recent name="$PROJECT_DIR$/src/models" />
     </key>
   </component>
   <component name="RunManager" selected="Application.WrightFisherDriftSim">
@@ -960,7 +1290,11 @@
       <created>1361982540772</created>
       <updated>1361982540772</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="New configuration file format in XML, a new SimulationConfigurationFactory which uses Apache Commons Configuration to parse it, and strong unit tests for its functionality.  Beginning to construct a ConfigurableSimulationModel class which will use&#10;the configuration file factory to build a simulation flexibly.  Next phase is to build and initialize all the simulation model objects, by reflection from the configured information.">
+      <created>1362763866566</created>
+      <updated>1362763866566</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -987,25 +1321,25 @@
     <frame x="0" y="22" width="1920" height="1136" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32677165" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32612967" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32716763" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" x="232" y="420" width="1624" height="645" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24954017" sideWeight="0.6732329" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977587" sideWeight="0.6732283" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24954017" sideWeight="0.6732329" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3989071" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32947975" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25987193" sideWeight="0.4891945" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.660485" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32553193" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3218504" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32480314" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32738096" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Metrics" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3629675" sideWeight="0.626832" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3484525" sideWeight="0.507874" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="top" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39975476" sideWeight="0.578354" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25987193" sideWeight="0.6732283" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25987193" sideWeight="0.6738703" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.49114174" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="0" y="22" width="1440" height="829" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329849" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1017,6 +1351,7 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Notes" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3292595" sideWeight="0.6612022" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32086614" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Code Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32965687" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329849" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997844" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1065,7 +1400,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Pushed modelStep out to an IModelDynamics delegate object, which allows the type of model dynamics to be configured.  The goal is to remove everything from concrete model classes and simply have a single model class in the framework, &#10;which can also be the SimRunner main() method, and do everything else in rules, observers, and configuration files." />
+    <option name="LAST_COMMIT_MESSAGE" value="New configuration file format in XML, a new SimulationConfigurationFactory which uses Apache Commons Configuration to parse it, and strong unit tests for its functionality.  Beginning to construct a ConfigurableSimulationModel class which will use&#10;the configuration file factory to build a simulation flexibly.  Next phase is to build and initialize all the simulation model objects, by reflection from the configured information." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1078,7 +1413,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="Infinite-alleles mutation works on top of basic Moran death-birth dynamics.  In this version, log file entries for trait frequencies are held until the end of the run, and then written to a file for performance during simulation.  This causes the simulation memory size to _balloon_ significantly - with 10K agents and 50K time steps, the process size grows to 1.02G.  The heap size must be adjusted for the parameterization of the model, otherwise GC thrashing causes exponential slowdown towards the end of the simulation.  This needs to be addressed, perhaps with a checkpointing architecture, but in general I'm also going to explore HSQLDB as the embedded data collection system." />
     <MESSAGE value="Added top-level docs directory, and did a Javadoc run, since it's handy while developing to have my own API docs.  Other directories will have design documents and notes on experiments." />
     <MESSAGE value="Basic structure of metapopulation model in place, simplified structure of simulation files separate from library.  Also fixed a problem where simulation *and* copying were happening in the same elemental time step.  The system now has a &quot;subrule&quot; framework, and each agent now fires a &quot;CopyOrMutateDecisionRule&quot; which decides which thing will happen in a given time step, and then calls the appropriate subrule (which can be a stack of rules...).  This has not been merged into the master yet, will wait until the rest of the bugs in metapopulation are fixed...." />
     <MESSAGE value="Fixed the tag-based frequency-counting problem here, it's now producing frequency output for each deme.  I forget things like tag.registerAgent() -- the oldest parts of the API.  Now can move on to implementing some migration or otherwise handling inter-deme communication." />
@@ -1103,6 +1437,7 @@
     <MESSAGE value="Added H2 database, and H2 jar file to required resources (for console, command line, and IDEA use - the pom.xml already contains the dependency for app use)." />
     <MESSAGE value="Removed H2 because access from Ruby is difficult, and I want a DB option that allows me to have a Rails controller app." />
     <MESSAGE value="Pushed modelStep out to an IModelDynamics delegate object, which allows the type of model dynamics to be configured.  The goal is to remove everything from concrete model classes and simply have a single model class in the framework, &#10;which can also be the SimRunner main() method, and do everything else in rules, observers, and configuration files." />
+    <MESSAGE value="New configuration file format in XML, a new SimulationConfigurationFactory which uses Apache Commons Configuration to parse it, and strong unit tests for its functionality.  Beginning to construct a ConfigurableSimulationModel class which will use&#10;the configuration file factory to build a simulation flexibly.  Next phase is to build and initialize all the simulation model objects, by reflection from the configured information." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1112,121 +1447,115 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/test/config/model-configuration-test.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/utils/TraitCopyingMode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="93" selection-start="475" selection-end="475" vertical-scroll-proportion="0.16203703">
+        <state line="21" column="22" selection-start="637" selection-end="653" vertical-scroll-proportion="0.1969697">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/madsenlab/sim/tf/test/configuration/XMLConfigurationBasicTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="139" column="8" selection-start="4914" selection-end="4968" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#0#8886#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/ClassificationDimensionConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="59" selection-start="972" selection-end="972" vertical-scroll-proportion="0.24089068">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/ModelConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="84" selection-start="1502" selection-end="1502" vertical-scroll-proportion="-0.077935226">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/SimulationConfigurationFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="6" selection-start="994" selection-end="994" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#8110#8125#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/WrightFisherDriftModel/WrightFisherDriftModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="183" column="81" selection-start="8339" selection-end="8339" vertical-scroll-proportion="0.0">
+        <state line="102" column="5" selection-start="4484" selection-end="4484" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/interfaces/IStatisticsObserver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="106" selection-start="965" selection-end="965" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/EwensSampleFullPopulationObserver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="67" selection-start="2245" selection-end="2245" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/TraitOccurrenceObserver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="49" column="67" selection-start="1652" selection-end="1652" vertical-scroll-proportion="0.57394004">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/TraitCountsOverInterval.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="13" selection-start="857" selection-end="857" vertical-scroll-proportion="0.2171665">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/TimeAveragedWindowProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="13" selection-start="1783" selection-end="1783" vertical-scroll-proportion="0.33298862">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/TimeAveragedTraitCountObserver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="76" column="67" selection-start="4170" selection-end="4170" vertical-scroll-proportion="0.8836478">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/PerDemeTraitFrequencyObserver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="67" selection-start="1990" selection-end="1990" vertical-scroll-proportion="0.6212121">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalTraitLifetimeObserver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="67" selection-start="1969" selection-end="1969" vertical-scroll-proportion="0.59090906">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalTraitFrequencyObserver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="67" selection-start="1662" selection-end="1662" vertical-scroll-proportion="0.530303">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalTraitCountObserver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="62" column="67" selection-start="2461" selection-end="2461" vertical-scroll-proportion="0.6969697">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalClassFreqObserver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="67" selection-start="2292" selection-end="2292" vertical-scroll-proportion="0.6212121">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/observers/GlobalClassCountObserver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="67" selection-start="1147" selection-end="1171" vertical-scroll-proportion="0.6212121">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/config/ObserverConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="52" column="34" selection-start="1402" selection-end="1402" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/models/ConfigurableSimulationModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="268" column="12" selection-start="8898" selection-end="8898" vertical-scroll-proportion="0.0">
+        <state line="335" column="55" selection-start="11828" selection-end="11828" vertical-scroll-proportion="0.9118541">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/WrightFisherDriftModel/WrightFisherDriftSim.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="79" selection-start="652" selection-end="652" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/madsenlab/sim/tf/models/AbstractSimModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="44" selection-start="2603" selection-end="2650" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/MultiDimensionWrightFisherDriftModel/MultiDimensionWrightFisherDriftSim.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="48" selection-start="777" selection-end="777" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/MetapopulationWithMigration/MetapopulationWithMigrationSim.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="44" selection-start="764" selection-end="764" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/HeterogeneousDriftModel/HeterogeneousDriftSim.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="35" selection-start="751" selection-end="751" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/ConformistDriftModel/ConformistDriftSim.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="32" selection-start="745" selection-end="745" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/SimpleMoran/SimpleMoranDriftSim.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="551" selection-end="551" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/java/org/madsenlab/sim/tf/models/WrightFisherUnitIntervalDriftModel/WrightFisherUnitIntervalDriftSim.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="90" selection-start="720" selection-end="720" vertical-scroll-proportion="0.30805686">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>

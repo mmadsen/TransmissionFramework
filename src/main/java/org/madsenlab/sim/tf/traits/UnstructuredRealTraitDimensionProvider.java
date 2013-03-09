@@ -23,12 +23,12 @@ import org.madsenlab.sim.tf.interfaces.ITraitDimension;
  */
 
 @Deprecated
-public class UnstructuredTraitDimensionProvider implements Provider<ITraitDimension> {
+public class UnstructuredRealTraitDimensionProvider implements Provider<ITraitDimension> {
     @Inject
     private ISimulationModel model;
 
     public ITraitDimension get() {
-        ITraitDimension dim = new UnstructuredTraitDimension<Integer>();
+        ITraitDimension dim = new UnstructuredTraitDimension<Double>();
         dim.setSimulationModel(model);
         return dim;
     }

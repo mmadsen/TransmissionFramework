@@ -10,8 +10,12 @@
       <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.9.FINAL/hibernate-core-4.1.9.FINAL-javadoc.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.9.FINAL/hibernate-core-4.1.9.FINAL-javadoc.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.9.FINAL/hibernate-core-4.1.9.FINAL-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.9.FINAL/hibernate-core-4.1.9.FINAL-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.9.FINAL/hibernate-core-4.1.9.FINAL-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.9.FINAL/hibernate-core-4.1.9.FINAL-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.9.FINAL/hibernate-core-4.1.9.FINAL-sources.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.9.FINAL/hibernate-core-4.1.9.FINAL-sources.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.9.FINAL/hibernate-core-4.1.9.FINAL-sources.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.9.FINAL/hibernate-core-4.1.9.FINAL-sources.jar!/" />

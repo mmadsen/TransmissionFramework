@@ -51,6 +51,11 @@ public class EwensSampleFullPopulationObserver implements IStatisticsObserver<IT
     }
 
     @Override
+    public void setParameterMap(Map<String, String> parameterMap) {
+
+    }
+
+    @Override
     public void updateStatistics(IStatistic<ITraitDimension> stat) {
         log.trace("entering updateStatistics");
         if (this.sampleSize == 0) {

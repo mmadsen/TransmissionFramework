@@ -50,6 +50,11 @@ public class GlobalTraitLifetimeObserver implements IStatisticsObserver<ITraitDi
 //        }
     }
 
+    @Override
+    public void setParameterMap(Map<String, String> parameterMap) {
+
+    }
+
     public void updateStatistics(IStatistic<ITraitDimension> stat) {
         log.trace("entering updateStatistics");
         this.lastTimeIndexUpdated = stat.getTimeIndex();
