@@ -23,7 +23,8 @@ import java.util.Map;
 public class RuleConfiguration {
     private Integer ruleID;
     private String ruleClass;
-    private Integer subruleOf;
+    // If the XML config contains no <subrule-of> tag, this is the "top" rule, so default to 1
+    private Integer subruleOf = 1;
     private Map<String, String> parameterMap;
 
     public RuleConfiguration() {
@@ -60,6 +61,10 @@ public class RuleConfiguration {
 
     public String getParameter(String name) {
         return this.parameterMap.get(name);
+    }
+
+    public Map<String, String> getParameters() {
+        return this.parameterMap;
     }
 
 }

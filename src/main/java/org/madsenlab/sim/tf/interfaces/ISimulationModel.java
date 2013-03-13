@@ -11,7 +11,7 @@ package org.madsenlab.sim.tf.interfaces;
 
 import com.google.inject.Provider;
 import org.apache.log4j.Logger;
-import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
+import org.madsenlab.sim.tf.config.ModelConfiguration;
 
 import java.util.List;
 
@@ -71,6 +71,7 @@ public interface ISimulationModel extends Runnable {
 
     public IPopulation getPopulation();
 
+
     public IInteractionTopology getInteractionTopology();
 
     /**
@@ -126,7 +127,7 @@ public interface ISimulationModel extends Runnable {
 
     public void modelFinalize();
 
-    public GlobalModelConfiguration getModelConfiguration();
+    public ModelConfiguration getModelConfiguration();
 
     public ILogFiles getLogFileHandler();
 }

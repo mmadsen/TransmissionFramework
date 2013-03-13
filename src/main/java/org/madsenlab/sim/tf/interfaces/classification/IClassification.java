@@ -24,6 +24,10 @@ import java.util.Set;
 
 public interface IClassification extends IStatisticsSubject {
 
+    public String getClassificationName();
+
+    public void setClassificationName(String name);
+
     public Set<IClassDimension> getClassificationDimensions();
 
     public Integer getNumClasses();

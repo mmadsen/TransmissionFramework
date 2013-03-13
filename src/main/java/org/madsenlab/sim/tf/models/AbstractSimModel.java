@@ -19,6 +19,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
+import org.madsenlab.sim.tf.config.ModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 
 import java.io.FileReader;
@@ -35,6 +36,7 @@ import java.util.Set;
  * Time: 2:51:57 PM
  * To change this template use File | Settings | File Templates.
  */
+@Deprecated
 public abstract class AbstractSimModel implements ISimulationModel {
     protected Logger log;
     protected Integer currentTime = 0;
@@ -75,6 +77,7 @@ public abstract class AbstractSimModel implements ISimulationModel {
     protected String modelNamePrefix;
 
     protected IModelDynamics modelDynamicsDelegate;
+    protected ModelConfiguration modelConfig;
 
 
     public AbstractSimModel() {
@@ -102,6 +105,11 @@ public abstract class AbstractSimModel implements ISimulationModel {
 
     public IPopulation getPopulation() {
         return this.population;
+    }
+
+
+    public void setPopulation(IPopulation population) {
+
     }
 
     public IInteractionTopology getInteractionTopology() {
@@ -205,8 +213,8 @@ public abstract class AbstractSimModel implements ISimulationModel {
         return this.logFileHandler;
     }
 
-    public GlobalModelConfiguration getModelConfiguration() {
-        return this.params;
+    public ModelConfiguration getModelConfiguration() {
+        return this.modelConfig;
     }
 
     public void run() {

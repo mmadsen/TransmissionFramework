@@ -55,6 +55,11 @@ public class ClassificationDummyObserver implements IStatisticsObserver<IClassif
 
 
     @Override
+    public void setParameterMap(Map<String, String> parameterMap) {
+
+    }
+
+    @Override
     public void updateStatistics(IStatistic<IClassification> stat) {
         this.memoClassification = stat.getTarget();
 

@@ -28,6 +28,18 @@ import java.util.*;
 
 public class UnstructuredClassParadigmaticClassification implements IClassification, IClassIdentificationEngine {
     private Set<IClassDimension> classDimensionSet;
+    private String classificationName;
+
+    @Override
+    public String getClassificationName() {
+        return this.classificationName;
+    }
+
+    @Override
+    public void setClassificationName(String name) {
+        this.classificationName = name;
+    }
+
     private Set<IClass> classSet = null;
     private List<IStatisticsObserver> classObserverList;
     private ISimulationModel model;

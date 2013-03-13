@@ -13,6 +13,7 @@ import hep.aida.ref.Converter;
 import hep.aida.ref.Histogram1D;
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.config.ObserverConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.Log2HistogramBinUtil;
 import org.madsenlab.sim.tf.utils.TraitIDComparator;
@@ -39,6 +40,7 @@ public class GlobalTraitCountObserver implements IStatisticsObserver<ITraitDimen
     private List<Integer> totalTraitsPerTick;
     private PrintWriter statsPW;
     private Histogram1D histo;
+    private ObserverConfiguration config;
 
     public GlobalTraitCountObserver(ISimulationModel m) {
         this.model = m;
@@ -46,8 +48,10 @@ public class GlobalTraitCountObserver implements IStatisticsObserver<ITraitDimen
         this.histTraitCount = new HashMap<Integer, Map<ITrait, Integer>>();
         this.totalTraitsPerTick = new ArrayList<Integer>();
 
-        String traitFreqLogFile = this.model.getModelConfiguration().getProperty("global-trait-count-logfile");
-        String countStatsLogFile = this.model.getModelConfiguration().getProperty("global-trait-count-statsfile");
+        this.config = this.model.getModelConfiguration().getObserverConfigurationForClass(this.getClass());
+
+        String traitFreqLogFile = this.config.getParameter("global-trait-count-logfile");
+        String countStatsLogFile = this.config.getParameter("global-trait-count-statsfile");
 
         this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(traitFreqLogFile);
         this.statsPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(countStatsLogFile);
@@ -67,7 +71,7 @@ public class GlobalTraitCountObserver implements IStatisticsObserver<ITraitDimen
     // we only want to start recording trait counts after the initial transient behavior decays and we reach equilibrium
     public void updateStatistics(IStatistic<ITraitDimension> stat) {
         log.trace("entering updateStatistics");
-        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getTimeStartStatistics()) {
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getMixingtime()) {
             this.lastTimeIndexUpdated = stat.getTimeIndex();
             ITraitDimension dim = stat.getTarget();
             Map<ITrait, Integer> countMap = dim.getCurGlobalTraitCounts();
@@ -79,11 +83,11 @@ public class GlobalTraitCountObserver implements IStatisticsObserver<ITraitDimen
     // we only want to start recording trait counts after the initial transient behavior decays and we reach equilibrium
     public void perStepAction() {
         log.trace("entering perStepAction");
-        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getTimeStartStatistics()) {
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getMixingtime()) {
             //log.trace("histTraitFreq: " + this.histTraitFreq);
             this.printFrequencies();
 
-            if (this.model.getCurrentModelTime() == this.model.getModelConfiguration().getLengthSimulation() - 1) {
+            if (this.model.getCurrentModelTime() == this.model.getModelConfiguration().getSimlength() - 1) {
                 Map<ITrait, Integer> countMap = this.histTraitCount.get(this.model.getCurrentModelTime());
                 for (ITrait trait : countMap.keySet()) {
                     this.histo.fill((double) countMap.get(trait));

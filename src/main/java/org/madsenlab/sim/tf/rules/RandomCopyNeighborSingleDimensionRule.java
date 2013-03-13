@@ -12,6 +12,8 @@ package org.madsenlab.sim.tf.rules;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
+import java.util.Map;
+
 /**
  * CLASS DESCRIPTION
  * <p/>
@@ -21,7 +23,8 @@ import org.madsenlab.sim.tf.utils.TraitCopyingMode;
  */
 
 public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRule implements ICopyingRule, IUnbiasedCopyingRule {
-    TraitCopyingMode mode = TraitCopyingMode.CURRENT;    // default to Moran model style copying
+    private TraitCopyingMode mode = TraitCopyingMode.CURRENT;    // default to Moran model style copying
+    private Map<String, String> parameterMap;
 
     public RandomCopyNeighborSingleDimensionRule(ISimulationModel m) {
         model = m;
@@ -30,12 +33,18 @@ public class RandomCopyNeighborSingleDimensionRule extends AbstractInteractionRu
         this.setRuleDescription("Randomly Copy a Neighbor's Trait from a Single Dimension");
     }
 
+    @Override
+    public void setParameters(Map<String, String> parameters) {
+        this.parameterMap = parameters;
+    }
+
     public void setTraitCopyingMode(TraitCopyingMode m) {
         this.mode = m;
     }
 
     public synchronized void ruleBody(Object o) {
         log.debug("entering rule body for: " + this.getRuleName());
+        this.mode = TraitCopyingMode.fromString(this.parameterMap.get("copyingmode"));
         IAgent thisAgent = (IAgent) o;
 
         // Get a random neighbor.  First, we need the interaction topology

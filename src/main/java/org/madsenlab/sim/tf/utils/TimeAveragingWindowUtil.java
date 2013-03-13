@@ -25,18 +25,18 @@ public class TimeAveragingWindowUtil {
     }
 
     public List<Integer> calculateTimeAvWindows() {
-        GenerationDynamicsMode timeRate = this.model.getModelConfiguration().getModelRateTimeRuns();
+        GenerationDynamicsMode timeRate = this.model.getModelConfiguration().getGenerationDynamicsMode();
         Integer numTicksPerGeneration;
 
         // First, we want to normalize what a "generation" is, since Moran models
         // need N ticks to equal the same number of copying events as 1 tick in WF
         if (timeRate == GenerationDynamicsMode.CONTINUOUS) {
-            numTicksPerGeneration = this.model.getModelConfiguration().getNumAgents();
+            numTicksPerGeneration = this.model.getModelConfiguration().getPopulation().getNumagents();
         } else {
             numTicksPerGeneration = 1;
         }
 
-        int generationsInRun = this.model.getModelConfiguration().getLengthSimulation() / numTicksPerGeneration;
+        int generationsInRun = this.model.getModelConfiguration().getSimlength() / numTicksPerGeneration;
         log.trace("generations in run: " + generationsInRun);
 
         // For each simulation run, we want at least 10 window samples, at the *longest* window size
@@ -67,12 +67,12 @@ public class TimeAveragingWindowUtil {
     }
 
     public List<Integer> getLongTimeAvWindows() {
-        if (this.model.getModelConfiguration().getLengthSimulation() < 19000) {
+        if (this.model.getModelConfiguration().getSimlength() < 19000) {
             log.error("Cannot use getLongTimeAvWindows on short simulation runs - try length > 20000");
             System.exit(1);
         }
         List<Integer> windowList = new ArrayList<Integer>();
-        int length = this.model.getModelConfiguration().getLengthSimulation();
+        int length = this.model.getModelConfiguration().getSimlength();
         windowList.add((int) (length * 0.20));
         windowList.add((int) (length * 0.10));
         windowList.add((int) (length * 0.05));

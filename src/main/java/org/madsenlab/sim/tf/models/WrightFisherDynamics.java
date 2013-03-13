@@ -14,6 +14,7 @@ import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.IModelDynamics;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITraitDimension;
+import org.madsenlab.sim.tf.utils.GenerationDynamicsMode;
 
 import java.util.List;
 
@@ -28,10 +29,17 @@ import java.util.List;
 public class WrightFisherDynamics implements IModelDynamics {
     private ISimulationModel model;
     private Logger log;
+    private GenerationDynamicsMode mode;
+
+    @Override
+    public GenerationDynamicsMode getGenerationDynamicsMode() {
+        return mode;
+    }
 
     public WrightFisherDynamics(ISimulationModel m) {
         this.model = m;
         this.log = Logger.getLogger(this.getClass());
+        this.mode = GenerationDynamicsMode.DISCRETE;
     }
 
 

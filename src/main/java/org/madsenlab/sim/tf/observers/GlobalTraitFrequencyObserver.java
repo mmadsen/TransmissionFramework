@@ -10,6 +10,7 @@
 package org.madsenlab.sim.tf.observers;
 
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.config.ObserverConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.TraitIDComparator;
 
@@ -32,13 +33,16 @@ public class GlobalTraitFrequencyObserver implements IStatisticsObserver<ITraitD
     private Integer lastTimeIndexUpdated;
     private PrintWriter pw;
     private Map<Integer, Map<ITrait, Double>> histTraitFreq;
+    private ObserverConfiguration config;
 
     public GlobalTraitFrequencyObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
         this.histTraitFreq = new HashMap<Integer, Map<ITrait, Double>>();
 
-        String traitFreqLogFile = this.model.getModelConfiguration().getProperty("global-trait-frequency-logfile");
+        this.config = this.model.getModelConfiguration().getObserverConfigurationForClass(this.getClass());
+
+        String traitFreqLogFile = this.config.getParameter("global-trait-frequency-logfile");
         log.debug("traitFreqLogFile: " + traitFreqLogFile);
         this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(traitFreqLogFile);
     }
@@ -51,25 +55,28 @@ public class GlobalTraitFrequencyObserver implements IStatisticsObserver<ITraitD
 
     public void updateStatistics(IStatistic<ITraitDimension> stat) {
         log.trace("entering updateStatistics");
-        this.lastTimeIndexUpdated = stat.getTimeIndex();
-        ITraitDimension dim = stat.getTarget();
-        Map<ITrait, Double> freqMap = dim.getCurGlobalTraitFrequencies();
-        this.histTraitFreq.put(this.lastTimeIndexUpdated, freqMap);
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getMixingtime()) {
+            this.lastTimeIndexUpdated = stat.getTimeIndex();
+            ITraitDimension dim = stat.getTarget();
+            Map<ITrait, Double> freqMap = dim.getCurGlobalTraitFrequencies();
+            this.histTraitFreq.put(this.lastTimeIndexUpdated, freqMap);
+        }
     }
 
     public void perStepAction() {
         log.trace("entering perStepAction");
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getMixingtime()) {
 
-        //log.trace("histTraitFreq: " + this.histTraitFreq);
-        this.printFrequencies();
+            //log.trace("histTraitFreq: " + this.histTraitFreq);
+            this.printFrequencies();
 
-        Integer tick = this.model.getCurrentModelTime();
-        // Every 100 ticks, write historical data to disk and flush it to keep memory usage and performance reasonable.
-        if (tick % 100 == 0) {
-            this.logFrequencies();
-            this.histTraitFreq.clear();
+            Integer tick = this.model.getCurrentModelTime();
+            // Every 100 ticks, write historical data to disk and flush it to keep memory usage and performance reasonable.
+            if (tick % 100 == 0) {
+                this.logFrequencies();
+                this.histTraitFreq.clear();
+            }
         }
-
 
     }
 

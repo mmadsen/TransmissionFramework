@@ -36,7 +36,8 @@ public class SimulationConfigurationFactory {
 
     public SimulationConfigurationFactory(ISimulationModel m) {
         this.model = m;
-        this.log = this.model.getModelLogger(this.getClass());
+        // we need to read the config file before we initialize logging....
+        //this.log = this.model.getModelLogger(this.getClass());
 
     }
 
@@ -49,6 +50,7 @@ public class SimulationConfigurationFactory {
 
         this.initializeModelConfiguration();
         this.processPopulationConfiguration();
+        this.processObservation();
         this.processObservers();
         this.processTraitDimensions();
         this.processClassifications();
@@ -59,6 +61,8 @@ public class SimulationConfigurationFactory {
         mc.setSimlength(this.config.getInt("model.simlength"));
         mc.setMixingtime(this.config.getInt("model.mixingtime"));
         mc.setDynamicsclass(this.config.getString("model.dynamicsclass"));
+        mc.setModelName(this.config.getString("model.modelname"));
+
     }
 
     private void processPopulationConfiguration() {
@@ -78,7 +82,6 @@ public class SimulationConfigurationFactory {
             int rulesetID = sub.getInt("[@id]");
             String ruleName = sub.getString("[@name]");
 
-            log.debug("ruleset id: " + rulesetID + " name: " + ruleName);
 
             RulesetConfiguration rsc = new RulesetConfiguration();
             rsc.setRulesetName(ruleName);
@@ -103,7 +106,7 @@ public class SimulationConfigurationFactory {
                 for (HierarchicalConfiguration param : paramConfigList) {
                     String name = param.getString("name");
                     String value = param.getString("value");
-                    log.debug("parameter: " + name + " value: " + value);
+                    //log.debug("parameter: " + name + " value: " + value);
                     rc.addParameter(name, value);
                 }
                 // add completed rule to the ruleset
@@ -116,7 +119,7 @@ public class SimulationConfigurationFactory {
     }
 
     private void processObservers() {
-        List<HierarchicalConfiguration> obsConfigList = this.config.configurationsAt("observers.observer");
+        List<HierarchicalConfiguration> obsConfigList = this.config.configurationsAt("observation.observers.observer");
         for (HierarchicalConfiguration sub : obsConfigList) {
             String obsClass = sub.getString("observerclass");
             ObserverConfiguration obsConfig = new ObserverConfiguration();
@@ -129,11 +132,17 @@ public class SimulationConfigurationFactory {
             for (HierarchicalConfiguration param : paramConfigList) {
                 String name = param.getString("name");
                 String value = param.getString("value");
-                log.debug("parameter: " + name + " value: " + value);
+                //log.debug("parameter: " + name + " value: " + value);
                 obsConfig.addParameter(name, value);
             }
             this.mc.addObserverConfiguration(obsConfig);
         }
+    }
+
+    private void processObservation() {
+        String logParentDirectory = this.config.getString("observation.logging.parent-directory");
+        this.mc.setLogParentDirectory(logParentDirectory);
+        //log.debug("logParentDirectory: " + logParentDirectory);
     }
 
     private void processTraitDimensions() {
@@ -157,7 +166,7 @@ public class SimulationConfigurationFactory {
             for (HierarchicalConfiguration param : paramConfigList) {
                 String name = param.getString("name");
                 String value = param.getString("value");
-                log.debug("parameter: " + name + " value: " + value);
+                //log.debug("parameter: " + name + " value: " + value);
                 tdc.addInitialTraitGeneratorParameter(name, value);
             }
 
@@ -225,10 +234,11 @@ public class SimulationConfigurationFactory {
         XMLConfiguration config = null;
         try {
             config = new XMLConfiguration(pathname);
-            log.debug("loaded XML file");
+            //log.debug("loaded XML file");
 
         } catch (Exception e) {
-            log.error("exception: " + e.getMessage());
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
         return config;
     }

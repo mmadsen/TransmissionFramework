@@ -13,6 +13,7 @@ import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * CLASS DESCRIPTION
@@ -23,20 +24,26 @@ import java.util.List;
  */
 
 public class InfiniteAllelesMutationRule extends AbstractInteractionRule implements IMutationRule {
-    Double mutationRate;
-    Integer newTraitID;
+    private Double mutationRate;
+    private Integer newTraitID;
+    private Map<String, String> parameterMap;
 
     public InfiniteAllelesMutationRule(ISimulationModel m) {
         model = m;
         log = model.getModelLogger(this.getClass());
         this.setRuleName("InfiniteAllelesMutationRule");
         this.setRuleDescription("Randomly mutate trait with a probability to a completely new trait");
-        this.mutationRate = this.model.getModelConfiguration().getMutationRate();
         this.newTraitID = 0;
+    }
+
+    @Override
+    public void setParameters(Map<String, String> parameters) {
+        this.parameterMap = parameters;
     }
 
     public void ruleBody(Object o) {
         log.trace("entering rule body for: " + this.getRuleName());
+
         IAgent thisAgent = (IAgent) o;
 
         // DECISION TO MUTATE OR COPY IS MADE IN ANOTHER RULE - IF THIS RULE FIRES AT ALL, IT JUST NEEDS

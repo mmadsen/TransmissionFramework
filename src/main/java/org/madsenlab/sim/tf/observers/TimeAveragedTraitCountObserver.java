@@ -11,6 +11,7 @@ package org.madsenlab.sim.tf.observers;
 
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.config.ObserverConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.TimeAveragingWindowUtil;
 
@@ -52,24 +53,27 @@ public class TimeAveragedTraitCountObserver implements IStatisticsObserver<ITrai
     private String perWindowsSizeKnSampleBaseFile;
     private PrintWriter statPW;
     private TimeAveragingWindowUtil timeAveragingWindowUtil;
+    private ObserverConfiguration config;
 
     public TimeAveragedTraitCountObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
-        int length = this.model.getModelConfiguration().getLengthSimulation();
+        this.config = this.model.getModelConfiguration().getObserverConfigurationForClass(this.getClass());
+
+        int length = this.model.getModelConfiguration().getSimlength();
         this.timeAveragingWindowUtil = new TimeAveragingWindowUtil(this.model);
         this.histTraitCount = new HashMap<Integer, Map<ITrait, Integer>>();
-        this.perWindowSizeBaseLogFile = this.model.getModelConfiguration().getProperty("ta-per-windowsize-count-log-base");
-        this.perWindowSizeBaseStatFile = this.model.getModelConfiguration().getProperty("ta-per-windowsize-count-stats");
-        this.perWindowSizeEwensBaseFile = this.model.getModelConfiguration().getProperty("ta-per-windowsize-ewens-sample-base");
-        this.perWindowsSizeKnSampleBaseFile = this.model.getModelConfiguration().getProperty("ta-per-windowsize-kn-sample-base");
+        this.perWindowSizeBaseLogFile = this.config.getParameter("ta-per-windowsize-count-log-base");
+        this.perWindowSizeBaseStatFile = this.config.getParameter("ta-per-windowsize-count-stats");
+        this.perWindowSizeEwensBaseFile = this.config.getParameter("ta-per-windowsize-ewens-sample-base");
+        this.perWindowsSizeKnSampleBaseFile = this.config.getParameter("ta-per-windowsize-kn-sample-base");
         this.statPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(this.perWindowSizeBaseStatFile);
         this.windowProcessorList = new ArrayList<TimeAveragedWindowProcessor>();
 
         // Figure out the sampling intervals for time-averaging, and create a window processor for each
         this.samplingIntervals = this.calculateTimeAvWindows();
         for (Integer interval : this.samplingIntervals) {
-            this.windowProcessorList.add(new TimeAveragedWindowProcessor(this.model, interval, this.perWindowSizeBaseLogFile, this.perWindowSizeEwensBaseFile, this.perWindowsSizeKnSampleBaseFile));
+            this.windowProcessorList.add(new TimeAveragedWindowProcessor(this.model, this.config, interval, this.perWindowSizeBaseLogFile, this.perWindowSizeEwensBaseFile, this.perWindowsSizeKnSampleBaseFile));
         }
     }
 
@@ -82,7 +86,7 @@ public class TimeAveragedTraitCountObserver implements IStatisticsObserver<ITrai
     public void updateStatistics(IStatistic<ITraitDimension> stat) {
         log.trace("entering updateStatistics");
         Integer lastTimeIndexUpdated;
-        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getTimeStartStatistics()) {
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getMixingtime()) {
             lastTimeIndexUpdated = stat.getTimeIndex();
             ITraitDimension dim = stat.getTarget();
             Map<ITrait, Integer> countMap = dim.getCurGlobalTraitCounts();
@@ -130,7 +134,7 @@ public class TimeAveragedTraitCountObserver implements IStatisticsObserver<ITrai
     // unless the -L switch is present, and then only collect data across the five largest windows.
     // in descending powers of 2.  e.g., 10000, 5000, 2500, 1250, 625
     private List<Integer> calculateTimeAvWindows() {
-        if (this.model.getModelConfiguration().getCollectLongTAWindowsOnly() == true) {
+        if (Boolean.parseBoolean(config.getParameter("long-windows-only")) == true) {
             log.info("Long Time Averaging Windows selected");
             return timeAveragingWindowUtil.getLongTimeAvWindows();
         } else {

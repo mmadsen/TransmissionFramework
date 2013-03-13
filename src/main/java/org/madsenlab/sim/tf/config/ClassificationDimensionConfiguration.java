@@ -11,7 +11,7 @@ package org.madsenlab.sim.tf.config;
 
 import com.google.common.base.Preconditions;
 import org.madsenlab.sim.tf.utils.ClassDimensionModeType;
-import org.madsenlab.sim.tf.utils.RealTraitIntervalPredicate;
+import org.madsenlab.sim.tf.utils.TraitPredicate;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +27,7 @@ import java.util.Set;
 public class ClassificationDimensionConfiguration {
     private Integer traitDimensionTracked;
     private ClassDimensionModeType modeType;
-    private Set<RealTraitIntervalPredicate> modePredicates;
+    private Set<TraitPredicate> modePredicates;
     private Integer numberModesForRandomModeType;
 
     public ClassDimensionModeType getModeType() {
@@ -58,17 +58,17 @@ public class ClassificationDimensionConfiguration {
     public void setModeType(String modeTypeString) {
         this.modeType = ClassDimensionModeType.fromString(modeTypeString);
         if (this.modeType.equals(ClassDimensionModeType.SPECIFIED)) {
-            this.modePredicates = new HashSet<RealTraitIntervalPredicate>();
+            this.modePredicates = new HashSet<TraitPredicate>();
         }
     }
 
-    public void addModePredicate(RealTraitIntervalPredicate pred) {
+    public void addModePredicate(TraitPredicate pred) {
         Preconditions.checkNotNull(this.modePredicates, "You called addModePredicate without first calling setModeType with type SPECIFIED");
 
         this.modePredicates.add(pred);
     }
 
-    public Set<RealTraitIntervalPredicate> getModePredicates() {
+    public Set<TraitPredicate> getModePredicates() {
         return this.modePredicates;
     }
 

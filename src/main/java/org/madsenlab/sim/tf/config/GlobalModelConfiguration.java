@@ -24,6 +24,7 @@ import java.util.Map;
  * Time: 2:25 PM
  */
 
+@Deprecated
 public class GlobalModelConfiguration {
     ISimulationModel model;
     ITraitDimension dimension;

@@ -11,6 +11,7 @@ package org.madsenlab.sim.tf.observers;
 
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.config.ObserverConfiguration;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITrait;
 import org.madsenlab.sim.tf.utils.TraitIDComparator;
@@ -46,11 +47,13 @@ public class TimeAveragedWindowProcessor {
     private List<Integer> totalTraitsPerWindow;
     private Map<Integer, Map<ITrait, Integer>> histSamples;
     private List<Integer> numTraitsInSamplePerTick;
+    private ObserverConfiguration config;
 
 
-    public TimeAveragedWindowProcessor(ISimulationModel model, Integer windowSize, String logBaseName, String ewensBaseName, String knSampleBase) {
+    public TimeAveragedWindowProcessor(ISimulationModel model, ObserverConfiguration config, Integer windowSize, String logBaseName, String ewensBaseName, String knSampleBase) {
         this.model = model;
         this.log = this.model.getModelLogger(this.getClass());
+        this.config = config;
         this.windowSize = windowSize;
         this.histSamples = new HashMap<Integer, Map<ITrait, Integer>>();
         this.numTraitsInSamplePerTick = new ArrayList<Integer>();
@@ -200,7 +203,7 @@ public class TimeAveragedWindowProcessor {
 
     private Map<ITrait, Integer> takeEwensSampleFromCurrentWindow() {
         Map<ITrait, Integer> sampleMap = new HashMap<ITrait, Integer>();
-        Integer ewensSampleSize = this.model.getModelConfiguration().getEwensSampleSize();
+        Integer ewensSampleSize = Integer.parseInt(this.config.getParameter("samplesize"));
 
         // We don't actually have agents to sample from all of the generations in the TA sample, but
         // it should be equivalent to take a random sample of size N of traits held in the current window,

@@ -11,6 +11,7 @@ package org.madsenlab.sim.tf.observers;
 
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.config.ObserverConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 import org.madsenlab.sim.tf.utils.TraitIDComparator;
@@ -35,18 +36,23 @@ public class EwensSampleFullPopulationObserver implements IStatisticsObserver<IT
     private Integer sampleSize = 0;
     private List<Integer> numTraitsInSamplePerTick;
     private PrintWriter knPW;
+    private ObserverConfiguration config;
 
 
     public EwensSampleFullPopulationObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
+
+        this.config = this.model.getModelConfiguration().getObserverConfigurationForClass(this.getClass());
+
         this.histSamples = new HashMap<Integer, Map<ITrait, Integer>>();
         this.numTraitsInSamplePerTick = new ArrayList<Integer>();
-        String ewenSampleLogFile = this.model.getModelConfiguration().getProperty("ewens-sample-logfile");
+
+        String ewenSampleLogFile = this.config.getParameter("ewens-sample-logfile");
         this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(ewenSampleLogFile);
-        String ewenStatsLogFile = this.model.getModelConfiguration().getProperty("ewens-kn-summary-statsfile");
+        String ewenStatsLogFile = this.config.getParameter("ewens-kn-summary-statsfile");
         this.statPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(ewenStatsLogFile);
-        String knSampleLog = this.model.getModelConfiguration().getProperty("kn-sample-log");
+        String knSampleLog = this.config.getParameter("kn-sample-log");
         this.knPW = this.model.getLogFileHandler().getFileWriterForPerRunOutput(knSampleLog);
     }
 
@@ -60,10 +66,10 @@ public class EwensSampleFullPopulationObserver implements IStatisticsObserver<IT
         log.trace("entering updateStatistics");
         if (this.sampleSize == 0) {
             // memoize this
-            this.sampleSize = this.model.getModelConfiguration().getEwensSampleSize();
+            this.sampleSize = Integer.parseInt(this.config.getParameter("samplesize"));
         }
 
-        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getTimeStartStatistics()) {
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getMixingtime()) {
             // take a sample from the population, construct a list
             Map<ITrait, Integer> sampleMap = new HashMap<ITrait, Integer>();
 
@@ -92,7 +98,7 @@ public class EwensSampleFullPopulationObserver implements IStatisticsObserver<IT
     @Override
     public void perStepAction() {
         log.trace("entering perStepAction");
-        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getTimeStartStatistics()) {
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getMixingtime()) {
             // occasionally flush the histSamples to log file to prevent memory explosion
             this.printFrequencies();
 

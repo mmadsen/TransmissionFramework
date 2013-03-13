@@ -34,8 +34,8 @@ public class Log2HistogramBinUtil {
     }
 
     public double[] getLog2HistogramBins() {
-        int popsize = this.model.getModelConfiguration().getNumAgents();
-        int len = this.model.getModelConfiguration().getLengthSimulation();
+        int popsize = this.model.getModelConfiguration().getPopulation().getNumagents();
+        int len = this.model.getModelConfiguration().getSimlength();
         // If one trait completely predominates, say in a conformist model, we want
         // to be able to bin it.  
         int maxCount = popsize * len;

@@ -33,11 +33,13 @@ public class UnstructuredTraitDimensionFactory {
 
     public UnstructuredTraitDimension getNewTraitDimension(Class variationType, ITraitFactory traitFactory) {
         UnstructuredTraitDimension newDimension = null;
-        if (variationType.getClass().equals(Double.class)) {
+        //log.info("Trait type for this dimension is: " + variationType.getSimpleName());
+        if (variationType.getCanonicalName().equals(Double.class.getCanonicalName())) {
             newDimension = new UnstructuredTraitDimension<Double>(this.model, traitFactory);
-        } else if (variationType.getClass().equals(Integer.class)) {
+        } else if (variationType.getCanonicalName().equals(Integer.class.getCanonicalName())) {
             newDimension = new UnstructuredTraitDimension<Integer>(this.model, traitFactory);
         }
+        //log.info("newDimension: " + newDimension);
         return newDimension;
     }
 }

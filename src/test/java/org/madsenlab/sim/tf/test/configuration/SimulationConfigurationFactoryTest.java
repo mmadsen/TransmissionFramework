@@ -139,10 +139,25 @@ public class SimulationConfigurationFactoryTest extends MultidimensionalAgentMod
     @Test
     public void testCorrectNumObservers() throws Exception {
         log.info("entering testCorrectNumObservers");
-        int expected = 3;
+        int expected = 6;
         int observed = this.mc.getObserverConfigurations().size();
         assertEquals(expected, observed);
     }
+
+    @Test
+    public void testObserverParameters() throws Exception {
+        log.info("entering testObserverParameters");
+        String expectedSSString = "100";
+        String observedSSString = null;
+        List<ObserverConfiguration> obsconfigList = this.mc.getObserverConfigurations();
+        for (ObserverConfiguration obsConfig : obsconfigList) {
+            if (obsConfig.getObserverClass().contains("Ewens")) {
+                observedSSString = obsConfig.getParameterMap().get("samplesize");
+            }
+        }
+        assertEquals("Did not get the expected sample size from the Ewens observer", expectedSSString, observedSSString);
+    }
+
 
     @Test
     public void testNumClassificationDimension() throws Exception {

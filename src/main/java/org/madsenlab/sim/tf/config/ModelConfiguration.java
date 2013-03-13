@@ -9,6 +9,8 @@
 
 package org.madsenlab.sim.tf.config;
 
+import org.madsenlab.sim.tf.utils.GenerationDynamicsMode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,11 +28,15 @@ public class ModelConfiguration {
     private int simlength;
     private int mixingtime;
     private String dynamicsclass;
+    private String logParentDirectory;
     private PopulationConfiguration population;
     private List<ObserverConfiguration> observers;
     private List<TraitDimensionConfiguration> traitDimensionConfigurations;
     private Map<Integer, TraitDimensionConfiguration> dimensionIDToTraitDimensionConfigurationMap;
     private List<ClassificationConfiguration> classificationConfigurations;
+    private Map<String, ObserverConfiguration> observerConfigurationMap;
+    private GenerationDynamicsMode generationDynamicsMode;
+    private String modelName;
 
 
     public ModelConfiguration() {
@@ -38,7 +44,25 @@ public class ModelConfiguration {
         traitDimensionConfigurations = new ArrayList<TraitDimensionConfiguration>();
         dimensionIDToTraitDimensionConfigurationMap = new HashMap<Integer, TraitDimensionConfiguration>();
         classificationConfigurations = new ArrayList<ClassificationConfiguration>();
+        observerConfigurationMap = new HashMap<String, ObserverConfiguration>();
     }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public String getLogParentDirectory() {
+        return logParentDirectory;
+    }
+
+    public void setLogParentDirectory(String logParentDirectory) {
+        this.logParentDirectory = logParentDirectory;
+    }
+
 
     public int getSimlength() {
         return simlength;
@@ -74,10 +98,16 @@ public class ModelConfiguration {
 
     public void addObserverConfiguration(ObserverConfiguration obs) {
         this.observers.add(obs);
+        this.observerConfigurationMap.put(obs.getObserverClass(), obs);
     }
 
     public List<ObserverConfiguration> getObserverConfigurations() {
         return this.observers;
+    }
+
+    public ObserverConfiguration getObserverConfigurationForClass(Class cz) {
+        String className = cz.getCanonicalName();
+        return this.observerConfigurationMap.get(className);
     }
 
     public void addTraitDimensionConfiguration(TraitDimensionConfiguration tdc) {
@@ -100,5 +130,14 @@ public class ModelConfiguration {
     public List<ClassificationConfiguration> getClassificationConfigurations() {
         return this.classificationConfigurations;
     }
+
+    public GenerationDynamicsMode getGenerationDynamicsMode() {
+        return generationDynamicsMode;
+    }
+
+    public void setGenerationDynamicsMode(GenerationDynamicsMode generationDynamicsMode) {
+        this.generationDynamicsMode = generationDynamicsMode;
+    }
+
 
 }

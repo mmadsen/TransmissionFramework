@@ -12,6 +12,7 @@ package org.madsenlab.sim.tf.observers;
 import hep.aida.ref.Converter;
 import hep.aida.ref.Histogram1D;
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.config.ObserverConfiguration;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.IStatistic;
 import org.madsenlab.sim.tf.interfaces.IStatisticsObserver;
@@ -40,13 +41,16 @@ public class GlobalClassFreqObserver implements IStatisticsObserver<IClassificat
     private PrintWriter pw;
     private Map<Integer, Map<IClass, Double>> histClassFreq;
     private Histogram1D histo;
+    private ObserverConfiguration config;
 
     public GlobalClassFreqObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
         this.histClassFreq = new HashMap<Integer, Map<IClass, Double>>();
 
-        String countFreqLogFile = this.model.getModelConfiguration().getProperty("global-class-freq-logfile");
+        this.config = this.model.getModelConfiguration().getObserverConfigurationForClass(this.getClass());
+
+        String countFreqLogFile = this.config.getParameter("global-class-freq-logfile");
 
         this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(countFreqLogFile);
 
@@ -65,7 +69,7 @@ public class GlobalClassFreqObserver implements IStatisticsObserver<IClassificat
     // we only want to start recording trait counts after the initial transient behavior decays and we reach equilibrium
     public void updateStatistics(IStatistic<IClassification> stat) {
         log.trace("entering updateStatistics");
-        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getTimeStartStatistics()) {
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getMixingtime()) {
             this.lastTimeIndexUpdated = stat.getTimeIndex();
             IClassification classification = stat.getTarget();
             Map<IClass, Integer> countMap = classification.getCurGlobalClassCounts();
@@ -76,11 +80,11 @@ public class GlobalClassFreqObserver implements IStatisticsObserver<IClassificat
     // we only want to start recording trait counts after the initial transient behavior decays and we reach equilibrium
     public void perStepAction() {
         log.trace("entering perStepAction");
-        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getTimeStartStatistics()) {
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getMixingtime()) {
             //log.trace("histTraitFreq: " + this.histTraitFreq);
             this.printFrequencies();
 
-            if (this.model.getCurrentModelTime() == this.model.getModelConfiguration().getLengthSimulation() - 1) {
+            if (this.model.getCurrentModelTime() == this.model.getModelConfiguration().getSimlength() - 1) {
                 Map<IClass, Double> freqMap = this.histClassFreq.get(this.model.getCurrentModelTime());
                 for (IClass cz : freqMap.keySet()) {
                     this.histo.fill((double) freqMap.get(cz));

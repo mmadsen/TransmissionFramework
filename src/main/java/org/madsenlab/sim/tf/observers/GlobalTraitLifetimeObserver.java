@@ -12,6 +12,7 @@ package org.madsenlab.sim.tf.observers;
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.config.ObserverConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.TraitIDComparator;
 
@@ -33,13 +34,16 @@ public class GlobalTraitLifetimeObserver implements IStatisticsObserver<ITraitDi
     private Map<ITrait, Integer> traitLifetimeMap;
     private Integer lastTimeIndexUpdated;
     private PrintWriter pw;
+    private ObserverConfiguration config;
 
     public GlobalTraitLifetimeObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
         this.traitLifetimeMap = new HashMap<ITrait, Integer>();
 
-        String traitFreqLogFile = this.model.getModelConfiguration().getProperty("global-trait-lifetimes");
+        this.config = this.model.getModelConfiguration().getObserverConfigurationForClass(this.getClass());
+
+        String traitFreqLogFile = this.config.getParameter("global-trait-lifetimes");
         log.debug("traitCountLogFile: " + traitFreqLogFile);
         this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(traitFreqLogFile);
 //        try{
@@ -57,22 +61,24 @@ public class GlobalTraitLifetimeObserver implements IStatisticsObserver<ITraitDi
 
     public void updateStatistics(IStatistic<ITraitDimension> stat) {
         log.trace("entering updateStatistics");
-        this.lastTimeIndexUpdated = stat.getTimeIndex();
-        ITraitDimension dim = stat.getTarget();
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getMixingtime()) {
+            this.lastTimeIndexUpdated = stat.getTimeIndex();
+            ITraitDimension dim = stat.getTarget();
 
-        Collection<ITrait> traitCollection = dim.getTraitsInDimension();
-        for (ITrait trait : traitCollection) {
-            if (trait.hasCompleteDuration()) {
-                this.traitLifetimeMap.put(trait, trait.getTraitDuration());
+            Collection<ITrait> traitCollection = dim.getTraitsInDimension();
+            for (ITrait trait : traitCollection) {
+                if (trait.hasCompleteDuration()) {
+                    this.traitLifetimeMap.put(trait, trait.getTraitDuration());
+                }
             }
         }
     }
 
     public void perStepAction() {
         log.trace("entering perStepAction");
-
-        this.printFrequencies();
-
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getMixingtime()) {
+            this.printFrequencies();
+        }
     }
 
     public void endSimulationAction() {

@@ -151,7 +151,7 @@ public class XMLConfigurationBasicTest extends MultidimensionalAgentModule {
         //ModelConfiguration mc = this.initializeModelConfiguration(config);
         List<ObserverConfiguration> observers = new ArrayList<ObserverConfiguration>();
 
-        List<HierarchicalConfiguration> obsConfigList = config.configurationsAt("observers.observer");
+        List<HierarchicalConfiguration> obsConfigList = config.configurationsAt("observation.observers.observer");
         for (HierarchicalConfiguration sub : obsConfigList) {
             String obsClass = sub.getString("observerclass");
             ObserverConfiguration obsConfig = new ObserverConfiguration();
@@ -174,7 +174,7 @@ public class XMLConfigurationBasicTest extends MultidimensionalAgentModule {
 //        }
 
 
-        int expectedNumObservers = 3;
+        int expectedNumObservers = 6;
         int obsNumObservers = observers.size();
 
         log.info("expected num observer configs: " + expectedNumObservers + " observed: " + obsNumObservers);

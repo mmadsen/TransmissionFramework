@@ -12,6 +12,8 @@ package org.madsenlab.sim.tf.rules;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
+import java.util.Map;
+
 /**
  * CLASS DESCRIPTION
  * <p/>
@@ -23,14 +25,18 @@ import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 public class CopyConformistTraitNeighborRule extends AbstractInteractionRule implements ICopyingRule, IConformistCopyingRule {
     TraitCopyingMode mode = TraitCopyingMode.CURRENT;    // default to Moran model style copying
     Boolean antiConformismFlag = false;
+    Map<String, String> parameterMap;
 
     public CopyConformistTraitNeighborRule(ISimulationModel m) {
         model = m;
         this.log = model.getModelLogger(this.getClass());
         this.setRuleName("RCMNeighborSD");
         this.setRuleDescription("Randomly Copy a Neighbor's Trait from a Single Dimension");
-        this.antiConformismFlag = this.model.getModelConfiguration().getAntiConformist();
-        log.info("Conformism Mode - anticonformism is " + this.antiConformismFlag);
+    }
+
+    @Override
+    public void setParameters(Map<String, String> parameters) {
+        this.parameterMap = parameters;
     }
 
     public void setTraitCopyingMode(TraitCopyingMode m) {
@@ -39,6 +45,8 @@ public class CopyConformistTraitNeighborRule extends AbstractInteractionRule imp
 
     public synchronized void ruleBody(Object o) {
         log.debug("entering rule body for: " + this.getRuleName());
+        this.mode = TraitCopyingMode.fromString(this.parameterMap.get("copyingmode"));
+        this.antiConformismFlag = Boolean.parseBoolean(this.parameterMap.get("anticonformism"));
         IAgent thisAgent = (IAgent) o;
 
         // Get a random neighbor.  First, we need the interaction topology

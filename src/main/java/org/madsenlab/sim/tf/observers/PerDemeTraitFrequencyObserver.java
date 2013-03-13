@@ -10,6 +10,7 @@
 package org.madsenlab.sim.tf.observers;
 
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.config.ObserverConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.TraitIDComparator;
 
@@ -33,6 +34,7 @@ public class PerDemeTraitFrequencyObserver implements IStatisticsObserver<ITrait
     private PrintWriter pw;
     private Map<Integer, Map<ITrait, Double>> histTraitFreq;
     private IAgentTag demeTag;
+    private ObserverConfiguration config;
 
     public PerDemeTraitFrequencyObserver(ISimulationModel m, IAgentTag demeTag) {
         this.model = m;
@@ -41,8 +43,10 @@ public class PerDemeTraitFrequencyObserver implements IStatisticsObserver<ITrait
         this.demeTag = demeTag;
         log.debug("demeTag for this observer: " + this.demeTag);
 
+        this.config = this.model.getModelConfiguration().getObserverConfigurationForClass(this.getClass());
+
         StringBuffer traitFreqLogFile = new StringBuffer();
-        traitFreqLogFile.append(this.model.getModelConfiguration().getProperty("global-trait-frequency-logfile"));
+        traitFreqLogFile.append(this.config.getParameter("perdeme-trait-frequency-logfile"));
         traitFreqLogFile.append("-deme-");
         traitFreqLogFile.append(demeTag.getTagName());
         log.debug("traitFreqLogFile: " + traitFreqLogFile.toString());
@@ -57,27 +61,30 @@ public class PerDemeTraitFrequencyObserver implements IStatisticsObserver<ITrait
 
     public void updateStatistics(IStatistic<ITraitDimension> stat) {
         log.trace("entering updateStatistics for demeTag: " + this.demeTag);
-        this.lastTimeIndexUpdated = stat.getTimeIndex();
-        ITraitDimension dim = stat.getTarget();
-        Map<ITrait, Double> freqMap = dim.getCurTraitFreqByTag(this.demeTag);
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getMixingtime()) {
+            this.lastTimeIndexUpdated = stat.getTimeIndex();
+            ITraitDimension dim = stat.getTarget();
+            Map<ITrait, Double> freqMap = dim.getCurTraitFreqByTag(this.demeTag);
 
-        //log.trace("freqMap after updateStatistics: " + freqMap);
+            //log.trace("freqMap after updateStatistics: " + freqMap);
 
-        this.histTraitFreq.put(this.lastTimeIndexUpdated, freqMap);
+            this.histTraitFreq.put(this.lastTimeIndexUpdated, freqMap);
+        }
     }
 
     public void perStepAction() {
         log.trace("entering perStepAction");
-        //log.trace("histTraitFreq: " + this.histTraitFreq);
-        this.printFrequencies();
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getMixingtime()) {
+            //log.trace("histTraitFreq: " + this.histTraitFreq);
+            this.printFrequencies();
 
-        Integer tick = this.model.getCurrentModelTime();
-        // every 100 ticks, write historical data to disk and flush it
-        if (tick % 100 == 0) {
-            this.logFrequencies();
-            this.histTraitFreq.clear();
+            Integer tick = this.model.getCurrentModelTime();
+            // every 100 ticks, write historical data to disk and flush it
+            if (tick % 100 == 0) {
+                this.logFrequencies();
+                this.histTraitFreq.clear();
+            }
         }
-
     }
 
     public void endSimulationAction() {

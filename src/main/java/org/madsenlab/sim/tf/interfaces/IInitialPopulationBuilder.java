@@ -9,6 +9,10 @@
 
 package org.madsenlab.sim.tf.interfaces;
 
+import org.madsenlab.sim.tf.config.ModelConfiguration;
+
+import java.util.Map;
+
 /**
  * CLASS DESCRIPTION
  * <p/>
@@ -30,5 +34,9 @@ public interface IInitialPopulationBuilder {
      * @return population
      */
 
-    public IPopulation constructInitialPopulation();
+    public IPopulation constructInitialPopulation(IPopulation emptyPopulation);
+
+    public void setRulesets(Map<Integer, IActionRule> ruleMap);
+
+    public void setModelConfiguration(ModelConfiguration configuration);
 }

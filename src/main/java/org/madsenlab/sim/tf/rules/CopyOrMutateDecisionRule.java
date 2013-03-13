@@ -14,6 +14,7 @@ import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * CLASS DESCRIPTION
@@ -27,6 +28,7 @@ public class CopyOrMutateDecisionRule extends AbstractInteractionRule implements
     private List<IActionRule> copyingRuleList;
     private List<IActionRule> mutationRuleList;
     private Double mutationRate;
+    private Map<String, String> parameterMap;
 
     public CopyOrMutateDecisionRule(ISimulationModel m) {
         this.model = m;
@@ -37,11 +39,17 @@ public class CopyOrMutateDecisionRule extends AbstractInteractionRule implements
 
         this.setRuleName("CopyOrMutateDecisionRule");
         this.setRuleDescription("Ensure that either copying or mutation happens in a single time step in a continuous-time simulation");
-        this.mutationRate = this.model.getModelConfiguration().getMutationRate();
+    }
+
+    @Override
+    public void setParameters(Map<String, String> parameters) {
+        this.parameterMap = parameters;
     }
 
     public void ruleBody(Object o) {
         log.trace("entering rule body for: " + this.getRuleName());
+        this.mutationRate = Double.parseDouble(this.parameterMap.get("innovationrate"));
+
 
         // Generate a random double between 0 and 1, if this value is less than the mutation rate,
         // a mutation "event" has occurred.  If not, the rule body does nothing.

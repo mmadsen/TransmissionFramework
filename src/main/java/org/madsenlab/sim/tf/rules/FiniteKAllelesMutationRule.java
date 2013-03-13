@@ -12,6 +12,8 @@ package org.madsenlab.sim.tf.rules;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
+import java.util.Map;
+
 /**
  * CLASS DESCRIPTION
  * <p/>
@@ -21,7 +23,8 @@ import org.madsenlab.sim.tf.utils.TraitCopyingMode;
  */
 
 public class FiniteKAllelesMutationRule extends AbstractInteractionRule implements IMutationRule {
-    Double mutationRate;
+    private Double mutationRate;
+    private Map<String, String> parameterMap;
 
     public FiniteKAllelesMutationRule(ISimulationModel m) {
         model = m;
@@ -29,6 +32,7 @@ public class FiniteKAllelesMutationRule extends AbstractInteractionRule implemen
         this.setRuleName("FiniteKAllelesMutation");
         this.setRuleDescription("Randomly mutate trait to ");
     }
+
 
     public void setMutationRate(Double mutation) {
         this.mutationRate = mutation;
@@ -49,6 +53,11 @@ public class FiniteKAllelesMutationRule extends AbstractInteractionRule implemen
 
     public void deregisterSubRule(IActionRule rule) {
         // null in this implementation
+    }
+
+    @Override
+    public void setParameters(Map<String, String> parameters) {
+        this.parameterMap = parameters;
     }
 
     @Override

@@ -11,6 +11,8 @@ package org.madsenlab.sim.tf.interfaces;
 
 import org.apache.commons.collections.Closure;
 
+import java.util.Map;
+
 /**
  * CLASS DESCRIPTION
  * <p/>
@@ -33,4 +35,6 @@ public interface IActionRule extends Closure {
     public void registerSubRule(IActionRule rule);
 
     public void deregisterSubRule(IActionRule rule);
+
+    public void setParameters(Map<String, String> parameters);
 }

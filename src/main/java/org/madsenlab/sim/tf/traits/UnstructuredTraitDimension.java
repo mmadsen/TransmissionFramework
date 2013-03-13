@@ -60,6 +60,7 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
     }
 
     private void initialize() {
+        //log.debug("initializing trait dimension");
         // We keep both a hash and a list; normally we get things via mapping, but
         // when we want a random trait it's more efficient to have a list than to make a new
         // temporary list every time we want to get a random trait.  We don't add and remove traits

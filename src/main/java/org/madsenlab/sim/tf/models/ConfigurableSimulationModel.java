@@ -19,13 +19,17 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.classification.UnitIntervalClassDimension;
+import org.madsenlab.sim.tf.classification.UnstructuredClassParadigmaticClassification;
 import org.madsenlab.sim.tf.config.*;
 import org.madsenlab.sim.tf.interfaces.*;
+import org.madsenlab.sim.tf.interfaces.classification.IClassDimension;
+import org.madsenlab.sim.tf.interfaces.classification.IClassification;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitDimensionFactory;
+import org.madsenlab.sim.tf.utils.ClassDimensionModeType;
 import org.madsenlab.sim.tf.utils.ObserverTargetType;
+import org.madsenlab.sim.tf.utils.TraitPredicate;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.*;
 
@@ -36,7 +40,7 @@ import java.util.*;
  * Time: 2:51:57 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class ConfigurableSimulationModel implements ISimulationModel {
+public class ConfigurableSimulationModel implements ISimulationModel {
     protected Logger log;
     protected Integer currentTime = 0;
     @Inject
@@ -45,14 +49,12 @@ public abstract class ConfigurableSimulationModel implements ISimulationModel {
     @Inject
     protected
     Provider<ITrait> traitProvider;
-    @Inject
-    protected Provider<ITraitDimension> dimensionProvider;
+
     @Inject
     protected Provider<IPopulation> populationProvider;
     @Inject
     protected Provider<IDeme> demeProvider;
-    @Inject
-    protected Provider<IInteractionTopology> topologyProvider;
+
     @Inject
     protected ILogFiles logFileHandler;
 
@@ -68,33 +70,27 @@ public abstract class ConfigurableSimulationModel implements ISimulationModel {
 
     protected IPopulation agentPopulation;
     protected Integer lengthSimulation;
-    protected GlobalModelConfiguration params;
-    protected Properties modelProperties;
     protected List<ITraitDimension> dimensionList;
     protected Map<Integer, ITraitDimension> dimensionMap;
+    protected List<IActionRule> rulesetList;
+    protected Map<Integer, IActionRule> rulesetMap;
+
     protected List<IStatisticsObserver> traitObserverList;
     protected List<IStatisticsObserver> classObserverList;
+    protected Set<IClassification> classificationSet;
     protected String propertiesFileName;
     protected String modelNamePrefix;
 
     protected IModelDynamics modelDynamicsDelegate;
+    protected IInitialPopulationBuilder initialPopulationBuilder;
     protected ModelConfiguration modelConfig;
+    protected IInitialPopulationBuilder populationBuilder;
 
     public ConfigurableSimulationModel() {
 
     }
 
     public void initializeConfigurationAndLoggingFromProperties() {
-        // load parameter file
-        try {
-            this.modelProperties = new Properties();
-            this.modelProperties.load(new FileReader(this.propertiesFileName));
-        } catch (IOException ex) {
-            System.exit(1);
-        }
-
-        this.loadPropertiesToConfig();
-        this.params.setProperty("model-name-prefix", modelNamePrefix);
         this.logFileHandler.initializeLogFileHandler();
         String loggingDirectory = this.logFileHandler.getLoggingDirectory();
         System.setProperty("log4j.logpath", loggingDirectory);
@@ -160,11 +156,13 @@ public abstract class ConfigurableSimulationModel implements ISimulationModel {
 
     public void initializeProviders() {
         this.population = populationProvider.get();
-        this.topology = topologyProvider.get();
         this.dimensionList = new ArrayList<ITraitDimension>();
         this.traitObserverList = new ArrayList<IStatisticsObserver>();
         this.classObserverList = new ArrayList<IStatisticsObserver>();
         this.dimensionMap = new HashMap<Integer, ITraitDimension>();
+        this.classificationSet = new HashSet<IClassification>();
+        this.rulesetList = new ArrayList<IActionRule>();
+        this.rulesetMap = new HashMap<Integer, IActionRule>();
     }
 
     public Provider<ITrait> getTraitProvider() {
@@ -172,7 +170,7 @@ public abstract class ConfigurableSimulationModel implements ISimulationModel {
     }
 
     public Provider<ITraitDimension> getTraitDimensionProvider() {
-        return dimensionProvider;
+        return null;
     }
 
     public List<ITraitDimension> getTraitDimensions() {
@@ -199,8 +197,8 @@ public abstract class ConfigurableSimulationModel implements ISimulationModel {
         return this.logFileHandler;
     }
 
-    public GlobalModelConfiguration getModelConfiguration() {
-        return this.params;
+    public ModelConfiguration getModelConfiguration() {
+        return this.modelConfig;
     }
 
     public void run() {
@@ -239,15 +237,7 @@ public abstract class ConfigurableSimulationModel implements ISimulationModel {
         }
     }
 
-    protected void loadPropertiesToConfig() {
-        Set<String> propNames = this.modelProperties.stringPropertyNames();
-        for (String propName : propNames) {
-            this.params.setProperty(propName, this.modelProperties.getProperty(propName));
-        }
-    }
-
     public void parseCommandLineOptions(String[] args) {
-        //this.log.debug("entering parseCommandLineOptions");
 
         Options cliOptions = new Options();
         cliOptions.addOption("c", true, "path to configuration file");
@@ -291,7 +281,13 @@ public abstract class ConfigurableSimulationModel implements ISimulationModel {
             System.exit(1);
         }
 
-        // TODO - initialize trait dimensions
+        this.modelConfig.setGenerationDynamicsMode(this.modelDynamicsDelegate.getGenerationDynamicsMode());
+
+
+        // Initialize a population builder object
+        String populationBuilderDelegate = this.modelConfig.getPopulation().getBuilderclass();
+
+        //  initialize trait dimensions
         UnstructuredTraitDimensionFactory dimensionFactory = new UnstructuredTraitDimensionFactory(this);
 
         List<TraitDimensionConfiguration> dimConfigList = this.modelConfig.getTraitDimensionConfigurations();
@@ -311,9 +307,41 @@ public abstract class ConfigurableSimulationModel implements ISimulationModel {
         }
 
 
-        // TODO - initialize classifications, linked to trait dimensions
+        // initialize classifications, linked to trait dimensions
+        List<ClassificationConfiguration> classConfigList = this.modelConfig.getClassificationConfigurations();
+        for (ClassificationConfiguration classConfig : classConfigList) {
+            String classificationName = classConfig.getClassificationName();
+            IClassification classification = new UnstructuredClassParadigmaticClassification(this);
+            classification.setClassificationName(classificationName);
 
-        // TODO - initialize rulesets
+            List<ClassificationDimensionConfiguration> classDimConfigList = classConfig.getClassificationDimensionConfigurations();
+            for (ClassificationDimensionConfiguration classDimConfig : classDimConfigList) {
+                Integer dimensionTrackedID = classDimConfig.getTraitDimensionTracked();
+                ITraitDimension traitDimension = this.dimensionMap.get(dimensionTrackedID);
+                IClassDimension classDimension = new UnitIntervalClassDimension<Double>(this, traitDimension);
+
+                ClassDimensionModeType modeType = classDimConfig.getModeType();
+                if (modeType.equals(ClassDimensionModeType.RANDOM)) {
+                    Integer numModes = classDimConfig.getNumberModesForRandomModeType();
+                    classDimension.createRandomModeSet(numModes);
+                } else if (modeType.equals(ClassDimensionModeType.SPECIFIED)) {
+                    Set<TraitPredicate> predSet = classDimConfig.getModePredicates();
+                    classDimension.createSpecifiedModeSet(predSet);
+                } else {
+                    log.error("unknown configuration element: " + modeType.toString());
+                    System.exit(1);
+                }
+
+                classification.addClassDimension(classDimension);
+
+            }
+            classification.initializeClasses();
+            this.classificationSet.add(classification);
+
+
+        }
+
+        // Initialize observers
 
         List<ObserverConfiguration> observerConfigurations = this.modelConfig.getObserverConfigurations();
         for (ObserverConfiguration obsConfig : observerConfigurations) {
@@ -330,17 +358,98 @@ public abstract class ConfigurableSimulationModel implements ISimulationModel {
                 this.traitObserverList.add(observer);
             } else if (targetType.equals(ObserverTargetType.CLASSIFICATION)) {
                 this.classObserverList.add(observer);
+            } else {
+                log.error("unknown configuration element: " + targetType.toString());
+                System.exit(1);
             }
 
 
         }
 
 
-        // TODO - initialize agent population with initial trait variants  and rulesets
+        // Initialize trait dimensions and classifications with their respective observers
+        for (ITraitDimension dimension : this.dimensionList) {
+            dimension.attach(this.traitObserverList);
+        }
 
+        for (IClassification classification : this.classificationSet) {
+            classification.attach(this.classObserverList);
+        }
+
+
+        // TODO - initialize agent population with initial trait variants and rulesets
+        List<RulesetConfiguration> rulesetConfigurations = this.modelConfig.getPopulation().getRulesets();
+        for (RulesetConfiguration rulesetConfig : rulesetConfigurations) {
+            IActionRule rule = this.instantiateRuleset(rulesetConfig);
+            this.rulesetMap.put(rulesetConfig.getRulesetID(), rule);
+            this.rulesetList.add(rule);
+        }
+
+        // Initialize a population builder
+        String builderClass = this.modelConfig.getPopulation().getBuilderclass();
+        try {
+            Class<?> clazz = Class.forName(builderClass);
+            Constructor<?> constructor = clazz.getConstructor(ISimulationModel.class);
+            this.populationBuilder = (IInitialPopulationBuilder) constructor.newInstance(this);
+        } catch (Exception ex) {
+            System.out.println("Fatal exception loading population builder: " + ex.getMessage());
+            System.exit(1);
+        }
+
+        this.populationBuilder.setModelConfiguration(this.getModelConfiguration());
+        this.populationBuilder.setRulesets(this.rulesetMap);
+        IPopulation initialPop = this.populationProvider.get();
+        this.agentPopulation = this.populationBuilder.constructInitialPopulation(initialPop);
+
+        // The simulation model is initialized and ready to run.
+        log.info("Initial population constructed and model ready to run");
 
         log.debug("exiting initializeModel");
     }
+
+    private IActionRule instantiateRuleset(RulesetConfiguration config) {
+        // First run through the ruleset, instantiate each rule, configuring
+        // Then we go through sequentially and "thread" the subrules together, passing back the final chain
+        Map<Integer, IActionRule> tempRuleMap = new HashMap<Integer, IActionRule>();
+        Map<Integer, Integer> subruleMap = new HashMap<Integer, Integer>();
+
+        for (RuleConfiguration ruleConfig : config.getRuleList()) {
+            String ruleClass = ruleConfig.getRuleClass();
+            Integer ruleID = ruleConfig.getRuleID();
+            Integer subruleOf = ruleConfig.getSubruleOf();
+            subruleMap.put(ruleID, subruleOf);
+            IActionRule ruleObj = null;
+
+            try {
+                Class<?> clazz = Class.forName(ruleClass);
+                Constructor<?> constructor = clazz.getConstructor(ISimulationModel.class);
+                ruleObj = (IActionRule) constructor.newInstance(this);
+            } catch (Exception ex) {
+                System.out.println("Fatal exception loading population builder: " + ex.getMessage());
+                System.exit(1);
+            }
+
+            Map<String, String> parameters = ruleConfig.getParameters();
+            ruleObj.setParameters(parameters);
+            tempRuleMap.put(ruleID, ruleObj);
+        }
+
+        // now thread the subrules into the main rule
+        IActionRule mainRule = tempRuleMap.get(1);
+        for (Integer ruleID : subruleMap.keySet()) {
+            if (ruleID.equals(1)) {
+                // do nothing
+            } else {
+                Integer subruleOf = subruleMap.get(ruleID);
+                IActionRule upperRule = tempRuleMap.get(subruleOf);
+                IActionRule lowerRule = tempRuleMap.get(ruleID);
+                upperRule.registerSubRule(lowerRule);
+            }
+        }
+
+        return mainRule;
+    }
+
 
     private ITraitFactory instantiateTraitFactory(String traitFactoryClassName) {
         ITraitFactory traitFactory = null;
@@ -374,7 +483,7 @@ public abstract class ConfigurableSimulationModel implements ISimulationModel {
             Constructor<?> constructor = clazz.getConstructor(ISimulationModel.class);
             observer = (IStatisticsObserver) constructor.newInstance(this);
         } catch (Exception ex) {
-            System.out.println("Fatal exception finding observer class: " + ex.getMessage());
+            System.out.println("Fatal exception finding observer class: " + observerClassName + " msg: " + ex.getMessage());
             System.exit(1);
         }
         return observer;

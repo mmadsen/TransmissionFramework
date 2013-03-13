@@ -10,6 +10,7 @@
 package org.madsenlab.sim.tf.observers;
 
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.config.ObserverConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.utils.TraitIDComparator;
 
@@ -32,14 +33,16 @@ public class TraitOccurrenceObserver implements IStatisticsObserver<ITraitDimens
     private Integer lastTimeIndexUpdated;
     private PrintWriter pw;
     private Map<Integer, Map<ITrait, Integer>> histTraitCount;
+    private ObserverConfiguration config;
 
     public TraitOccurrenceObserver(ISimulationModel m) {
         this.model = m;
         this.log = this.model.getModelLogger(this.getClass());
         this.histTraitCount = new HashMap<Integer, Map<ITrait, Integer>>();
+        this.config = this.model.getModelConfiguration().getObserverConfigurationForClass(this.getClass());
 
 
-        String traitFreqLogFile = this.model.getModelConfiguration().getProperty("trait-occurrence-logfile");
+        String traitFreqLogFile = this.config.getParameter("trait-occurrence-logfile");
         log.debug("traitFreqLogFile: " + traitFreqLogFile);
         this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(traitFreqLogFile);
 
@@ -53,18 +56,21 @@ public class TraitOccurrenceObserver implements IStatisticsObserver<ITraitDimens
 
     public void updateStatistics(IStatistic<ITraitDimension> stat) {
         log.trace("entering updateStatistics");
-        this.lastTimeIndexUpdated = stat.getTimeIndex();
-        ITraitDimension dim = stat.getTarget();
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getMixingtime()) {
+            this.lastTimeIndexUpdated = stat.getTimeIndex();
+            ITraitDimension dim = stat.getTarget();
 
-        Map<ITrait, Integer> countMap = dim.getCurGlobalTraitCounts();
-        this.histTraitCount.put(this.lastTimeIndexUpdated, countMap);
+            Map<ITrait, Integer> countMap = dim.getCurGlobalTraitCounts();
+            this.histTraitCount.put(this.lastTimeIndexUpdated, countMap);
+        }
     }
 
     public void perStepAction() {
         log.trace("entering perStepAction");
-        //log.trace("histTraitFreq: " + this.histTraitFreq);
-        this.printFrequencies();
-
+        if (this.model.getCurrentModelTime() > this.model.getModelConfiguration().getMixingtime()) {
+            //log.trace("histTraitFreq: " + this.histTraitFreq);
+            this.printFrequencies();
+        }
     }
 
     public void endSimulationAction() {

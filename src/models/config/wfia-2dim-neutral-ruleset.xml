@@ -10,7 +10,7 @@
 
 <configuration>
     <model>
-        <modelname>HeterogeneousRuleWFIA</modelname>
+        <modelname>WFIADriftMultipleTraitsSingleClassification</modelname>
         <simlength>10000</simlength>
         <mixingtime>1000</mixingtime>
         <dynamicsclass>org.madsenlab.sim.tf.models.WrightFisherDynamics</dynamicsclass>
@@ -46,56 +46,6 @@
                         </parameters>
                     </rule>
                 </ruleset>
-
-                <ruleset id="2" name="IAMutationOrConformistCopyNeighbors">
-                    <rule order="1" id="1">
-                        <ruleclass>org.madsenlab.sim.tf.rules.CopyOrMutateDecisionRule</ruleclass>
-                        <parameters>
-                            <parameter>
-                                <name>innovationrate</name>
-                                <value>0.0001</value>
-                            </parameter>
-                        </parameters>
-                    </rule>
-                    <rule id="2">
-                        <subrule-of>1</subrule-of>
-                        <ruleclass>org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule</ruleclass>
-                    </rule>
-                    <rule id="3">
-                        <subrule-of>1</subrule-of>
-                        <ruleclass>org.madsenlab.sim.tf.rules.ConformismOrRandomDecisionRule</ruleclass>
-                        <parameters>
-                            <parameter>
-                                <name>conformistfrequency</name>
-                                <value>0.01</value>
-                            </parameter>
-                        </parameters>
-                    </rule>
-                    <rule id="4">
-                        <subrule-of>3</subrule-of>
-                        <ruleclass>org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule</ruleclass>
-                        <parameters>
-                            <parameter>
-                                <name>copyingmode</name>
-                                <value>PREVIOUS</value>
-                            </parameter>
-                        </parameters>
-                    </rule>
-                    <rule id="5">
-                        <subrule-of>3</subrule-of>
-                        <ruleclass>org.madsenlab.sim.tf.rules.CopyConformistTraitNeighborRule</ruleclass>
-                        <parameters>
-                            <parameter>
-                                <name>copyingmode</name>
-                                <value>PREVIOUS</value>
-                            </parameter>
-                            <parameter>
-                                <name>anticonformism</name>
-                                <value>false</value>
-                            </parameter>
-                        </parameters>
-                    </rule>
-                </ruleset>
             </rulesets>
 
 
@@ -106,19 +56,11 @@
                 <dimensiontype>java.lang.Double</dimensiontype>
                 <variationmodel>
                     <factory>org.madsenlab.sim.tf.traits.InfiniteAllelesUnitIntervalTraitFactory</factory>
-                    <initial-trait-generator-method>getGaussianTraitCollection</initial-trait-generator-method>
+                    <initial-trait-generator-method>getUniqueUniformTraitCollection</initial-trait-generator-method>
                     <parameters>
                         <parameter>
                             <name>numtraits</name>
                             <value>100</value>
-                        </parameter>
-                        <parameter>
-                            <name>mean</name>
-                            <value>0.5</value>
-                        </parameter>
-                        <parameter>
-                            <name>stdev</name>
-                            <value>0.2</value>
                         </parameter>
                     </parameters>
                 </variationmodel>
@@ -168,7 +110,7 @@
                 </parameters>
             </observer>
             <observer>
-                <observerclass>org.madsenlab.sim.tf.observers.GlobalTraitCountObserverCountObserver</observerclass>
+                <observerclass>org.madsenlab.sim.tf.observers.GlobalTraitCountObserver</observerclass>
                 <target>TRAITDIMENSION</target>
                 <parameters>
                     <parameter>
@@ -188,46 +130,6 @@
                     <parameter>
                         <name>global-trait-lifetimes</name>
                         <value>trait-lifetime-stats</value>
-                    </parameter>
-                </parameters>
-            </observer>
-            <observer>
-                <observerclass>org.madsenlab.sim.tf.observers.GlobalTraitFrequencyObserver</observerclass>
-                <target>TRAITDIMENSION</target>
-                <parameters>
-                    <parameter>
-                        <name>global-trait-frequency-logfile</name>
-                        <value>trait-frequencies-global-by-time</value>
-                    </parameter>
-                    <parameter>
-                        <name>global-trait-occurrence-logfile</name>
-                        <value>trait-occurrence-by-time</value>
-                    </parameter>
-                </parameters>
-            </observer>
-            <observer>
-                <observerclass>org.madsenlab.sim.tf.observers.TimeAveragedTraitCountObserver</observerclass>
-                <target>TRAITDIMENSION</target>
-                <parameters>
-                    <parameter>
-                        <name>ta-per-windowsize-count-log-base</name>
-                        <value>trait-count-ta-</value>
-                    </parameter>
-                    <parameter>
-                        <name>ta-per-windowsize-ewens-sample-base</name>
-                        <value>ewens-sample-ta-</value>
-                    </parameter>
-                    <parameter>
-                        <name>ta-per-windowsize-count-stats</name>
-                        <value>trait-count-ta-stats</value>
-                    </parameter>
-                    <parameter>
-                        <name>ta-per-windowsize-kn-sample-base</name>
-                        <value>ewens-kn-count-ta-</value>
-                    </parameter>
-                    <parameter>
-                        <name>long-windows-only</name>
-                        <value>false</value>
                     </parameter>
                 </parameters>
             </observer>
@@ -356,8 +258,114 @@
                 </dimension>
                 <dimension>
                     <maps-traitdimension>2</maps-traitdimension>
-                    <modetype>RANDOM</modetype>
-                    <nummodes>8</nummodes>
+                    <modetype>SPECIFIED</modetype>
+                    <modelist>
+                        <mode>
+                            <name>1</name>
+                            <parameters>
+                                <parameter>
+                                    <name>lowerBound</name>
+                                    <value>0.0</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedLower</name>
+                                    <value>true</value>
+                                </parameter>
+                                <parameter>
+                                    <name>upperBound</name>
+                                    <value>0.1</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedUpper</name>
+                                    <value>false</value>
+                                </parameter>
+                            </parameters>
+                        </mode>
+                        <mode>
+                            <name>2</name>
+                            <parameters>
+                                <parameter>
+                                    <name>lowerBound</name>
+                                    <value>0.1</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedLower</name>
+                                    <value>true</value>
+                                </parameter>
+                                <parameter>
+                                    <name>upperBound</name>
+                                    <value>0.3</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedUpper</name>
+                                    <value>false</value>
+                                </parameter>
+                            </parameters>
+                        </mode>
+                        <mode>
+                            <name>3</name>
+                            <parameters>
+                                <parameter>
+                                    <name>lowerBound</name>
+                                    <value>0.3</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedLower</name>
+                                    <value>true</value>
+                                </parameter>
+                                <parameter>
+                                    <name>upperBound</name>
+                                    <value>0.5</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedUpper</name>
+                                    <value>false</value>
+                                </parameter>
+                            </parameters>
+                        </mode>
+                        <mode>
+                            <name>4</name>
+                            <parameters>
+                                <parameter>
+                                    <name>lowerBound</name>
+                                    <value>0.5</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedLower</name>
+                                    <value>true</value>
+                                </parameter>
+                                <parameter>
+                                    <name>upperBound</name>
+                                    <value>0.7</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedUpper</name>
+                                    <value>false</value>
+                                </parameter>
+                            </parameters>
+                        </mode>
+                        <mode>
+                            <name>5</name>
+                            <parameters>
+                                <parameter>
+                                    <name>lowerBound</name>
+                                    <value>0.7</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedLower</name>
+                                    <value>true</value>
+                                </parameter>
+                                <parameter>
+                                    <name>upperBound</name>
+                                    <value>1.0</value>
+                                </parameter>
+                                <parameter>
+                                    <name>isClosedUpper</name>
+                                    <value>true</value>
+                                </parameter>
+                            </parameters>
+                        </mode>
+                    </modelist>
                 </dimension>
             </dimensions>
         </classification>

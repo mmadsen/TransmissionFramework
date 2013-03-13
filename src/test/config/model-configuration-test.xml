@@ -10,14 +10,15 @@
 
 <configuration>
     <model>
-        <simlength>10000</simlength>10000"
+        <modelname>HeterogeneousRuleWFIA</modelname>
+        <simlength>10000</simlength>
         <mixingtime>1000</mixingtime>
         <dynamicsclass>org.madsenlab.sim.tf.models.WrightFisherDynamics</dynamicsclass>
         <population>
             <agentclass>org.madsenlab.sim.tf.agent.UnstructuredMultidimensionalTraitAgent</agentclass>
             <numagents>2000</numagents>
             <topologyclass>org.madsenlab.sim.tf.structure.WellMixedInteractionTopology</topologyclass>
-            <builderclass>org.madsenlab.sim.tf.population.DefaultPopulationBuilder</builderclass>
+            <builderclass>org.madsenlab.sim.tf.population.RandomTraitSingleRulesetSinglePopulationBuilder</builderclass>
 
             <rulesets>
                 <ruleset id="1" name="IAMutationOrCopyRandomNeighbor">
@@ -88,6 +89,10 @@
                                 <name>copyingmode</name>
                                 <value>PREVIOUS</value>
                             </parameter>
+                            <parameter>
+                                <name>anticonformism</name>
+                                <value>false</value>
+                            </parameter>
                         </parameters>
                     </rule>
                 </ruleset>
@@ -134,23 +139,105 @@
             </traitdimension>
         </traitspace>
     </model>
-    <observers>
-        <observer>
-            <observerclass>org.madsenlab.sim.tf.observers.EwensSampleFullPopulationObserver</observerclass>
-            <parameters>
-                <parameter>
-                    <name>samplesize</name>
-                    <value>100</value>
-                </parameter>
-            </parameters>
-        </observer>
-        <observer>
-            <observerclass>org.madsenlab.sim.tf.observers.GlobalClassCountObserver</observerclass>
-        </observer>
-        <observer>
-            <observerclass>org.madsenlab.sim.tf.observers.TimeAveragedTraitCountObserver</observerclass>
-        </observer>
-    </observers>
+
+    <observation>
+        <logging>
+            <parent-directory>/tmp/tflogs</parent-directory>
+        </logging>
+        <observers>
+            <observer>
+                <observerclass>org.madsenlab.sim.tf.observers.EwensSampleFullPopulationObserver</observerclass>
+                <target>TRAITDIMENSION</target>
+                <parameters>
+                    <parameter>
+                        <name>samplesize</name>
+                        <value>100</value>
+                    </parameter>
+                    <parameter>
+                        <name>ewens-sample-logfile</name>
+                        <value>ewens-sampling-distro-by-time</value>
+                    </parameter>
+                    <parameter>
+                        <name>ewens-kn-summary-statsfile</name>
+                        <value>ewens-kn-stats</value>
+                    </parameter>
+                    <parameter>
+                        <name>kn-sample-log</name>
+                        <value>ewens-kn-count-by-time</value>
+                    </parameter>
+                </parameters>
+            </observer>
+            <observer>
+                <observerclass>org.madsenlab.sim.tf.observers.GlobalTraitCountObserverCountObserver</observerclass>
+                <target>TRAITDIMENSION</target>
+                <parameters>
+                    <parameter>
+                        <name>global-trait-count-logfile</name>
+                        <value>trait-count-global-by-time</value>
+                    </parameter>
+                    <parameter>
+                        <name>global-trait-count-statsfile</name>
+                        <value>trait-count-stats</value>
+                    </parameter>
+                </parameters>
+            </observer>
+            <observer>
+                <observerclass>org.madsenlab.sim.tf.observers.GlobalTraitLifetimeObserver</observerclass>
+                <target>TRAITDIMENSION</target>
+                <parameters>
+                    <parameter>
+                        <name>global-trait-lifetimes</name>
+                        <value>trait-lifetime-stats</value>
+                    </parameter>
+                </parameters>
+            </observer>
+            <observer>
+                <observerclass>org.madsenlab.sim.tf.observers.GlobalTraitFrequencyObserver</observerclass>
+                <target>TRAITDIMENSION</target>
+                <parameters>
+                    <parameter>
+                        <name>global-trait-frequency-logfile</name>
+                        <value>trait-frequencies-global-by-time</value>
+                    </parameter>
+                    <parameter>
+                        <name>global-trait-occurrence-logfile</name>
+                        <value>trait-occurrence-by-time</value>
+                    </parameter>
+                </parameters>
+            </observer>
+            <observer>
+                <observerclass>org.madsenlab.sim.tf.observers.TimeAveragedTraitCountObserver</observerclass>
+                <target>TRAITDIMENSION</target>
+                <parameters>
+                    <parameter>
+                        <name>ta-per-windowsize-count-log-base</name>
+                        <value>trait-count-ta-</value>
+                    </parameter>
+                    <parameter>
+                        <name>ta-per-windowsize-ewens-sample-base</name>
+                        <value>ewens-sample-ta-</value>
+                    </parameter>
+                    <parameter>
+                        <name>ta-per-windowsize-count-stats</name>
+                        <value>trait-count-ta-stats</value>
+                    </parameter>
+                    <parameter>
+                        <name>ta-per-windowsize-kn-sample-base</name>
+                        <value>ewens-kn-count-ta-</value>
+                    </parameter>
+                    <parameter>
+                        <name>long-windows-only</name>
+                        <value>false</value>
+                    </parameter>
+                </parameters>
+            </observer>
+            <observer>
+                <observerclass>org.madsenlab.sim.tf.observers.GlobalClassCountObserver</observerclass>
+                <target>CLASSIFICATION</target>
+            </observer>
+        </observers>
+    </observation>
+
     <classifications>
         <classification>
             <name>FineGrainedProjectilePointClasses</name>

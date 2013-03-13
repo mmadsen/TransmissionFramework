@@ -11,13 +11,11 @@ package org.madsenlab.sim.tf.utils;
 
 import com.google.inject.Inject;
 import org.apache.log4j.Logger;
-import org.madsenlab.sim.tf.config.GlobalModelConfiguration;
 import org.madsenlab.sim.tf.interfaces.ILogFiles;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 
 import java.io.*;
-import java.text.DecimalFormat;
-import java.util.Date;
+import java.util.UUID;
 
 /**
  * CLASS DESCRIPTION
@@ -35,7 +33,6 @@ public class LogFileHandler implements ILogFiles {
     private File mainOutputDirectory;
     private String stringOutputDirectory;
     private String uniqueRunIdentifier;
-    private GlobalModelConfiguration params;
 
 
     public LogFileHandler() {
@@ -46,10 +43,10 @@ public class LogFileHandler implements ILogFiles {
      * Cannot use log4j yet in this code, since it will be called by the method which initializes log4j
      */
     public void initializeLogFileHandler() {
-        this.params = this.model.getModelConfiguration();
+
         this.createUniquePerRunIdentifier();
 
-        String outputParentDirectory = this.params.getProperty("log-parent-directory");
+        String outputParentDirectory = this.model.getModelConfiguration().getLogParentDirectory();
         StringBuffer sb = new StringBuffer();
         sb.append(outputParentDirectory);
         sb.append("/");
@@ -89,7 +86,17 @@ public class LogFileHandler implements ILogFiles {
 
     private void createUniquePerRunIdentifier() {
         // Generate a unique run identifier
-        Date now = new Date();
+
+        UUID uniqueID = UUID.randomUUID();
+        StringBuffer sb = new StringBuffer();
+        sb.append(this.model.getModelConfiguration().getModelName());
+        sb.append("-");
+        sb.append(uniqueID.toString());
+
+        this.uniqueRunIdentifier = sb.toString();
+        //log.info("Unique per-run identifier is:  " + this.uniqueRunIdentifier);
+
+        /*Date now = new Date();
         Integer maxTraits = this.params.getMaxTraits();
         String maxTraitsString;
         if (maxTraits == Integer.MAX_VALUE) {
@@ -113,16 +120,14 @@ public class LogFileHandler implements ILogFiles {
         ident.append("-");
         ident.append(this.params.getStartingTraits());
         ident.append("-");
-        ident.append(this.params.getLengthSimulation());
-        ident.append("-");
-        ident.append(this.params.getConformismRate());
+        ident.append(this.model.getModelConfiguration().getPopulation().getNumagents());
         ident.append("-");
         ident.append(maxTraitsString);
         ident.append("-");
         ident.append(now.getTime());
         ident.append("-tfout");  // useful for matching in post-processing scripts since the rest can vary
 
-        this.uniqueRunIdentifier = ident.toString();
+        this.uniqueRunIdentifier = ident.toString();*/
     }
 
 

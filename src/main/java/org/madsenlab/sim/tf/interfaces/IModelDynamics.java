@@ -9,6 +9,8 @@
 
 package org.madsenlab.sim.tf.interfaces;
 
+import org.madsenlab.sim.tf.utils.GenerationDynamicsMode;
+
 /**
  * CLASS DESCRIPTION
  * <p/>
@@ -19,4 +21,6 @@ package org.madsenlab.sim.tf.interfaces;
 
 public interface IModelDynamics {
     public void modelStep();
+
+    public GenerationDynamicsMode getGenerationDynamicsMode();
 }

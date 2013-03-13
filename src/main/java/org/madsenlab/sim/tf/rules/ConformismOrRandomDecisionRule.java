@@ -14,6 +14,7 @@ import org.madsenlab.sim.tf.utils.TraitCopyingMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * CLASS DESCRIPTION
@@ -30,6 +31,7 @@ public class ConformismOrRandomDecisionRule extends AbstractInteractionRule impl
     private TraitCopyingMode mode;
     private Integer numConformistEvents = 0;
     private Integer numRandomEvents = 0;
+    private Map<String, String> parameterMap;
 
     public ConformismOrRandomDecisionRule(ISimulationModel m) {
         this.model = m;
@@ -41,11 +43,16 @@ public class ConformismOrRandomDecisionRule extends AbstractInteractionRule impl
         this.setRuleName("ConformismOrRandomDecisionRule");
         this.setRuleDescription("Ensure that copying by conformism versus random copying occurs at correct rate");
 
-        this.conformismRate = this.model.getModelConfiguration().getConformismRate();
+    }
+
+    @Override
+    public void setParameters(Map<String, String> parameters) {
+        this.parameterMap = parameters;
     }
 
     public void ruleBody(Object o) {
         log.trace("entering rule body for: " + this.getRuleName());
+        this.conformismRate = Double.parseDouble(this.parameterMap.get("conformistfrequency"));
 
         Double draw = this.model.getUniformDouble();
         if (draw < this.conformismRate) {

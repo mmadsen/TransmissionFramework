@@ -13,6 +13,7 @@ import org.madsenlab.sim.tf.interfaces.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * CLASS DESCRIPTION
@@ -26,6 +27,7 @@ public class CopyFromAgentOrArtifactDecisionRule extends AbstractActionRule {
     private List<IActionRule> agentRuleList;
     private List<IActionRule> artifactRuleList;
     private Double mutationRate;
+    private Map<String, String> parameterMap;
 
     public CopyFromAgentOrArtifactDecisionRule(ISimulationModel m) {
         this.model = m;
@@ -37,13 +39,16 @@ public class CopyFromAgentOrArtifactDecisionRule extends AbstractActionRule {
         this.setRuleName("CopyFromAgentOrArtifactDecisionRule");
         this.setRuleDescription("Ensure that copying from an agent or an artifact tuple happens in a single time step in a continuous-time simulation");
 
-        // TODO:  Need a model parameter for how often we do agent interaction versus artifact observation...
-        this.mutationRate = this.model.getModelConfiguration().getMutationRate();
+    }
+
+    @Override
+    public void setParameters(Map<String, String> parameters) {
+        this.parameterMap = parameters;
     }
 
     public void ruleBody(Object o) {
         log.trace("entering rule body for: " + this.getRuleName());
-
+        this.mutationRate = Double.parseDouble(this.parameterMap.get("innovationrate"));
         /*// Generate a random double between 0 and 1, if this value is less than the mutation rate,
         // a mutation "event" has occurred.  If not, the rule body does nothing.
         Double draw = this.model.getUniformDouble();
