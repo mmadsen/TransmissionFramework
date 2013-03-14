@@ -93,6 +93,7 @@ public class ConfigurableSimulationModel implements ISimulationModel {
     public void initializeConfigurationAndLoggingFromProperties() {
         this.logFileHandler.initializeLogFileHandler();
         String loggingDirectory = this.logFileHandler.getLoggingDirectory();
+        System.out.println("logging directory: " + loggingDirectory);
         System.setProperty("log4j.logpath", loggingDirectory);
 
         log = Logger.getLogger(this.getClass());
@@ -203,8 +204,8 @@ public class ConfigurableSimulationModel implements ISimulationModel {
 
     public void run() {
         log.info("Beginning simulation run");
-        int tenpercent = this.lengthSimulation / 10;
-        while (this.currentTime < this.lengthSimulation) {
+        int tenpercent = this.modelConfig.getSimlength() / 10;
+        while (this.currentTime < this.modelConfig.getSimlength()) {
             if (this.currentTime % tenpercent == 0) {
                 log.info("    Time: " + this.currentTime);
                 System.gc();
@@ -277,7 +278,7 @@ public class ConfigurableSimulationModel implements ISimulationModel {
             Constructor<?> constructor = clazz.getConstructor(ISimulationModel.class);
             this.modelDynamicsDelegate = (IModelDynamics) constructor.newInstance(this);
         } catch (Exception ex) {
-            System.out.println("Fatal exception loading model dynamics class: " + ex.getMessage());
+            log.error("Fatal exception loading model dynamics class: " + ex.getMessage());
             System.exit(1);
         }
 
@@ -392,7 +393,7 @@ public class ConfigurableSimulationModel implements ISimulationModel {
             Constructor<?> constructor = clazz.getConstructor(ISimulationModel.class);
             this.populationBuilder = (IInitialPopulationBuilder) constructor.newInstance(this);
         } catch (Exception ex) {
-            System.out.println("Fatal exception loading population builder: " + ex.getMessage());
+            log.error("Fatal exception loading population builder: " + ex.getMessage());
             System.exit(1);
         }
 
@@ -425,7 +426,7 @@ public class ConfigurableSimulationModel implements ISimulationModel {
                 Constructor<?> constructor = clazz.getConstructor(ISimulationModel.class);
                 ruleObj = (IActionRule) constructor.newInstance(this);
             } catch (Exception ex) {
-                System.out.println("Fatal exception loading population builder: " + ex.getMessage());
+                log.error("Fatal exception loading population builder: " + ex.getMessage());
                 System.exit(1);
             }
 
@@ -458,7 +459,7 @@ public class ConfigurableSimulationModel implements ISimulationModel {
             Constructor<?> constructor = clazz.getConstructor(ISimulationModel.class);
             traitFactory = (ITraitFactory) constructor.newInstance(this);
         } catch (Exception ex) {
-            System.out.println("Fatal exception finding trait factory class: " + ex.getMessage());
+            log.error("Fatal exception finding trait factory class: " + ex.getMessage());
             System.exit(1);
         }
         return traitFactory;
@@ -483,9 +484,11 @@ public class ConfigurableSimulationModel implements ISimulationModel {
             Constructor<?> constructor = clazz.getConstructor(ISimulationModel.class);
             observer = (IStatisticsObserver) constructor.newInstance(this);
         } catch (Exception ex) {
-            System.out.println("Fatal exception finding observer class: " + observerClassName + " msg: " + ex.getMessage());
+            log.error("Fatal exception finding observer class: " + observerClassName + "  msg: " + ex.getMessage());
+            //ex.printStackTrace();
             System.exit(1);
         }
+        log.info("instantiated observer: " + observer);
         return observer;
     }
 

@@ -136,6 +136,12 @@
             <observer>
                 <observerclass>org.madsenlab.sim.tf.observers.GlobalClassCountObserver</observerclass>
                 <target>CLASSIFICATION</target>
+                <parameters>
+                    <parameter>
+                        <name>global-class-counts</name>
+                        <value>class-counts-by-time</value>
+                    </parameter>
+                </parameters>
             </observer>
         </observers>
     </observation>

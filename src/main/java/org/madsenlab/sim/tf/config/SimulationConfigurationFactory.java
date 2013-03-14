@@ -234,8 +234,6 @@ public class SimulationConfigurationFactory {
         XMLConfiguration config = null;
         try {
             config = new XMLConfiguration(pathname);
-            //log.debug("loaded XML file");
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             System.exit(1);

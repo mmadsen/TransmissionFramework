@@ -50,7 +50,7 @@ public class GlobalClassCountObserver implements IStatisticsObserver<IClassifica
         this.histClassCount = new HashMap<Integer, Map<IClass, Integer>>();
         this.config = this.model.getModelConfiguration().getObserverConfigurationForClass(this.getClass());
 
-        String countFreqLogFile = this.config.getParameter("global-class-count-logfile");
+        String countFreqLogFile = this.config.getParameter("global-class-counts");
 
         this.pw = this.model.getLogFileHandler().getFileWriterForPerRunOutput(countFreqLogFile);
 
