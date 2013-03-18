@@ -11,7 +11,7 @@ package org.madsenlab.sim.tf.agent;
 
 import com.google.inject.Inject;
 import org.madsenlab.sim.tf.interfaces.*;
-import org.madsenlab.sim.tf.utils.AgentTagType;
+import org.madsenlab.sim.tf.enums.AgentTagType;
 
 import java.util.*;
 

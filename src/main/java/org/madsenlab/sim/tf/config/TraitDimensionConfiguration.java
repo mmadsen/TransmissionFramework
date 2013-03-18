@@ -9,6 +9,8 @@
 
 package org.madsenlab.sim.tf.config;
 
+import org.madsenlab.sim.tf.enums.InitialTraitCreationMethodType;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +26,7 @@ public class TraitDimensionConfiguration {
     private Map<String, String> parameterMap;
     private String dimensionType;
     private String variationModelFactoryClass;
-    private String initialTraitGeneratorMethodName;
+    private InitialTraitCreationMethodType initialTraitGeneratorMethodName;
     private Integer dimensionID;
     private String dimensionName;
 
@@ -60,11 +62,11 @@ public class TraitDimensionConfiguration {
         this.variationModelFactoryClass = variationModelFactoryClass;
     }
 
-    public String getInitialTraitGeneratorMethodName() {
+    public InitialTraitCreationMethodType getInitialTraitGeneratorMethodName() {
         return initialTraitGeneratorMethodName;
     }
 
-    public void setInitialTraitGeneratorMethodName(String initialTraitGeneratorMethodName) {
+    public void setInitialTraitGeneratorMethodName(InitialTraitCreationMethodType initialTraitGeneratorMethodName) {
         this.initialTraitGeneratorMethodName = initialTraitGeneratorMethodName;
     }
 
@@ -81,5 +83,8 @@ public class TraitDimensionConfiguration {
         return this.parameterMap.get(name);
     }
 
+    public Map<String, String> getInitialTraitGeneratorParameters() {
+        return this.parameterMap;
+    }
 
 }

@@ -27,7 +27,7 @@
                         <parameters>
                             <parameter>
                                 <name>innovationrate</name>
-                                <value>0.0001</value>
+                                <value>0.005</value>
                             </parameter>
                         </parameters>
                     </rule>
@@ -56,7 +56,7 @@
                 <dimensiontype>java.lang.Double</dimensiontype>
                 <variationmodel>
                     <factory>org.madsenlab.sim.tf.traits.InfiniteAllelesUnitIntervalTraitFactory</factory>
-                    <initial-trait-generator-method>getUniqueUniformTraitCollection</initial-trait-generator-method>
+                    <initial-trait-generator-method>UNIQUE_UNIFORM</initial-trait-generator-method>
                     <parameters>
                         <parameter>
                             <name>numtraits</name>
@@ -70,7 +70,7 @@
                 <dimensiontype>java.lang.Double</dimensiontype>
                 <variationmodel>
                     <factory>org.madsenlab.sim.tf.traits.InfiniteAllelesUnitIntervalTraitFactory</factory>
-                    <initial-trait-generator-method>getUniqueUniformTraitCollection</initial-trait-generator-method>
+                    <initial-trait-generator-method>UNIQUE_UNIFORM</initial-trait-generator-method>
                     <parameters>
                         <parameter>
                             <name>numtraits</name>
@@ -83,9 +83,6 @@
     </model>
 
     <observation>
-        <logging>
-            <parent-directory>/tmp/tflogs</parent-directory>
-        </logging>
         <observers>
             <observer>
                 <observerclass>org.madsenlab.sim.tf.observers.EwensSampleFullPopulationObserver</observerclass>

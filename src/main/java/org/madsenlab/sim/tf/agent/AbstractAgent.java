@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITrait;
-import org.madsenlab.sim.tf.utils.TraitCopyingMode;
+import org.madsenlab.sim.tf.enums.TraitCopyingMode;
 
 import java.util.ArrayList;
 import java.util.Set;

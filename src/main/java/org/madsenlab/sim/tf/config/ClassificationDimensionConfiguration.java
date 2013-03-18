@@ -10,7 +10,7 @@
 package org.madsenlab.sim.tf.config;
 
 import com.google.common.base.Preconditions;
-import org.madsenlab.sim.tf.utils.ClassDimensionModeType;
+import org.madsenlab.sim.tf.enums.ClassDimensionModeType;
 import org.madsenlab.sim.tf.utils.TraitPredicate;
 
 import java.util.HashSet;

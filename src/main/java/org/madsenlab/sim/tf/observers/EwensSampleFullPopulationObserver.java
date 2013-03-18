@@ -13,7 +13,7 @@ import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.config.ObserverConfiguration;
 import org.madsenlab.sim.tf.interfaces.*;
-import org.madsenlab.sim.tf.utils.TraitCopyingMode;
+import org.madsenlab.sim.tf.enums.TraitCopyingMode;
 import org.madsenlab.sim.tf.utils.TraitIDComparator;
 
 import java.io.PrintWriter;

@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.IAgentTag;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
-import org.madsenlab.sim.tf.utils.AgentTagType;
+import org.madsenlab.sim.tf.enums.AgentTagType;
 
 import java.util.*;
 

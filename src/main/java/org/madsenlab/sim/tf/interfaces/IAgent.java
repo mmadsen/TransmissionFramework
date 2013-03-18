@@ -10,8 +10,8 @@
 package org.madsenlab.sim.tf.interfaces;
 
 
-import org.madsenlab.sim.tf.utils.AgentTagType;
-import org.madsenlab.sim.tf.utils.TraitCopyingMode;
+import org.madsenlab.sim.tf.enums.AgentTagType;
+import org.madsenlab.sim.tf.enums.TraitCopyingMode;
 
 import java.util.List;
 import java.util.Map;

@@ -9,7 +9,7 @@
 
 package org.madsenlab.sim.tf.config;
 
-import org.madsenlab.sim.tf.utils.ObserverTargetType;
+import org.madsenlab.sim.tf.enums.ObserverTargetType;
 
 import java.util.HashMap;
 import java.util.Map;

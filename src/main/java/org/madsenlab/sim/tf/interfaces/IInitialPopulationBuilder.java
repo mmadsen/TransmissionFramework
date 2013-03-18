@@ -34,7 +34,7 @@ public interface IInitialPopulationBuilder {
      * @return population
      */
 
-    public IPopulation constructInitialPopulation(IPopulation emptyPopulation);
+    public IPopulation constructInitialPopulation(IPopulation emptyPopulation, Map<Integer, ITraitDimension> traitDimensionMap);
 
     public void setRulesets(Map<Integer, IActionRule> ruleMap);
 

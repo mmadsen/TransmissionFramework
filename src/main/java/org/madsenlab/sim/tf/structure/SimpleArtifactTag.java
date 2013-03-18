@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.interfaces.IArtifact;
 import org.madsenlab.sim.tf.interfaces.IArtifactTag;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
-import org.madsenlab.sim.tf.utils.ArtifactTagType;
+import org.madsenlab.sim.tf.enums.ArtifactTagType;
 
 import java.util.*;
 

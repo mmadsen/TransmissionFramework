@@ -7,7 +7,10 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.utils;
+package org.madsenlab.sim.tf.enums;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Some classes may need to perform calculations differently, depending upon
@@ -29,6 +32,28 @@ package org.madsenlab.sim.tf.utils;
  * Time: 1:58 PM
  */
 public enum GenerationDynamicsMode {
-    CONTINUOUS,
-    DISCRETE
+    CONTINUOUS("CONTINUOUS"),
+    DISCRETE("DISCRETE");
+
+    private final String modeType;
+
+    private static final Map<String, GenerationDynamicsMode> stringToEnum = new ConcurrentHashMap<String, GenerationDynamicsMode>();
+
+    static {
+        for (GenerationDynamicsMode set : values()) {
+            stringToEnum.put(set.modeType, set);
+        }
+    }
+
+    private GenerationDynamicsMode(String setting) {
+        this.modeType = setting;
+    }
+
+    public String toString() {
+        return this.modeType;
+    }
+
+    public static GenerationDynamicsMode fromString(String setting) {
+        return stringToEnum.get(setting);
+    }
 }

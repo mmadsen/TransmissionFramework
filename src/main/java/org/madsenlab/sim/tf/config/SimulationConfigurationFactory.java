@@ -12,8 +12,9 @@ package org.madsenlab.sim.tf.config;
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.enums.InitialTraitCreationMethodType;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
-import org.madsenlab.sim.tf.utils.ObserverTargetType;
+import org.madsenlab.sim.tf.enums.ObserverTargetType;
 import org.madsenlab.sim.tf.utils.RealTraitIntervalPredicate;
 
 import java.util.HashMap;
@@ -50,7 +51,6 @@ public class SimulationConfigurationFactory {
 
         this.initializeModelConfiguration();
         this.processPopulationConfiguration();
-        this.processObservation();
         this.processObservers();
         this.processTraitDimensions();
         this.processClassifications();
@@ -139,11 +139,6 @@ public class SimulationConfigurationFactory {
         }
     }
 
-    private void processObservation() {
-        String logParentDirectory = this.config.getString("observation.logging.parent-directory");
-        this.mc.setLogParentDirectory(logParentDirectory);
-        //log.debug("logParentDirectory: " + logParentDirectory);
-    }
 
     private void processTraitDimensions() {
         List<HierarchicalConfiguration> traitDimensionList = this.config.configurationsAt("model.traitspace.traitdimension");
@@ -158,7 +153,7 @@ public class SimulationConfigurationFactory {
             String initGenMethod = dim.getString("variationmodel.initial-trait-generator-method");
             tdc.setDimensionName(dimName);
             tdc.setDimensionType(dimType);
-            tdc.setInitialTraitGeneratorMethodName(initGenMethod);
+            tdc.setInitialTraitGeneratorMethodName(InitialTraitCreationMethodType.fromString(initGenMethod));
             tdc.setVariationModelFactoryClass(traitFactory);
 
 

@@ -7,42 +7,42 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.utils;
+package org.madsenlab.sim.tf.enums;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * CLASS DESCRIPTION
+ * Enumeration of types for IAgentTag classes
+ * <p/>
  * <p/>
  * User: mark
- * Date: 2/8/12
- * Time: 3:01 PM
+ * Date: 4/6/11
+ * Time: 4:25 PM
  */
-public enum TraitCopyingMode {
-    CURRENT("CURRENT"),
-    PREVIOUS("PREVIOUS");
+public enum AgentTagType {
+    DEME("DEME"),
+    AGENT_RULE_TYPE("AGENT_RULE_TYPE");
 
+    private final String tagType;
 
-    private final String modeType;
-
-    private static final Map<String, TraitCopyingMode> stringToEnum = new ConcurrentHashMap<String, TraitCopyingMode>();
+    private static final Map<String, AgentTagType> stringToEnum = new ConcurrentHashMap<String, AgentTagType>();
 
     static {
-        for (TraitCopyingMode set : values()) {
-            stringToEnum.put(set.modeType, set);
+        for (AgentTagType set : values()) {
+            stringToEnum.put(set.tagType, set);
         }
     }
 
-    private TraitCopyingMode(String setting) {
-        this.modeType = setting;
+    private AgentTagType(String setting) {
+        this.tagType = setting;
     }
 
     public String toString() {
-        return this.modeType;
+        return this.tagType;
     }
 
-    public static TraitCopyingMode fromString(String setting) {
+    public static AgentTagType fromString(String setting) {
         return stringToEnum.get(setting);
     }
 }

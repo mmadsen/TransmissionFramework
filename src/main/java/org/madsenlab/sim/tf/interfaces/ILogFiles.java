@@ -20,7 +20,7 @@ import java.io.PrintWriter;
  */
 
 public interface ILogFiles {
-    void initializeLogFileHandler();
+    void initializeLogFileHandler(String loggingRootDirectory);
 
     PrintWriter getFileWriterForPerRunOutput(String filename);
 

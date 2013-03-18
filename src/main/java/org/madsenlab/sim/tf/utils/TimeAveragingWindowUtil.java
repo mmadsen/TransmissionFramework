@@ -10,6 +10,7 @@
 package org.madsenlab.sim.tf.utils;
 
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.enums.GenerationDynamicsMode;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 
 import java.util.ArrayList;

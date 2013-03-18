@@ -26,8 +26,8 @@ import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.interfaces.classification.IClassDimension;
 import org.madsenlab.sim.tf.interfaces.classification.IClassification;
 import org.madsenlab.sim.tf.traits.UnstructuredTraitDimensionFactory;
-import org.madsenlab.sim.tf.utils.ClassDimensionModeType;
-import org.madsenlab.sim.tf.utils.ObserverTargetType;
+import org.madsenlab.sim.tf.enums.ClassDimensionModeType;
+import org.madsenlab.sim.tf.enums.ObserverTargetType;
 import org.madsenlab.sim.tf.utils.TraitPredicate;
 
 import java.lang.reflect.Constructor;
@@ -58,7 +58,6 @@ public class ConfigurableSimulationModel implements ISimulationModel {
     @Inject
     protected ILogFiles logFileHandler;
 
-    protected IPopulation population;
     protected IInteractionTopology topology;
 
     protected RandomEngine rngGenerator;
@@ -85,23 +84,27 @@ public class ConfigurableSimulationModel implements ISimulationModel {
     protected IInitialPopulationBuilder initialPopulationBuilder;
     protected ModelConfiguration modelConfig;
     protected IInitialPopulationBuilder populationBuilder;
+    protected String loggingDirectoryRoot;
 
     public ConfigurableSimulationModel() {
 
     }
 
     public void initializeConfigurationAndLoggingFromProperties() {
-        this.logFileHandler.initializeLogFileHandler();
+        this.logFileHandler.initializeLogFileHandler(this.loggingDirectoryRoot);
         String loggingDirectory = this.logFileHandler.getLoggingDirectory();
         System.out.println("logging directory: " + loggingDirectory);
         System.setProperty("log4j.logpath", loggingDirectory);
 
+        String test = System.getProperty("log4j.logpath");
+
         log = Logger.getLogger(this.getClass());
         log.info("log4j configured and ready in directory: " + loggingDirectory);
+        log.info("testing system property: " + test);
     }
 
     public IPopulation getPopulation() {
-        return this.population;
+        return this.agentPopulation;
     }
 
     public IInteractionTopology getInteractionTopology() {
@@ -156,7 +159,7 @@ public class ConfigurableSimulationModel implements ISimulationModel {
     }
 
     public void initializeProviders() {
-        this.population = populationProvider.get();
+        this.agentPopulation = populationProvider.get();
         this.dimensionList = new ArrayList<ITraitDimension>();
         this.traitObserverList = new ArrayList<IStatisticsObserver>();
         this.classObserverList = new ArrayList<IStatisticsObserver>();
@@ -242,6 +245,7 @@ public class ConfigurableSimulationModel implements ISimulationModel {
 
         Options cliOptions = new Options();
         cliOptions.addOption("c", true, "path to configuration file");
+        cliOptions.addOption("p", true, "path to directory root for simulation output");
 
         CommandLineParser parser = new PosixParser();
         CommandLine cmd = null;
@@ -251,6 +255,14 @@ public class ConfigurableSimulationModel implements ISimulationModel {
         } catch (ParseException ex) {
             System.out.println("ERROR: Command line exception: " + ex.toString());
             System.exit(1);
+        }
+
+        if (cmd.hasOption("p")) {
+            this.loggingDirectoryRoot = cmd.getOptionValue("p");
+            // THIS MUST BE DONE BEFORE WE CAN USE APACHE CONFIGURATION TO PARSE THE CONFIGURATION FILE
+            this.initializeConfigurationAndLoggingFromProperties();
+        } else {
+            System.out.println("ERROR: need to specify a logging root directory using the -p option");
         }
 
         if (cmd.hasOption("c")) {
@@ -263,6 +275,8 @@ public class ConfigurableSimulationModel implements ISimulationModel {
             System.out.println("ERROR: need to specify a configuration file using the -c option");
             System.exit(1);
         }
+
+        this.modelConfig.setLogParentDirectory(this.loggingDirectoryRoot);
 
 
     }
@@ -400,7 +414,7 @@ public class ConfigurableSimulationModel implements ISimulationModel {
         this.populationBuilder.setModelConfiguration(this.getModelConfiguration());
         this.populationBuilder.setRulesets(this.rulesetMap);
         IPopulation initialPop = this.populationProvider.get();
-        this.agentPopulation = this.populationBuilder.constructInitialPopulation(initialPop);
+        this.agentPopulation = this.populationBuilder.constructInitialPopulation(initialPop, this.dimensionMap);
 
         // The simulation model is initialized and ready to run.
         log.info("Initial population constructed and model ready to run");
@@ -491,5 +505,34 @@ public class ConfigurableSimulationModel implements ISimulationModel {
         log.info("instantiated observer: " + observer);
         return observer;
     }
+
+    public void debugCheckInitialPopulation() {
+        List<IAgent> agentList = this.agentPopulation.getAgents();
+        Map<String, Integer> traitCounts = new HashMap<String, Integer>();
+        for (IAgent agent : agentList) {
+            Set<ITrait> traitList = agent.getCurrentlyAdoptedTraits();
+            for (ITrait trait : traitList) {
+                Integer cnt = traitCounts.get(trait.getTraitID());
+                if (cnt == null) {
+                    traitCounts.put(trait.getTraitID().toString(), 1);
+                } else {
+                    cnt++;
+                    traitCounts.put(trait.getTraitID().toString(), cnt);
+                }
+            }
+        }
+        Set<String> traitSet = traitCounts.keySet();
+        ArrayList<String> sortedTraits = new ArrayList<String>(traitSet);
+        Collections.sort(sortedTraits);
+
+        log.info("====================================================================");
+        log.info("agent population size: " + agentList.size());
+        for (String trait : sortedTraits) {
+            System.out.println(trait + "\t" + traitCounts.get(trait));
+        }
+        log.info("number of traits found: " + traitCounts.size());
+        log.info("====================================================================");
+    }
+
 
 }

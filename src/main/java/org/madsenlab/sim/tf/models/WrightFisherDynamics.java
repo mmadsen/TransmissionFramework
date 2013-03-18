@@ -14,7 +14,7 @@ import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.IModelDynamics;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITraitDimension;
-import org.madsenlab.sim.tf.utils.GenerationDynamicsMode;
+import org.madsenlab.sim.tf.enums.GenerationDynamicsMode;
 
 import java.util.List;
 

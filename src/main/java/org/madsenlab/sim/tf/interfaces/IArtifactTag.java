@@ -9,7 +9,7 @@
 
 package org.madsenlab.sim.tf.interfaces;
 
-import org.madsenlab.sim.tf.utils.ArtifactTagType;
+import org.madsenlab.sim.tf.enums.ArtifactTagType;
 
 import java.util.List;
 import java.util.Map;

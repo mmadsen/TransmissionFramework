@@ -22,8 +22,8 @@ import org.madsenlab.sim.tf.rules.FiniteKAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.InfiniteAllelesMutationRule;
 import org.madsenlab.sim.tf.rules.RandomCopyNeighborSingleDimensionRule;
 import org.madsenlab.sim.tf.traits.InfiniteAllelesIntegerTraitFactory;
-import org.madsenlab.sim.tf.utils.AgentTagType;
-import org.madsenlab.sim.tf.utils.GenerationDynamicsMode;
+import org.madsenlab.sim.tf.enums.AgentTagType;
+import org.madsenlab.sim.tf.enums.GenerationDynamicsMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;

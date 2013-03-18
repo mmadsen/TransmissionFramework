@@ -11,6 +11,8 @@ package org.madsenlab.sim.tf.population;
 
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.config.ModelConfiguration;
+import org.madsenlab.sim.tf.config.TraitDimensionConfiguration;
+import org.madsenlab.sim.tf.enums.InitialTraitCreationMethodType;
 import org.madsenlab.sim.tf.interfaces.*;
 
 import java.util.List;
@@ -30,6 +32,7 @@ public class RandomTraitSingleRulesetSinglePopulationBuilder implements IInitial
     private IPopulation initialPopulation;
     private ModelConfiguration mc;
     private Map<Integer, IActionRule> ruleMap;
+    private Map<Integer, ITraitDimension> traitDimensionMap;
 
     public RandomTraitSingleRulesetSinglePopulationBuilder(ISimulationModel model) {
         this.model = model;
@@ -44,25 +47,69 @@ public class RandomTraitSingleRulesetSinglePopulationBuilder implements IInitial
     }
 
     @Override
-    public IPopulation constructInitialPopulation(IPopulation pop) {
+    public IPopulation constructInitialPopulation(IPopulation pop, Map<Integer, ITraitDimension> tdm) {
         this.initialPopulation = pop;
+        this.traitDimensionMap = tdm;
+
         IActionRule ruleset = this.ruleMap.get(1);
         List<ITraitDimension> dimensionList = this.model.getTraitDimensions();
 
         Integer numAgents = this.mc.getPopulation().getNumagents();
+        log.debug("constructing population of " + numAgents + " agents");
 
+
+        // Set up initial traits within each dimension given the configured methods
+        // TODO:  finish population builder
+        for (Integer traitDimID : this.traitDimensionMap.keySet()) {
+            ITraitDimension dimension = this.traitDimensionMap.get(traitDimID);
+            TraitDimensionConfiguration dimConfig = this.mc.getTraitDimensionConfigurationForID(traitDimID);
+
+            InitialTraitCreationMethodType creationType = dimConfig.getInitialTraitGeneratorMethodName();
+            Map<String, String> initialTraitFactoryParameters = dimConfig.getInitialTraitGeneratorParameters();
+
+            // initialize given the type
+            Integer numTraits = 0;
+            switch (creationType) {
+                case UNIFORM:
+                    numTraits = Integer.parseInt(initialTraitFactoryParameters.get("numtraits"));
+                    dimension.getUniformTraitCollection(numTraits);
+                    break;
+
+                case UNIQUE_UNIFORM:
+                    numTraits = Integer.parseInt(initialTraitFactoryParameters.get("numtraits"));
+                    dimension.getUniqueUniformTraitCollection(numTraits);
+                    break;
+
+                case GAUSSIAN:
+
+                    Double mean = Double.parseDouble(initialTraitFactoryParameters.get("mean"));
+                    Double stdev = Double.parseDouble(initialTraitFactoryParameters.get("stdev"));
+                    numTraits = Integer.parseInt(initialTraitFactoryParameters.get("numtraits"));
+                    dimension.getGaussianTraitCollection(numTraits, mean, stdev);
+                    break;
+            }
+        }
+
+        // From the initial trait pool, assign random traits to initial agent population
         for (Integer i = 0; i < numAgents; i++) {
             IAgent agent = this.initialPopulation.createAgent();
             agent.setAgentID(i.toString());
+            agent.addActionRule(ruleset);
 
-            // choose random traits
-            // adopt the trait
+            // choose random traits from each dimension, and adopt them.
+            for (ITraitDimension dimension : dimensionList) {
+                ITrait randomTrait = dimension.getRandomTraitFromDimension();
+                randomTrait.adopt(agent);
+            }
 
         }
+
+        log.info("initial agent population: " + this.initialPopulation.getAgents().size());
 
 
         return this.initialPopulation;
     }
+
 
     @Override
     public void setRulesets(Map<Integer, IActionRule> ruleMap) {

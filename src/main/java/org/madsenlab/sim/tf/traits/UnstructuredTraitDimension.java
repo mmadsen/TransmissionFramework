@@ -287,16 +287,29 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
 
     @Override
     public Set<ITrait> getUniqueUniformTraitCollection(Integer numTraits) {
-        return this.traitFactory.getUniqueUniformTraitCollection(numTraits);
+        Set<ITrait> traits = this.traitFactory.getUniqueUniformTraitCollection(numTraits);
+        this.trackNewTraits(traits);
+        return traits;
     }
 
     @Override
     public Set<ITrait> getGaussianTraitCollection(Integer numTraits, Double mean, Double stdev) {
-        return this.traitFactory.getGaussianTraitCollection(numTraits, mean, stdev);
+        Set<ITrait> traits = this.traitFactory.getGaussianTraitCollection(numTraits, mean, stdev);
+        this.trackNewTraits(traits);
+        return traits;
     }
 
     @Override
     public Set<ITrait> getUniformTraitCollection(Integer numTraits) {
-        return this.traitFactory.getUniformTraitCollection(numTraits);
+        Set<ITrait> traits = traitFactory.getUniformTraitCollection(numTraits);
+        this.trackNewTraits(traits);
+        return traits;
+    }
+
+    private void trackNewTraits(Set<ITrait> traits) {
+        for (ITrait trait : traits) {
+            trait.setOwningDimension(this);
+            this.addTrait(trait);
+        }
     }
 }

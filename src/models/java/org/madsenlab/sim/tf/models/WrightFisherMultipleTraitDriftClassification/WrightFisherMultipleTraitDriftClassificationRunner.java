@@ -26,10 +26,11 @@ public class WrightFisherMultipleTraitDriftClassificationRunner {
         Injector injector = Guice.createInjector(new WrightFisherMultipleTraitDriftClassificationModule());
         ISimulationModel model = injector.getInstance(ISimulationModel.class);
         model.parseCommandLineOptions(args);
-        model.initializeConfigurationAndLoggingFromProperties();
         model.initializeRNG(false);
         model.initializeProviders();
         model.initializeModel();
+
+        model.debugCheckInitialPopulation();
 
         // start the simulation model
         model.run();

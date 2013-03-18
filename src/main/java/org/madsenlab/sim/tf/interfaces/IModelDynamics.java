@@ -9,7 +9,7 @@
 
 package org.madsenlab.sim.tf.interfaces;
 
-import org.madsenlab.sim.tf.utils.GenerationDynamicsMode;
+import org.madsenlab.sim.tf.enums.GenerationDynamicsMode;
 
 /**
  * CLASS DESCRIPTION

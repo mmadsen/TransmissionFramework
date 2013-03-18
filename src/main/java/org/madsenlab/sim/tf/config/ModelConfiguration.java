@@ -9,7 +9,7 @@
 
 package org.madsenlab.sim.tf.config;
 
-import org.madsenlab.sim.tf.utils.GenerationDynamicsMode;
+import org.madsenlab.sim.tf.enums.GenerationDynamicsMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;

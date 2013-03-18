@@ -7,7 +7,7 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.utils;
+package org.madsenlab.sim.tf.enums;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,32 +16,33 @@ import java.util.concurrent.ConcurrentHashMap;
  * CLASS DESCRIPTION
  * <p/>
  * User: mark
- * Date: 3/6/13
- * Time: 11:29 AM
+ * Date: 2/8/12
+ * Time: 3:01 PM
  */
-public enum ClassDimensionModeType {
-    SPECIFIED("SPECIFIED"),
-    RANDOM("RANDOM");
+public enum ObserverTargetType {
+    TRAITDIMENSION("TRAITDIMENSION"),
+    CLASSIFICATION("CLASSIFICATION");
 
-    private final String modeType;
 
-    private static final Map<String, ClassDimensionModeType> stringToEnum = new ConcurrentHashMap<String, ClassDimensionModeType>();
+    private final String targetType;
+
+    private static final Map<String, ObserverTargetType> stringToEnum = new ConcurrentHashMap<String, ObserverTargetType>();
 
     static {
-        for (ClassDimensionModeType set : values()) {
-            stringToEnum.put(set.modeType, set);
+        for (ObserverTargetType set : values()) {
+            stringToEnum.put(set.targetType, set);
         }
     }
 
-    private ClassDimensionModeType(String setting) {
-        this.modeType = setting;
+    private ObserverTargetType(String setting) {
+        this.targetType = setting;
     }
 
     public String toString() {
-        return this.modeType;
+        return this.targetType;
     }
 
-    public static ClassDimensionModeType fromString(String setting) {
+    public static ObserverTargetType fromString(String setting) {
         return stringToEnum.get(setting);
     }
 }

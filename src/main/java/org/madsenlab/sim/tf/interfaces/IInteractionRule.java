@@ -10,7 +10,7 @@
 package org.madsenlab.sim.tf.interfaces;
 
 import org.apache.commons.collections.Closure;
-import org.madsenlab.sim.tf.utils.TraitCopyingMode;
+import org.madsenlab.sim.tf.enums.TraitCopyingMode;
 
 /**
  * CLASS DESCRIPTION

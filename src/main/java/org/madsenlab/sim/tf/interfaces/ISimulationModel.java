@@ -130,4 +130,7 @@ public interface ISimulationModel extends Runnable {
     public ModelConfiguration getModelConfiguration();
 
     public ILogFiles getLogFileHandler();
+
+    public void debugCheckInitialPopulation();
+
 }

@@ -95,7 +95,7 @@ public abstract class AbstractSimModel implements ISimulationModel {
 
         this.loadPropertiesToConfig();
         this.params.setProperty("model-name-prefix", modelNamePrefix);
-        this.logFileHandler.initializeLogFileHandler();
+        this.logFileHandler.initializeLogFileHandler(null);
         String loggingDirectory = this.logFileHandler.getLoggingDirectory();
         System.setProperty("log4j.logpath", loggingDirectory);
 
@@ -258,5 +258,20 @@ public abstract class AbstractSimModel implements ISimulationModel {
         for (String propName : propNames) {
             this.params.setProperty(propName, this.modelProperties.getProperty(propName));
         }
+    }
+
+    @Override
+    public void initializeModel() {
+
+    }
+
+    @Override
+    public void parseCommandLineOptions(String[] args) {
+
+    }
+
+    @Override
+    public void debugCheckInitialPopulation() {
+
     }
 }
