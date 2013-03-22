@@ -21,12 +21,14 @@ import org.madsenlab.sim.tf.utils.AllAgentsPredicate;
  */
 
 public class WellMixedInteractionTopology implements IInteractionTopology {
-    IPopulation population;
     ISimulationModel model;
+
+    public WellMixedInteractionTopology(ISimulationModel model) {
+        this.initialize(model);
+    }
 
     public void initialize(ISimulationModel model) {
         this.model = model;
-        this.population = this.model.getPopulation();
     }
 
 
@@ -38,12 +40,6 @@ public class WellMixedInteractionTopology implements IInteractionTopology {
     // Return a new IDeme object with all agents since there should be a probability of keeping one's current trait (ignore the param)
 
     public IDeme getNeighborsForAgent(IAgent focalAgent) {
-        return this.population.getDemeMatchingPredicate(new AllAgentsPredicate());
-        //IDeme allButFocalDeme = this.model.getDemeProvider().get();
-
-        //List<IAgent> agentList = deme.getAgents();
-        //agentList.remove(focalAgent);
-        //allButFocalDeme.setAgentList(agentList);
-        //return allButFocalDeme;
+        return this.model.getPopulation().getDemeMatchingPredicate(new AllAgentsPredicate());
     }
 }

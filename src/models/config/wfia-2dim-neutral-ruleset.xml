@@ -60,7 +60,7 @@
                     <parameters>
                         <parameter>
                             <name>numtraits</name>
-                            <value>100</value>
+                            <value>10</value>
                         </parameter>
                     </parameters>
                 </variationmodel>
@@ -74,7 +74,7 @@
                     <parameters>
                         <parameter>
                             <name>numtraits</name>
-                            <value>100</value>
+                            <value>10</value>
                         </parameter>
                     </parameters>
                 </variationmodel>
@@ -90,7 +90,7 @@
                 <parameters>
                     <parameter>
                         <name>samplesize</name>
-                        <value>100</value>
+                        <value>30</value>
                     </parameter>
                     <parameter>
                         <name>ewens-sample-logfile</name>

@@ -29,8 +29,7 @@ public class WellMixedInteractionTopologyProvider implements Provider<IInteracti
 
 
     public IInteractionTopology get() {
-        WellMixedInteractionTopology topology = new WellMixedInteractionTopology();
-        topology.initialize(model);
+        WellMixedInteractionTopology topology = new WellMixedInteractionTopology(model);
         return topology;
     }
 }

@@ -42,6 +42,8 @@ public class UnstructuredMultidimensionalTraitAgent extends AbstractAgent {
     private Map<ITrait, ITraitDimension> traitToDimensionMapLastStep;
     private Map<ITraitDimension, ITrait> dimensionToTraitMapLastStep;
 
+    private List<IActionRule> ruleList;
+
 
     public UnstructuredMultidimensionalTraitAgent() {
         super();
@@ -61,6 +63,7 @@ public class UnstructuredMultidimensionalTraitAgent extends AbstractAgent {
         this.traitToDimensionMap = Collections.synchronizedMap(new HashMap<ITrait, ITraitDimension>());
         this.dimensionToTraitMap = Collections.synchronizedMap(new HashMap<ITraitDimension, ITrait>());
         this.tagSet = Collections.synchronizedSet(new HashSet<IAgentTag>());
+        this.ruleList = new ArrayList<IActionRule>();
 
     }
 
@@ -141,15 +144,18 @@ public class UnstructuredMultidimensionalTraitAgent extends AbstractAgent {
     }
 
     public void addActionRule(IActionRule rule) {
-
+        this.ruleList.add(rule);
     }
 
     public void addActionRuleList(List<IActionRule> ruleList) {
-
+        this.ruleList = null;
+        this.ruleList = ruleList;
     }
 
     public void fireRules() {
-
+        for (IActionRule rule : this.ruleList) {
+            rule.execute(this);
+        }
     }
 
     @Override

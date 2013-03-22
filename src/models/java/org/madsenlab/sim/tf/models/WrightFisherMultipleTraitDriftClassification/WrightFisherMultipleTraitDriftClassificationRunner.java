@@ -30,7 +30,7 @@ public class WrightFisherMultipleTraitDriftClassificationRunner {
         model.initializeProviders();
         model.initializeModel();
 
-        model.debugCheckInitialPopulation();
+        //model.debugCheckInitialPopulation();
 
         // start the simulation model
         model.run();

@@ -298,6 +298,17 @@ public class ConfigurableSimulationModel implements ISimulationModel {
 
         this.modelConfig.setGenerationDynamicsMode(this.modelDynamicsDelegate.getGenerationDynamicsMode());
 
+        String topologyClass = this.modelConfig.getPopulation().getTopologyclass();
+
+        try {
+            Class<?> clazz = Class.forName(topologyClass);
+            Constructor<?> constructor = clazz.getConstructor(ISimulationModel.class);
+            this.topology = (IInteractionTopology) constructor.newInstance(this);
+        } catch (Exception ex) {
+            log.error("Fatal exception loading topology class: " + ex.getMessage());
+            System.exit(1);
+        }
+
 
         // Initialize a population builder object
         String populationBuilderDelegate = this.modelConfig.getPopulation().getBuilderclass();
