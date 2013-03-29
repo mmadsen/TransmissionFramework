@@ -10,11 +10,12 @@
 package org.madsenlab.sim.tf.models;
 
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.enums.GenerationDynamicsMode;
 import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.IModelDynamics;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITraitDimension;
-import org.madsenlab.sim.tf.enums.GenerationDynamicsMode;
+import org.madsenlab.sim.tf.interfaces.classification.IClassification;
 
 import java.util.List;
 
@@ -69,9 +70,11 @@ public class WrightFisherDynamics implements IModelDynamics {
             dim.notifyObservers();
         }
 
-        // Now run through classification identification engines, and update class membership
-
-        // Now notify all the classification observers....
+        // Now run through classifications, and update class membership
+        for (IClassification classification : this.model.getClassificationSet()) {
+            classification.updateClassForPopulation(this.model.getPopulation());
+            classification.notifyObservers();
+        }
 
 
         //log.trace("exiting modelStep at time: " + this.model.getCurrentModelTime());

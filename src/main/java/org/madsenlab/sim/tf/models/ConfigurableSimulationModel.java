@@ -76,6 +76,7 @@ public class ConfigurableSimulationModel implements ISimulationModel {
 
     protected List<IStatisticsObserver> traitObserverList;
     protected List<IStatisticsObserver> classObserverList;
+
     protected Set<IClassification> classificationSet;
     protected String propertiesFileName;
     protected String modelNamePrefix;
@@ -231,6 +232,10 @@ public class ConfigurableSimulationModel implements ISimulationModel {
             obs.endSimulationAction();
             obs.finalizeObservation();
         }
+        for (IStatisticsObserver<IClassification> cObs : this.classObserverList) {
+            cObs.endSimulationAction();
+            cObs.finalizeObservation();
+        }
         log.info("Finalizing model run, writing historical data, and closing any files or connections");
     }
 
@@ -238,6 +243,9 @@ public class ConfigurableSimulationModel implements ISimulationModel {
         log.trace("entering modelObservations at time: " + this.currentTime);
         for (IStatisticsObserver<ITraitDimension> obs : this.traitObserverList) {
             obs.perStepAction();
+        }
+        for (IStatisticsObserver<IClassification> cObs : this.classObserverList) {
+            cObs.perStepAction();
         }
     }
 
@@ -521,6 +529,10 @@ public class ConfigurableSimulationModel implements ISimulationModel {
         List<IAgent> agentList = this.agentPopulation.getAgents();
         Map<String, Integer> traitCounts = new HashMap<String, Integer>();
         for (IAgent agent : agentList) {
+            Map<ITraitDimension, ITrait> traitDimensionMap = agent.getCurrentlyAdoptedDimensionsAndTraits();
+            log.info("agent " + agent.getAgentID() + " has traits: " + traitDimensionMap);
+
+
             Set<ITrait> traitList = agent.getCurrentlyAdoptedTraits();
             for (ITrait trait : traitList) {
                 Integer cnt = traitCounts.get(trait.getTraitID());
@@ -545,5 +557,8 @@ public class ConfigurableSimulationModel implements ISimulationModel {
         log.info("====================================================================");
     }
 
-
+    @Override
+    public Set<IClassification> getClassificationSet() {
+        return classificationSet;
+    }
 }

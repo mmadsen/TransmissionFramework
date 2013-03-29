@@ -14,6 +14,7 @@ import com.google.inject.Module;
 import com.google.inject.Singleton;
 import org.madsenlab.sim.tf.agent.UnstructuredSingleDimensionTraitAgentProvider;
 import org.madsenlab.sim.tf.interfaces.*;
+import org.madsenlab.sim.tf.models.ConfigurableSimulationModel;
 import org.madsenlab.sim.tf.population.SimpleAgentDemeProvider;
 import org.madsenlab.sim.tf.population.SimpleAgentPopulationProvider;
 import org.madsenlab.sim.tf.structure.SimpleAgentTagProvider;
@@ -35,7 +36,7 @@ public abstract class SingleDimensionAgentModule implements Module {
     public void configure(Binder binder) {
 
         binder.bind(ISimulationModel.class)
-                .to(SimulationModelFixture.class)
+                .to(ConfigurableSimulationModel.class)
                 .in(Singleton.class);
         binder.bind(ITraitDimension.class)
                 .toProvider(UnstructuredTraitDimensionProvider.class);

@@ -39,6 +39,10 @@ public class UnstructuredTraitDimension<T> implements ITraitDimension<T> {
         log = model.getModelLogger(this.getClass());
     }
 
+    public String toString() {
+        return this.dimensionName;
+    }
+
     @Override
     public void setTraitVariationModel(ITraitFactory f) {
         this.traitFactory = f;

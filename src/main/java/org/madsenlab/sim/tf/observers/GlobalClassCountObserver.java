@@ -36,7 +36,6 @@ import java.util.*;
 public class GlobalClassCountObserver implements IStatisticsObserver<IClassification> {
     private ISimulationModel model;
     private Logger log;
-    private Map<IClass, Integer> classCountMap;
     private Integer lastTimeIndexUpdated;
     private PrintWriter pw;
     private Map<Integer, Map<IClass, Integer>> histClassCount;
@@ -73,7 +72,11 @@ public class GlobalClassCountObserver implements IStatisticsObserver<IClassifica
             this.lastTimeIndexUpdated = stat.getTimeIndex();
             IClassification classification = stat.getTarget();
             Map<IClass, Integer> countMap = classification.getCurGlobalClassCounts();
-            this.histClassCount.put(this.lastTimeIndexUpdated, classCountMap);
+            log.debug("updateStatistics - getting counts for time: " + this.lastTimeIndexUpdated + " : " + countMap);
+
+            Integer time = this.model.getCurrentModelTime();
+            this.histClassCount.put(time, countMap);
+            log.debug("update statistics histClassCount: " + this.histClassCount);
         }
     }
 
@@ -86,6 +89,7 @@ public class GlobalClassCountObserver implements IStatisticsObserver<IClassifica
 
             if (this.model.getCurrentModelTime() == this.model.getModelConfiguration().getSimlength() - 1) {
                 Map<IClass, Integer> countMap = this.histClassCount.get(this.model.getCurrentModelTime());
+
                 for (IClass cz : countMap.keySet()) {
                     this.histo.fill((double) countMap.get(cz));
                 }
@@ -117,13 +121,13 @@ public class GlobalClassCountObserver implements IStatisticsObserver<IClassifica
 
     private void printFrequencies() {
         Integer time = this.model.getCurrentModelTime();
+        log.debug("histClassCount: " + this.histClassCount);
 
         Map<IClass, Integer> countMap = this.histClassCount.get(time);
-        //log.debug("printCounts - getting counts for time: " + time + " : " + countMap);
+        log.debug("printCounts - getting counts for time: " + time + " : " + countMap);
 
         StringBuffer sb = prepareCountLogString(time, countMap);
         log.debug(sb.toString());
-        sb = null;
 
     }
 
@@ -150,7 +154,7 @@ public class GlobalClassCountObserver implements IStatisticsObserver<IClassifica
         }
         sb.append("tot:");
         sb.append(totalOfClassCounts);
-        sb.append(",numtrait:");
+        sb.append(",numclasses:");
         sb.append(numNonZeroClasses);
         return sb;
     }

@@ -10,13 +10,13 @@
 package org.madsenlab.sim.tf.agent;
 
 import org.apache.log4j.Logger;
+import org.madsenlab.sim.tf.enums.TraitCopyingMode;
 import org.madsenlab.sim.tf.interfaces.IAgent;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITrait;
-import org.madsenlab.sim.tf.enums.TraitCopyingMode;
+import org.madsenlab.sim.tf.interfaces.ITraitDimension;
 
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.*;
 
 /**
  * CLASS DESCRIPTION
@@ -29,6 +29,26 @@ import java.util.Set;
 public abstract class AbstractAgent implements IAgent {
     protected Logger log;
     protected ISimulationModel model;
+    protected Integer numTraitDimensionsExpected = 0;
+    protected Boolean agentInitialized = Boolean.FALSE;         // data structures for current traits
+    protected Set<ITraitDimension> dimensionSet;
+    protected Set<ITrait> traitSet;
+    protected Map<ITrait, ITraitDimension> traitToDimensionMap;
+    protected Map<ITraitDimension, ITrait> dimensionToTraitMap;
+    protected Map<ITrait, ITraitDimension> traitToDimensionMapLastStep;
+    protected Map<ITraitDimension, ITrait> dimensionToTraitMapLastStep;
+    protected Set<ITrait> traitsLastStep;
+    protected Set<ITraitDimension> dimensionsLastStep;
+
+    @Override
+    public void setAgentInitialized(Boolean state) {
+        this.agentInitialized = state;
+    }
+
+    @Override
+    public void setNumTraitDimensionsExpected(Integer numTraitDimensionsExpected) {
+        this.numTraitDimensionsExpected = numTraitDimensionsExpected;
+    }
 
     public ITrait getRandomTraitFromAgent(TraitCopyingMode mode) {
         Set<ITrait> focalTraits;
@@ -52,4 +72,24 @@ public abstract class AbstractAgent implements IAgent {
         }
         return focalTrait;
     }
+
+    @Override
+    public ITrait getTraitFromDimensionFromAgent(TraitCopyingMode mode, ITraitDimension dim) {
+        ITrait trait = null;
+        if (mode == TraitCopyingMode.CURRENT) {
+            trait = this.getCurrentlyAdoptedTraitForDimension(dim);
+        } else {
+            trait = this.getPreviouslyAdoptedTraitForDimension(dim);
+        }
+        log.debug("dimension: " + dim.toString() + " trait: " + trait.toString());
+        return trait;
+    }
+
+    @Override
+    public ITraitDimension getRandomTraitDimensionFromAgent() {
+        List<ITraitDimension> dimensionList = new ArrayList<ITraitDimension>(this.dimensionSet);
+        Collections.shuffle(dimensionList);
+        return dimensionList.get(0);
+    }
+
 }

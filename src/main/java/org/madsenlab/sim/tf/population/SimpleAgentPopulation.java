@@ -85,6 +85,7 @@ public class SimpleAgentPopulation extends AbstractDeme implements IPopulation, 
 
     @Override
     public void savePreviousStepTraits() {
+        log.debug("entering savePreviousStepTraits for population");
         for (IAgent agent : this.agentList) {
             agent.savePreviousStepTraits();
         }

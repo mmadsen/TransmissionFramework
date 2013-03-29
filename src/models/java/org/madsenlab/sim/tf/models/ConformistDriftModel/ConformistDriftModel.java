@@ -30,6 +30,7 @@ import java.util.*;
  * Time: 10:19:32 AM
  */
 
+@Deprecated
 public class ConformistDriftModel extends AbstractSimModel {
     GlobalTraitCountObserver countObserver;
     GlobalTraitFrequencyObserver freqObserver;

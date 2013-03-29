@@ -30,17 +30,7 @@ public class UnstructuredMultidimensionalTraitAgent extends AbstractAgent {
     private String agentID;
     private Set<IAgentTag> tagSet;
 
-    // data structures for current traits
-    private Set<ITraitDimension> dimensionSet;
-    private Set<ITrait> traitSet;
-    private Map<ITrait, ITraitDimension> traitToDimensionMap;
-    private Map<ITraitDimension, ITrait> dimensionToTraitMap;
-
-    // data structures for traits from previous step
-    private Set<ITrait> traitsLastStep;
-    private Set<ITraitDimension> dimensionsLastStep;
-    private Map<ITrait, ITraitDimension> traitToDimensionMapLastStep;
-    private Map<ITraitDimension, ITrait> dimensionToTraitMapLastStep;
+    // data structures are all defined in AbstractAgent
 
     private List<IActionRule> ruleList;
 
@@ -85,15 +75,24 @@ public class UnstructuredMultidimensionalTraitAgent extends AbstractAgent {
     }
 
     private void _doAdoptTrait(ITraitDimension dim, ITrait trait) {
+
+        synchronized (this.dimensionSet) {
+            this.dimensionSet.add(dim);
+            log.debug(this.dimensionSet.toString());
+        }
         synchronized (this.traitSet) {
             this.traitSet.add(trait);
+            log.debug(this.traitSet.toString());
         }
         synchronized (this.traitToDimensionMap) {
             this.traitToDimensionMap.put(trait, dim);
+            log.debug(this.traitToDimensionMap.toString());
         }
         synchronized (this.dimensionToTraitMap) {
             this.dimensionToTraitMap.put(dim, trait);
+            log.debug(this.dimensionToTraitMap.toString());
         }
+        this.checkCorrectNumberDimensions();
     }
 
 
@@ -176,17 +175,22 @@ public class UnstructuredMultidimensionalTraitAgent extends AbstractAgent {
         return this.dimensionToTraitMap.get(dim);
     }
 
+    public ITrait getPreviouslyAdoptedTraitForDimension(ITraitDimension dim) {
+        return this.dimensionToTraitMapLastStep.get(dim);
+    }
+
     @Override
     public void savePreviousStepTraits() {
+        //log.debug("entering savePreviousStepTraits");
         this.traitsLastStep = null;
         this.dimensionsLastStep = null;
         this.traitToDimensionMapLastStep = null;
         this.dimensionToTraitMapLastStep = null;
 
-        this.traitsLastStep = Collections.synchronizedSet(new HashSet<ITrait>(this.traitSet));
-        this.dimensionsLastStep = Collections.synchronizedSet(new HashSet<ITraitDimension>(this.dimensionSet));
-        this.dimensionToTraitMapLastStep = Collections.synchronizedMap(new HashMap<ITraitDimension, ITrait>());
-        this.traitToDimensionMapLastStep = Collections.synchronizedMap(new HashMap<ITrait, ITraitDimension>());
+        this.traitsLastStep = new HashSet<ITrait>(this.traitSet);
+        this.dimensionsLastStep = new HashSet<ITraitDimension>(this.dimensionSet);
+        this.dimensionToTraitMapLastStep = new HashMap<ITraitDimension, ITrait>(this.dimensionToTraitMap);
+        this.traitToDimensionMapLastStep = new HashMap<ITrait, ITraitDimension>(this.traitToDimensionMap);
     }
 
     @Override
@@ -196,5 +200,14 @@ public class UnstructuredMultidimensionalTraitAgent extends AbstractAgent {
 
     public List<IAgent> getNeighboringAgents() {
         return null;
+    }
+
+    private void checkCorrectNumberDimensions() {
+        int numDimensionsPresent = this.dimensionToTraitMap.size();
+        if (this.agentInitialized) {
+            if (numDimensionsPresent != this.numTraitDimensionsExpected) {
+                log.error("Agent: " + agentID + " EXPECT " + this.numTraitDimensionsExpected + " FOUND: " + numDimensionsPresent);
+            }
+        }
     }
 }

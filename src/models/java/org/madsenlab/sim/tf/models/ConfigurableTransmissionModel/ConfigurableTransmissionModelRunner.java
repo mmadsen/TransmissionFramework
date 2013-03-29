@@ -7,7 +7,7 @@
  * http://creativecommons.org/licenses/GPL/2.0/
  */
 
-package org.madsenlab.sim.tf.models.WrightFisherMultipleTraitDriftClassification;
+package org.madsenlab.sim.tf.models.ConfigurableTransmissionModel;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -21,16 +21,16 @@ import org.madsenlab.sim.tf.interfaces.ISimulationModel;
  * Time: 1:00 PM
  */
 
-public class WrightFisherMultipleTraitDriftClassificationRunner {
+public class ConfigurableTransmissionModelRunner {
     public static void main(String[] args) {
-        Injector injector = Guice.createInjector(new WrightFisherMultipleTraitDriftClassificationModule());
+        Injector injector = Guice.createInjector(new ConfigurableTransmissionModule());
         ISimulationModel model = injector.getInstance(ISimulationModel.class);
         model.parseCommandLineOptions(args);
         model.initializeRNG(false);
         model.initializeProviders();
         model.initializeModel();
 
-        //model.debugCheckInitialPopulation();
+        model.debugCheckInitialPopulation();
 
         // start the simulation model
         model.run();

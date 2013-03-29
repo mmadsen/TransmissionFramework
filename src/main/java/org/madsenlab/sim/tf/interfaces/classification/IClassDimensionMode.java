@@ -22,7 +22,7 @@ import java.util.Set;
  * Time: 11:43 AM
  */
 
-public interface IClassDimensionMode {
+public interface IClassDimensionMode extends Comparable<IClassDimensionMode> {
 
     /**
      * Returns the trait predicate used to define a given mode
@@ -51,4 +51,6 @@ public interface IClassDimensionMode {
     public Set<ITrait> getTraitsMappedToMode(Boolean includeTraitsWithZeroAdoptionCount);
 
     public IClassDimension getOwningClassDimension();
+
+    public int compareTo(IClassDimensionMode mode);
 }

@@ -16,6 +16,7 @@ import org.madsenlab.sim.tf.observers.ClassStatistic;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.interfaces.classification.IClass;
 import org.madsenlab.sim.tf.interfaces.classification.IClassDimensionMode;
+import org.madsenlab.sim.tf.utils.ModeSetUniqueIdentifier;
 
 import java.util.*;
 
@@ -61,7 +62,7 @@ public class UnstructuredClass implements IClass {
     }
 
     private void setObjectID() {
-        this.uniqueObjectHashcode = this.definingModeSet.hashCode();
+        this.uniqueObjectHashcode = ModeSetUniqueIdentifier.getUniqueIdentifier(this.definingModeSet);
     }
 
     private void initialize(ISimulationModel model, Integer classID) {
@@ -99,6 +100,10 @@ public class UnstructuredClass implements IClass {
         }
         sb.append("}");
         return sb.toString();
+    }
+
+    public String toString() {
+        return this.getClassDescription();
     }
 
     @Override

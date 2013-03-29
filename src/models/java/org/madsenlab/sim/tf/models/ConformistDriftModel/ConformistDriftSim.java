@@ -21,7 +21,7 @@ import org.madsenlab.sim.tf.interfaces.ISimulationModel;
  * Time: 9:55:24 AM
  */
 
-
+@Deprecated
 public class ConformistDriftSim {
 
     public static void main(String[] args) {

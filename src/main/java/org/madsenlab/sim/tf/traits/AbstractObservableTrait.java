@@ -24,6 +24,7 @@ import java.util.List;
  */
 
 public abstract class AbstractObservableTrait<T> implements ITrait<T> {
+    protected T id;
     protected Integer traitLifetime = 0;
     protected Integer tickTraitIntroduced;
     protected Integer tickTraitExited;
@@ -31,6 +32,10 @@ public abstract class AbstractObservableTrait<T> implements ITrait<T> {
     protected List<IStatisticsObserver> observers;
     protected ISimulationModel model;
     protected Logger log;
+
+    public String toString() {
+        return id.toString();
+    }
 
     public void attach(IStatisticsObserver obs) {
         synchronized (this.observers) {

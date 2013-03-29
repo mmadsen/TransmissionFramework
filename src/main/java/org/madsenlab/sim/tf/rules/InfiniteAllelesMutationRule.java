@@ -49,7 +49,7 @@ public class InfiniteAllelesMutationRule extends AbstractInteractionRule impleme
         // DECISION TO MUTATE OR COPY IS MADE IN ANOTHER RULE - IF THIS RULE FIRES AT ALL, IT JUST NEEDS
         // TO PERFORM THE RIGHT KIND OF MUTATION
 
-        ITraitDimension dim = this.getRandomTraitDimension();
+        ITraitDimension dim = thisAgent.getRandomTraitDimensionFromAgent();
         log.trace("Number of traits/dim prior to mutation: " + dim.getTraitsInDimension().size());
 
         log.trace("Selected dimension: " + dim + " for mutation");
@@ -57,7 +57,7 @@ public class InfiniteAllelesMutationRule extends AbstractInteractionRule impleme
         this.newTraitID++;
         ITrait newTrait = dim.getNewUniqueUniformVariant();
 
-        ITrait oldTrait = thisAgent.getRandomTraitFromAgent(TraitCopyingMode.CURRENT);
+        ITrait oldTrait = thisAgent.getTraitFromDimensionFromAgent(TraitCopyingMode.CURRENT, dim);
         oldTrait.unadopt(thisAgent);
         newTrait.adopt(thisAgent);
 

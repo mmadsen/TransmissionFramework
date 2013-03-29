@@ -42,6 +42,10 @@ public class UnitIntervalClassDimension<T> implements IClassDimension<T> {
         this.traitDimension = traitDimension;
     }
 
+    public String toString() {
+        return this.getClassDimensionName();
+    }
+
     @Override
     public ITraitDimension getTrackedTraitDimension() {
         return this.traitDimension;

@@ -57,13 +57,17 @@ public class RealIntervalDimensionMode implements IClassDimensionMode {
         return this.modePredicate.toString();
     }
 
+    public int compareTo(IClassDimensionMode mode) {
+        return this.getModeDescription().compareTo(mode.getModeDescription());
+    }
+
     @Override
     public Set<ITrait> getTraitsMappedToMode(Boolean includeTraitsWithZeroAdoptionCount) {
         log.debug("entering getTraitsMappedToMode");
         Set<ITrait> resultSet = new HashSet<ITrait>();
         Collection<ITrait<Double>> traits = this.watchedDimension.getTraitsInDimension();
 
-        log.debug("traits before predicate filter: " + traits);
+        log.trace("traits before predicate filter: " + traits);
 
         Collection<ITrait<Double>> mappedTraits = CollectionUtils.select(traits, this.modePredicate);
 

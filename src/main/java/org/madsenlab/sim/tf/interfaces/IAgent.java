@@ -26,13 +26,18 @@ import java.util.Set;
  */
 public interface IAgent {
 
+
+    /* Agents may not be in a consistent state until initialization is complete, so certain checks are bypassed until then*/
+    public void setAgentInitialized(Boolean state);
+
     public void setSimulationModel(ISimulationModel m);
 
     public String getAgentID();
 
     public void setAgentID(String id);
 
-
+    /*  This defines the number of "loci" or distinct trait dimensions that each agent will hold */
+    public void setNumTraitDimensionsExpected(Integer numTraitDimensionsExpected);
 
     /* Trait adoption methods */
 
@@ -80,10 +85,16 @@ public interface IAgent {
 
     public ITrait getCurrentlyAdoptedTraitForDimension(ITraitDimension dim);
 
+    public ITrait getPreviouslyAdoptedTraitForDimension(ITraitDimension dim);
+
     public void savePreviousStepTraits();
 
     public Set<ITrait> getPreviousStepAdoptedTraits();
 
     public ITrait getRandomTraitFromAgent(TraitCopyingMode mode);
 
+    public ITrait getTraitFromDimensionFromAgent(TraitCopyingMode mode, ITraitDimension dim);
+
+
+    ITraitDimension getRandomTraitDimensionFromAgent();
 }

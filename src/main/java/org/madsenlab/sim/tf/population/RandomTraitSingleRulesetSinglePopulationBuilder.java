@@ -59,7 +59,6 @@ public class RandomTraitSingleRulesetSinglePopulationBuilder implements IInitial
 
 
         // Set up initial traits within each dimension given the configured methods
-        // TODO:  finish population builder
         for (Integer traitDimID : this.traitDimensionMap.keySet()) {
             ITraitDimension dimension = this.traitDimensionMap.get(traitDimID);
             TraitDimensionConfiguration dimConfig = this.mc.getTraitDimensionConfigurationForID(traitDimID);
@@ -93,6 +92,7 @@ public class RandomTraitSingleRulesetSinglePopulationBuilder implements IInitial
         // From the initial trait pool, assign random traits to initial agent population
         for (Integer i = 0; i < numAgents; i++) {
             IAgent agent = this.initialPopulation.createAgent();
+            agent.setNumTraitDimensionsExpected(dimensionList.size());
             agent.setAgentID(i.toString());
             agent.addActionRule(ruleset);
 
@@ -101,6 +101,12 @@ public class RandomTraitSingleRulesetSinglePopulationBuilder implements IInitial
                 ITrait randomTrait = dimension.getRandomTraitFromDimension();
                 randomTrait.adopt(agent);
             }
+
+            // If we are using the "previous" mode of copying, then we need to prime the pump by ALSO copying
+            // the initial traits to the "previous" data structures.
+            agent.savePreviousStepTraits();
+
+            agent.setAgentInitialized(Boolean.TRUE);
 
         }
 

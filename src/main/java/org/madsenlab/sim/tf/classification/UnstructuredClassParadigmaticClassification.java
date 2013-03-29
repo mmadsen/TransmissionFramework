@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.observers.ClassificationStatistic;
 import org.madsenlab.sim.tf.interfaces.*;
 import org.madsenlab.sim.tf.interfaces.classification.*;
+import org.madsenlab.sim.tf.utils.ModeSetUniqueIdentifier;
 
 import java.util.*;
 
@@ -239,7 +240,7 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
 
     @Override
     public void updateClassForAgent(IAgent agent) {
-        log.trace("Entering updateClassForAgent");
+        log.debug("Entering updateClassForAgent");
         // calls getClassForAgent() to get the current class given adopted traits
         // checks to see if the current class has changed from previous step
         // if so, does class unadopt/adopt
@@ -252,10 +253,10 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
         log.debug("current class: " + currentClass.getClassDescription());
         IClass prevClass = this.memoClassIdentificationForAgent.get(agent);
         if (currentClass.equals(prevClass)) {
-            log.trace("No change in class for agent: " + agent.getAgentID());
+            log.debug("No change in class for agent: " + agent.getAgentID());
         } else {
             log.debug("Agent " + agent.getAgentID() + " changed class membership");
-            log.trace("...from " + prevClass.getClassDescription() + " to " + currentClass.getClassDescription());
+            log.debug("...from " + prevClass.getClassDescription() + " to " + currentClass.getClassDescription());
             // should this be protected by a synchronized block?  prob yes if we're ever doing multithreaded models...
             prevClass.unadopt(agent);
             currentClass.adopt(agent);
@@ -268,6 +269,7 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
     public void updateClassForPopulation(IPopulation pop) {
         log.trace("Entering updateClassForPopulation");
         for (IAgent agent : pop.getAgents()) {
+            log.debug("updating class for agent: " + agent.getAgentID());
             this.updateClassForAgent(agent);
         }
         log.trace("Exiting updateClassForPopulation");
@@ -282,6 +284,7 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
         // Get traits and dimensions held by the agent, look up which class dimensions are
         // tracking each trait dimension.  Create a map of ClassDimension -> ITrait for an agent
         Map<ITraitDimension, ITrait> traitDimensionMap = agent.getCurrentlyAdoptedDimensionsAndTraits();
+        log.debug("agent " + agent.getAgentID() + " has traits: " + traitDimensionMap);
         IClass identifiedClass = this.getClassForTraits(traitDimensionMap);
 
         log.trace("Exiting getClassForAgent");
@@ -308,12 +311,14 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
 
             IClassDimensionMode mode = classDim.getModeForTraitValue(trait);
 
-            log.debug("classDim: " + classDim + " and trait: " + trait.toString() + " maps to mode: " + mode.getModeDescription());
+            log.debug("classDim: " + classDim.getClassDimensionName() + " and trait: " + trait.toString() + " maps to mode: " + mode.getModeDescription());
             modeSet.add(mode);
         }
 
         // and then asking the classification for the IClass which is indexed to a given list of modes.
-        Integer modeSetID = modeSet.hashCode();
+        Integer modeSetID = ModeSetUniqueIdentifier.getUniqueIdentifier(modeSet);
+        log.debug("This set of modes nominally has class description: " + this.constructClassDescriptionFromModeset(modeSet));
+        log.debug("modeSetID hashcode: " + modeSetID);
 
         IClass identifiedClass = this.indexModesToClass.get(modeSetID);
 
@@ -322,6 +327,19 @@ public class UnstructuredClassParadigmaticClassification implements IClassificat
 
         log.trace("Exiting getClassForTraits");
         return identifiedClass;
+    }
+
+    private String constructClassDescriptionFromModeset(Set<IClassDimensionMode> modeset) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("{");
+        for (IClassDimensionMode mode : modeset) {
+            sb.append(mode.getOwningClassDimension().getClassDimensionName());
+            sb.append(":");
+            sb.append(mode.getModeDescription());
+            sb.append(";");
+        }
+        sb.append("}");
+        return sb.toString();
     }
 
 

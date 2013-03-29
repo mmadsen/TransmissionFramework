@@ -27,7 +27,6 @@ import java.util.*;
 
 
 public class UnstructuredTrait<T> extends AbstractObservableTrait<T> {
-    private T id;
     private int curAdoptionCount;
     private List<IAgent> curAdopteeList;
     private TIntIntHashMap histAdoptionCountMap;

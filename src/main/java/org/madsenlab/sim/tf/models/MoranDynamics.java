@@ -15,6 +15,7 @@ import org.madsenlab.sim.tf.interfaces.IModelDynamics;
 import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.ITraitDimension;
 import org.madsenlab.sim.tf.enums.GenerationDynamicsMode;
+import org.madsenlab.sim.tf.interfaces.classification.IClassification;
 
 import java.util.List;
 
@@ -55,5 +56,12 @@ public class MoranDynamics implements IModelDynamics {
         for (ITraitDimension dim : dimList) {
             dim.notifyObservers();
         }
+
+        // Now run through classifications, and update class membership
+        for (IClassification classification : this.model.getClassificationSet()) {
+            classification.updateClassForPopulation(this.model.getPopulation());
+            classification.notifyObservers();
+        }
+
     }
 }

@@ -29,6 +29,7 @@ import org.madsenlab.sim.tf.utils.LogFileHandler;
  * Time: 1:21:54 PM
  * To change this template use File | Settings | File Templates.
  */
+@Deprecated
 public class ConformistDriftModule implements Module {
     public void configure(Binder binder) {
         binder.bind(ISimulationModel.class)

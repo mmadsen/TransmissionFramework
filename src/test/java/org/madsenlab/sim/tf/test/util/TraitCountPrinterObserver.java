@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -37,6 +37,11 @@ public class TraitCountPrinterObserver implements IStatisticsObserver<ITraitDime
         this.log = this.model.getModelLogger(this.getClass());
     }
 
+
+    @Override
+    public void setParameterMap(Map<String, String> parameterMap) {
+
+    }
 
     public void updateStatistics(IStatistic<ITraitDimension> stat) {
         Integer timeIndex = stat.getTimeIndex();

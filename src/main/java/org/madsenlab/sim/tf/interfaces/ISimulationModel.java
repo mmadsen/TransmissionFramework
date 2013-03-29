@@ -12,8 +12,10 @@ package org.madsenlab.sim.tf.interfaces;
 import com.google.inject.Provider;
 import org.apache.log4j.Logger;
 import org.madsenlab.sim.tf.config.ModelConfiguration;
+import org.madsenlab.sim.tf.interfaces.classification.IClassification;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -133,4 +135,5 @@ public interface ISimulationModel extends Runnable {
 
     public void debugCheckInitialPopulation();
 
+    Set<IClassification> getClassificationSet();
 }

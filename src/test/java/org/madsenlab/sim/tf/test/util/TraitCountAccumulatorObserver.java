@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012.  Mark E. Madsen <mark@madsenlab.org>
+ * Copyright (c) 2013.  Mark E. Madsen <mark@madsenlab.org>
  *
  * This work is licensed under the terms of the Creative Commons-GNU General Public Llicense 2.0, as "non-commercial/sharealike".  You may use, modify, and distribute this software for non-commercial purposes, and you must distribute any modifications under the same license.
  *
@@ -15,6 +15,8 @@ import org.madsenlab.sim.tf.interfaces.ISimulationModel;
 import org.madsenlab.sim.tf.interfaces.IStatistic;
 import org.madsenlab.sim.tf.interfaces.IStatisticsObserver;
 import org.madsenlab.sim.tf.interfaces.ITraitDimension;
+
+import java.util.Map;
 
 /**
  * The only job of this observer is to receive notifications of trait
@@ -44,6 +46,11 @@ public class TraitCountAccumulatorObserver implements IStatisticsObserver<ITrait
 
     public Integer getAdoptionEventCount() {
         return this.adoptionEvents;
+    }
+
+    @Override
+    public void setParameterMap(Map<String, String> parameterMap) {
+
     }
 
     public void updateStatistics(IStatistic<ITraitDimension> stat) {

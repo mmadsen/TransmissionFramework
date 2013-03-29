@@ -174,6 +174,11 @@ public class UnstructuredSingleDimensionTraitAgent extends AbstractAgent {
     }
 
     @Override
+    public ITrait getPreviouslyAdoptedTraitForDimension(ITraitDimension dim) {
+        return this.traitsLastStep.iterator().next();
+    }
+
+    @Override
     public void savePreviousStepTraits() {
         this.traitsLastStep = null;
         this.traitsLastStep = Collections.synchronizedSet(new HashSet<ITrait>(this.traitsAdopted));
